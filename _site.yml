@@ -1,0 +1,57 @@
+name: "Multivarijatne metode" 
+navbar:
+  title: "MultiVar"
+left:
+  - text: "Osnovne informacije"
+href: index.html
+- text: "O kolegiju"
+href: about.html
+- text: "Raspored"
+href: schedule.html
+
+- text: "Predavanja"
+menu:
+  - text: "Uvod u kolegij"
+href: ""
+- text: "Osnove programskog jezika R"
+href: "" 
+- text: "Osnovne deskriptivne i infencijalne statistike"
+href: ""
+- text: "Analiza glavnih komponenti"
+href: ""
+- text: "Klaster analiza"
+href: ""
+- text: "Diskriminantna analiza"
+href: ""
+- text: "Faktorska analiza"
+href: ""
+- text: "Multivarijatna regresijska analiza"
+href: ""
+- text: "Analiza panel podataka"
+href: ""
+- text: "Survival analiza"
+href: ""
+- text: "Analiza vremenskih serija"
+href: ""
+- text: "Strojno učenje"
+href: ""
+- text: "Analiza teksta"
+href: ""  
+- text: "Network analiza"
+href: ""
+
+- text: "Obavijesti"
+href: news.html  
+- text: "Resursi"
+href: resources.html   
+
+right:
+  - text: "O stranici"
+href: site-info.html
+- icon: ion-social-github
+href: https://github.com/BrbanMiro/WebObradaPodataka
+output_dir: "docs"
+output:
+  html_document:
+  theme: flatly
+highlight: textmate
