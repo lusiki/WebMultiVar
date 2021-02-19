@@ -61,7 +61,7 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 </div>
 
 <b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a> 
-<br><b>Čitanje: </b><a href=""> </a> + <a href=""> </a> 
+<br><b>Čitanje: </b><a href=""> </a>  
 <br>
 <br>
 
@@ -84,7 +84,7 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 </div>
 
 <b>Format predavanja:</b> <a href="/Predavanja/R.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a> 
-<br><b>Čitanje: </b><a href=" "> </a> + </b><a href=""> </a> + </b><a href=" "> </a>
+<br><b>Čitanje: </b><a href=" "> </a> 
 <br>
 <br>
 
