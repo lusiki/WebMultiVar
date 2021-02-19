@@ -132,7 +132,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <a href=" ">Predavanje 08: Multivarijatna regresijska analiza</a>
 
 
-
 </div>
 
 <b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
