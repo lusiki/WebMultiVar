@@ -49,7 +49,7 @@ right:
   - text: "O stranici"
 href: site-info.html
 - icon: ion-social-github
-href: https://github.com/BrbanMiro/WebObradaPodataka
+href: https://github.com/lusiki/WebMultiVar
 output_dir: "docs"
 output:
   html_document:
