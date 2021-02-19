@@ -56,14 +56,7 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href="">Predavanje 02: Osnove programskog jezika R</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
+
 
 </div>
 
@@ -75,17 +68,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href="">Predavanje 03: Osnovne deskriptivne i infencijalne statistike</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
 
 </div>
 
@@ -98,16 +80,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href="">Predavanje 04: Analiza glavnih komponenti</a> 
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
 
 </div>
 
@@ -119,13 +91,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href=" ">Predavanje 05: Klaster analiza</a> 
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
 
 </div>
 
@@ -139,16 +104,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <a href=" ">Predavanje 06: Diskriminantna analiza</a>  
 
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
 
 </div>
 
@@ -163,14 +118,7 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href="">Predavanje 07: Faktorska analiza</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
+
 
 </div>
 
@@ -183,16 +131,7 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href=" ">Predavanje 08: Multivarijatna regresijska analiza</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
+
 
 </div>
 
@@ -205,16 +144,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href=">Predavanje 09: Analiza panel podataka</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
 
 </div>
 
@@ -226,16 +155,7 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href="">Predavanje 10: Survival analiza</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
+
 
 </div>
 
@@ -249,11 +169,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href=" ">Predavanje 11: Analiza vremenskih serija</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
 
 </div>
 
@@ -266,11 +181,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href=" ">Predavanje 12: Strojno učenje</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
 
 </div>
 
@@ -283,11 +193,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href=" ">Predavanje 13: Analiza teksta</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
 
 </div>
 
@@ -300,11 +205,6 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href=" ">Predavanje 14: Network analiza</a>
 
-<ul>
-<li> </li>
-<li> </li>
-<li> </li>
-<ul>
 
 </div>
 
