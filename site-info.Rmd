@@ -1,0 +1,9 @@
+---
+title: "O stranici"
+---
+
+Ova stranica je napravljena u [R Markdown](http://rmarkdown.rstudio.com/) kroz [RStudio](http://rstudio.com).
+
+```{r, child="_sessioninfo.Rmd"}
+```
+

@@ -1,0 +1,42 @@
+---
+title: " "
+---
+<br>
+<br>
+<br>
+<br>
+
+
+## R 
+
+<ul>
+<li><a href="https://education.rstudio.com/learn/">RStudio: Finding Your Way To R</a></li>
+<li><a href="https://www.datacamp.com/courses/free-introduction-to-r">DataCamp's Introduction to R</a></li>
+<li><a href="http://adv-r.had.co.nz/">Advanced R</a></li>
+<li><a href="https://www.r-bloggers.com/">R bloggers</a></li>
+<li><a href="https://cran.r-project.org/web/views/SocialSciences.html">CRAN Task View: Statistics for the Social Science</a></li
+</ul>
+
+
+## Statistička beletristika
+
+<ul>
+<li><a href="https://www.pdfdrive.com/penguin-books-how-to-lie-with-statistics-darrell-huff-e119748826.html">How to lie with statistics</a></li>
+<li><a href="https://www.bookdepository.com/Art-Statistics-David-Spiegelhalter/9780241258767?pdg=dsa-19959388920:cmp-8862937091:adg-86528077382:crv-411135277650:pos-:dev-c&gclid=CjwKCAjwiOv7BRBREiwAXHbv3LXBoXSa-a8cNTrV3aewUF0MkjMZRiknrYma4gIeWYxwf4eiV9obQBoC2EAQAvD_BwEl">The Art of Statistics: Learning from Data</a></li>
+<li><a href="https://www.amazon.com/How-Make-World-Add-Up/dp/1408712245">How-Make-World-Add-Up</a></li>
+<ul>
+
+
+## Ostalo
+
+<ul>
+<li><a href="https://towardsdatascience.com/best-data-science-blogs-to-follow-in-2020-d03044169eb4">Data science blogovi</a></li>
+<li><a href="https://towardsdatascience.com/data-science-books-you-should-read-in-2020-358f70e1d9b2">Data science knjige</a></li>
+<li><a href="https://rpubs.com/shichich">Prošlogodišnja predavanja</a></li>
+<ul>
+
+
+<br>
+<br>
+<br>
+
