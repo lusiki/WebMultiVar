@@ -141,15 +141,17 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 
 
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
-<a href=">Predavanje 09: Analiza panel podataka</a>
+<a href="">Predavanje 09: Analiza panel podataka</a>
+
 
 
 </div>
 
 <b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
-<br><b>Čitanje: </b><a href=" "></a>
+<br><b>Čitanje: </b><a href=" "> </a>
 <br>
 <br>
+
 
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
 <a href="">Predavanje 10: Survival analiza</a>
