@@ -7,7 +7,7 @@ title: " "
 <br>
 <br>
 
-### Osnovne informacije
+
 
 *OpenSource* kolegij na diplomskoj razini 'Multivarijatne metode' u ljetnom semestru akademske godine 2020/21 na Fakultetu hrvatskih studija u Zagrebu koji izvodi [Luka Sikic](https://www.lukasikic.info/). Kolegij je prvenstveno namijenjen sociolozima ali i prilagođen studentima iz drugih društvenih zananosti.
 
@@ -38,7 +38,7 @@ Koristiti ćemo mnoštvo različitih knjiga i resursa koje će biti dostupne na 
 
 Sljedeća knjiga ulazi u obaveznu literaturu za kolegij:
 
-<a href="> </a>
+<a href=""> </a>
 <br><i> </i> 
 <br>Ovo je literatura za R. Dostupna je i <a href="https://r4ds.had.co.nz/">bookdown</a> verzija.
 

@@ -1,5 +1,5 @@
 ---
-pagetitle: "Osnovne informacije"
+title: " "
 ---
 
 
@@ -8,7 +8,7 @@ pagetitle: "Osnovne informacije"
 <br>
 
 <p align="center">
-  <img src="Foto/Foto1.png" width="550" title="hover text">
+  <img src="Foto/Foto1.jpg" width="550" title="hover text">
 </p>
 
 
