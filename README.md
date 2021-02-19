@@ -3,7 +3,7 @@
 
 
 <p align="center">
-  <img src="Foto/Foto2.jpg" width="750" title="hover text">
+  <img src="Foto/Foto1.jpg" width="750" title="hover text">
 </p>
 
 
