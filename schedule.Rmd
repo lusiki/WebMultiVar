@@ -19,196 +19,53 @@ title: " "
 
 
 
-<br><b>Čitanje: </b><a href=" "> </a>
-<br>
-<br>
 
 
 
 ## Predavanje 02: Osnove programskog jezika R
 
-- 
-- 
-- 
-- 
-- 
-- 
 
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
 ## Predavanje 03: Osnove deskriptivne i infencijalne statistike
 
 
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
 ## Predavanje 04: Analiza glavnih komponenti
 
 
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
 ## Predavanje 05: Klaster analiza
 
 
 
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
-
 ## Predavanje 06: Diskriminantna analiza
 
 
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
 ## Predavanje 07: Faktorska analiza
 
- 
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
 
 ## Predavanje 08: Multivarijatna regresijska analiza
 
 
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
 ## Predavanje 09: Analiza panel podataka
 
 
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
 ## Predavanje 10: Analiza vremenskih serija
-
-
-
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
 
 
 ## Predavanje 11: Strojno učenje
 
 
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
-
 
 ## Predavanje 12: Analiza teksta
-
-
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
 
 
 ## Predavanje 13: Network analiza
 
-
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-<br><b>Čitanje: </b><a href=" "></a> 
-<br>
-<br>
 
