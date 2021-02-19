@@ -1,6 +1,5 @@
-# WebMultiVar
-Kolegij iz Multivarijatnih Metoda.
 
+# Multivarijatne metode 
 
 
 <p align="center">
@@ -9,7 +8,6 @@ Kolegij iz Multivarijatnih Metoda.
 
 
 
-# Multivarijatne metode 
 
 *OpenSource* kolegij na diplomskoj razini 'Multivarijatne metode' u ljetnom semestru akademske godine 2020/21 na Fakultetu hrvatskih studija u Zagrebu koji izvodi [Luka Sikic](https://www.lukasikic.info/). Kolegij je prvenstveno namijenjen sociolozima ali i prilagođen studentima iz drugih društvenih zananosti.
 
@@ -175,91 +173,142 @@ Sljedeća knjiga ulazi u nezaobilaznu literaturu za kolegij:
 
 </div>
 
-<b>Format predavanja:</b> <a href="/Predavanja/07_BAZE.html">.html</a> | <a href="/Predavanja/07_BAZE.Rmd">.Rmd</a>
-<br><b>Čitanje: </b><a href="https://wizardzines.com/zines/sql/">Knjiga *Become A Select Star* od Julia-e Evans.</a>
+<b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
+<br><b>Čitanje: </b><a href=" "> </a>
 <br>
 <br>
 
 
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
-<a href="https://raw.githack.com/BrbanMiro/Obrada-podataka/main/Predavanja/08_STATS.html">Predavanje 08: Statistička analiza</a>
+<a href=" ">Predavanje 08: Multivarijatna regresijska analiza</a>
 
 <ul>
-<li> Regresijski model</li>
-<li> Rezidualna struktura</li>
-<li> Dummie varijable</li>
-<li> Analiza panel podataka</li>
-<li> Instrumentalne varijable</li>
-<li> Marginalni efekti</li>
-<li> Prezentacija rezultata</li>
-<li> Dodatni resursi</li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
 <ul>
 
 </div>
 
-<b>Format predavanja:</b> <a href="/Predavanja/08_STATS.html">.html</a> | <a href="/Predavanja/08_STATS.Rmd">.Rmd</a>
-<br><b>Čitanje: </b><a href="">Izbor po želji iz dodatnih resursa.</a>
+<b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
+<br><b>Čitanje: </b><a href=" "> </a>
 <br>
 <br>
 
 
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
-<a href="https://raw.githack.com/BrbanMiro/Obrada-podataka/main/Predavanja/09_ML.html">Predavanje 09: Uvod u strojno učenje</a>
+<a href=">Predavanje 09: Analiza panel podataka</a>
 
 <ul>
-<li> Što je strojno učenje</li>
-<li> Klasifikacija</li>
-<li> Regresija</li>
-<li> Klastering</li>
-<li> Nadgledane i ne-nadgledane metode</li>
-<li> Trening i test uzorci</li>
-<li> Pristranost vs varijanca</li>
-<li> Interpretabilnost modela</li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
 <ul>
 
 </div>
 
-<b>Format predavanja:</b> <a href="/Predavanja/09_ML.html">.html</a> | <a href="/Predavanja/09_ML.Rmd">.Rmd</a>
-<br><b>Čitanje: </b><a href="">Izbor po želji iz dodatnih resursa.</a>
+<b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
+<br><b>Čitanje: </b><a href=" "></a>
 <br>
 <br>
 
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
-<a href="https://raw.githack.com/BrbanMiro/Obrada-podataka/main/Predavanja/10_TXT.html">Predavanje 10: Analiza teksta</a>
+<a href="">Predavanje 10: Survival analiza</a>
 
 <ul>
-<li> Što je analiza teksta</li>
-<li> Primjeri analize teksta</li>
-<li> Uvoz i priprema teksta (preprocesing korpusa)</li>
-<li> Format teksta za analizu (TidyText vs DTM)</li>
-<li> Deskriptivna analiza teksta (frekvencije riječi)</li>
-<li> Analiza sentimenta</li>
-<li> Analiza važnosti pojmova</li>
-<li> Tematska analiza</li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
+<li> </li>
 <ul>
 
 </div>
 
-<b>Format predavanja:</b> <a href="/Predavanja/10_TXT.html">.html</a> | <a href="/Predavanja/10_TXT.Rmd">.Rmd</a>
-<br><b>Čitanje: </b><a href="http://eprints.lse.ac.uk/86659/1/Benoit_Text%20analysis%20in%20R_2018.pdf">Vodič za analizu teksta u R</a>
+<b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
+<br><b>Čitanje: </b><a href=" "> </a>
 <br>
 <br>
 
 
 
 <div style="width: 25%; margin-left: auto; margin-right: auto;">
-<a href="https://raw.githack.com/BrbanMiro/Obrada-podataka/main/Predavanja/11_RMD.html">Predavanje 11: Prezentacija, objava i djeljenje rezultata</a>
+<a href=" ">Predavanje 11: Analiza vremenskih serija</a>
 
 <ul>
-<li> Reproducible research i Markdown</li>
-<li> Markdown sintaksa</li>
-<li> R Markdown sintaksa i funkcionalnosti</li>
+<li> </li>
+<li> </li>
+<li> </li>
 <ul>
 
 </div>
 
-<b>Format predavanja:</b> <a href="/Predavanja/11_RMD.html">.html</a> | <a href="/Predavanja/10_RMD.Rmd">.Rmd</a>
-<br><b>Čitanje: </b><a href="https://dukespace.lib.duke.edu/dspace/bitstream/handle/10161/8374/Baumer_R%20Markdown-Integrating%20a%20Reproducible%20Analysis%20Tool%20into%20Introductory%20Statistics.pdf?sequence=1"> Članak o Reproducible Analysis</a>
+<b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
+<br><b>Čitanje: </b><a href=" "> </a>
+<br>
+<br>
+
+
+<div style="width: 25%; margin-left: auto; margin-right: auto;">
+<a href=" ">Predavanje 12: Strojno učenje</a>
+
+<ul>
+<li> </li>
+<li> </li>
+<li> </li>
+<ul>
+
+</div>
+
+<b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
+<br><b>Čitanje: </b><a href=" "> </a>
+<br>
+<br>
+
+
+<div style="width: 25%; margin-left: auto; margin-right: auto;">
+<a href=" ">Predavanje 13: Analiza teksta</a>
+
+<ul>
+<li> </li>
+<li> </li>
+<li> </li>
+<ul>
+
+</div>
+
+<b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
+<br><b>Čitanje: </b><a href=" "> </a>
+<br>
+<br>
+
+
+<div style="width: 25%; margin-left: auto; margin-right: auto;">
+<a href=" ">Predavanje 14: Network analiza</a>
+
+<ul>
+<li> </li>
+<li> </li>
+<li> </li>
+<ul>
+
+</div>
+
+<b>Format predavanja:</b> <a href="/Predavanja/.html">.html</a> | <a href="/Predavanja/.Rmd">.Rmd</a>
+<br><b>Čitanje: </b><a href=" "> </a>
 <br>
 <br>
 

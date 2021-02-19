@@ -1,0 +1,188 @@
+---
+title: " "
+---
+ 
+<br>
+<br>
+<br>
+<br>
+
+*Napomena*: .html i .Rmd formati predavanja su dostupni u [repozitoriju](https://github.com/lusiki/WebMultiVar).
+<br>
+
+## Predavanje 01: Pregled kolegija i studentskih obveza
+
+
+- Uvod u kolegij
+- Potrebe, interesi i ciljevi
+- Rasprava: Statistika *računalne društvene znanosti (CSS)*
+
+
+
+<br><b>Čitanje: </b><a href=" "> </a>
+<br>
+<br>
+
+
+
+## Predavanje 02: Vrste podataka
+
+- Strukturirani i ne-strukturirani podatci
+- Kvantitativni i kvalitativni
+- Diskretni i kontinuirani podatci
+- Razine podataka
+- Podatci u "praksi
+- Big data" u društvenim i humanističkim znanostima
+
+
+<br><b>Čitanje: </b><a href="/Literatura/Vrste_podataka.pdf">Vrste podataka-poglavlje u knjizi</a> + <a href="/Literatura/Sociology in the Era of Big Data.pdf">Sociology in the Era of Big Data</a> + <a href="/Literatura/VELIKI PODACI – VELIKI IZAZOV ZA SOCIOLOGIJU.pdf">Veliki podatci-veliki izazov za sociologiju</a> + <a href="/Literatura/Msc_mastruko_Kristalna kugla.pdf">Uloga big data, algoritama i prediktivne analitike u konstrukciji zbilje</a>
+<br>
+<br>
+
+## Predavanje 03: Izvori podataka
+
+- Kategorije izvora podatka
+- Klasični izvori podataka
+- Moderni izvori podataka (BigData)
+- Web
+- Društvene mreže
+- Web stranice i aplikacije
+- Društvene mreže
+- Senzori
+- Upravljanje modernim podatcima
+
+
+<br><b>Čitanje: </b><a href="/Literatura/BDSources.pdf">Big Data ekosistem u društvenim istraživanjima</a>
+<br>
+<br>
+
+## Predavanje 04: Osnove programskog jezika R
+
+
+- Instalacija
+- Zašto R?
+- Osnovni koncepti
+- Objektno orjentirano programiranje u R
+- "Sve je objekt"
+- "Sve ima naziv"
+- Indeksiranje
+ 
+
+
+<br><b>Čitanje: </b><a href="https://www.srce.unizg.hr/files/srce/docs/edu/R/s720_polaznik.pdf">Uvod u R - skripta I</a> + </b><a href="https://cran.r-project.org/doc/contrib/Kasum+Legovic-UvodUr.pdf">Uvod u R - skripta II</a> + </b><a href="https://learningstatisticswithr.com/lsr-0.6.pdf">LSR, poglavlja 3 i 4</a>
+<br>
+<br>
+
+## Predavanje 05: Manipulacija i prilagodba podataka
+
+
+- Set-up</li>
+- tidyverse osnove</li>
+- Manipulacija podatcima - dplyr
+- Manipulacija podatcima - tidyr
+- Dodatak predavanju: data.table
+
+
+<br><b>Čitanje: </b><a href="https://vita.had.co.nz/papers/tidy-data.pdf">Tidy Data članak od Hadley Wickham-a</a>
+<br>
+<br>
+
+## Predavanje 06: Prikupljanje podataka sa interneta - Web Scraping I
+
+- Softverski set-up
+- Webscraping osnove
+- WS na strani servera - rvest
+- Praktični primjeri - Wikipedia
+- Dodatni savjeti za WS na strani servera
+- WS na strani klijenta
+- API
+- Praktični primjeri
+
+
+<br><b>Čitanje: </b><a href="">Pokušajte "scrapati" nešto sa Web-a!</a>
+<br>
+<br>
+
+## Predavanje 07: Rad sa bazama podataka<
+
+
+- Baze podatka
+- Baze podataka i *tidyverse*
+- Baze podataka i SQL
+- Praktični primjer - SQLite
+- Praktični primjer - Google BigQuery
+- Resursi za učenje
+
+
+<br><b>Čitanje: </b><a href="https://wizardzines.com/zines/sql/">Knjiga *Become A Select Star* od Julia-e Evans.</a>
+<br>
+<br>
+
+
+## Predavanje 08: Statistička analiza
+
+
+- Regresijski model
+- Rezidualna struktura
+- Dummie varijable
+- Analiza panel podataka
+- Instrumentalne varijable
+- Marginalni efekti
+- Prezentacija rezultata
+- Dodatni resursi
+
+
+
+<br><b>Čitanje: </b><a href="https://projecteuclid.org/download/pdf_1/euclid.ss/1009213726">"Dvije kulture" statističkog modeliranja</a>
+<br>
+<br>
+
+## Predavanje 09: Uvod u strojno učenje
+
+
+- Što je strojno učenje
+- Klasifikacija
+- Regresija
+- Klastering
+- Nadgledane i ne-nadgledane metode
+- Trening i test uzorci
+- Pristranost vs varijanca
+- Interpretabilnost modela
+
+
+<br><b>Čitanje: </b><a href="">Izbor po želji iz dodatnih resursa.</a>
+<br>
+<br>
+
+## Predavanje 10: Analiza teksta
+
+
+- Što je analiza teksta
+- Primjeri analize teksta
+- Uvoz i priprema teksta (preprocesing korpusa)
+- Format teksta za analizu (TidyText vs DTM)
+- Deskriptivna analiza teksta (frekvencije riječi)
+- Analiza sentimenta
+- Analiza važnosti pojmova
+
+
+<br><b>Čitanje: </b><a href="http://eprints.lse.ac.uk/86659/1/Benoit_Text%20analysis%20in%20R_2018.pdf">Vodič za analizu teksta u R</a>
+<br>
+<br>
+
+
+
+## Predavanje 11: Prezentacija, objava i djeljenje rezultata
+
+- Reproducible research i Markdown
+- Markdown sintaksa
+- R Markdown sintaksa i funkcionalnosti
+
+
+<br><b>Čitanje: </b><a href="https://dukespace.lib.duke.edu/dspace/bitstream/handle/10161/8374/Baumer_R%20Markdown-Integrating%20a%20Reproducible%20Analysis%20Tool%20into%20Introductory%20Statistics.pdf?sequence=1"> Članak o Reproducible Analysis</a>
+<br>
+<br>
+<br>
+
+
+
