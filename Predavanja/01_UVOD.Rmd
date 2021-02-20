@@ -1,0 +1,345 @@
+---
+title: "Multivarijatne statističke metode"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
+subtitle: "Predavanje 1: Pregled kolegija"
+author: "Luka Sikic"
+date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)" #"`r format(Sys.time(), '%d %B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+class: inverse, middle
+
+```{R, setup, include = F}
+# devtools::install_github("dill/emoGG")
+library(pacman)
+p_load(
+  broom, tidyverse,
+  latex2exp, ggplot2, ggthemes, ggforce, viridis, extrafont, gridExtra,
+  kableExtra, snakecase, janitor,
+  data.table, dplyr, estimatr,
+  lubridate, knitr, parallel,
+  lfe,
+  here, magrittr
+)
+# Define pink color
+red_pink <- "#e64173"
+turquoise <- "#20B2AA"
+orange <- "#FFA500"
+red <- "#fb6107"
+blue <- "#2b59c3"
+green <- "#8bb174"
+grey_light <- "grey70"
+grey_mid <- "grey50"
+grey_dark <- "grey20"
+purple <- "#6A5ACD"
+slate <- "#314f4f"
+# Dark slate grey: #314f4f
+# Knitr options
+opts_chunk$set(
+  comment = "#>",
+  fig.align = "center",
+  fig.height = 7,
+  fig.width = 10.5,
+  warning = F,
+  message = F
+)
+opts_chunk$set(dev = "svg")
+options(device = function(file, width, height) {
+  svg(tempfile(), width = width, height = height)
+})
+options(crayon.enabled = F)
+options(knitr.table.format = "html")
+# A blank theme for ggplot
+theme_empty <- theme_bw() + theme(
+  line = element_blank(),
+  rect = element_blank(),
+  strip.text = element_blank(),
+  axis.text = element_blank(),
+  plot.title = element_blank(),
+  axis.title = element_blank(),
+  plot.margin = structure(c(0, 0, -0.5, -1), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+theme_simple <- theme_bw() + theme(
+  line = element_blank(),
+  panel.grid = element_blank(),
+  rect = element_blank(),
+  strip.text = element_blank(),
+  axis.text.x = element_text(size = 18, family = "STIXGeneral"),
+  axis.text.y = element_blank(),
+  axis.ticks = element_blank(),
+  plot.title = element_blank(),
+  axis.title = element_blank(),
+  # plot.margin = structure(c(0, 0, -1, -1), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+theme_axes_math <- theme_void() + theme(
+  text = element_text(family = "MathJax_Math"),
+  axis.title = element_text(size = 22),
+  axis.title.x = element_text(hjust = .95, margin = margin(0.15, 0, 0, 0, unit = "lines")),
+  axis.title.y = element_text(vjust = .95, margin = margin(0, 0.15, 0, 0, unit = "lines")),
+  axis.line = element_line(
+    color = "grey70",
+    size = 0.25,
+    arrow = arrow(angle = 30, length = unit(0.15, "inches")
+  )),
+  plot.margin = structure(c(1, 0, 1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+theme_axes_serif <- theme_void() + theme(
+  text = element_text(family = "MathJax_Main"),
+  axis.title = element_text(size = 22),
+  axis.title.x = element_text(hjust = .95, margin = margin(0.15, 0, 0, 0, unit = "lines")),
+  axis.title.y = element_text(vjust = .95, margin = margin(0, 0.15, 0, 0, unit = "lines")),
+  axis.line = element_line(
+    color = "grey70",
+    size = 0.25,
+    arrow = arrow(angle = 30, length = unit(0.15, "inches")
+  )),
+  plot.margin = structure(c(1, 0, 1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+theme_axes <- theme_void() + theme(
+  text = element_text(family = "Fira Sans Book"),
+  axis.title = element_text(size = 18),
+  axis.title.x = element_text(hjust = .95, margin = margin(0.15, 0, 0, 0, unit = "lines")),
+  axis.title.y = element_text(vjust = .95, margin = margin(0, 0.15, 0, 0, unit = "lines")),
+  axis.line = element_line(
+    color = grey_light,
+    size = 0.25,
+    arrow = arrow(angle = 30, length = unit(0.15, "inches")
+  )),
+  plot.margin = structure(c(1, 0, 1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+theme_set(theme_gray(base_size = 20))
+# Column names for regression results
+reg_columns <- c("Term", "Est.", "S.E.", "t stat.", "p-Value")
+# Function for formatting p values
+format_pvi <- function(pv) {
+  return(ifelse(
+    pv < 0.0001,
+    "<0.0001",
+    round(pv, 4) %>% format(scientific = F)
+  ))
+}
+format_pv <- function(pvs) lapply(X = pvs, FUN = format_pvi) %>% unlist()
+# Tidy regression results table
+tidy_table <- function(x, terms, highlight_row = 1, highlight_color = "black", highlight_bold = T, digits = c(NA, 3, 3, 2, 5), title = NULL) {
+  x %>%
+    tidy() %>%
+    select(1:5) %>%
+    mutate(
+      term = terms,
+      p.value = p.value %>% format_pv()
+    ) %>%
+    kable(
+      col.names = reg_columns,
+      escape = F,
+      digits = digits,
+      caption = title
+    ) %>%
+    kable_styling(font_size = 20) %>%
+    row_spec(1:nrow(tidy(x)), background = "white") %>%
+    row_spec(highlight_row, bold = highlight_bold, color = highlight_color)
+}
+```
+
+```{css, echo = F, eval = F}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+```
+
+
+## TEHNIČKI DETALJI
+
+---
+layout: true
+# TEHNIČKI DETALJI
+---
+<br>
+<br>
+<br>
+
+- Nastava iz obveznog kolegija **Multivarijatne statističke metode** sastoji se od dva sata predavanja i tri sata vježbi tjedno (6 ECTS). 
+- Pohađanje nastave (predavanja i seminara) je obavezno i evidentira se. 
+- Predavanja se održavaju ponedjeljkom (u dvorani Split) od 16:00 do 17:30 
+- Vježbe se održavaju četvrtkom (u dvorani Rijeka) od 16:00 do 17:30
+- Službeni repozitorij kolegija se nalazi na GitHubu i dostupan je na [linku](https://lusiki.github.io/WebMultiVar/)
+- Predavanja će biti dostupna nakon svakog predavanja.
+
+---
+layout: false
+class: middle, inverse
+
+# CILJEVI KOLEGIJA
+---
+layout: true
+# CILJEVI KOLEGIJA
+---
+<br>
+<br>
+<br>
+
+- Razumijevanje i primjena multivarijatnih statističkih metoda u programu **R**. 
+- Operacionaliziranje multivarijatnih metoda u empirijskoj analizi i interpretacija rezultata. 
+- Upoznavanje sa osnovama programskog sučelja [**R**](https://rstudio.com/).
+- Važnost, korisnost i znanstvena relevantnos domaćih i stranih  izvora podataka (npr. iz [**DZS**](https://www.dzs.hr/), [**HGK**](https://www.hgk.hr/), [**EUROSTAT**](https://ec.europa.eu/eurostat/data/database) i sl.).
+
+
+
+
+---
+layout: false
+class: middle, inverse
+
+# SADRŽAJ KOLEGIJA
+---
+layout: true
+# SADRŽAJ KOLEGIJA
+---
+<br>
+<br>
+<br>
+
+### TEHNIČKI UVOD
+1. Osnove programskog jezika R: **R** osnove, dodatni koncepti u **R**.
+2. Osnove statistike(ponavljanje):
+* Pregled podataka: deskriptivna statistika, vizualizacija podataka.
+* Statistička teorija: vjerojatnost, distribucije, procjena parametara, testiranje hipoteza.
+* Statistički alati: kategorijalna analiza, usporedba dva prosjeka, usporedba više prosjeka, osnove regresijske analize.
+
+---
+layout: true
+# SADRŽAJ KOLEGIJA (*nastavak*)
+---
+<br>
+<br>
+<br>
+
+### EKSPLORATIVNA ANALIZA
+3. Klaster analiza
+4. Analiza glavnih komponenti
+5. Multidimenziionalno skaliranje
+
+---
+layout: true
+# SADRŽAJ KOLEGIJA (*nastavak*)
+---
+<br>
+<br>
+
+### KONFIRMATORNA ANALIZA
+6. Diskriminativna analiza
+7. Faktorska analiza
+8. Multivarijatna regresijska analiza
+9. Analiza panel podataka
+10. "Survival" analiza
+11. Analiza vremenskih serija
+12. Strojno učenje
+13. Analiza teksta
+14. Network analiza
+
+
+---
+layout: false
+class: middle, inverse
+
+# STUDENTSKE OBVEZE
+---
+layout: true
+# STUDENTSKE OBVEZE 
+---
+<br>
+<br>
+<br>
+
+- Obvezna izrada eseja i empirijskog seminara (Uvjet za izlazak na ispit!). 
+- U zimskom , ljetnom   i jesenskom  ispitnom roku studenti imaju završni pismeni i usmeni ispit iz tema obrađenih na predavanjima i prema priloženoj literaturi. 
+- Ispit je položen ako student ostvari 60% od ukupno mogućih bodova: 60-64% = (2); 65-74% = (3); 75-84% = (4); 85% = (5)
+- Predavanja su sastavni dio ispita.
+
+
+---
+layout: false
+class: middle, inverse
+
+# LITERATURA
+---
+
+layout: true
+# LITERATURA
+---
+<br>
+<br>
+<br>
+- [Udžbenik](http://www.alinea.hr/105.html) iz multivarijatnih statističkih metoda na hrvatskom jeziku.
+
+- [Uvodni udžbenik](https://link.springer.com/book/10.1007/978-1-4419-9650-3) za multivarijatne metode u R.
+
+- [Udžbenik](https://github.com/gabi493/ADEI/blob/master/Husson%20F.%20et%20al.%20-%20Exploratory%20Multivariate%20Analysis%20by%20Example%20-%20Using%20R%20-%202011.pdf) iz eksplorativne multivarijatne analize u R.
+
+- [Detaljni udžbenik](https://www.springer.com/gp/book/9783642360046) za multivarijatnu statistiku.
+
+- [Sveobuhvatni udžbenik](https://us.sagepub.com/en-us/nam/using-r-with-multivariate-statistics/book243861#contents) za multivarijatnu statistiku u R.
+
+- [Tehnički udžbenik](https://web.uniroma1.it/memotef/sites/default/files/file%20lezioni/102b_textbook.pdf) za multivarijatne metode u R.
+
+- Za pregled modernog pristupa društvenim znanostima na osnovi podataka: [Bit by Bit: Social Research in the Digital Age](https://www.bitbybitbook.com/en/1st-ed/preface/).
+
+- Ovo je klasična literatura za [R](https://r4ds.had.co.nz/).
+
+
+---
+layout: false
+class: middle, inverse
+
+# KONZULTACIJE
+---
+
+layout: true
+# KONZULTACIJE
+---
+<br>
+<br>
+<br>
+
+- od 17:30 do 18:30 u sobi 18 (I.kat)
+- prema dogovoru na mail: luka.sikic@hrstud.hr
+
+
+---
+
+layout:false
+class: middle, inverse
+# HVALA NA PAŽNJI! 
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+(Sljedeće predavanje: Osnove programskog jezika R!)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

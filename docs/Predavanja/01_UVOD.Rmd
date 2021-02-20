@@ -1,0 +1,86 @@
+---
+title: "MULTIVARIJATNE STATISTIČKE METODE"
+author: "dr.sc. Luka Šikić"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  slidy_presentation: default
+  ioslides_presentation: default
+  beamer_presentation:
+    colortheme: beaver
+    fonttheme: structurebold
+    theme: Szeged
+institute: Diplomski studij sociologije
+subtitle: Hrvatski studiji
+font: 3t
+---
+
+## TEHNIČKI DETALJI
+
+- Nastava iz obveznog kolegija **Multivarijatne statističke metode** sastoji se od dva sata predavanja i tri sata vježbi tjedno (6 ECTS). 
+- Pohađanje nastave (i predavanja i seminara) je obavezno i evidentira se. 
+- Predavanje se održava ponedjeljkom(u dvorani Split) i četvrtkom(u dvorani Rijeka) od 16:00 do 16:45h, a vježbe 17:30 do 18:15h u dvorani Rijeka 
+- Tijekom nastave, molim studente da ne koriste mobitele i ne izlaze iz dvorane.
+
+
+## CILJEVI KOLEGIJA
+
+1. Upoznati vas sa osnovama programskog sučelja [**R**](https://rstudio.com/).
+2. Osposobiti vas za primjenu koncepata multivarijatnih statističkih metoda u programu **R**. 
+3. Naučiti vas kako operacionalizirati multivarijatne metode u empirijskoj analizi i interpretirati rezultate. 
+4. Upoznati vas sa važnostima, korisnostima i znanstvenom relevantnosti domaćih i stranih sekundarnih izvora podataka (npr. iz [**DZS**](https://www.dzs.hr/), [**HGK**](https://www.hgk.hr/), [**EUROSTAT**](https://ec.europa.eu/eurostat/data/database) i sl.).
+
+
+## SADRŽAJ KOLEGIJA
+
+1. Računalna podrška: **R** osnove, dodatni koncepti u **R**.
+2. Osnove statistike(ponavljanje):
+* Pregled podataka: deskriptivna statistika, vizualizacija podataka.
+* Statistička teorija: vjerojatnost, distribucije, procjena parametara, testiranje hipoteza.
+* Statistički alati: kategorijalna analiza, usporedba dva prosjeka, usporedba više prosjeka, osnove regresijske analize.
+3. Osnove multivarijatne(MV) statistike: MV podatci, MV distribucija, grafički prikaz MV podataka, MV udaljenosti
+4. Analiza glavnih komponenti
+5. Multidimenziionalno skaliranje
+6. Diskriminativna analiza
+7. Multivarijatna analiza varijance i kovarijance
+8. "Cluster" analiza
+9. Faktorska analiza
+10. "Survival" analiza
+11. Logistička regresijska analiza
+
+
+
+
+## STUDENTSKE OBVEZE (Predavanja)
+
+- Studentima se preporučuje da na predavanjima koriste svoje prijenosno računalo i zapisuju bilješke.
+- Predavanja će biti dostupna nakon svakog predavanja.
+- Predavanja su sastavni dio ispita.
+- Nije dopušteno snimanje predavanja.
+
+
+## STUDENTSKE OBVEZE (Prezentacija)
+
+- Svi studenti tijekom semestra mogu održati jednu prezentaciju prema zadanoj literaturi.   
+- Izlagači  moraju pripremiti na kraju prezentacije i nekoliko (2-3) ključnih pitanja za raspravu na kraju obrađene teme.
+- Prezentaciju studenti moraju poslati profesoru na e-mail najkasnije u petak, tjedan dana prije seminara. 
+- Seminari osim prezentacije uključuju: povezivanje teorijskih koncepata s praktičnom primjenom, zajednička empirijska analiza, rasprava o društvenim aspektima statističkih rezultata, aktivno sudjelovanje u raspravi na zadanu temu.
+
+
+## STUDENTSKE OBVEZE (Kolokvij i Ispit)
+
+- Studentima se preporuča i omogućuje da polože kolegij kroz dva kolokvija. Sustav bodovanja za studente koji polažu kolegij preko kolokvija: moguće je skupiti 85 bodova, pri tome je na prezentaciji moguće ostvariti do 15 bodova, na svakom kolokviju do 40 bodova i do 5 bodova za sudjelovanje u kolegiju. Pri tome je sustav bodovanja jednak kao kod ispita(vidi niže!).
+- U zimskom , ljetnom   i jesenskom  ispitnom roku studenti imaju završni pismeni ispit iz tema obrađenih na predavanjima i prema priloženoj literaturi. 
+- Ispit je položen ako student ostvari 60% od ukupno mogućih bodova: 60-64% = (2); 65-74% = (3); 75-84% = (4); 85% = (5)
+
+## KONZULTACIJE
+
+Konzultacije:  Petakom od 14.00h do 15.00h na Institutu Ivo Pilar (potkrovlje), ili prema dogovoru na mail: luka.sikic@pilar.hr.
+
+## LITERATURA ZA ISPIT
+
+- [**Halmi, A. (2003).** *Multivarijatna analiza u društvenim znanostima*](http://www.alinea.hr/105.html)
+- [**Manly, B.F.J. and Alberto, N.J.A. (2017)** *Multivariate Statistical Methods: A Primer*](https://www.crcpress.com/Multivariate-Statistical-Methods-A-Primer-Fourth-Edition/Manly-Alberto/p/book/9781498728966)
+- [**Bartholomeow, D.J., Stelee, F., Moustaki, I., Galbraith, J.I. (2003). Analysis of Multivariate Social Sciences Data**](http://docshare02.docshare.tips/files/31333/313331329.pdf)
+- Predavanja
+- [**Materijali**](https://rpubs.com/shichich) koji će biti distribuirani u toku kolegija
+

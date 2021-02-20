@@ -9,9 +9,9 @@ title: " "
 
 
 
-*OpenSource* kolegij na diplomskoj razini 'Multivarijatne metode' u ljetnom semestru akademske godine 2020/21 na Fakultetu hrvatskih studija u Zagrebu koji izvodi [Luka Sikic](https://www.lukasikic.info/). Kolegij je prvenstveno namijenjen sociolozima ali i prilagođen studentima iz drugih društvenih zananosti.
+Kolegij *Multivarijatne metode* je namijenjen sociolozima na diplomskoj razini koji su upoznati sa teoretskim osnovama statistike i praktičnom primjenom univarijatnih metoda deskriptivne i inferencijalne statistike, a koristan može biti i studentima iz drugih društvenih i humanističkih zananosti. Fokus kolegija je na razumijevanju osnovnih multivarijatnih metoda i njihovoj praktičnoj primjeni na modernim podatcima (web, društvene mreže, mobilne aplikacije, senzorni uređaji).
 
-Fokus kolegija je na razumijevanju osnovnih multivarijatnih metoda i njihovoj praktičnoj primjeni na modernim podatcima (web, društvene mreže, mobilne aplikacije, senzorni uređaji). Kolegij polazi od **Data Science** pristupa društvenim znanostima i integrira standardne alate eksplorativne i konfirmatorne statističke analize u sintaksu programskog jezika R. Pored razumijevanja i provođenja statističke analize, u kolegiju će se obrađivati i niz popratnih informatičkih tehnologija poput: markdown jezika (*RMarkdown*), platformi za suradnju razmjenu koda (*Git*, *GitHub*), vizualizacije podataka (*Tableau*, *ggplot2*), podrške za manipulaciju podatcima (*tidyverse*, *data.table*), preuzimanja podataka (*web scraping*, *API*) i rada sa bazama podataka (*SQL*,*Google Big Querry*).
+Kolegij polazi od **Data Science** pristupa društvenim znanostima i integrira standardne alate eksplorativne i konfirmatorne statističke analize u sintaksu programskog jezika R. Predznanje programskog jezika R nije nužno ali se preporuča. Pored razumijevanja i provođenja multivarijatne (naprdene) statističke analize, u kolegiju će se obrađivati i niz popratnih informatičkih tehnologija poput: markdown jezika (*RMarkdown*), platformi za suradnju razmjenu koda (*Git*, *GitHub*), vizualizacije podataka (*Tableau*, *ggplot2*), podrške za manipulaciju podatcima (*tidyverse*, *data.table*), preuzimanja podataka (*web scraping*, *API*) i rada sa bazama podataka (*SQL*,*Google Big Querry*).
 
 
 Kolegij nije zamišljen kao sveobuhvatna referenca za rad s *Big Data* tehnologijama u društvenim znanostima jer materijali ne pokrivaju: rad sa terminalom (*Bash Shell*), rad sa platformama za suradnju i razmjenu koda (*Git*, *GitHub*), rad sa *Docker*-om, programiranje i iteraciju, paralelno programiranje, rad u oblaku (*Cloud*), ostale programske jezike (*Python*, *Java*, *HTML*, *Scala*). 
@@ -27,7 +27,7 @@ Cilj kolegija je upoznavanje sa:
 
 <br>
 
-Kolegij će osposobiti studente za napradnu statističku analizu, te omogućiti uključivanje u modernu istraživačku paradigmu i tehnološke (*frontier*) tokove. Osim naglaska na akdemsku primjenu stečenog znanja, kroz kolegij će se studentima olakšati uključivanje u poslovni IT sektor na strani analitike.
+Kolegij će osposobiti studente za razumijevanje i provedbu napredne statističke analize, te omogućiti uključivanje u modernu analitičku paradigmu (*computational social science*) i tehnološke (*frontier*) tokove u obradi podataka (*data science*). Osim naglaska na akademsku primjenu stečenog znanja, kroz kolegij će se studentima olakšati uključivanje u poslovni IT sektor na strani analitike.
 
 
 <br>
@@ -36,12 +36,21 @@ Kolegij će osposobiti studente za napradnu statističku analizu, te omogućiti 
 
 Koristiti ćemo mnoštvo različitih knjiga i resursa koje će biti dostupne na linkovima kod svakog predavanja.
 
-Sljedeća knjiga ulazi u obaveznu literaturu za kolegij:
+Sljedeće knjige ulaze u literaturu za kolegij:
 
-<a href=""> </a>
-<br><i> </i> 
-<br>Ovo je literatura za R. Dostupna je i <a href="https://r4ds.had.co.nz/">bookdown</a> verzija.
+- [Udžbenik](http://www.alinea.hr/105.html) iz multivarijatnih statističkih metoda na hrvatskom jeziku.
 
+- [Uvodni udžbenik](https://link.springer.com/book/10.1007/978-1-4419-9650-3) za multivarijatne metode u R.
+
+- [Detaljni udžbenik](https://www.springer.com/gp/book/9783642360046) za multivarijatnu statistiku.
+
+- [Sveobuhvatni udžbenik](https://us.sagepub.com/en-us/nam/using-r-with-multivariate-statistics/book243861#contents) za multivarijatnu statistiku u R.
+
+- [Tehnički udžbenik](https://web.uniroma1.it/memotef/sites/default/files/file%20lezioni/102b_textbook.pdf) za multivarijatne metode u R.
+
+- Za pregled modernog pristupa društvenim znanostima na osnovi podataka: [Bit by Bit: Social Research in the Digital Age](https://www.bitbybitbook.com/en/1st-ed/preface/).
+
+- Ovo je klasična literatura za [R](https://r4ds.had.co.nz/).
 
 <br>
 

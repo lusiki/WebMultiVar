@@ -10,62 +10,60 @@ title: " "
 *Napomena*: .html i .Rmd formati predavanja su dostupni u [repozitoriju](https://github.com/lusiki/WebMultiVar).
 <br>
 
-## Predavanje 01: Pregled kolegija i studentskih obveza
+### Predavanje 01: Pregled kolegija i studentskih obveza
 
 
 - Uvod u kolegij
-- Potrebe, interesi i ciljevi
-- Rasprava: Statistika *računalne društvene znanosti (CSS)*
+- Struktura, obveze i ciljevi
+- Rasprava: *Računalne društvene znanosti (CSS)*
 
 
 
 
-
-
-## Predavanje 02: Osnove programskog jezika R
-
-
-
-## Predavanje 03: Osnove deskriptivne i infencijalne statistike
+### Predavanje 02: Osnove programskog jezika R
 
 
 
-## Predavanje 04: Analiza glavnih komponenti
+### Predavanje 03: Osnove deskriptivne i infencijalne statistike
 
 
 
-## Predavanje 05: Klaster analiza
+### Predavanje 04: Analiza glavnih komponenti
 
 
 
-## Predavanje 06: Diskriminantna analiza
+### Predavanje 05: Klaster analiza
 
 
 
-## Predavanje 07: Faktorska analiza
+### Predavanje 06: Diskriminantna analiza
 
 
 
-## Predavanje 08: Multivarijatna regresijska analiza
+### Predavanje 07: Faktorska analiza
 
 
 
-## Predavanje 09: Analiza panel podataka
+### Predavanje 08: Multivarijatna regresijska analiza
 
 
 
-## Predavanje 10: Analiza vremenskih serija
+### Predavanje 09: Analiza panel podataka
 
 
 
-## Predavanje 11: Strojno učenje
+### Predavanje 10: Analiza vremenskih serija
 
 
 
-## Predavanje 12: Analiza teksta
+### Predavanje 11: Strojno učenje
 
 
 
-## Predavanje 13: Network analiza
+### Predavanje 12: Analiza teksta
+
+
+
+### Predavanje 13: Network analiza
 
 
