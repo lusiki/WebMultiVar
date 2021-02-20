@@ -42,6 +42,8 @@ Sljedeće knjige ulaze u literaturu za kolegij:
 
 - [Uvodni udžbenik](https://link.springer.com/book/10.1007/978-1-4419-9650-3) za multivarijatne metode u R.
 
+- [Udžbenik](https://github.com/gabi493/ADEI/blob/master/Husson%20F.%20et%20al.%20-%20Exploratory%20Multivariate%20Analysis%20by%20Example%20-%20Using%20R%20-%202011.pdf) iz eksplorativne multivarijatne analize u R.
+
 - [Detaljni udžbenik](https://www.springer.com/gp/book/9783642360046) za multivarijatnu statistiku.
 
 - [Sveobuhvatni udžbenik](https://us.sagepub.com/en-us/nam/using-r-with-multivariate-statistics/book243861#contents) za multivarijatnu statistiku u R.
