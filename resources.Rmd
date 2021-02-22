@@ -18,6 +18,33 @@ title: " "
 <li><a href="https://cran.r-project.org/web/views/SocialSciences.html">CRAN Task View: Statistics for the Social Science</a></li
 </ul>
 
+## Open Source repozitoriji iz multivarijatne statistike
+
+<ul>
+<li><a href="https://github.com/nthun/courses-multivariate-statistics-in-R-2018-fall>Github kolegij</a></li>
+<li><a href="https://people.stat.sc.edu/Hitchcock/stat530.html"></a>Applied Multivariate Statistics and Data Mining</li>
+<li><a href=""></a></li>
+<li><a href=""></a></li
+</ul>
+
+
+## Online predavanja iz multivarijatnih metoda 
+
+
+<li><a href="">https://www.udemy.com/course/applied-multivariate-analysis-with-r/?utm_source=adwords&utm_medium=udemyads&utm_campaign=LongTail_la.EN_cc.ROW&utm_content=deal4584&utm_term=_._ag_77879424214_._ad_437497333845_._kw__._de_c_._dm__._pl__._ti_dsa-1007766171552_._li_20229_._pd__._&matchtype=b&gclid=Cj0KCQiAvbiBBhD-ARIsAGM48bwurNZTDDJ71ffigbknOBbdua2-BA57vUG0O7qSHJlK5QBm-RkIxmsaAsqjEALw_wcB</a>Izvrstan Udemy tečaj</li>
+
+
+
+## Online knjige
+
+<ul>
+<li><a href="https://bookdown.org/brian_nguyen0305/Multivariate_Statistical_Analysis_with_R/>Github kolegij</a>Multivariate Statistical Analysis with R 1</li>
+<li><a href="https://people.stat.sc.edu/Hitchcock/stat530.html"></a>Multivariate Statistical Analysis using R 2</li>
+<li><a href=""></a></li>
+<li><a href=""></a></li
+</ul>
+
+
 
 ## Statistička beletristika
 
@@ -28,11 +55,38 @@ title: " "
 <ul>
 
 
+
+
+## Srodni kolegiji
+
+
+<ul>
+<li><a href="http://modelingsocialdata.org/"></a>Modeling Social Data</li>
+<li><a href="http://www.princeton.edu/~mjs3/soc504_s2015/#">Advanced data analysis for the social sciences</a></li>
+<li><a href=""></a></li>
+<ul>
+
+
+## Computational social science
+
+
+
+<ul>
+<li><a href="https://msalganik.wordpress.com/"></a>blog od Matthew Salganik-a</li>
+<li><a href="http://www.princeton.edu/~mjs3/"></a>Osobni web od Matthew Salganik-a</li>
+<li><a href="https://sicss.io/">Ljetni CSS instituti</a></li>
+<li><a href="http://pablobarbera.com/POIR613/index.html">Izvrstan CSS kolegij</a></li>
+<li><a href="http://pablobarbera.com/POIR613/index.html">Repozitorij za uvod u CSS</a></li>
+
+<ul>
+
+
 ## Ostalo
 
 <ul>
 <li><a href="https://towardsdatascience.com/best-data-science-blogs-to-follow-in-2020-d03044169eb4">Data science blogovi</a></li>
 <li><a href="https://towardsdatascience.com/data-science-books-you-should-read-in-2020-358f70e1d9b2">Data science knjige</a></li>
+<li><a href="https://nealcaren.github.io/python-tutorials/">Izvrstan online tečaj iz Pythona za društvene znanosti</a></li>
 <li><a href="https://lusiki.github.io/WebStatistika/">Kolegij iz Primjenjene statistike</a></li>
 <li><a href="https://lusiki.github.io/WebObradaPodataka/">Kolegij iz Obrade podataka</a></li>
 <li><a href="https://rpubs.com/shichich">Prošlogodišnja predavanja</a></li>
