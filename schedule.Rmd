@@ -17,12 +17,30 @@ title: " "
 - Struktura, obveze i ciljevi
 - Rasprava: *Računalne društvene znanosti (CSS)*
 
-
-
+<br>
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/01_UVOD.html) I [.rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/01_UVOD.Rmd)
+<br>
+**Čitanje:**  [Manifesto za CSS](http://www.everyaware.eu/resources/publications/Conte-2012.pdf)
+<br>
+<br>
 
 ### Predavanje 02: Osnove programskog jezika R
 
+- Instalacija
+- Zašto R?
+- Osnovni koncepti
+- Objektno orjentirano programiranje u R
+- "Sve je objekt"
+- "Sve ima naziv"
+- Indeksiranje
+- Čišćenje radnog prostora
 
+<br>
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/02_UVOD-U-R.html) I [.rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/02_UVOD%20U%20R.Rmd)
+<br>
+**Čitanje:** [Upoznavanje sa sintaksom jezika R](https://www.srce.unizg.hr/files/srce/docs/edu/R/s720_polaznik.pdf) + [Uvod u korištenje R-a](https://cran.r-project.org/doc/contrib/Kasum+Legovic-UvodUr.pdf)
+<br>
+<br>
 
 ### Predavanje 03: Osnove deskriptivne i infencijalne statistike
 

@@ -667,6 +667,8 @@ R ne može naći varijable u [global-nom environment-u](https://www.datamentor.i
 
 ![Nema "x" niti "y" ovdje...](../Foto/environment.png)
 
+
+
 --
 
 Drgačije rečeno: Pošto varijable "x" i "y" postoje kao odvojene varijable u global environment-u, potrebno je naznačiti R-u da se odnose na objekt `df`.
