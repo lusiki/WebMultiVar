@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MULTIVARIJATNE STATISTIČKE METODE</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Luka Sikic, PhD" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# MULTIVARIJATNE STATISTIČKE METODE
+## Predavanje 2: Osnove programskog jezika R
+### Luka Sikic, PhD
+### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
+
+---
+
+name: toc
+
+
+
+# Pregled predavanja
+
+
+1. [Instalacija](#instalacija)
+
+2. [Zašto R?](#zakaj)
+
+3. [Osnovni koncepti](#osnove)
+
+4. [Objektno orjentirano programiranje u R](#oop)
+
+5. ["Sve je objekt"](#eobject)
+
+6. ["Sve ima naziv"](#ename)
+
+7. [Indeksiranje](#indexing)
+
+8. [Čišćenje radnog prostora](#cleaning)
+
+---
+class: inverse, center, middle
+name: instalacija
+
+# Instalacija
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Početni set-up)
+
+---
+
+# Instalacija software-a i registracija
+
+&lt;br&gt;
+&lt;br&gt;
+1. Preuzmite [R](https://www.r-project.org/).
+&lt;br&gt;
+2. Preuzmite [RStudio](https://www.rstudio.com/products/rstudio/download/preview/).
+&lt;br&gt;
+3. Preuzmite [Git](https://git-scm.com/downloads).
+&lt;br&gt;
+4. Napravite račun na [GitHub](https://github.com/) 
+
+&lt;br&gt;
+- U slučaju problema sa instalacijom Git-a pogledajte http://happygitwithr.com.
+
+---
+
+# Detalji
+&lt;br&gt;
+&lt;br&gt;
+Za bolje snalaženje:
+&lt;br&gt;
+&lt;br&gt;
+- **Windows:** Instalirajte [Rtools](https://cran.r-project.org/bin/windows/Rtools/). Također korisno [Chocolately](https://chocolatey.org/).
+&lt;br&gt;
+&lt;br&gt;
+- **Mac:** Instalirajte [Homebrew](https://brew.sh/). Potrebno konfigurirati C++ toolchain (pogledaj [ovdje](https://github.com/stan-dev/rstan/wiki/Installing-RStan-from-source-on-a-Mac#prerequisite--c-toolchain-and-configuration).)
+&lt;br&gt;
+&lt;br&gt;
+- **Linux:** Već znate što radite!
+
+---
+
+# Checklist
+
+☑ Da li imate najnoviju verziju R?
+
+
+```r
+ version$version.string
+```
+
+```
+## [1] "R version 4.0.3 (2020-10-10)"
+```
+
+
+☑ Da li imate najnoviju verziju RStudio-a? (Pogledaj [verziju](https://www.rstudio.com/products/rstudio/download/preview/) )
+
+
+```r
+  RStudio.Version()$version
+ ## Requires an interactive session but should return something like "[1] ‘1.2.5001’"
+```
+
+☑ Da li su svi R paket osvježeni? 
+
+
+```r
+  update.packages(ask = FALSE, checkBuilt = TRUE)
+```
+  
+---
+
+# Checklist (dalje)
+
+Otvorite [shell](http://happygitwithr.com/shell.html#shell). Ako ste već instalirali [Git for Windows](https://gitforwindows.org), sve je u redu!
+
+☑ Koju verziju Git-a ste instalirali?
+  ```
+  git --version
+  ```
+
+☑ Da li ste se upoznali sa Git-om? (Upišite svoje podatke.)
+  ```
+  git config --global user.name 'Luka Sikic'
+  git config --global user.email 'lsikic.gmail@gmail.com'
+  git config --global --list
+  ```
+
+☑  Da li ste napravili račun na GitHub-u? 
+
+
+---
+class: inverse, center, middle
+name: zakaj
+
+# Zašto R?
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Razlozi za korištenje programskog jezika R)
+
+---
+
+# Zašto R i RStudio? 
+&lt;img src="02_UVOD-U-R_files/figure-html/indeeddotcom-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Zašto R i RStudio? 
+
+### Data science pozitivizam
+
+- Uz Python, R je postao *de facto* jezik za data science.
+  - Pogledaj: [*The Impressive Growth of R*](https://stackoverflow.blog/2017/10/10/impressive-growth-r/), [*The Popularity of Data Science Software*](http://r4stats.com/articles/popularity/)
+- Open-source (besplatno!) sa ogromnom bazom korisnika u akademiji i biznisu.
+ 
+
+### Alat za kvantitativne društvene znanosti
+
+- Puna podrška za statistiku i ekonometriju sa visokom primjenjivosti u drugim jezicima i API-jima.
+
+- RStudio IDE i ekosustav omogućuju jednostavno skaliranje.
+
+### Path dependency
+
+- Programski jezik s kojim imam najviše iskustva.
+
+--
+
+- (Učenje više jezika je preporučljivo, nužno štoviše!)
+
+---
+
+# R osnove
+
+&lt;br&gt;
+&lt;br&gt;
+
+
+1. Sve je objekt.
+
+2. Sve ima naziv.
+
+3. Stvari se rade preko funkcija.
+
+4. Funkcije dolaze u paketima (i.e. "libraries"), a moguće je i napraviti vlastite funkcije.
+
+--
+
+&lt;/br&gt;
+
+Točke 1. and 2. se odnose na [object-orientated programming](https://en.wikipedia.org/wiki/Object-oriented_programming) (OOP) pristup.
+  - Iako ovo sada možda djeluje apstraktno, stvari će postati jasnije s vremenom.
+
+---
+
+# R primjer (linearna regresija)
+
+
+```r
+fit = lm(mpg ~ wt, data = mtcars)
+summary(fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = mpg ~ wt, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.5432 -2.3647 -0.1252  1.4096  6.8727 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  37.2851     1.8776  19.858  &lt; 2e-16 ***
+## wt           -5.3445     0.5591  -9.559 1.29e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.046 on 30 degrees of freedom
+## Multiple R-squared:  0.7528,	Adjusted R-squared:  0.7446 
+## F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10
+```
+
+---
+
+# Osnovni R grafikon
+
+
+```r
+par(mar = c(4, 4, 1, .1)) ## Ljepše margine
+plot(mtcars$wt, mtcars$mpg)
+abline(fit, col = "red")
+```
+
+&lt;img src="02_UVOD-U-R_files/figure-html/mtcars_baseplot-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# ggplot2 (micro primjer)
+
+
+```r
+ggplot(data = mtcars, aes(x = wt, y = mpg)) + 
+  geom_smooth(method = "lm", col = "red") + 
+  geom_point() 
+```
+
+&lt;img src="02_UVOD-U-R_files/figure-html/mtcars_ggplot-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, center, middle
+name: osnove
+
+# Osnovni koncepti
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Neki važni koncepti u R)
+
+---
+
+# Osnovna aritmetika
+
+R je moćan kalkulator i prepoznaje sve standardne aritmetičke operatore:
+
+
+```r
+1+2 ## Zbrajanje
+```
+
+```
+## [1] 3
+```
+
+```r
+6-7 ## Oduzimanje
+```
+
+```
+## [1] -1
+```
+
+```r
+5/2 ## Dijeljenje
+```
+
+```
+## [1] 2.5
+```
+
+```r
+2^3 ## Potencije
+```
+
+```
+## [1] 8
+```
+
+```r
+2+4*1^3 ## Redosljed operacija
+```
+
+```
+## [1] 6
+```
+
+---
+
+# Osnovna aritmetika (dalje)
+
+Modulo operator se koristi za dijeljenje (i ostatak). 
+- Koristan za rad sa (npr.) vremenom.
+
+
+```r
+100 %/% 60 ## Koliko je cijelih sati u 100 minuta?
+```
+
+```
+## [1] 1
+```
+
+```r
+100 %% 60 ## Koliko je preostalo minuta?
+```
+
+```
+## [1] 40
+```
+
+---
+
+# Logički operatori
+
+R dolazi sa nizom logičkih operatora i boleana, koji prate standardni programerski protokol.
+
+
+```r
+1 &gt; 2
+```
+
+```
+## [1] FALSE
+```
+
+```r
+1 &gt; 2 &amp; 1 &gt; 0.5 ##  "&amp;" znači "i"
+```
+
+```
+## [1] FALSE
+```
+
+```r
+1 &gt; 2 | 1 &gt; 0.5 ##  "|" znači "ili" 
+```
+
+```
+## [1] TRUE
+```
+
+```r
+isTRUE (1 &lt; 2)
+```
+
+```
+## [1] TRUE
+```
+
+--
+
+Više o logičkim operatorima pročitajte na &lt;a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Logic.html" target="_blank"&gt;ovdje&lt;/a&gt; i &lt;a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/logical.html" target="_blank"&gt;ovdje&lt;/a&gt;. 
+
+---
+
+# Logički operatori (dalje)
+
+### Hijerarhijski redosljed
+
+Kao i u standardnoj matematici, logičke tvrdnje imaju jasan hijerarhijski redosljed. Logički operatori (`&gt;`, `==`, etc) se izvršavaju prije boleanskih operatora (`&amp;` i `|`).
+
+
+```r
+1 &gt; 0.5 &amp; 2
+```
+
+```
+## [1] TRUE
+```
+
+--
+
+R vrednuje dvije odvojene "logičke" tvrdnje: 
+ - `1 &gt; 0.5`,što je TRUE.
+ - `2`, što je TRUE(!) jer R evaluira `as.logical(2)`.
+ 
+--
+
+**Rješenje:** Potrebna je eksplicitnost oko logičkih tvrdnji.
+
+
+```r
+1 &gt; 0.5 &amp; 1 &gt; 2
+```
+
+```
+## [1] FALSE
+```
+
+
+---
+
+# Logički operatori (dalje)
+
+### Negacija: `!`
+
+ `!` se koristi za negaciju. Ovo je posebno korisno kod filtriranja podataka, primjerice za non-NA opservacije.
+
+
+```r
+is.na(1:10)
+```
+
+```
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+```
+
+```r
+!is.na(1:10)
+```
+
+```
+##  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+```
+
+```r
+# Negate(is.na)(1:10) ## Ovo također radi. 
+```
+
+---
+
+# Logički operatori (dalje)
+
+### Matching vrijednosti: `%in%`
+
+Da bismo provjerili da li je objekt sadržan unutar liste elemenata, moguće je koristiti `%in%`.
+
+```r
+4 %in% 1:10
+```
+
+```
+## [1] TRUE
+```
+
+```r
+4 %in% 5:10
+```
+
+```
+## [1] FALSE
+```
+
+--
+
+Ne postoji ekvivalentna "not in" naredba, ali možemo ju stvoriti sami!
+--
+
+
+```r
+`%ni%` &lt;- Negate(`%in%`) ## Navodnici (`) služe za specifikaciju funkcije.
+4 %ni% 5:10
+```
+
+```
+## [1] TRUE
+```
+
+---
+
+# Logički operatori (dalje)
+
+### Evaluacija
+
+Dva znaka jednakosti se koriste za logičku evaluaciju.
+
+
+```r
+1 = 1 ## Ne radi.
+```
+
+```
+## Error in 1 = 1: invalid (do_set) left-hand side to assignment
+```
+
+```r
+1 == 1 ## radi.
+```
+
+```
+## [1] TRUE
+```
+
+```r
+1 != 2 ## Jedan znak jednakosti i negacija.
+```
+
+```
+## [1] TRUE
+```
+
+---
+
+# Logički operatori (dalje)
+
+### Oprez: "Floating-point" brojevi
+
+Što će se dogoditi ukoliko evaluiramo `0.1 + 0.2 == 0.3`?
+
+--
+
+
+```r
+0.1 + 0.2 == 0.3
+```
+
+```
+## [1] FALSE
+```
+Zašto!?Kako!?
+
+--
+
+**Problem:** Kompjuteri reprezentiraju brojeve binarno (i.e. baza 2). Više [vidi ovdje](https://floating-point-gui.de/basic/).
+- Brzo i memorijski efikasno ali može dosvesti do neočekivanog ponašanja. 
+- Slično kao što standardni decimalni (i.e. base 10) zapis ne može precizno obuhvatiti određene decimalne brojeve (e.g. `\(\frac{1}{3} = 0.3333...\)`). 
+
+--
+
+**Rješenje:** Koristi `all.equal()` za evaluaciju float-ova (i.e  frakcija).
+
+
+```r
+all.equal(0.1 + 0.2, 0.3)
+```
+
+```
+## [1] TRUE
+```
+
+---
+
+# Pripisivanje (varijabli)
+
+U R, moguće je koristiti `=` ili `&lt;-` za pripisivanje.&lt;sup&gt;1&lt;/sup&gt;
+
+.footnote[
+&lt;sup&gt;1&lt;/sup&gt;  `&lt;-` je zapravo `&lt;` praćeno sa `-`, iako izgleda kao jedan znak. [Font](https://github.com/tonsky/FiraCode) koji se koristi u ovim slide-ovima.
+]
+
+--
+
+### Pripisivanje sa `&lt;-`
+
+`&lt;-` se izgovara "gets". Razmišljajte o znaku kao da kaže *pripiši u ovom smjeru*.
+
+
+```r
+a &lt;- 10 + 5
+a
+```
+
+```
+## [1] 15
+```
+
+--
+
+Naravno, strelica može ići i u suprotnom smjeru (i.e. `-&gt;`). Naredni kod je jednak kao i prethodni, iako se znatno rijeđe susreće. 
+
+```r
+10 + 5 -&gt; a
+```
+
+---
+
+# Pripisivanje (dalje)
+
+### Pripisivanje sa `=`
+
+Također je moguće koristiti `=` za pripisivanje.
+
+
+```r
+b = 10 + 10 ## Pripisani objekt mora biti lijevo kada se koristi "=".
+b
+```
+
+```
+## [1] 20
+```
+
+--
+
+### Koji operator koristiti?
+
+ R korisnici (puristi?) preferiraju `&lt;-` za pripisivanje pošto `=` ulogu u eveluacijskim funkcijima. 
+- Kasnije ćete vidjeti primjere!
+- U osnovi nije niti važno. E.g. `=` je brži za tipkati i ima više smisla ako dolazite iz drugog programskog jezika. (Diskusiju pogledajte [ ovdje](https://github.com/Robinlovelace/geocompr/issues/319#issuecomment-427376764) i [ovdje](https://www.separatinghyperplanes.com/2018/02/why-you-should-use-and-never.html).)
+
+**Bottom line:** Koristite što želite ali udite konzistentni!
+
+---
+
+# Pomoć
+
+Ukoliko imate dvojbe oko funkcije ili objekta R, unesite "help" u konzolu, e.g.
+
+```R
+help(solve)
+```
+
+Još jednostavnije, koristite "?":
+  
+```R
+# Ovo se najčeše koristi.
+?solve 
+```
+
+--
+
+&lt;/br&gt;
+
+**Dodatno:** Komentari u R se označavaju sa `#`. 
+- `Ctrl+Shift+c` u RStudio-u koristite za komentiranje više redova odjednom.
+
+---
+
+# Pomoć (dalje)
+
+Za većinu paketa možete koristiti `vignette()` funkciju, koja će prikazati uvodne detalje i funkcionalnosti paketa
+- Izvršite `vignette("dplyr")` naredbu u konzoli.
+
+--
+
+Preporuča se čitanje vignette paketa kada postoje. 
+- To je često najbolji način da se naučite služiti sa paketom.
+
+--
+
+Poteškoća je što treba znati točan naziv paketa (vignette).
+- E.g. `dplyr` paket ima više vignette-a: "dplyr", "window-functions", "programming", etc.
+- Izvršite `vignette()` (i.e. bez funkcijskih argumenta) da biste vidjeli listu svih instaliranih vignette-a za pakete na vašem sistemu. 
+- Izvršite`vignette(all = FALSE)` da biste vidjeli listu vignette-a svih *učitanih* paketa.
+
+---
+class: inverse, center, middle
+name: oop
+
+# Objektno orjentirano programiranje
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Karkteristike programskog jezika R)
+
+---
+
+# Motivacija
+
+R pristup koristi [objektno orjentirano programiranje](https://en.wikipedia.org/wiki/Object-oriented_programming) (OOP), koje se može sažeti kao:
+
+&gt; **"Sve je objekt i sve ima naziv."**
+
+--
+
+U sljedećm djelu ćemo proučiti ovaj koncept malo dublje. Na taj način ćemo izbjeći neke frustracije ako se prije niste susreli sa OOP pristupom.
+
+--
+
+Izbjegavanje konfuzije je relativno jednostavno ako razumijemo pozadinu.
+- Također: To je mala cijena za funkcionalnost koju R pruža.
+
+---
+
+# Disclaimer
+
+
+Očito, postoji _više_ OOP sustava u R.
+- **S3**, **S4**, **R6**...
+- Hadley Wickham-ov "Advanced R" sadržava [vrlo detaljan pregled](https://adv-r.hadley.nz/oo.html) glavnih OOP sustava u R.
+
+Vjerojatno je najskorisnije razmišljati u terminima (a) zajedničkim karakteristikama ovih sistema i (b) generalnih implikacija OOP u R.
+- Pogledajte Hadley-evu knjigu ako imate prilike. Uistinu je korisna (kao i ostale njegove knjige).
+
+---
+class: inverse, center, middle
+name: eobject
+
+# "Sve je objekt"
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(OOP pristup)
+
+---
+
+# Što su objekti? 
+
+Važno je naglasiti da postoji više različitih *tipova* (ili *klasa*) objekata. 
+
+Proći ćemo kroz razlike između "type" vs "class" objekata. Trenutno je važno spomenuti najčešće objekte:
+
+- vektori
+- matrice
+- data frame
+- liste
+- funkcije
+- etc.
+
+--
+
+Vjerojatno već imate okvirnu ideju što razlikuje te objekte i za sto koristimo pojedine objekte.
+- Ipak, postoje potankosti vezane uz svaki objekt koje su ponešto zbunjujuće dok se ne naviknete na R. 
+- E.g. Postoje različite vrste data frame-ova; primjerice "[tibble](https://tibble.tidyverse.org/)", što je napredni obllik df-a koji omogućava *tidyverse*.
+
+---
+
+# Što su objekti? (dalje)
+
+Svaka klasa objekta ima vlastiti skup pravila koja određuju kako se taj objekt koristi u R.
+- Primjerice, veliki broj istih/sličnih operacija je moguć na matricama i data frame-ovima. Ipak postoji određeni broj procedura koje će funkcionirati samo na matricama vice versa.
+- Valja znati da je četo moguća konverzija iz jednog oblika u drugi.
+
+
+```r
+## Napravi mali data frame sa nazivom "df".
+df &lt;- data.frame(x = 1:2, y = 3:4) 
+df
+```
+
+```
+##   x y
+## 1 1 3
+## 2 2 4
+```
+
+
+```r
+## Pretvori ga (i.e. create) u matricu sa nazivom "m".
+m &lt;- as.matrix(df)
+m
+```
+
+```
+##      x y
+## [1,] 1 3
+## [2,] 2 4
+```
+
+---
+
+# Klasa objekta, tipovi i struktura
+
+Korsite `class`, `typeof`, i `str` nardbe za informacije o objektu.
+
+
+```r
+# df &lt;- data.frame(x = 1:2, y = 3:4) ## Stvori mali data frame sa nazivom "df".
+class(df) ## Saznaj klasu.
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+typeof(df) ## Saznaj tip.
+```
+
+```
+## [1] "list"
+```
+
+```r
+str(df) ## Pokaži strukturu.
+```
+
+```
+## 'data.frame':	2 obs. of  2 variables:
+##  $ x: int  1 2
+##  $ y: int  3 4
+```
+
+--
+
+PS — Zbunjujuće je što `typeof(df)` vaća "list"? Vidi za [objašnjenje](https://stackoverflow.com/questions/45396538/typeofdata-frame-shows-list-in-r).
+
+---
+
+#  Klasa objekta, tipovi i struktura (dalje)
+
+Naravno, moguće je dati naredbu inspect/print direktno u konzoli.
+- E.g. Unesite `df` i stisnite Enter.
+
+
+ `View()` funkcija također pomaže.
+- E.g. `View(df)`.
+
+---
+
+# Globalni environment (radni prostor)
+
+Jednostavni data frame koji smo prethodno stvorili.
+
+```r
+df
+```
+
+```
+##   x y
+## 1 1 3
+## 2 2 4
+```
+
+--
+
+Napravimo regresiju &lt;sup&gt;1&lt;/sup&gt; na "x" i "y" varijablama:
+
+.footnote[
+&lt;sup&gt;1&lt;/sup&gt; Ovo je obična regresija sa kolinearnim varijablama. 
+]
+
+
+```r
+lm(y ~ x) ##  "lm" označava linearni model
+```
+
+```
+## Error in eval(predvars, data, env): object 'y' not found
+```
+
+--
+
+Što se dogodilo?
+
+---
+
+# Globalni environment (dalje)
+
+Error poruka daje odgovor:
+
+```
+*## Error in eval(predvars, data, env): object 'y' not found
+```
+
+--
+
+R ne može naći varijable u [global-nom environment-u](https://www.datamentor.io/r-programming/environment-scope/):
+
+![Nema "x" niti "y" ovdje...](~/Foto/environment.png)
+
+--
+
+Drgačije rečeno: Pošto varijable "x" i "y" postoje kao odvojene varijable u global environment-u, potrebno je naznačiti R-u da se odnose na objekt `df`.
+- Kako biste to napravili?
+
+---
+
+# Globalni environment (dalje)
+
+Nekoliko je načina za to. Najednostavniji je specifikacija argumenta `data`:
+
+
+```r
+lm(y ~ x, data = df) ## Radi kada dodamo "data = df"!
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Coefficients:
+## (Intercept)            x  
+##           2            1
+```
+
+--
+
+Iako zbunjujuće na prvi pogled, ova karakteristika ima određene prednosti.
+- Nije moguće učitati više od dva zasebna objekta u memoriju istvremeno, pa su potrebni neki `hack`-ovi. 
+
+---
+
+# Rad sa više objekata
+
+Sposobnost R da ima više objekata u radnom prostoru je korisna. 
+- E.g. Moguće je stvoriti više supostojećih objekata u radnom prostoru. 
+
+
+```r
+df2 &lt;- data.frame(x = rnorm(10), y = runif(10))
+```
+
+![Sada sa dodanim df2](../Foto/environment2.png)
+
+--
+
+Potrebno je pripaziti na **nazive** objekata kako ne bi došlo do konfuzije.
+
+---
+class: inverse, center, middle
+name: ename
+
+# "Sve ima naziv"
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(OOP pristup)
+
+---
+
+# Rezervirani nazivi
+
+Već smo vidjeli da različitim objektima možemo dati različite nazive. Postoji nekoliko rezerviranih riječi u R.
+- To su fundamentalni nazivi, operatori i relacije u base R tkoje nije moguće pripisati objektu, čak niti kada bismo to htjeli.
+- Slične primjere smo imali sa logičkim operatorima.
+
+[Vidi](http://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html) za punu listut, uključujući:
+
+```R
+if 
+else 
+while 
+function 
+for
+TRUE 
+FALSE 
+NULL 
+Inf 
+NaN 
+NA 
+```
+
+---
+
+# Kvazi-rezervirane riječi
+
+Uz rezervirane riječi, postoji klasa riječi i stringova koje ćemo nazvati kvazi-rezervirane naredbe.
+- To su funkcijski nazivi i vrijednosti (e.g. `pi`) koje je moguće pripisati...iako imaju značenje u base R.
+
+Najvažniji kvazi-rezervirani naziv funkcije `c()`, koji koristimo za spajanje; i.e. stvaranje vektora i povezivanje objekata.
+
+
+```r
+my_vector &lt;- c(1, 2, 5)
+my_vector
+```
+
+```
+## [1] 1 2 5
+```
+
+--
+
+Što se događa ukoliko izvršite sljedeću naredbu?
+
+```R
+c &lt;- 4
+c(1, 2 ,5)
+```
+
+--
+
+Vektori su izrazito bitni u R. R je jezik optimiziran za rad s vektorima. Kasnije ćemo reći nešto više o "vektorizaciji" funkcija.
+
+
+---
+
+# Kvazi-rezervirane riječi (dalje)
+
+R je dovoljno "pametan" da bi razlikovao varijable `c &lt;- 4` koje smo stvorili od funkcije`c()` koja se koristi za spajanje objekata.
+
+Ipak, ovo je primjer *ekstremno* lošeg kodiranja. R neće uvijek moći razlikovati ove objekte. Primjerice:
+
+```r
+pi
+```
+
+```
+## [1] 3.141593
+```
+
+```r
+pi &lt;- 2
+pi
+```
+
+```
+## [1] 2
+```
+--
+
+**Bottom line:** Nemojte koristiti kvazi-rezervirane riječi!
+
+---
+
+# Namespace konflikti
+
+Slična situacija nastaje kada učitamo dva paketa koji imaju funkcije sa istim nazivima.E.g. Pogledajte što se dogodi kada učitamo `dplyr` paket.
+
+```r
+library(dplyr)
+```
+
+--
+
+Pouke da su neki objekti *masked from 'package:X'* predstavljaju upozorenja koja se odnose na *namespace konflikte*.
+- E.g. `dplyr` i `stats` paketi (koji se učitaju automatski kada pokrenete R) imaju funkcije pod nazivom "filter" i "lag".
+
+---
+
+# Namespace konflikti (dalje)
+
+*Namespace koflikti* nastaju zbog OOP pristupa.&lt;sup&gt;1&lt;/sup&gt;
+- Oni također reflektiraju open-source prirodu R i korištenja eksternih paketa. Korisnicima je ostavljen izbor oko naziva funkcija, pa se poneka preklapanja uvijek mogu očekivati.
+
+.footnote[
+&lt;sup&gt;1&lt;/sup&gt; Slični problemi se javljaju i u drugim programskim jezicima (Python, C, etc.)
+]
+
+--
+
+Kada god se pojavi namespace konflikt, zadnji učitani paket ima prednost. Tako će se `filter()` funkcija odnositi na `dplyr` varijantu.
+
+Što ako želimo `stats` varijantu? Imamo dvije opcije:
+1. Privremeno koristi `stats::filter()`
+2. Permanentno pripiši `filter &lt;- stats::filter`
+
+---
+
+# Rješenje namespace konflikata
+
+#### 1. Koristi `package::function()`
+
+Moguće je eksplicitno pozvati funkciju iz paketa kroz sintaksu `package::function()`. Primjerice:
+
+```r
+stats::filter(1:10, rep(1, 2))
+```
+
+```
+## Time Series:
+## Start = 1 
+## End = 10 
+## Frequency = 1 
+##  [1]  3  5  7  9 11 13 15 17 19 NA
+```
+
+--
+
+Moguće je koristiti `::` za rješavanje konfliktnih slučajeva. 
+- E.g. Eksplicitnost oko funkcije (ili podataka) pridonose jasnoći koda. Probajte ove naredbe u R konzoli!
+
+```R
+dplyr::starwars ## Prikaži starwars data frame iz dplyr paketa
+scales::comma(c(1000, 1000000)) ## Koristi comma funkciju, iz scales paketa
+```
+---
+
+`::` sintaksa znači da možete koristiti funkciju bez učitavanja paketa.
+E.g. Dokle god je `dplyr` instaliran u sustavu `dplyr::filter(iris, Species=="virginica")` će funkcionirati.
+  
+---
+
+# Rješenje namespace konflikata (dalje)
+
+#### 2. Pripiši `function &lt;- package::function`
+  
+Trajnije rješenje je pripisati funkciju konfliktnog naziva objektue. To će biti validno do kraja R sesije, ili dok to ne promijenite. E.g.
+
+```r
+filter &lt;- stats::filter ## Bez zagrada.
+filter &lt;- dplyr::filter ## Promijeni nazad.
+```
+
+--
+
+##### Općeniti savjet
+
+Preporuča se koristiti `package::function()` sintaksu. 
+
+Drugo rješenje je učitati najvažnije pakete na kraju. (E.g. Učitajte tidyverse nakon svih drugih paketa.)
+  
+Osim toga, obratite pažnju na upozorenja kod učitavanja paketa; u nedoumici je mouguće koristiti `?`. (E.g. `?filter` će dati informaciju koju varijantu funkcije koristimo.)
+- Namespace konflikti nisu osobito česti ali potrebno je znati da postoje. 
+  
+---
+class: inverse, center, middle
+name: indexing
+
+# Indeksiranje
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+(Kako pristupiti djelovima objekta u R)  
+---
+
+# Opcija 1: []
+
+Već smo vidjeli primjer indeksiranja u outputu konzole. Primjerice:
+
+```r
+1+2
+```
+
+```
+## [1] 3
+```
+
+`[1]` označava prvi (i, uovom slučaju, jedini) element našeg outputa.&lt;sup&gt;1&lt;/sup&gt; U ovom slučaju vektor duljine tri, ima vrijednost "3".
+
+--
+
+Pokušajte izvršiti u konzoli za primjer eksplicitnog indeksiranja:
+
+```r
+rnorm(n = 100, mean = 0, sd = 1)
+# rnorm(100) ## Također radi. (Zašto? Hint: vidi ?rnorm)
+```
+
+.footnote[
+[1] Indeksiranje u R počinje sa 1, ne sa 0 kao u nekim drugim jezicima (e.g. Python i JavaScript).
+]
+
+---
+
+# Opcija 1: [] (dalje)
+
+
+Još važnije, sintaksu `[]` je koguće koristiti za indeksiranje objekata u R.
+
+```r
+a &lt;- 1:10
+a[4] ## Izaberi četvrti elemet objekta "a"
+```
+
+```
+## [1] 4
+```
+
+```r
+a[c(4, 6)] ## Izaberi četvrti i šesti element
+```
+
+```
+## [1] 4 6
+```
+
+Ovo također funkcionira na većim array-ima (vektori, matrice, data frame, and liste). Primjerice:
+
+```r
+starwars[1, 1] ## Prikaži ćeliju koja odgvara prvom redu i prvoj koloni data frame-a.
+```
+
+```
+## # A tibble: 1 x 1
+##   name          
+##   &lt;chr&gt;         
+## 1 Luke Skywalker
+```
+
+--
+
+Što naredba `starwars[1:3, 1]` vraća?
+
+---
+
+# Opcija 1: [] (dalje)
+
+Nismo ih do sada puno spominjali ali **liste** su kompleksnije vrste array objekata u R.
+- Mogu sadržavati objekte različite klase, različitog oblika (e.g. rank) i zajedničke strukture.
+- E.g. Lista može sadržavati broj, string i data frame. Također je moguća lista data frame-ova, ili lista listi.
+
+--
+
+Indeksiranje lilsti zahtjeva dvostruke zagrade `[[]]` za indeksiranje "parent" elemenata list-e i jednostruke zagrade`[]` za indeksiranje unutar tog "parent" elementa. Primjerice:
+
+```r
+my_list &lt;- list(a = "hello", b = c(1,2,3), c = data.frame(x = 1:5, y = 6:10))
+my_list[[1]] ## Vrati prvi element
+```
+
+```
+## [1] "hello"
+```
+
+```r
+my_list[[2]][3] ## Vrati 3 element drugog objekta
+```
+
+```
+## [1] 3
+```
+
+---
+
+# Opcija 2: $
+
+
+Liste se mogu indeksirati putem operatora: `$`.
+- Nastavimo sa primjerom`my_list` sa prethodnog slide-a.
+
+
+```r
+my_list
+```
+
+```
+## $a
+## [1] "hello"
+## 
+## $b
+## [1] 1 2 3
+## 
+## $c
+##   x  y
+## 1 1  6
+## 2 2  7
+## 3 3  8
+## 4 4  9
+## 5 5 10
+```
+
+---
+count: false
+
+# Opcija 2: $
+
+
+Liste se mogu indeksirati putem operatora: `$`.
+- Nastavimo sa primjerom`my_list` sa prethodnog slide-a.
+
+
+```r
+my_list
+```
+
+```
+*## $a
+## [1] "hello"
+## 
+*## $b
+## [1] 1 2 3
+## 
+*## $c
+##   x  y
+## 1 1  6
+## 2 2  7
+## 3 3  8
+## 4 4  9
+## 5 5 10
+```
+
+.footnote[[*]Primjetite kako su "parent" liste označene: "$a" , "$b" i "$c".]
+
+---
+
+# Opcija 2: $ (dalje)
+
+Moguće je indeksirati te objekte pomoću dolarskog znaka, e.g.
+
+```r
+my_list$a ## Vrati objekt "a"
+```
+
+```
+## [1] "hello"
+```
+
+```r
+my_list$b[3] ## Vrati treći element objekta "b" 
+```
+
+```
+## [1] 3
+```
+
+```r
+my_list$c$x ## Vrati kolonu "x" iz objekta "c"
+```
+
+```
+## [1] 1 2 3 4 5
+```
+
+---
+
+# Opcija 2: $ (dalje)
+
+`$` indeksiranje funkcionira i za druge objekte u R. 
+
+U nekim slučajevima je moguće kombinirati obje opcije indeksiranja.
+- E.g. Izvuci prvi element "name" kolone iz starwars data frame-a.
+
+```r
+starwars$name[1]
+```
+
+```
+## [1] "Luke Skywalker"
+```
+--
+
+Primjetite neke razlike između prethodnog i `starwars[1, 1]` primjera. Koje su to?
+- Hint: Osim vizualnih, probajte opciju `str()`.
+
+---
+
+# Opcija 2: $ (dalje)
+
+Zadnje što je potrebno naglasiti vezano uz indeksiranje putem `$` je da ćemo tako izbjeći problem koji se javio kod neuspješnog pozivanja varijabli u primjeru regresije.
+
+
+```r
+lm(y ~ x) ## Ne radi!
+```
+
+```
+## Error in eval(predvars, data, env): object 'y' not found
+```
+
+```r
+lm(df$y ~ df$x) ## Radi!
+```
+
+```
+## 
+## Call:
+## lm(formula = df$y ~ df$x)
+## 
+## Coefficients:
+## (Intercept)         df$x  
+##           2            1
+```
+
+---
+class: inverse, center, middle
+name: cleaning
+
+# Čišćenje
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Čistoća je pola zdravlja!)
+---
+
+# Izbacivanje objekata (i paketa)
+
+Koristite `rm()` da biste maknuli objekt iz radnog prostora.
+
+```r
+a &lt;- "hello"
+b &lt;- "world"
+rm(a, b)
+```
+
+Također je moguće koristiti `rm(list = ls())` da bi se maknuli svi objekti iz radnog prostora (osim paketa). Ova funkcionalnst nije bez  [kritika](https://www.tidyverse.org/articles/2017/12/workflow-vs-script/)! 
+- Vjerojatno je bolje pokrenuti novu sesiju!
+
+--
+
+Izbacivanje paketa iz radnog prostora je problematično jer postoji mnoštvo cross-dependency-a  (i.e. pojedinačni paketi zavise i ponekad mogu automatski učitati druge). Ipak, probajte, e.g. `detach(package:dplyr)`
+- Vjerojatno je bolje pokrenuti novu sesiju!
+  
+---
+
+# Izbacivanje grafika
+
+Moguće je koristiti `dev.off()` za izbacivanje bilo koje (i.e. svih) grafikona u tekućoj sesiji. Probajte u R conzoli:
+
+```r
+plot(1:10)
+dev.off()
+```
+
+--
+
+RStudio ima padajuće izbornike za čišćenje radnog prostora i izbacivanje (pojedinačnih) grafikna. Pogledajte ikone:
+
+![](/Foto/broom.png?display=inline-block)
+
+---
+
+class: inverse, center, middle
+
+# HVALA NA PAŽNJI
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
