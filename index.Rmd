@@ -7,28 +7,29 @@ title: " "
 <br>
 <br>
 
-<p align="center">
-  <img src="Foto/Foto3.png" width="350" title="hover text">
-</p>
-
-
-<br>
-<br>
-<br>
 
 # **Multivarijatne metode**
 
-<br>
-<br>
-
-Dobrodošli na stranice kolegija <b>Multivarijatne metode</b> koji u ljetnom semestru, 2020/21 izvodi [Luka Šikić](https://www.lukasikic.info/) na Fakultetu hrvatskih studija u Zagrebu. Kolegij je prvenstveno namijenjen studentima sociologije na diplomskoj razini, a može koristiti svim studentima društvenih i humanističkih smjerova koji su upoznati s osnovama statistike.
 
 <br>
 <br>
 <br>
+
+<p align="center">
+  <img src="Foto/Foto1234.jpg" width="950" title="hover text">
+</p>
+
+<br>
 <br>
 
-### Predavač
+Dobrodošli na stranice kolegija <b>Multivarijatne metode</b> koji u ljetnom semestru, 2020/21 izvodi Luka Šikić na Fakultetu hrvatskih studija u Zagrebu. Kolegij je prvenstveno namijenjen studentima sociologije na diplomskoj razini, a može koristiti svim studentima društvenih i humanističkih smjerova koji su upoznati s osnovama statistike.
+
+<br>
+<br>
+<br>
+<br>
+
+
 
 [Luka Šikić](https://www.lukasikic.info/)</br>
 Hrvatski studiji, Katedra za sociologiju</br>
