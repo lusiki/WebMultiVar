@@ -24,7 +24,7 @@ title: " "
 
 
 <ul>
-<li><a href="https://github.com/nthun/courses-multivariate-statistics-in-R-2018-fall">Github kolegij</a></li>
+<li><a href="https://github.com/nthun/courses-multivariate-statistics-in-R-2018-fall">Github repozitorij (kolegij) iz multivarijatne statistike</a></li>
 <li><a href="https://people.stat.sc.edu/Hitchcock/stat530.html">Applied Multivariate Statistics and Data Mining</a></li>
 </ul>
 
@@ -44,8 +44,7 @@ title: " "
 
 
 <ul>
-<li><a href="https://bookdown.org/brian_nguyen0305/Multivariate_Statistical_Analysis_with_R">Multivariate Statistical Analysis with R 1</a></li>
-<li><a href="https://people.stat.sc.edu/Hitchcock/stat530.html">Multivariate Statistical Analysis using R 2</a></li>
+<li><a href="https://bookdown.org/brian_nguyen0305/Multivariate_Statistical_Analysis_with_R">Bookdown: Multivariate Statistical Analysis with R </a></li>
 </ul>
 
 
@@ -76,10 +75,9 @@ title: " "
 
 <ul>
 <li><a href="https://msalganik.wordpress.com/">Blog od Matthew Salganik-a</a></li>
-<li><a href="http://www.princeton.edu/~mjs3/">Osobni web od Matthew Salganik-</a></li>
+<li><a href="http://www.princeton.edu/~mjs3/">Osobni web od Matthew Salganik-a</a></li>
 <li><a href="https://sicss.io/">Ljetni CSS instituti</a></li>
 <li><a href="http://pablobarbera.com/POIR613/index.html">Izvrstan CSS kolegij</a></li>
-<li><a href="http://pablobarbera.com/POIR613/index.html">Repozitorij za uvod u CSS</a></li>
 
 <ul>
 
