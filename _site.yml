@@ -14,7 +14,7 @@ navbar:
         - text: "Uvod u kolegij"
           href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/01_UVOD.html#1"
         - text: "Osnove programskog jezika R"
-          href: "" 
+          href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/02_UVOD-U-R.html#1" 
         - text: "Osnove deskriptivne i infencijalne statistike"
           href: ""
         - text: "Klaster analiza"

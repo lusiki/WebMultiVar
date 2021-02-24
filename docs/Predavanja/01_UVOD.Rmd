@@ -1,5 +1,5 @@
 ---
-title: "Multivarijatne statističke metode"
+title: "MULTIVARIJATNE STATISTIČKE METODE"
 # subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
 subtitle: "Predavanje 1: Pregled kolegija"
 author: "Luka Sikic"
