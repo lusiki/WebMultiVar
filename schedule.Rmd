@@ -18,9 +18,9 @@ title: " "
 - Rasprava: *Računalne društvene znanosti (CSS)*
 
 <br>
-**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/01_UVOD.html) I [.rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/01_UVOD.Rmd)
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/01_UVOD.html) | [.rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/01_UVOD.Rmd)
 <br>
-**Čitanje:**  [Manifesto za CSS](http://www.everyaware.eu/resources/publications/Conte-2012.pdf)
+**Čitanje:**  [Manifesto za računalne društvene znanosti](http://www.everyaware.eu/resources/publications/Conte-2012.pdf)
 <br>
 <br>
 
@@ -36,7 +36,9 @@ title: " "
 - Čišćenje radnog prostora
 
 <br>
-**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/02_UVOD-U-R.html) I [.rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/02_UVOD%20U%20R.Rmd)
+**Dodatak predavanju:**[Vizualizacijski sustav ggplot2](https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/02_UVOD-U-R_dodatak.html#1) | [Uvod u R *(Primijenjena statistika)*](https://raw.githack.com/BrbanMiro/WebStatistika/main/Moduli/02_UVOD_U_R_xar.html#1) | [Dodatni R koncepti *(Primijenjena statistika)*](https://raw.githack.com/BrbanMiro/WebStatistika/main/Moduli/02_DODATNI_KONCEPTI_R_xar.html#1)
+<br>
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/02_UVOD-U-R.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/02_UVOD%20U%20R.Rmd) + (*dodatak:* [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/02_UVOD%20U%20R_dodatak.Rmd)|[.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/02_UVOD-U-R_dodatak.html) )
 <br>
 **Čitanje:** [Upoznavanje sa sintaksom jezika R](https://www.srce.unizg.hr/files/srce/docs/edu/R/s720_polaznik.pdf) + [Uvod u korištenje R-a](https://cran.r-project.org/doc/contrib/Kasum+Legovic-UvodUr.pdf)
 <br>
