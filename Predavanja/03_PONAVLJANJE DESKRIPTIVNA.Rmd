@@ -26,6 +26,30 @@ opts_chunk$set(
   )
 ```
 
+```{css, echo = F, eval = T}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+```
+
 # Pregled predavanja
 
 <br>
@@ -410,22 +434,24 @@ summary(clin.trial) # Desktiptivna stat
 
 # Deskriptivna statistika na podatkovnom okviru
 
+.tiny[
 ```{r, fig.height=6}
 # Deksriptivna statistika na podatkovnom okviru
 Hmisc::describe(clin.trial) # Desktiptivna stat/ druga funkcija
 ```
-
+]
 ---
 
 # Deskriptivna statistika na podatkovnom okviru
 
+.tiny[
 ```{r, fig.height=6}
 # Pregledaj grupirano prema terapiji
 by(data = clin.trial, # Izvor podataka
    INDICES = clin.trial$therapy, # Odredi grupiranje
    FUN = summary) # Odredi funkciju
 ```
-
+]
 ---
 
 # Deskriptivna statistika na podatkovnom okviru
@@ -439,16 +465,17 @@ aggregate(formula = mood.gain ~ drug + therapy, # Prikaz
 
 ```
 
+
 ---
 
 # Deskriptivna statistika na podatkovnom okviru
+
 
 ```{r}
 # Pregledaj grupirano prema razlici u raspoloženju
 aggregate(mood.gain ~ drug + therapy,  # Prikaz
           clin.trial, # Podatci
           sd) # Standardna devijacija
-
 ```
 
 
@@ -510,11 +537,12 @@ head(parenthood, 7) # Prvih 7 redova
 
 # Podatci
 
+.tiny[
 ```{r, fig.height=6}
 # Pogledaj deskriptivnu statistiku
 Hmisc::describe(parenthood)
 ```
-
+]
 ---
 
 # Podatci
@@ -607,7 +635,7 @@ $$r_{XY}  = \frac{\mbox{Cov}(X,Y)}{ \hat{\sigma}_X \ \hat{\sigma}_Y}$$
 # Smjer i intenzitet korelacije
 
 
-```{r corr, fig.height=7, echo=FALSE, fig.cap="Različiti smjer i intenzitet korelacije.", message=FALSE, warning=F}
+```{r corr, fig.height=6, echo=FALSE, fig.cap="Različiti smjer i intenzitet korelacije.", message=FALSE, warning=F}
 library(MASS)
 par(mfcol = c(4, 2)) # Create a 2 x 2 plotting matrix
 # The next 4 plots created will be plotted next to each other
@@ -699,16 +727,18 @@ rm(list=ls()) # Očisti radni prostor
 load("../PODATCI/effort.Rdata") # Učitaj podatke
 lsr::who(TRUE) # Pregledaj podatke
 head(effort, 5) #Pregledaj podatke
+cor(effort$hours, effort$grade) # Izračunaj korelaciju
 ```
 
 ---
 
 # Podatci
+
+.tiny[
 ```{r, fig.height=6}
 Hmisc::describe(effort)
-cor(effort$hours, effort$grade) # Izračunaj korelaciju
 ```
-
+]
 ---
 
 # Podatci

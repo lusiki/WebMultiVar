@@ -23,6 +23,30 @@ name: toc
 
 
 
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+&lt;/style&gt;
+
 # Pregled predavanja
 
 &lt;br&gt;
@@ -609,6 +633,7 @@ summary(clin.trial) # Desktiptivna stat
 
 # Deskriptivna statistika na podatkovnom okviru
 
+.tiny[
 
 ```r
 # Deksriptivna statistika na podatkovnom okviru
@@ -653,11 +678,12 @@ Hmisc::describe(clin.trial) # Desktiptivna stat/ druga funkcija
 ## Proportion 0.111 0.056 0.056
 ## --------------------------------------------------------------------------------
 ```
-
+]
 ---
 
 # Deskriptivna statistika na podatkovnom okviru
 
+.tiny[
 
 ```r
 # Pregledaj grupirano prema terapiji
@@ -685,7 +711,7 @@ by(data = clin.trial, # Izvor podataka
 ##                              3rd Qu.:1.300  
 ##                              Max.   :1.800
 ```
-
+]
 ---
 
 # Deskriptivna statistika na podatkovnom okviru
@@ -709,9 +735,11 @@ aggregate(formula = mood.gain ~ drug + therapy, # Prikaz
 ## 6 joyzepam        CBT  1.500000
 ```
 
+
 ---
 
 # Deskriptivna statistika na podatkovnom okviru
+
 
 
 ```r
@@ -819,6 +847,7 @@ head(parenthood, 7) # Prvih 7 redova
 
 # Podatci
 
+.tiny[
 
 ```r
 # Pogledaj deskriptivnu statistiku
@@ -863,7 +892,7 @@ Hmisc::describe(parenthood)
 ## lowest :   1   2   3   4   5, highest:  96  97  98  99 100
 ## --------------------------------------------------------------------------------
 ```
-
+]
 ---
 
 # Podatci
@@ -1012,9 +1041,19 @@ head(effort, 5) #Pregledaj podatke
 ## 5    16    21
 ```
 
+```r
+cor(effort$hours, effort$grade) # Izračunaj korelaciju
+```
+
+```
+## [1] 0.909402
+```
+
 ---
 
 # Podatci
+
+.tiny[
 
 ```r
 Hmisc::describe(effort)
@@ -1050,15 +1089,7 @@ Hmisc::describe(effort)
 ## Proportion 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
 ## --------------------------------------------------------------------------------
 ```
-
-```r
-cor(effort$hours, effort$grade) # Izračunaj korelaciju
-```
-
-```
-## [1] 0.909402
-```
-
+]
 ---
 
 # Podatci
