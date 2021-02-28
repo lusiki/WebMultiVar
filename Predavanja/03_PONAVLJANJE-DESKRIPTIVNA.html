@@ -399,7 +399,7 @@ IQR(x = afl.margins)
 &lt;br&gt;
 
 
-Table: "učni izračun varijance.
+Table: Ručni izračun varijance.
 
 | `\(i\)`| `\(X_i\)`| `\(X_i - \bar{X}\)`| `\((X_i - \bar{X})^2\)`|
 |---:|-----:|---------------:|-------------------:|
@@ -412,7 +412,8 @@ Table: "učni izračun varijance.
 ---
 
 # Varijanca
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Kalkulator
@@ -449,12 +450,12 @@ var( afl.margins ) # Skrati postupak
 &lt;br&gt;
 #### Matematička definicija
 &lt;br&gt;
-&lt;br&gt;
+
 
 `$$s = \sqrt{ \frac{1}{N} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2 }$$`
 
 &lt;br&gt;
-&lt;br&gt;
+
 #### **Procjena** standardne devijacije
 
 `$$\hat\sigma = \sqrt{ \frac{1}{N-1} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2 }$$`
@@ -907,7 +908,6 @@ Hmisc::describe(parenthood)
 # Kovarijanca
 &lt;br&gt;
 &lt;br&gt;
-&lt;br&gt;
 #### Matematička definicija
 
 `$$\mbox{Cov}(X,Y) = \frac{1}{N-1} \sum_{i=1}^N \left( X_i - \bar{X} \right) \left( Y_i - \bar{Y} \right)$$`
@@ -1064,8 +1064,8 @@ cor(effort$hours, effort$grade) # Izračunaj korelaciju
 # Podatci
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="03_PONAVLJANJE-DESKRIPTIVNA_files/figure-html/rankcorrpic-1.png" alt="Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta). Isprekidana linija prikazuje linearni odnos. Korelacija između ove dvije varijable je visoka `\(r = .91\)`. Valja primjetiti da više sati učenja uvijek dodnosi veću ocjenu što se odražava u visokom Spearman koeficijentu korelacije of `\(rho = 1\)`. "  /&gt;
-&lt;p class="caption"&gt;Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta). Isprekidana linija prikazuje linearni odnos. Korelacija između ove dvije varijable je visoka `\(r = .91\)`. Valja primjetiti da više sati učenja uvijek dodnosi veću ocjenu što se odražava u visokom Spearman koeficijentu korelacije of `\(rho = 1\)`. &lt;/p&gt;
+&lt;img src="03_PONAVLJANJE-DESKRIPTIVNA_files/figure-html/rankcorrpic-1.png" alt="Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta)."  /&gt;
+&lt;p class="caption"&gt;Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta).&lt;/p&gt;
 &lt;/div&gt;
 
 
@@ -1119,9 +1119,11 @@ cor(effort$hours, effort$grade, method = "spearman")
 
 class: inverse, center, middle
 
-# Nastavak predavanja: inferencijalna statistika
+# Hvala na pažnji
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Nastavak: inferencijalna statistika)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

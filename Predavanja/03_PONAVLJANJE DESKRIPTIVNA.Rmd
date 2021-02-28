@@ -294,7 +294,7 @@ knitr::kable(rbind(c(1 , 56 , 19.4  , 376.36),
                    c(3 , 56 , 19.4  , 376.36),
                    c(4 , 8 , -28.6  , 817.96),
                    c(5 , 32 , -4.6  , 21.16)),
-caption = '"učni izračun varijance.',
+caption = 'Ručni izračun varijance.',
 col.names = c( "$i$",
                "$X_i$", 
                "$X_i - \\bar{X}$",
@@ -305,7 +305,8 @@ col.names = c( "$i$",
 ---
 
 # Varijanca
-
+<br>
+<br>
 ```{r}
 # Kalkulator
 (376.36 + 31.36 + 376.36 + 817.96 + 21.16 ) / 5
@@ -326,12 +327,12 @@ var( afl.margins ) # Skrati postupak
 <br>
 #### Matematička definicija
 <br>
-<br>
+
 
 $$s = \sqrt{ \frac{1}{N} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2 }$$
 
 <br>
-<br>
+
 #### **Procjena** standardne devijacije
 
 $$\hat\sigma = \sqrt{ \frac{1}{N-1} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2 }$$
@@ -409,7 +410,7 @@ summary(clin.trial) # Desktiptivna stat
 
 # Deskriptivna statistika na podatkovnom okviru
 
-```{r}
+```{r, fig.height=6}
 # Deksriptivna statistika na podatkovnom okviru
 Hmisc::describe(clin.trial) # Desktiptivna stat/ druga funkcija
 ```
@@ -418,7 +419,7 @@ Hmisc::describe(clin.trial) # Desktiptivna stat/ druga funkcija
 
 # Deskriptivna statistika na podatkovnom okviru
 
-```{r}
+```{r, fig.height=6}
 # Pregledaj grupirano prema terapiji
 by(data = clin.trial, # Izvor podataka
    INDICES = clin.trial$therapy, # Odredi grupiranje
@@ -509,7 +510,7 @@ head(parenthood, 7) # Prvih 7 redova
 
 # Podatci
 
-```{r}
+```{r, fig.height=6}
 # Pogledaj deskriptivnu statistiku
 Hmisc::describe(parenthood)
 ```
@@ -590,7 +591,6 @@ oneCorPlot <- function(x,y,...) {
 # Kovarijanca
 <br>
 <br>
-<br>
 #### Matematička definicija
 
 $$\mbox{Cov}(X,Y) = \frac{1}{N-1} \sum_{i=1}^N \left( X_i - \bar{X} \right) \left( Y_i - \bar{Y} \right)$$
@@ -607,7 +607,7 @@ $$r_{XY}  = \frac{\mbox{Cov}(X,Y)}{ \hat{\sigma}_X \ \hat{\sigma}_Y}$$
 # Smjer i intenzitet korelacije
 
 
-```{r corr, fig.height=5, echo=FALSE, fig.cap="Različiti smjer i intenzitet korelacije.", message=FALSE, warning=F}
+```{r corr, fig.height=7, echo=FALSE, fig.cap="Različiti smjer i intenzitet korelacije.", message=FALSE, warning=F}
 library(MASS)
 par(mfcol = c(4, 2)) # Create a 2 x 2 plotting matrix
 # The next 4 plots created will be plotted next to each other
@@ -704,7 +704,7 @@ head(effort, 5) #Pregledaj podatke
 ---
 
 # Podatci
-```{r}
+```{r, fig.height=6}
 Hmisc::describe(effort)
 cor(effort$hours, effort$grade) # Izračunaj korelaciju
 ```
@@ -713,7 +713,7 @@ cor(effort$hours, effort$grade) # Izračunaj korelaciju
 
 # Podatci
 
-```{r rankcorrpic, fig.cap="Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta). Isprekidana linija prikazuje linearni odnos. Korelacija između ove dvije varijable je visoka $r = .91$. Valja primjetiti da više sati učenja uvijek dodnosi veću ocjenu što se odražava u visokom Spearman koeficijentu korelacije of $rho = 1$. ", echo=FALSE, fig.height=4}
+```{r rankcorrpic, fig.cap="Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta).", echo=FALSE, fig.height=4}
 
 describeImg <- list()
 emphCol <- rgb(0,0,1)
