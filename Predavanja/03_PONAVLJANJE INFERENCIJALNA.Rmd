@@ -1,0 +1,1387 @@
+---
+title: "MULTIVARIJATNE STATISTIČKE METODE"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
+subtitle: "Predavanje 3: Inferencijalna statistika"
+author: "Luka Sikic, PhD"
+date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)" #"`r format(Sys.time(), '%d %B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+name: toc
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=F#, echo=F, warning=F, message=F
+  )
+```
+
+```{css, echo = F, eval = T}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+```
+
+```{r paketi, include=FALSE}
+library(ggpubr)
+library(dplyr)
+library(Hmisc)
+library(corrplot)
+library(PerformanceAnalytics)
+library(PairedData)
+library(multcomp)
+library(car)
+library(gplots)
+
+
+```
+
+# Pregled predavanja
+
+<br>
+<br>
+<br>
+
+
+1. [Pretpostavke statističkih testova](#pretpostavke)
+
+2. [Normalnost distribucije](#normalnost)
+
+3. [Testovi korelacije](#kor)
+
+4. [Testovi za usporedbu prosjeka](#prosjek)
+
+5. [Testovi za usporedbu varijance](#varijanca)
+
+6. [Testovi za usporedbu kategorija](#kategorije)
+
+6. [Linearna regresija](#lreg)
+
+6. [Višestruka linearna regresija](#mlreg)
+
+
+
+---
+class: inverse, center, middle
+name: pretpostavke
+
+# PRETPOSTAVKE STATISTIČKIH TESTOVA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Uvjeti!)
+
+---
+# Generalni pregled
+
+.pull-left[
+#### Standardna istraživačka(statistička) pitanja:
+
+1. Da li su dvije ili više varijabli međusobno korelirane?
+2. Da se dvije ili više grupa međusobno razlikuju?
+3. Da li postoje razlike u varijabilnosti između dva uzorka?
+4. Da li postoje razlike između proporcija?
+]
+
+.pull-right[
+#### Testovi:
+
+1. Korelacijski test/korelacijska matrica.
+2. Studentov t-test;Wilcoxon test/ANOVA;Kruskal-Wallis test.
+3. F-test;Fligner-Kileen test.
+4. Chi-sq test.
+]
+#### Pretpostavke:
+1. Normalnost distribucije.
+2. Homogenost varijance.
+
+---
+class: inverse, center, middle
+name: normalnost
+
+# NORMALNOST DISTRIBUCIJE
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Definiraj normalno!)
+
+---
+
+# Podatci
+
+```{r}
+dta <- ToothGrowth # Učitaj podatke
+summary(dta) # Pregled podataka
+dplyr::sample_n(dta, 10) # Pregled podataka
+
+```
+
+
+---
+
+
+# Vizualni pregled podataka
+
+```{r}
+# Pogledaj distribuciju
+ggdensity(dta$len,
+          main = "Distribucija varijable duljina zuba (len)",
+          xlab = "Duljina zuba") 
+```
+
+---
+# Vizualni pregled podataka
+
+```{r}
+# Pogledaj QQ plot
+ggqqplot(dta$len)
+```
+
+---
+
+# Test normalnosti podataka
+
+```{r}
+# Provedi Shapiro-Wilk tets
+shapiro.test(dta$len)
+
+```
+
+
+---
+class: inverse, center, middle
+name: kor
+
+# TESTOVI KORELACIJE
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Odnos između varijabli)
+
+---
+
+# Testovi
+
+<br>
+<br>
+<br>
+<br>
+1. Pearson
+<br>
+<br>
+2. Spearman
+
+
+---
+
+# Podatci
+
+```{r}
+# Učitaj podatke
+cor_dta <- mtcars
+head(cor_dta, 10) # Pregled podataka
+```
+
+---
+
+# Podatci
+
+
+```{r}
+summary(cor_dta)  # Pregled podataka
+```
+
+---
+
+# Podatci
+
+```{r}
+str(cor_dta)      # Pregled podataka
+```
+
+---
+
+
+# Provjera pretpostavki 
+
+
+#### Linearnost odnosa
+
+```{r}
+# Dijagram raspršivanja
+ggscatter(cor_dta, x = "mpg", y = "wt",
+          add = "reg.line", conf.int = T,
+          cor.coef = T, cor.method = "pearson",
+          xlab = "Milje/galon", ylab = "Težina(1k lbs)")
+```
+
+---
+
+# Provjera pretpostavki
+
+#### Normalnost distribucije(QQ plot;Shapiro-Wilk)
+
+```{r}
+# QQ plot za "mpg"
+ggqqplot(cor_dta$mpg, ylab = "MPG")
+```
+
+---
+
+#### Normalnost distribucije(QQ plot;Shapiro-Wilk)
+
+```{r}
+# QQ plot za "wg
+ggqqplot(cor_dta$wt, ylab = "WT")
+```
+
+---
+
+#### Normalnost distribucije(Shapiro-Wilk)
+```{r}
+# Test za "mpg"
+shapiro.test(cor_dta$mpg)
+# Test za "wt"
+shapiro.test(cor_dta$wt)
+
+```
+
+---
+
+# Test korelacije izmedju dvije varijable
+
+```{r , warning = F}
+# Provedi Pearsonov korelacijski test
+
+pearson <- cor.test(cor_dta$mpg, cor_dta$wt,
+                    method = "pearson") 
+
+print(pearson) # Pregled rezultata testa
+
+print(pearson$p.value)  # Pregled p-vrijednosti
+print(pearson$estimate) # Pregled korelacijskog koeficijenta
+
+```
+
+---
+
+# Test korelacije izmedju dvije varijable
+
+
+```{r}
+
+# Provedi Spearmanov korelacijski test
+
+spearman <- cor.test(cor_dta$mpg, cor_dta$wt,
+                    method = "spearman")
+print(spearman) # Pregled rezultata testa
+
+print(spearman$p.value)  # Pregled p-vrijednosti
+print(spearman$estimate) # Pregled korelacijskog koeficijenta
+
+```
+
+---
+
+
+# Test korelacije između više varijabli
+
+```{r}
+
+# Učitaj podatke
+m_cor_dta <- mtcars[, c(1,3,4,5,6,7)]
+head(m_cor_dta,10) #Pregled podataka
+```
+
+---
+
+# Test korelacije između više varijabli
+
+```{r}
+cor_mtx <- cor(m_cor_dta) # Izračunaj korelacijsku matricu
+round(cor_mtx,2) # Pregled korelacijskih koeficijenata
+```
+
+---
+
+# Test korelacije između više varijabli
+
+```{r}
+cor_mtx_pv <- Hmisc::rcorr(as.matrix(m_cor_dta)) # Pripadajuće p-vrijednosti
+print(cor_mtx_pv) # Pregled rezultata
+
+```
+
+---
+
+
+# Test korelacije između više varijabli
+
+
+```{r}
+# Vizualizacija 1
+
+library(corrplot) # Učitaj paket
+corrplot(cor_mtx, type = "upper", order = "hclust", # Korelacijska matrica je input
+         tl.col = "black", tl.srt = 45)
+
+```
+
+---
+
+```{r}
+
+# Vizualizacija 2
+
+library(PerformanceAnalytics)
+chart.Correlation(m_cor_dta, histogram = T, pch = 19)
+
+```
+
+---
+
+```{r}
+
+# Vizualizacija 3
+
+col <- colorRampPalette(c("blue", "green", "red"))(20) # Definiraj boje
+heatmap(cor_mtx, col = col, symm = T) # Prikaži heatmap/ input je korelacijska matrica
+
+
+```
+
+
+
+
+---
+class: inverse, center, middle
+name: prosjek
+
+# USPOREDBA PROSJEKA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Jesu li dva prosjeka jednaka?)
+
+---
+
+# Testovi:
+
+
+<br>
+<br>
+<br>
+
+1. Jedan uzorak: t-test(parametarski), Wilcox(neparametarski)
+<br>
+<br>
+2. Dva nezavisna uzorka: t-test(parametarski), Wilcox(neparametarski)
+<br>
+<br>
+3. Dva zavisna uzorka: t-test(parametarski), Wilcox(neparametarski)
+<br>
+<br>
+4. Više od dva uzorka: Jednostrana i dvostrana ANOVA(param), Kruskal-Wallis(nparam)
+
+---
+
+# Jedan uzorak
+
+```{r, message=F, warning=F}
+
+## t-test ##
+
+set.seed(1234)
+# Stvori podatke
+t1_dta <- data.frame(
+  naziv = paste0(rep("M_", 10),1:10),
+  mjera = round(rnorm(10,20,2),1)
+)
+
+# Pogledaj podatke
+head(t1_dta, 10)
+```
+
+---
+
+# Jedan uzorak
+
+```{r}
+# Deskriptivna statistika
+summary(t1_dta$mjera)
+# Pregled podataka
+ggboxplot(t1_dta$mjera,
+          ylab = "Mjera",
+          xlab = F,
+          ggtheme = theme_minimal())
+```
+
+---
+
+# Jedan uzorak
+
+```{r}
+
+# Test normalnosti
+shapiro.test(t1_dta$mjera)
+# QQ plot
+ggqqplot(t1_dta$mjera, ylab = "Mjera",
+         ggtheme = theme_minimal())
+```
+
+---
+
+# Jedan uzorak
+
+```{r}
+
+# Provedi t-test (prosjek za usporedbu je 25)
+t1_test <- t.test(t1_dta$mjera, mu = 25)
+# Prikaži rezultate
+print(t1_test)
+# Pristupi elementima rezultata
+print(t1_test$p.value)
+print(t1_test$conf.int)
+```
+
+
+---
+
+# Jedan uzorak
+
+```{r}
+## Willcoxon test ##
+
+# Provedi test
+w1_test <- wilcox.test(t1_dta$mjera, mu = 25)
+# Pogledaj rezultate
+print(w1_test)
+
+```
+
+---
+
+# Dva nezavisna uzorka
+
+```{r,  message=F, warning=F}
+
+## t-test ##
+
+# Stvori podatke
+visina_zene <- c(38.9, 61.2, 73.3, 21.8, 63.4, 64.6, 48.4, 48.8, 48.5)
+visina_muskarci <- c(67.8, 60, 63.4, 76, 89.4, 73.3, 67.3, 61.3, 62.4) 
+# Poveži u DF
+nu2 <- data.frame(
+  grupa = rep(c("Muskarci", "Zene"), each = 9),
+  tezina = c(visina_zene, visina_muskarci)
+)
+# Pogledaj podatke
+print(nu2)
+
+```
+
+---
+
+# Dva nezavisna uzorka
+
+```{r}
+
+# Deskriptivna statistika
+nu2 %>%
+  group_by(grupa) %>%
+  summarise(
+    broj = n(),
+    mean = mean(tezina, na.rm = T),
+    sd = sd(tezina, na.rm = T)
+          )
+# Vizualiziraj podatke
+ggboxplot(nu2, x = "grupa", y = "tezina",
+          color = "grupa",
+          ylab = "tezina", xlab = "grupe")
+
+```
+
+---
+
+# Dva nezavisna uzorka
+
+```{r}
+
+# Testiraj normalnost distribucije
+with(nu2, shapiro.test(tezina[grupa == "Muskarci"]))
+with(nu2,shapiro.test(tezina[grupa == "Zene"]))
+
+# Testiraj jednakost varijanci
+eq_var_nu2 <- var.test(tezina ~ grupa, data = nu2)
+print(eq_var_nu2)
+```
+
+---
+
+# Dva nezavisna uzorka
+
+```{r}
+# Provedi test
+t_nu2 <- t.test(visina_muskarci, visina_zene, var.equal = T)
+print(t_nu2)
+# Alternativni nacin
+a_t_nu2 <- t.test(tezina ~ grupa, data = nu2, var.equal = T)
+print(a_t_nu2)
+```
+
+---
+
+# Dva nezavisna uzorka
+
+```{r}
+## Wilcoxon test ##
+
+# Provedi test
+w_nu2 <- wilcox.test(visina_muskarci, visina_zene)
+print(w_nu2, 10)
+```
+
+---
+
+# Dva zavisna uzorka
+
+```{r}
+
+## t-test ##
+
+# Napravi podatke
+prije <- c(200.1, 190.9, 192.7, 213, 241.4, 196.9, 172.2, 185.5, 205.2, 193.7)
+nakon <- c(392.9, 393.2, 345.1, 393, 434, 427.9, 422, 383.9, 392.3, 352.2)
+# Poveži u DF
+zu2 <- data.frame(
+  grupa = rep(c("prije", "nakon"), each = 10),
+  tezina = c(prije, nakon)
+)
+# Pregled podataka
+head(zu2,10)
+```
+
+
+---
+
+# Dva zavisna uzorka
+
+```{r}
+
+# Deskriptivna statistika
+zu2 %>%
+  group_by(grupa) %>%
+  summarise(
+    broj = n(),
+    mean = mean(tezina, na.rm = T),
+    sd = sd(tezina, na.rm = T)
+          )
+```
+
+---
+
+# Dva zavisna uzorka
+
+```{r}
+
+# Vizualizacija 1
+
+ggboxplot(zu2, x = "grupa", y = "tezina", 
+          color = "grupa", palette = c("#00AFBB", "#E7B800"),
+          order = c("prije", "nakon"),
+          ylab = "Tezina", xlab = "Grupe")
+
+```
+
+
+---
+
+# Dva zavisna uzorka
+
+```{r}
+
+# Vizualizacija 2
+
+prije <- subset(zu2, grupa == "prije", tezina, drop =  T)
+nakon <- subset(zu2, grupa == "nakon", tezina, drop = T)
+
+pd <- paired(prije, nakon)
+plot(pd, type = "profile") + theme_bw()
+
+```
+
+
+---
+
+# Dva zavisna uzorka
+
+```{r}
+
+
+# Provjeri normalnost
+
+razlika <- with(zu2, tezina[grupa == "prije"] - tezina[grupa == "nakon"])
+shapiro.test(razlika)
+
+# Provedi test
+t_zu2 <- t.test(prije, nakon, paired = T)
+t_zu2
+
+## Willcox ##
+w_zu2 <- wilcox.test(prije, nakon, paired = T)
+w_zu2
+
+```
+
+---
+
+# Više od dva uzorka
+
+```{r}
+
+## JEDNOSTRANA ANOVA ##
+
+# Podatci
+anova_dta <- PlantGrowth
+# Pregled podataka
+set.seed(1234)
+dplyr::sample_n(anova_dta,10)
+glimpse(anova_dta)
+levels(anova_dta$group)
+
+```
+
+
+---
+
+# Više od dva uzorka
+
+```{r}
+# Uredi redosljed faktora
+anova_dta$group <- ordered(anova_dta$group,
+                            levels = c("ctrl", "trt1", "trt2"))
+# Deskriptivna statistika
+group_by(anova_dta, group) %>%
+  summarise(
+    count = n(),
+    mean = mean(weight, na.rm = TRUE),
+    sd = sd(weight, na.rm = TRUE)
+  )
+
+```
+
+---
+
+# Više od dva uzorka
+
+```{r}
+
+# Vizualizacija 1
+
+ggboxplot(anova_dta, x = "group", y = "weight", 
+          color = "group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+          order = c("ctrl", "trt1", "trt2"),
+          ylab = "Težina", xlab = "Tretman")
+```
+
+
+---
+
+# Više od dva uzorka
+
+```{r}
+# Vizualizacija 2
+
+ggline(anova_dta, x = "group", y = "weight", 
+       add = c("mean_se", "jitter"), 
+       order = c("ctrl", "trt1", "trt2"),
+       ylab = "Weight", xlab = "Treatment")
+```
+
+---
+
+# Više od dva uzorka
+
+```{r}
+# Provedi ANOVA test
+procjena_anova_dta <- aov(weight ~ group, data = anova_dta)
+summary(procjena_anova_dta)
+```
+
+
+---
+
+
+# Više od dva uzorka
+
+```{r}
+# Međusobna usporedba prosjeka (varijabli)
+TukeyHSD((procjena_anova_dta)) # 1. način
+summary(glht(procjena_anova_dta, linfct = mcp(group = "Tukey"))) # 2.način
+pairwise.t.test(anova_dta$weight, anova_dta$group, # 3.način
+               p.adjust.method = "BH")
+
+```
+
+
+---
+
+# Više od dva uzorka
+
+
+```{r}
+
+# Provjera pretpostavki
+
+# Homogenost varijance
+plot(procjena_anova_dta,1) # Vizualna inspekcija
+leveneTest(weight ~ group, data = anova_dta) # Formalni test
+```
+
+---
+
+# Više od dva uzorka
+
+```{r}
+# Normalnost distribucije
+plot(procjena_anova_dta,2) # Vizualna inspekcija
+```
+
+---
+
+# Više od dva uzorka
+
+```{r}
+reziduali <- residuals(object = procjena_anova_dta) # Uzmi rezidualne vrijednosti
+shapiro.test(x = reziduali) # Provedi S-H test
+
+# Provedi neparametarski test(Kruskal-Wallis)
+kruskal.test(weight ~ group, data = anova_dta)
+
+```
+
+---
+
+# Višestruka ANOVA
+
+
+```{r}
+
+# Učitaj podatke
+anova2_dta <- ToothGrowth
+# Pregled podataka
+dplyr::sample_n(anova2_dta, 10)
+str(anova2_dta)
+```
+
+---
+
+```{r}
+
+# Uredi podatke za analizu
+anova2_dta$dose <- factor(anova2_dta$dose,
+                          levels = c(0.5, 1, 2),
+                          labels = c("D_0.5", "D_1", "D_2"))
+dplyr::sample_n(anova2_dta, 10) # Pregledaj
+
+```
+
+
+---
+
+
+```{r}
+# Deskriptivna statistika
+group_by(anova2_dta, supp, dose) %>%
+  summarise(
+    count = n(),
+    mean = mean(len, na.rm = TRUE),
+    sd = sd(len, na.rm = TRUE)
+  )
+# Tabuliraj podatke
+table(anova2_dta$supp, anova2_dta$dose)
+```
+
+
+---
+
+```{r}
+
+# Vizualizacija 1
+ggboxplot(anova2_dta, x = "dose", y = "len", color = "supp",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+---
+
+
+```{r}
+# Vizualizacija 2 
+ggline(anova2_dta, x = "dose", y = "len", color = "supp",
+       add = c("mean_se", "dotplot"),
+       palette = c("#00AFBB", "#E7B800"))
+```
+
+---
+
+```{r}
+
+# Provedi test
+procjena_anova2_dta <- aov(len ~ supp + dose, data = anova2_dta)
+summary(procjena_anova2_dta)
+# Test sa interakcijskim regresorom
+procjena_anova3_dta <- aov(len ~ supp + dose + supp:dose, data = anova2_dta)
+summary(procjena_anova3_dta)
+```
+
+---
+
+```{r}
+# Međusobna usporedba prosjeka (varijabli)
+TukeyHSD(procjena_anova3_dta, which = "dose") # 1. način
+summary(glht(procjena_anova3_dta, lincft = mcp(dose = "Tukey"))) # 2. način
+```
+
+---
+
+```{r}
+# Provjera pretpostavki
+plot(procjena_anova3_dta,1) # Homogenost varijance
+leveneTest(len ~ supp*dose, data = anova2_dta) # Formalni tetst
+```
+
+---
+
+```{r}
+plot(procjena_anova3_dta,2) # Normalnost distribucije
+reziduali_2 <- residuals(procjena_anova3_dta) # Reziduali za SH test
+shapiro.test(reziduali_2)
+
+```
+
+
+---
+class: inverse, center, middle
+name: var
+
+# TESTOVI ZA USPOREDBU VARIJANCE
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Raspršenost podataka!)
+
+---
+
+# Testovi:
+
+<br>
+<br>
+<br>
+
+1. F-test
+<br>
+<br>
+2. Balett test;Levene test
+
+
+
+---
+
+# Dvije varijance
+
+```{r}
+
+# Učitaj podatke
+F_dta <- ToothGrowth
+# Pregled podataka
+dplyr::sample_n(F_dta,10)
+```
+
+---
+
+# Dvije varijance
+
+
+```{r}
+
+# Provedi F-test
+procjena_F_dta <- var.test(len ~ supp, data = F_dta)
+print(procjena_F_dta)
+# Pogledaj omjer varijanci
+procjena_F_dta$estimate
+# p-vrijednost
+procjena_F_dta$p.value
+```
+
+---
+
+# Više od dvje varijance
+
+```{r}
+# Učitaj podatke
+mv_dta <- PlantGrowth
+# Pregledaj podatke
+str(mv_dta)
+# Provedi Barlett test
+b_mv_dta <- bartlett.test(weight ~ group, data = mv_dta)
+b_mv_dta
+```
+
+---
+
+# Više od dvje varijance
+
+```{r}
+# Provedi Barlett test za više nezavisnih varijabli; interaction() to collapse
+bartlett.test(len ~ interaction(supp,dose), data = ToothGrowth)
+# Provedi Levene test za jednu nezavisnu varijablu
+leveneTest(weight ~ group, data = mv_dta)
+# Provedi Levene test za više nezavisnih varijabli
+leveneTest(len ~ interaction(supp,dose), data = ToothGrowth)
+# Provedi Fligner-Killen test
+fligner.test(weight ~ group, data = mv_dta)
+```
+
+
+---
+class: inverse, center, middle
+name: kategorije
+
+# TESTOVI ZA USPOREDBU KATEGORIJA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Kategorije ili proporcije u skupinama!)
+
+---
+
+# Testovi:
+<br>
+<br>
+<br>
+
+1. Chi-sq goodnes of fit
+<br>
+<br>
+2. Chi-sq test nezavisnosti
+---
+
+# Chi-sq GOF
+
+
+
+```{r}
+
+# Stvori podatke
+sparoge <- c(81,50,27)
+# Provedi test
+procjena_sparoge <- chisq.test(sparoge, p = c(1/3, 1/3, 1/3))
+# Pogledaj rezulatate
+procjena_sparoge
+# Pogledaj očekivane vrijednosti
+procjena_sparoge$expected
+# Odredi duge vjerojatnosti
+procjena_sparoge2 <- chisq.test(sparoge, p = c(1/2, 1/3, 1/6))
+procjena_sparoge2
+# Pogledaj p.vrijednosti
+procjena_sparoge2$p.value
+
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+```{r}
+# Ucitaj podatke
+file_path <- "http://www.sthda.com/sthda/RDoc/data/housetasks.txt"
+kucniPoslovi <- read.delim(file_path, row.names = 1)
+kucniPoslovi # Pogledaj podatke
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+```{r}
+
+# Pogledaj kontigencijsku tablicu
+kt <- as.table(as.matrix(kucniPoslovi))
+
+gplots::balloonplot(t(kt), main = "kucniPoslovi", # 1. način
+           xlab = "", ylab = "",
+           label = F, show.margins = F)
+
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+```{r}
+
+graphics::mosaicplot(kt,shade = T, las = 2,       # 2. način
+                     main = "kucniPoslovi")
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+```{r}
+
+# Provedi Chi-sq
+procjena_kucniPoslovi <- chisq.test(kucniPoslovi)
+procjena_kucniPoslovi
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+```{r}
+
+# Opažene vrijednosti
+procjena_kucniPoslovi$observed
+
+```
+
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+```{r}
+# Očekivane vrijednosti
+round(procjena_kucniPoslovi$expected,2)
+
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+```{r}
+# Prikaži reziduale
+round(procjena_kucniPoslovi$residuals,2)
+```
+
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+```{r}
+
+# Grafički prikaz
+corrplot(procjena_kucniPoslovi$residuals, is.cor = F)
+
+
+```
+
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+```{r}
+# Izracunaj doprinos Chi_sq statistici
+doprinos <- 100*procjena_kucniPoslovi$residuals^2/procjena_kucniPoslovi$statistic
+round(doprinos,2)
+```
+
+
+---
+
+
+# Chi-sq test nezavisnosti
+
+
+```{r}
+
+#Izracunaj doprinos Chi_sq statistici
+corrplot(doprinos, is.cor = F)
+```
+
+
+---
+class: inverse, center, middle
+name: lreg
+
+# LINEARNA REGRESIJA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Kvanitficiraj odnos između varijabli!)
+
+---
+
+# Podatci
+
+
+```{r regression0, fig.cap="Dijagram rasipanja koji pokazuje \"raspolozenje\" kao funkciju \"sati spavanja\".", echo=FALSE}
+
+regressionImg <- list()
+emphCol <- rgb(0,0,1)
+emphColLight <- rgb(.5,.5,1)
+emphGrey <- grey(.5)
+eps <- TRUE
+colour <- TRUE
+	width <- 6
+	height <- 6
+	
+  load(file.path("../Podatci/parenthood.Rdata"))
+	
+  
+  drawBasicScatterplot <- function(dotcol,title) {
+  
+    plot( parenthood$dan.sleep,
+          parenthood$dan.grump,
+          xlab = "Sati spavanja",
+          ylab = "Raspoloženje (0-100)",
+          col= dotcol,
+          main = title,
+          font.main=1,
+          pch=19)
+  
+  }
+  
+  
+  # scatterplot only
+	drawBasicScatterplot( "black", "Odnos raspoloženja i spavanja")
+```
+
+
+---
+
+# Napravi regresijski pravac
+
+```{r regression1a, fig.cap="Regresijski pravac koji prikazuje odnos \"raspolozenja\" i \"sati spavanja\".", echo=T}
+  # Najbolji regresijski pravac
+	drawBasicScatterplot( emphGrey, "Najbolji regresijski pravac" )
+	good.coef <- lm( dan.grump ~ dan.sleep, parenthood)$coef
+	abline( good.coef, col=ifelse(colour,emphCol,"black"), lwd=3 )
+```
+
+# Loš regresijski pravac
+
+```{r regression1b, fig.cap="Regresijski pravac koji loše prikazuje odnos \"raspolozenja\" i \"sati spavanja\".", echo=FALSE}
+  # Loš regresijski pravac
+	drawBasicScatterplot( emphGrey, "Loš regresijski pravac!" )
+	bad.coef <- c(80,-3)
+	abline( bad.coef, col=ifelse(colour,emphCol,"black"), lwd=3 )
+```
+
+---
+
+# Formalni zapis
+
+
+#### Formula regresijskog pravca
+
+
+$$\hat{Y_i} = b_1 X_i + b_0$$
+
+#### Pogreška regresisjkog modela
+
+$$\epsilon_i = Y_i - \hat{Y}_i$$
+
+#### Regresijski model za procjenu
+
+$$Y_i = b_1 X_i + b_0 + \epsilon_i$$
+#### OLS model
+
+$$\sum_i (Y_i - \hat{Y}_i)^2$$
+#### optimizacija modela uz uvjet(ograničenje) 
+ 
+$$\sum_i {\epsilon_i}^2$$
+
+
+---
+
+# Grafički prikaz OLS modela
+
+
+```{r regression3a, fig.cap="Prikaz reziduala vezanih uz regresijski pravac.", echo=FALSE}
+	drawBasicScatterplot( emphGrey, "Regresijska linija" )
+	abline( good.coef, col=ifelse(colour,emphCol,"black"), lwd=3 )
+	for(i in seq_along(parenthood$dan.sleep)) {
+	  xval <- parenthood$dan.sleep[i]*c(1,1)
+	  yval <- c(parenthood$dan.grump[i],good.coef[1]+good.coef[2]*parenthood$dan.sleep[i])
+	  lines(xval,yval,type='l', col = emphGrey)
+	}
+```
+
+
+```{r regression3b, fig.cap="Prikaz reziduala vezanih uz \"loš\" regresijski pravac.", echo=FALSE, eval=F, include=F}
+	drawBasicScatterplot( emphGrey, "Loša regresijska linija" )
+	abline( good.coef, col=ifelse(colour,emphCol,"black"), lwd=3 )
+	for(i in seq_along(parenthood$dan.sleep)) {
+	  xval <- parenthood$dan.sleep[i]*c(1,1)
+	  yval <- c(parenthood$dan.grump[i],good.coef[1]+good.coef[2]*parenthood$dan.sleep[i])
+	  lines(xval,yval,type='l', col = emphGrey)
+	}
+```
+
+---
+
+
+# Procjeni regresijski model
+
+
+```{r}
+# Procjeni regresijski model i spremi rezultate u objekt
+regression.1 <- lm( formula = dan.grump ~ dan.sleep,  
+                    data = parenthood ) 
+      
+```
+
+
+```{r}
+# Pogledaj rezultate
+print( regression.1 )
+```
+
+
+#### Formula procjenjenog regresijskog modela
+
+$$\hat{Y}_i = -8.94 \ X_i + 125.96$$ 
+
+
+---
+class: inverse, center, middle
+name: mlreg
+
+# VIŠESTRUKA LINEARNA REGRESIJA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Prošireni model!)
+
+---
+
+
+# Zapis modela
+
+#### Matematički zapis
+
+$$Y_i = b_2 X_{i2} + b_1 X_{i1} + b_0 + \epsilon_i$$
+#### Empirijski zapis
+
+```
+      dan.grump ~ dan.sleep + baby.sleep
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
