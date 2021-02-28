@@ -76,7 +76,7 @@ remark-slide-content {
 
 ---
 class: inverse, center, middle
-name: podatci
+name: pretpostavke
 
 # PRETPOSTAVKE STATISTIČKIH TESTOVA
 
@@ -107,6 +107,2890 @@ name: podatci
 #### Pretpostavke:
 1. Normalnost distribucije.
 2. Homogenost varijance.
+
+---
+class: inverse, center, middle
+name: normalnost
+
+# NORMALNOST DISTRIBUCIJE
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Definiraj normalno!)
+
+---
+
+# Podatci
+
+
+```r
+dta &lt;- ToothGrowth # Učitaj podatke
+summary(dta) # Pregled podataka
+```
+
+```
+##       len        supp         dose      
+##  Min.   : 4.20   OJ:30   Min.   :0.500  
+##  1st Qu.:13.07   VC:30   1st Qu.:0.500  
+##  Median :19.25           Median :1.000  
+##  Mean   :18.81           Mean   :1.167  
+##  3rd Qu.:25.27           3rd Qu.:2.000  
+##  Max.   :33.90           Max.   :2.000
+```
+
+```r
+dplyr::sample_n(dta, 10) # Pregled podataka
+```
+
+```
+##     len supp dose
+## 1   6.4   VC  0.5
+## 2  11.2   VC  0.5
+## 3  10.0   VC  0.5
+## 4  21.5   VC  2.0
+## 5  24.5   OJ  2.0
+## 6  23.6   VC  2.0
+## 7  27.3   OJ  1.0
+## 8  15.5   VC  1.0
+## 9  22.5   VC  1.0
+## 10 29.4   OJ  2.0
+```
+
+
+---
+
+
+# Vizualni pregled podataka
+
+
+```r
+# Pogledaj distribuciju
+ggdensity(dta$len,
+          main = "Distribucija varijable duljina zuba (len)",
+          xlab = "Duljina zuba") 
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Vizualni pregled podataka
+
+
+```r
+# Pogledaj QQ plot
+ggqqplot(dta$len)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Test normalnosti podataka
+
+
+```r
+# Provedi Shapiro-Wilk tets
+shapiro.test(dta$len)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  dta$len
+## W = 0.96743, p-value = 0.1091
+```
+
+
+---
+class: inverse, center, middle
+name: kor
+
+# TESTOVI KORELACIJE
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Odnos između varijabli)
+
+---
+
+# Testovi
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+1. Pearson
+&lt;br&gt;
+&lt;br&gt;
+2. Spearman
+
+
+---
+
+# Podatci
+
+
+```r
+# Učitaj podatke
+cor_dta &lt;- mtcars
+head(cor_dta, 10) # Pregled podataka
+```
+
+```
+##                    mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360        14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D         24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230          22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280          19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+```
+
+---
+
+# Podatci
+
+
+
+```r
+summary(cor_dta)  # Pregled podataka
+```
+
+```
+##       mpg             cyl             disp             hp       
+##  Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0  
+##  1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5  
+##  Median :19.20   Median :6.000   Median :196.3   Median :123.0  
+##  Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7  
+##  3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0  
+##  Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0  
+##       drat             wt             qsec             vs        
+##  Min.   :2.760   Min.   :1.513   Min.   :14.50   Min.   :0.0000  
+##  1st Qu.:3.080   1st Qu.:2.581   1st Qu.:16.89   1st Qu.:0.0000  
+##  Median :3.695   Median :3.325   Median :17.71   Median :0.0000  
+##  Mean   :3.597   Mean   :3.217   Mean   :17.85   Mean   :0.4375  
+##  3rd Qu.:3.920   3rd Qu.:3.610   3rd Qu.:18.90   3rd Qu.:1.0000  
+##  Max.   :4.930   Max.   :5.424   Max.   :22.90   Max.   :1.0000  
+##        am              gear            carb      
+##  Min.   :0.0000   Min.   :3.000   Min.   :1.000  
+##  1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:2.000  
+##  Median :0.0000   Median :4.000   Median :2.000  
+##  Mean   :0.4062   Mean   :3.688   Mean   :2.812  
+##  3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:4.000  
+##  Max.   :1.0000   Max.   :5.000   Max.   :8.000
+```
+
+---
+
+# Podatci
+
+
+```r
+str(cor_dta)      # Pregled podataka
+```
+
+```
+## 'data.frame':	32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+```
+
+---
+
+
+# Provjera pretpostavki 
+
+
+#### Linearnost odnosa
+
+
+```r
+# Dijagram raspršivanja
+ggscatter(cor_dta, x = "mpg", y = "wt",
+          add = "reg.line", conf.int = T,
+          cor.coef = T, cor.method = "pearson",
+          xlab = "Milje/galon", ylab = "Težina(1k lbs)")
+```
+
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provjera pretpostavki
+
+#### Normalnost distribucije(QQ plot;Shapiro-Wilk)
+
+
+```r
+# QQ plot za "mpg"
+ggqqplot(cor_dta$mpg, ylab = "MPG")
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+#### Normalnost distribucije(QQ plot;Shapiro-Wilk)
+
+
+```r
+# QQ plot za "wg
+ggqqplot(cor_dta$wt, ylab = "WT")
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+#### Normalnost distribucije(Shapiro-Wilk)
+
+```r
+# Test za "mpg"
+shapiro.test(cor_dta$mpg)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  cor_dta$mpg
+## W = 0.94756, p-value = 0.1229
+```
+
+```r
+# Test za "wt"
+shapiro.test(cor_dta$wt)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  cor_dta$wt
+## W = 0.94326, p-value = 0.09265
+```
+
+---
+
+# Test korelacije izmedju dvije varijable
+
+
+```r
+# Provedi Pearsonov korelacijski test
+
+pearson &lt;- cor.test(cor_dta$mpg, cor_dta$wt,
+                    method = "pearson") 
+
+print(pearson) # Pregled rezultata testa
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  cor_dta$mpg and cor_dta$wt
+## t = -9.559, df = 30, p-value = 1.294e-10
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.9338264 -0.7440872
+## sample estimates:
+##        cor 
+## -0.8676594
+```
+
+```r
+print(pearson$p.value)  # Pregled p-vrijednosti
+```
+
+```
+## [1] 1.293959e-10
+```
+
+```r
+print(pearson$estimate) # Pregled korelacijskog koeficijenta
+```
+
+```
+##        cor 
+## -0.8676594
+```
+
+---
+
+# Test korelacije izmedju dvije varijable
+
+
+
+```r
+# Provedi Spearmanov korelacijski test
+
+spearman &lt;- cor.test(cor_dta$mpg, cor_dta$wt,
+                    method = "spearman")
+```
+
+```
+## Warning in cor.test.default(cor_dta$mpg, cor_dta$wt, method = "spearman"):
+## Cannot compute exact p-value with ties
+```
+
+```r
+print(spearman) # Pregled rezultata testa
+```
+
+```
+## 
+## 	Spearman's rank correlation rho
+## 
+## data:  cor_dta$mpg and cor_dta$wt
+## S = 10292, p-value = 1.488e-11
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##       rho 
+## -0.886422
+```
+
+```r
+print(spearman$p.value)  # Pregled p-vrijednosti
+```
+
+```
+## [1] 1.487595e-11
+```
+
+```r
+print(spearman$estimate) # Pregled korelacijskog koeficijenta
+```
+
+```
+##       rho 
+## -0.886422
+```
+
+---
+
+
+# Test korelacije između više varijabli
+
+
+```r
+# Učitaj podatke
+m_cor_dta &lt;- mtcars[, c(1,3,4,5,6,7)]
+head(m_cor_dta,10) #Pregled podataka
+```
+
+```
+##                    mpg  disp  hp drat    wt  qsec
+## Mazda RX4         21.0 160.0 110 3.90 2.620 16.46
+## Mazda RX4 Wag     21.0 160.0 110 3.90 2.875 17.02
+## Datsun 710        22.8 108.0  93 3.85 2.320 18.61
+## Hornet 4 Drive    21.4 258.0 110 3.08 3.215 19.44
+## Hornet Sportabout 18.7 360.0 175 3.15 3.440 17.02
+## Valiant           18.1 225.0 105 2.76 3.460 20.22
+## Duster 360        14.3 360.0 245 3.21 3.570 15.84
+## Merc 240D         24.4 146.7  62 3.69 3.190 20.00
+## Merc 230          22.8 140.8  95 3.92 3.150 22.90
+## Merc 280          19.2 167.6 123 3.92 3.440 18.30
+```
+
+---
+
+# Test korelacije između više varijabli
+
+
+```r
+cor_mtx &lt;- cor(m_cor_dta) # Izračunaj korelacijsku matricu
+round(cor_mtx,2) # Pregled korelacijskih koeficijenata
+```
+
+```
+##        mpg  disp    hp  drat    wt  qsec
+## mpg   1.00 -0.85 -0.78  0.68 -0.87  0.42
+## disp -0.85  1.00  0.79 -0.71  0.89 -0.43
+## hp   -0.78  0.79  1.00 -0.45  0.66 -0.71
+## drat  0.68 -0.71 -0.45  1.00 -0.71  0.09
+## wt   -0.87  0.89  0.66 -0.71  1.00 -0.17
+## qsec  0.42 -0.43 -0.71  0.09 -0.17  1.00
+```
+
+---
+
+# Test korelacije između više varijabli
+
+
+```r
+cor_mtx_pv &lt;- Hmisc::rcorr(as.matrix(m_cor_dta)) # Pripadajuće p-vrijednosti
+print(cor_mtx_pv) # Pregled rezultata
+```
+
+```
+##        mpg  disp    hp  drat    wt  qsec
+## mpg   1.00 -0.85 -0.78  0.68 -0.87  0.42
+## disp -0.85  1.00  0.79 -0.71  0.89 -0.43
+## hp   -0.78  0.79  1.00 -0.45  0.66 -0.71
+## drat  0.68 -0.71 -0.45  1.00 -0.71  0.09
+## wt   -0.87  0.89  0.66 -0.71  1.00 -0.17
+## qsec  0.42 -0.43 -0.71  0.09 -0.17  1.00
+## 
+## n= 32 
+## 
+## 
+## P
+##      mpg    disp   hp     drat   wt     qsec  
+## mpg         0.0000 0.0000 0.0000 0.0000 0.0171
+## disp 0.0000        0.0000 0.0000 0.0000 0.0131
+## hp   0.0000 0.0000        0.0100 0.0000 0.0000
+## drat 0.0000 0.0000 0.0100        0.0000 0.6196
+## wt   0.0000 0.0000 0.0000 0.0000        0.3389
+## qsec 0.0171 0.0131 0.0000 0.6196 0.3389
+```
+
+---
+
+
+# Test korelacije između više varijabli
+
+
+
+```r
+# Vizualizacija 1
+
+library(corrplot) # Učitaj paket
+corrplot(cor_mtx, type = "upper", order = "hclust", # Korelacijska matrica je input
+         tl.col = "black", tl.srt = 45)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+# Vizualizacija 2
+
+library(PerformanceAnalytics)
+chart.Correlation(m_cor_dta, histogram = T, pch = 19)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+# Vizualizacija 3
+
+col &lt;- colorRampPalette(c("blue", "green", "red"))(20) # Definiraj boje
+heatmap(cor_mtx, col = col, symm = T) # Prikaži heatmap/ input je korelacijska matrica
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+class: inverse, center, middle
+name: prosjek
+
+# USPOREDBA PROSJEKA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Jesu li dva prosjeka jednaka?)
+
+---
+
+# Testovi:
+
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+1. Jedan uzorak: t-test(parametarski), Wilcox(neparametarski)
+&lt;br&gt;
+&lt;br&gt;
+2. Dva nezavisna uzorka: t-test(parametarski), Wilcox(neparametarski)
+&lt;br&gt;
+&lt;br&gt;
+3. Dva zavisna uzorka: t-test(parametarski), Wilcox(neparametarski)
+&lt;br&gt;
+&lt;br&gt;
+4. Više od dva uzorka: Jednostrana i dvostrana ANOVA(param), Kruskal-Wallis(nparam)
+
+---
+
+# Jedan uzorak
+
+
+```r
+## t-test ##
+
+set.seed(1234)
+# Stvori podatke
+t1_dta &lt;- data.frame(
+  naziv = paste0(rep("M_", 10),1:10),
+  mjera = round(rnorm(10,20,2),1)
+)
+
+# Pogledaj podatke
+head(t1_dta, 10)
+```
+
+```
+##    naziv mjera
+## 1    M_1  17.6
+## 2    M_2  20.6
+## 3    M_3  22.2
+## 4    M_4  15.3
+## 5    M_5  20.9
+## 6    M_6  21.0
+## 7    M_7  18.9
+## 8    M_8  18.9
+## 9    M_9  18.9
+## 10  M_10  18.2
+```
+
+---
+
+# Jedan uzorak
+
+
+```r
+# Deskriptivna statistika
+summary(t1_dta$mjera)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   15.30   18.38   18.90   19.25   20.82   22.20
+```
+
+```r
+# Pregled podataka
+ggboxplot(t1_dta$mjera,
+          ylab = "Mjera",
+          xlab = F,
+          ggtheme = theme_minimal())
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Jedan uzorak
+
+
+```r
+# Test normalnosti
+shapiro.test(t1_dta$mjera)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  t1_dta$mjera
+## W = 0.9526, p-value = 0.6993
+```
+
+```r
+# QQ plot
+ggqqplot(t1_dta$mjera, ylab = "Mjera",
+         ggtheme = theme_minimal())
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Jedan uzorak
+
+
+```r
+# Provedi t-test (prosjek za usporedbu je 25)
+t1_test &lt;- t.test(t1_dta$mjera, mu = 25)
+# Prikaži rezultate
+print(t1_test)
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  t1_dta$mjera
+## t = -9.0783, df = 9, p-value = 7.953e-06
+## alternative hypothesis: true mean is not equal to 25
+## 95 percent confidence interval:
+##  17.8172 20.6828
+## sample estimates:
+## mean of x 
+##     19.25
+```
+
+```r
+# Pristupi elementima rezultata
+print(t1_test$p.value)
+```
+
+```
+## [1] 7.953383e-06
+```
+
+```r
+print(t1_test$conf.int)
+```
+
+```
+## [1] 17.8172 20.6828
+## attr(,"conf.level")
+## [1] 0.95
+```
+
+
+---
+
+# Jedan uzorak
+
+
+```r
+## Willcoxon test ##
+
+# Provedi test
+w1_test &lt;- wilcox.test(t1_dta$mjera, mu = 25)
+```
+
+```
+## Warning in wilcox.test.default(t1_dta$mjera, mu = 25): cannot compute exact p-
+## value with ties
+```
+
+```r
+# Pogledaj rezultate
+print(w1_test)
+```
+
+```
+## 
+## 	Wilcoxon signed rank test with continuity correction
+## 
+## data:  t1_dta$mjera
+## V = 0, p-value = 0.005793
+## alternative hypothesis: true location is not equal to 25
+```
+
+---
+
+# Dva nezavisna uzorka
+
+
+```r
+## t-test ##
+
+# Stvori podatke
+visina_zene &lt;- c(38.9, 61.2, 73.3, 21.8, 63.4, 64.6, 48.4, 48.8, 48.5)
+visina_muskarci &lt;- c(67.8, 60, 63.4, 76, 89.4, 73.3, 67.3, 61.3, 62.4) 
+# Poveži u DF
+nu2 &lt;- data.frame(
+  grupa = rep(c("Muskarci", "Zene"), each = 9),
+  tezina = c(visina_zene, visina_muskarci)
+)
+# Pogledaj podatke
+print(nu2)
+```
+
+```
+##       grupa tezina
+## 1  Muskarci   38.9
+## 2  Muskarci   61.2
+## 3  Muskarci   73.3
+## 4  Muskarci   21.8
+## 5  Muskarci   63.4
+## 6  Muskarci   64.6
+## 7  Muskarci   48.4
+## 8  Muskarci   48.8
+## 9  Muskarci   48.5
+## 10     Zene   67.8
+## 11     Zene   60.0
+## 12     Zene   63.4
+## 13     Zene   76.0
+## 14     Zene   89.4
+## 15     Zene   73.3
+## 16     Zene   67.3
+## 17     Zene   61.3
+## 18     Zene   62.4
+```
+
+---
+
+# Dva nezavisna uzorka
+
+
+```r
+# Deskriptivna statistika
+nu2 %&gt;%
+  group_by(grupa) %&gt;%
+  summarise(
+    broj = n(),
+    mean = mean(tezina, na.rm = T),
+    sd = sd(tezina, na.rm = T)
+          )
+```
+
+```
+## # A tibble: 2 x 4
+##   grupa     broj  mean    sd
+## * &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Muskarci     9  52.1 15.6 
+## 2 Zene         9  69.0  9.38
+```
+
+```r
+# Vizualiziraj podatke
+ggboxplot(nu2, x = "grupa", y = "tezina",
+          color = "grupa",
+          ylab = "tezina", xlab = "grupe")
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Dva nezavisna uzorka
+
+
+```r
+# Testiraj normalnost distribucije
+with(nu2, shapiro.test(tezina[grupa == "Muskarci"]))
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  tezina[grupa == "Muskarci"]
+## W = 0.94266, p-value = 0.6101
+```
+
+```r
+with(nu2,shapiro.test(tezina[grupa == "Zene"]))
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  tezina[grupa == "Zene"]
+## W = 0.86425, p-value = 0.1066
+```
+
+```r
+# Testiraj jednakost varijanci
+eq_var_nu2 &lt;- var.test(tezina ~ grupa, data = nu2)
+print(eq_var_nu2)
+```
+
+```
+## 
+## 	F test to compare two variances
+## 
+## data:  tezina by grupa
+## F = 2.7675, num df = 8, denom df = 8, p-value = 0.1714
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##   0.6242536 12.2689506
+## sample estimates:
+## ratio of variances 
+##           2.767478
+```
+
+---
+
+# Dva nezavisna uzorka
+
+
+```r
+# Provedi test
+t_nu2 &lt;- t.test(visina_muskarci, visina_zene, var.equal = T)
+print(t_nu2)
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  visina_muskarci and visina_zene
+## t = 2.7842, df = 16, p-value = 0.01327
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##   4.029759 29.748019
+## sample estimates:
+## mean of x mean of y 
+##  68.98889  52.10000
+```
+
+```r
+# Alternativni nacin
+a_t_nu2 &lt;- t.test(tezina ~ grupa, data = nu2, var.equal = T)
+print(a_t_nu2)
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  tezina by grupa
+## t = -2.7842, df = 16, p-value = 0.01327
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -29.748019  -4.029759
+## sample estimates:
+## mean in group Muskarci     mean in group Zene 
+##               52.10000               68.98889
+```
+
+---
+
+# Dva nezavisna uzorka
+
+
+```r
+## Wilcoxon test ##
+
+# Provedi test
+w_nu2 &lt;- wilcox.test(visina_muskarci, visina_zene)
+```
+
+```
+## Warning in wilcox.test.default(visina_muskarci, visina_zene): cannot compute
+## exact p-value with ties
+```
+
+```r
+print(w_nu2, 10)
+```
+
+```
+## 
+## 	Wilcoxon rank sum test with continuity correction
+## 
+## data:  visina_muskarci and visina_zene
+## W = 66, p-value = 0.02711657
+## alternative hypothesis: true location shift is not equal to 0
+```
+
+---
+
+# Dva zavisna uzorka
+
+
+```r
+## t-test ##
+
+# Napravi podatke
+prije &lt;- c(200.1, 190.9, 192.7, 213, 241.4, 196.9, 172.2, 185.5, 205.2, 193.7)
+nakon &lt;- c(392.9, 393.2, 345.1, 393, 434, 427.9, 422, 383.9, 392.3, 352.2)
+# Poveži u DF
+zu2 &lt;- data.frame(
+  grupa = rep(c("prije", "nakon"), each = 10),
+  tezina = c(prije, nakon)
+)
+# Pregled podataka
+head(zu2,10)
+```
+
+```
+##    grupa tezina
+## 1  prije  200.1
+## 2  prije  190.9
+## 3  prije  192.7
+## 4  prije  213.0
+## 5  prije  241.4
+## 6  prije  196.9
+## 7  prije  172.2
+## 8  prije  185.5
+## 9  prije  205.2
+## 10 prije  193.7
+```
+
+
+---
+
+# Dva zavisna uzorka
+
+
+```r
+# Deskriptivna statistika
+zu2 %&gt;%
+  group_by(grupa) %&gt;%
+  summarise(
+    broj = n(),
+    mean = mean(tezina, na.rm = T),
+    sd = sd(tezina, na.rm = T)
+          )
+```
+
+```
+## # A tibble: 2 x 4
+##   grupa  broj  mean    sd
+## * &lt;chr&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 nakon    10  394.  29.4
+## 2 prije    10  199.  18.5
+```
+
+---
+
+# Dva zavisna uzorka
+
+
+```r
+# Vizualizacija 1
+
+ggboxplot(zu2, x = "grupa", y = "tezina", 
+          color = "grupa", palette = c("#00AFBB", "#E7B800"),
+          order = c("prije", "nakon"),
+          ylab = "Tezina", xlab = "Grupe")
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Dva zavisna uzorka
+
+
+```r
+# Vizualizacija 2
+
+prije &lt;- subset(zu2, grupa == "prije", tezina, drop =  T)
+nakon &lt;- subset(zu2, grupa == "nakon", tezina, drop = T)
+
+pd &lt;- paired(prije, nakon)
+plot(pd, type = "profile") + theme_bw()
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Dva zavisna uzorka
+
+
+```r
+# Provjeri normalnost
+
+razlika &lt;- with(zu2, tezina[grupa == "prije"] - tezina[grupa == "nakon"])
+shapiro.test(razlika)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  razlika
+## W = 0.94536, p-value = 0.6141
+```
+
+```r
+# Provedi test
+t_zu2 &lt;- t.test(prije, nakon, paired = T)
+t_zu2
+```
+
+```
+## 
+## 	Paired t-test
+## 
+## data:  prije and nakon
+## t = -20.883, df = 9, p-value = 6.2e-09
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -215.5581 -173.4219
+## sample estimates:
+## mean of the differences 
+##                 -194.49
+```
+
+```r
+## Willcox ##
+w_zu2 &lt;- wilcox.test(prije, nakon, paired = T)
+w_zu2
+```
+
+```
+## 
+## 	Wilcoxon signed rank exact test
+## 
+## data:  prije and nakon
+## V = 0, p-value = 0.001953
+## alternative hypothesis: true location shift is not equal to 0
+```
+
+---
+
+# Više od dva uzorka
+
+
+```r
+## JEDNOSTRANA ANOVA ##
+
+# Podatci
+anova_dta &lt;- PlantGrowth
+# Pregled podataka
+set.seed(1234)
+dplyr::sample_n(anova_dta,10)
+```
+
+```
+##    weight group
+## 1    6.15  trt2
+## 2    3.83  trt1
+## 3    5.29  trt2
+## 4    5.12  trt2
+## 5    4.50  ctrl
+## 6    4.17  trt1
+## 7    5.87  trt1
+## 8    5.33  ctrl
+## 9    5.26  trt2
+## 10   4.61  ctrl
+```
+
+```r
+glimpse(anova_dta)
+```
+
+```
+## Rows: 30
+## Columns: 2
+## $ weight &lt;dbl&gt; 4.17, 5.58, 5.18, 6.11, 4.50, 4.61, 5.17, 4.53, 5.33, 5.14, ...
+## $ group  &lt;fct&gt; ctrl, ctrl, ctrl, ctrl, ctrl, ctrl, ctrl, ctrl, ctrl, ctrl, ...
+```
+
+```r
+levels(anova_dta$group)
+```
+
+```
+## [1] "ctrl" "trt1" "trt2"
+```
+
+
+---
+
+# Više od dva uzorka
+
+
+```r
+# Uredi redosljed faktora
+anova_dta$group &lt;- ordered(anova_dta$group,
+                            levels = c("ctrl", "trt1", "trt2"))
+# Deskriptivna statistika
+group_by(anova_dta, group) %&gt;%
+  summarise(
+    count = n(),
+    mean = mean(weight, na.rm = TRUE),
+    sd = sd(weight, na.rm = TRUE)
+  )
+```
+
+```
+## # A tibble: 3 x 4
+##   group count  mean    sd
+## * &lt;ord&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 ctrl     10  5.03 0.583
+## 2 trt1     10  4.66 0.794
+## 3 trt2     10  5.53 0.443
+```
+
+---
+
+# Više od dva uzorka
+
+
+```r
+# Vizualizacija 1
+
+ggboxplot(anova_dta, x = "group", y = "weight", 
+          color = "group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+          order = c("ctrl", "trt1", "trt2"),
+          ylab = "Težina", xlab = "Tretman")
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Više od dva uzorka
+
+
+```r
+# Vizualizacija 2
+
+ggline(anova_dta, x = "group", y = "weight", 
+       add = c("mean_se", "jitter"), 
+       order = c("ctrl", "trt1", "trt2"),
+       ylab = "Weight", xlab = "Treatment")
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Više od dva uzorka
+
+
+```r
+# Provedi ANOVA test
+procjena_anova_dta &lt;- aov(weight ~ group, data = anova_dta)
+summary(procjena_anova_dta)
+```
+
+```
+##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## group        2  3.766  1.8832   4.846 0.0159 *
+## Residuals   27 10.492  0.3886                 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+---
+
+
+# Više od dva uzorka
+
+
+```r
+# Međusobna usporedba prosjeka (varijabli)
+TukeyHSD((procjena_anova_dta)) # 1. način
+```
+
+```
+##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = weight ~ group, data = anova_dta)
+## 
+## $group
+##             diff        lwr       upr     p adj
+## trt1-ctrl -0.371 -1.0622161 0.3202161 0.3908711
+## trt2-ctrl  0.494 -0.1972161 1.1852161 0.1979960
+## trt2-trt1  0.865  0.1737839 1.5562161 0.0120064
+```
+
+```r
+summary(glht(procjena_anova_dta, linfct = mcp(group = "Tukey"))) # 2.način
+```
+
+```
+## 
+## 	 Simultaneous Tests for General Linear Hypotheses
+## 
+## Multiple Comparisons of Means: Tukey Contrasts
+## 
+## 
+## Fit: aov(formula = weight ~ group, data = anova_dta)
+## 
+## Linear Hypotheses:
+##                  Estimate Std. Error t value Pr(&gt;|t|)  
+## trt1 - ctrl == 0  -0.3710     0.2788  -1.331   0.3908  
+## trt2 - ctrl == 0   0.4940     0.2788   1.772   0.1979  
+## trt2 - trt1 == 0   0.8650     0.2788   3.103   0.0121 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## (Adjusted p values reported -- single-step method)
+```
+
+```r
+pairwise.t.test(anova_dta$weight, anova_dta$group, # 3.način
+               p.adjust.method = "BH")
+```
+
+```
+## 
+## 	Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  anova_dta$weight and anova_dta$group 
+## 
+##      ctrl  trt1 
+## trt1 0.194 -    
+## trt2 0.132 0.013
+## 
+## P value adjustment method: BH
+```
+
+
+---
+
+# Više od dva uzorka
+
+
+
+```r
+# Provjera pretpostavki
+
+# Homogenost varijance
+plot(procjena_anova_dta,1) # Vizualna inspekcija
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+
+```r
+leveneTest(weight ~ group, data = anova_dta) # Formalni test
+```
+
+```
+## Levene's Test for Homogeneity of Variance (center = median)
+##       Df F value Pr(&gt;F)
+## group  2  1.1192 0.3412
+##       27
+```
+
+---
+
+# Više od dva uzorka
+
+
+```r
+# Normalnost distribucije
+plot(procjena_anova_dta,2) # Vizualna inspekcija
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Više od dva uzorka
+
+
+```r
+reziduali &lt;- residuals(object = procjena_anova_dta) # Uzmi rezidualne vrijednosti
+shapiro.test(x = reziduali) # Provedi S-H test
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  reziduali
+## W = 0.96607, p-value = 0.4379
+```
+
+```r
+# Provedi neparametarski test(Kruskal-Wallis)
+kruskal.test(weight ~ group, data = anova_dta)
+```
+
+```
+## 
+## 	Kruskal-Wallis rank sum test
+## 
+## data:  weight by group
+## Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842
+```
+
+---
+
+# Višestruka ANOVA
+
+
+
+```r
+# Učitaj podatke
+anova2_dta &lt;- ToothGrowth
+# Pregled podataka
+dplyr::sample_n(anova2_dta, 10)
+```
+
+```
+##     len supp dose
+## 1  25.8   OJ  1.0
+## 2  32.5   VC  2.0
+## 3  15.2   OJ  0.5
+## 4  17.3   VC  1.0
+## 5  26.4   OJ  2.0
+## 6  29.5   VC  2.0
+## 7  10.0   VC  0.5
+## 8  23.6   OJ  1.0
+## 9  11.2   VC  0.5
+## 10 18.5   VC  2.0
+```
+
+```r
+str(anova2_dta)
+```
+
+```
+## 'data.frame':	60 obs. of  3 variables:
+##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
+##  $ supp: Factor w/ 2 levels "OJ","VC": 2 2 2 2 2 2 2 2 2 2 ...
+##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...
+```
+
+---
+
+
+```r
+# Uredi podatke za analizu
+anova2_dta$dose &lt;- factor(anova2_dta$dose,
+                          levels = c(0.5, 1, 2),
+                          labels = c("D_0.5", "D_1", "D_2"))
+dplyr::sample_n(anova2_dta, 10) # Pregledaj
+```
+
+```
+##     len supp  dose
+## 1  18.5   VC   D_2
+## 2  16.5   OJ D_0.5
+## 3  15.2   OJ D_0.5
+## 4  21.2   OJ   D_1
+## 5  13.6   VC   D_1
+## 6  24.5   OJ   D_2
+## 7  27.3   OJ   D_1
+## 8  14.5   OJ   D_1
+## 9   9.7   OJ D_0.5
+## 10  5.8   VC D_0.5
+```
+
+
+---
+
+
+
+```r
+# Deskriptivna statistika
+group_by(anova2_dta, supp, dose) %&gt;%
+  summarise(
+    count = n(),
+    mean = mean(len, na.rm = TRUE),
+    sd = sd(len, na.rm = TRUE)
+  )
+```
+
+```
+## `summarise()` has grouped output by 'supp'. You can override using the `.groups` argument.
+```
+
+```
+## # A tibble: 6 x 5
+## # Groups:   supp [2]
+##   supp  dose  count  mean    sd
+##   &lt;fct&gt; &lt;fct&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 OJ    D_0.5    10 13.2   4.46
+## 2 OJ    D_1      10 22.7   3.91
+## 3 OJ    D_2      10 26.1   2.66
+## 4 VC    D_0.5    10  7.98  2.75
+## 5 VC    D_1      10 16.8   2.52
+## 6 VC    D_2      10 26.1   4.80
+```
+
+```r
+# Tabuliraj podatke
+table(anova2_dta$supp, anova2_dta$dose)
+```
+
+```
+##     
+##      D_0.5 D_1 D_2
+##   OJ    10  10  10
+##   VC    10  10  10
+```
+
+
+---
+
+
+```r
+# Vizualizacija 1
+ggboxplot(anova2_dta, x = "dose", y = "len", color = "supp",
+          palette = c("#00AFBB", "#E7B800"))
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-48-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+
+```r
+# Vizualizacija 2 
+ggline(anova2_dta, x = "dose", y = "len", color = "supp",
+       add = c("mean_se", "dotplot"),
+       palette = c("#00AFBB", "#E7B800"))
+```
+
+```
+## `stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+# Provedi test
+procjena_anova2_dta &lt;- aov(len ~ supp + dose, data = anova2_dta)
+summary(procjena_anova2_dta)
+```
+
+```
+##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## supp         1  205.4   205.4   14.02 0.000429 ***
+## dose         2 2426.4  1213.2   82.81  &lt; 2e-16 ***
+## Residuals   56  820.4    14.7                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+# Test sa interakcijskim regresorom
+procjena_anova3_dta &lt;- aov(len ~ supp + dose + supp:dose, data = anova2_dta)
+summary(procjena_anova3_dta)
+```
+
+```
+##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## supp         1  205.4   205.4  15.572 0.000231 ***
+## dose         2 2426.4  1213.2  92.000  &lt; 2e-16 ***
+## supp:dose    2  108.3    54.2   4.107 0.021860 *  
+## Residuals   54  712.1    13.2                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+
+```r
+# Međusobna usporedba prosjeka (varijabli)
+TukeyHSD(procjena_anova3_dta, which = "dose") # 1. način
+```
+
+```
+##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = len ~ supp + dose + supp:dose, data = anova2_dta)
+## 
+## $dose
+##             diff       lwr       upr   p adj
+## D_1-D_0.5  9.130  6.362488 11.897512 0.0e+00
+## D_2-D_0.5 15.495 12.727488 18.262512 0.0e+00
+## D_2-D_1    6.365  3.597488  9.132512 2.7e-06
+```
+
+```r
+summary(glht(procjena_anova3_dta, lincft = mcp(dose = "Tukey"))) # 2. način
+```
+
+```
+## 
+## 	 Simultaneous Tests for General Linear Hypotheses
+## 
+## Fit: aov(formula = len ~ supp + dose + supp:dose, data = anova2_dta)
+## 
+## Linear Hypotheses:
+##                     Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) == 0      13.230      1.148  11.521  &lt; 0.001 ***
+## suppVC == 0           -5.250      1.624  -3.233  0.00958 ** 
+## doseD_1 == 0           9.470      1.624   5.831  &lt; 0.001 ***
+## doseD_2 == 0          12.830      1.624   7.900  &lt; 0.001 ***
+## suppVC:doseD_1 == 0   -0.680      2.297  -0.296  0.99854    
+## suppVC:doseD_2 == 0    5.330      2.297   2.321  0.09388 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## (Adjusted p values reported -- single-step method)
+```
+
+---
+
+
+```r
+# Provjera pretpostavki
+plot(procjena_anova3_dta,1) # Homogenost varijance
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-52-1.png" style="display: block; margin: auto;" /&gt;
+
+```r
+leveneTest(len ~ supp*dose, data = anova2_dta) # Formalni tetst
+```
+
+```
+## Levene's Test for Homogeneity of Variance (center = median)
+##       Df F value Pr(&gt;F)
+## group  5  1.7086 0.1484
+##       54
+```
+
+---
+
+
+```r
+plot(procjena_anova3_dta,2) # Normalnost distribucije
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-53-1.png" style="display: block; margin: auto;" /&gt;
+
+```r
+reziduali_2 &lt;- residuals(procjena_anova3_dta) # Reziduali za SH test
+shapiro.test(reziduali_2)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  reziduali_2
+## W = 0.98499, p-value = 0.6694
+```
+
+
+---
+class: inverse, center, middle
+name: var
+
+# TESTOVI ZA USPOREDBU VARIJANCE
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Raspršenost podataka!)
+
+---
+
+# Testovi:
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+1. F-test
+&lt;br&gt;
+&lt;br&gt;
+2. Balett test;Levene test
+
+
+
+---
+
+# Dvije varijance
+
+
+```r
+# Učitaj podatke
+F_dta &lt;- ToothGrowth
+# Pregled podataka
+dplyr::sample_n(F_dta,10)
+```
+
+```
+##     len supp dose
+## 1  26.4   VC  2.0
+## 2  23.6   VC  2.0
+## 3  20.0   OJ  1.0
+## 4  14.5   VC  1.0
+## 5  23.3   OJ  1.0
+## 6  15.2   OJ  0.5
+## 7  10.0   VC  0.5
+## 8  11.2   VC  0.5
+## 9  19.7   OJ  1.0
+## 10 21.2   OJ  1.0
+```
+
+---
+
+# Dvije varijance
+
+
+
+```r
+# Provedi F-test
+procjena_F_dta &lt;- var.test(len ~ supp, data = F_dta)
+print(procjena_F_dta)
+```
+
+```
+## 
+## 	F test to compare two variances
+## 
+## data:  len by supp
+## F = 0.6386, num df = 29, denom df = 29, p-value = 0.2331
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  0.3039488 1.3416857
+## sample estimates:
+## ratio of variances 
+##          0.6385951
+```
+
+```r
+# Pogledaj omjer varijanci
+procjena_F_dta$estimate
+```
+
+```
+## ratio of variances 
+##          0.6385951
+```
+
+```r
+# p-vrijednost
+procjena_F_dta$p.value
+```
+
+```
+## [1] 0.2331433
+```
+
+---
+
+# Više od dvje varijance
+
+
+```r
+# Učitaj podatke
+mv_dta &lt;- PlantGrowth
+# Pregledaj podatke
+str(mv_dta)
+```
+
+```
+## 'data.frame':	30 obs. of  2 variables:
+##  $ weight: num  4.17 5.58 5.18 6.11 4.5 4.61 5.17 4.53 5.33 5.14 ...
+##  $ group : Factor w/ 3 levels "ctrl","trt1",..: 1 1 1 1 1 1 1 1 1 1 ...
+```
+
+```r
+# Provedi Barlett test
+b_mv_dta &lt;- bartlett.test(weight ~ group, data = mv_dta)
+b_mv_dta
+```
+
+```
+## 
+## 	Bartlett test of homogeneity of variances
+## 
+## data:  weight by group
+## Bartlett's K-squared = 2.8786, df = 2, p-value = 0.2371
+```
+
+---
+
+# Više od dvje varijance
+
+
+```r
+# Provedi Barlett test za više nezavisnih varijabli; interaction() to collapse
+bartlett.test(len ~ interaction(supp,dose), data = ToothGrowth)
+```
+
+```
+## 
+## 	Bartlett test of homogeneity of variances
+## 
+## data:  len by interaction(supp, dose)
+## Bartlett's K-squared = 6.9273, df = 5, p-value = 0.2261
+```
+
+```r
+# Provedi Levene test za jednu nezavisnu varijablu
+leveneTest(weight ~ group, data = mv_dta)
+```
+
+```
+## Levene's Test for Homogeneity of Variance (center = median)
+##       Df F value Pr(&gt;F)
+## group  2  1.1192 0.3412
+##       27
+```
+
+```r
+# Provedi Levene test za više nezavisnih varijabli
+leveneTest(len ~ interaction(supp,dose), data = ToothGrowth)
+```
+
+```
+## Levene's Test for Homogeneity of Variance (center = median)
+##       Df F value Pr(&gt;F)
+## group  5  1.7086 0.1484
+##       54
+```
+
+```r
+# Provedi Fligner-Killen test
+fligner.test(weight ~ group, data = mv_dta)
+```
+
+```
+## 
+## 	Fligner-Killeen test of homogeneity of variances
+## 
+## data:  weight by group
+## Fligner-Killeen:med chi-squared = 2.3499, df = 2, p-value = 0.3088
+```
+
+
+---
+class: inverse, center, middle
+name: kategorije
+
+# TESTOVI ZA USPOREDBU KATEGORIJA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Kategorije ili proporcije u skupinama!)
+
+---
+
+# Testovi:
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+1. Chi-sq goodnes of fit
+&lt;br&gt;
+&lt;br&gt;
+2. Chi-sq test nezavisnosti
+---
+
+# Chi-sq GOF
+
+
+
+
+```r
+# Stvori podatke
+sparoge &lt;- c(81,50,27)
+# Provedi test
+procjena_sparoge &lt;- chisq.test(sparoge, p = c(1/3, 1/3, 1/3))
+# Pogledaj rezulatate
+procjena_sparoge
+```
+
+```
+## 
+## 	Chi-squared test for given probabilities
+## 
+## data:  sparoge
+## X-squared = 27.886, df = 2, p-value = 8.803e-07
+```
+
+```r
+# Pogledaj očekivane vrijednosti
+procjena_sparoge$expected
+```
+
+```
+## [1] 52.66667 52.66667 52.66667
+```
+
+```r
+# Odredi duge vjerojatnosti
+procjena_sparoge2 &lt;- chisq.test(sparoge, p = c(1/2, 1/3, 1/6))
+procjena_sparoge2
+```
+
+```
+## 
+## 	Chi-squared test for given probabilities
+## 
+## data:  sparoge
+## X-squared = 0.20253, df = 2, p-value = 0.9037
+```
+
+```r
+# Pogledaj p.vrijednosti
+procjena_sparoge2$p.value
+```
+
+```
+## [1] 0.9036928
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+
+```r
+# Ucitaj podatke
+file_path &lt;- "http://www.sthda.com/sthda/RDoc/data/housetasks.txt"
+kucniPoslovi &lt;- read.delim(file_path, row.names = 1)
+kucniPoslovi # Pogledaj podatke
+```
+
+```
+##            Wife Alternating Husband Jointly
+## Laundry     156          14       2       4
+## Main_meal   124          20       5       4
+## Dinner       77          11       7      13
+## Breakfeast   82          36      15       7
+## Tidying      53          11       1      57
+## Dishes       32          24       4      53
+## Shopping     33          23       9      55
+## Official     12          46      23      15
+## Driving      10          51      75       3
+## Finances     13          13      21      66
+## Insurance     8           1      53      77
+## Repairs       0           3     160       2
+## Holidays      0           1       6     153
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+
+```r
+# Pogledaj kontigencijsku tablicu
+kt &lt;- as.table(as.matrix(kucniPoslovi))
+
+gplots::balloonplot(t(kt), main = "kucniPoslovi", # 1. način
+           xlab = "", ylab = "",
+           label = F, show.margins = F)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-60-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+
+```r
+graphics::mosaicplot(kt,shade = T, las = 2,       # 2. način
+                     main = "kucniPoslovi")
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-61-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+```r
+# Provedi Chi-sq
+procjena_kucniPoslovi &lt;- chisq.test(kucniPoslovi)
+procjena_kucniPoslovi
+```
+
+```
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  kucniPoslovi
+## X-squared = 1944.5, df = 36, p-value &lt; 2.2e-16
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+```r
+# Opažene vrijednosti
+procjena_kucniPoslovi$observed
+```
+
+```
+##            Wife Alternating Husband Jointly
+## Laundry     156          14       2       4
+## Main_meal   124          20       5       4
+## Dinner       77          11       7      13
+## Breakfeast   82          36      15       7
+## Tidying      53          11       1      57
+## Dishes       32          24       4      53
+## Shopping     33          23       9      55
+## Official     12          46      23      15
+## Driving      10          51      75       3
+## Finances     13          13      21      66
+## Insurance     8           1      53      77
+## Repairs       0           3     160       2
+## Holidays      0           1       6     153
+```
+
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+
+```r
+# Očekivane vrijednosti
+round(procjena_kucniPoslovi$expected,2)
+```
+
+```
+##             Wife Alternating Husband Jointly
+## Laundry    60.55       25.63   38.45   51.37
+## Main_meal  52.64       22.28   33.42   44.65
+## Dinner     37.16       15.73   23.59   31.52
+## Breakfeast 48.17       20.39   30.58   40.86
+## Tidying    41.97       17.77   26.65   35.61
+## Dishes     38.88       16.46   24.69   32.98
+## Shopping   41.28       17.48   26.22   35.02
+## Official   33.03       13.98   20.97   28.02
+## Driving    47.82       20.24   30.37   40.57
+## Finances   38.88       16.46   24.69   32.98
+## Insurance  47.82       20.24   30.37   40.57
+## Repairs    56.77       24.03   36.05   48.16
+## Holidays   55.05       23.30   34.95   46.70
+```
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+
+```r
+# Prikaži reziduale
+round(procjena_kucniPoslovi$residuals,2)
+```
+
+```
+##             Wife Alternating Husband Jointly
+## Laundry    12.27       -2.30   -5.88   -6.61
+## Main_meal   9.84       -0.48   -4.92   -6.08
+## Dinner      6.54       -1.19   -3.42   -3.30
+## Breakfeast  4.88        3.46   -2.82   -5.30
+## Tidying     1.70       -1.61   -4.97    3.59
+## Dishes     -1.10        1.86   -4.16    3.49
+## Shopping   -1.29        1.32   -3.36    3.38
+## Official   -3.66        8.56    0.44   -2.46
+## Driving    -5.47        6.84    8.10   -5.90
+## Finances   -4.15       -0.85   -0.74    5.75
+## Insurance  -5.76       -4.28    4.11    5.72
+## Repairs    -7.53       -4.29   20.65   -6.65
+## Holidays   -7.42       -4.62   -4.90   15.56
+```
+
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+```r
+# Grafički prikaz
+corrplot(procjena_kucniPoslovi$residuals, is.cor = F)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-66-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Chi-sq test nezavisnosti
+
+
+
+```r
+# Izracunaj doprinos Chi_sq statistici
+doprinos &lt;- 100*procjena_kucniPoslovi$residuals^2/procjena_kucniPoslovi$statistic
+round(doprinos,2)
+```
+
+```
+##            Wife Alternating Husband Jointly
+## Laundry    7.74        0.27    1.78    2.25
+## Main_meal  4.98        0.01    1.24    1.90
+## Dinner     2.20        0.07    0.60    0.56
+## Breakfeast 1.22        0.61    0.41    1.44
+## Tidying    0.15        0.13    1.27    0.66
+## Dishes     0.06        0.18    0.89    0.63
+## Shopping   0.09        0.09    0.58    0.59
+## Official   0.69        3.77    0.01    0.31
+## Driving    1.54        2.40    3.37    1.79
+## Finances   0.89        0.04    0.03    1.70
+## Insurance  1.71        0.94    0.87    1.68
+## Repairs    2.92        0.95   21.92    2.28
+## Holidays   2.83        1.10    1.23   12.45
+```
+
+
+---
+
+
+# Chi-sq test nezavisnosti
+
+
+
+```r
+#Izracunaj doprinos Chi_sq statistici
+corrplot(doprinos, is.cor = F)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: inverse, center, middle
+name: lreg
+
+# LINEARNA REGRESIJA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Kvanitficiraj odnos između varijabli!)
+
+---
+
+# Podatci
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/regression0-1.png" alt="Dijagram rasipanja koji pokazuje &amp;quot;raspolozenje&amp;quot; kao funkciju &amp;quot;sati spavanja&amp;quot;."  /&gt;
+&lt;p class="caption"&gt;Dijagram rasipanja koji pokazuje "raspolozenje" kao funkciju "sati spavanja".&lt;/p&gt;
+&lt;/div&gt;
+
+
+---
+
+# Napravi regresijski pravac
+
+
+```r
+  # Najbolji regresijski pravac
+	drawBasicScatterplot( emphGrey, "Najbolji regresijski pravac" )
+	good.coef &lt;- lm( dan.grump ~ dan.sleep, parenthood)$coef
+	abline( good.coef, col=ifelse(colour,emphCol,"black"), lwd=3 )
+```
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/regression1a-1.png" alt="Regresijski pravac koji prikazuje odnos &amp;quot;raspolozenja&amp;quot; i &amp;quot;sati spavanja&amp;quot;."  /&gt;
+&lt;p class="caption"&gt;Regresijski pravac koji prikazuje odnos "raspolozenja" i "sati spavanja".&lt;/p&gt;
+&lt;/div&gt;
+
+# Loš regresijski pravac
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/regression1b-1.png" alt="Regresijski pravac koji loše prikazuje odnos &amp;quot;raspolozenja&amp;quot; i &amp;quot;sati spavanja&amp;quot;."  /&gt;
+&lt;p class="caption"&gt;Regresijski pravac koji loše prikazuje odnos "raspolozenja" i "sati spavanja".&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+# Formalni zapis
+
+
+#### Formula regresijskog pravca
+
+
+`$$\hat{Y_i} = b_1 X_i + b_0$$`
+
+#### Pogreška regresisjkog modela
+
+`$$\epsilon_i = Y_i - \hat{Y}_i$$`
+
+#### Regresijski model za procjenu
+
+`$$Y_i = b_1 X_i + b_0 + \epsilon_i$$`
+#### OLS model
+
+`$$\sum_i (Y_i - \hat{Y}_i)^2$$`
+#### optimizacija modela uz uvjet(ograničenje) 
+ 
+`$$\sum_i {\epsilon_i}^2$$`
+
+
+---
+
+# Grafički prikaz OLS modela
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/regression3a-1.png" alt="Prikaz reziduala vezanih uz regresijski pravac."  /&gt;
+&lt;p class="caption"&gt;Prikaz reziduala vezanih uz regresijski pravac.&lt;/p&gt;
+&lt;/div&gt;
+
+
+
+
+---
+
+
+# Procjeni regresijski model
+
+
+
+```r
+# Procjeni regresijski model i spremi rezultate u objekt
+regression.1 &lt;- lm( formula = dan.grump ~ dan.sleep,  
+                    data = parenthood ) 
+```
+
+
+
+```r
+# Pogledaj rezultate
+print( regression.1 )
+```
+
+```
+## 
+## Call:
+## lm(formula = dan.grump ~ dan.sleep, data = parenthood)
+## 
+## Coefficients:
+## (Intercept)    dan.sleep  
+##     125.956       -8.937
+```
+
+
+#### Formula procjenjenog regresijskog modela
+
+`$$\hat{Y}_i = -8.94 \ X_i + 125.96$$` 
+
+
+---
+class: inverse, center, middle
+name: mlreg
+
+# VIŠESTRUKA LINEARNA REGRESIJA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Prošireni model!)
+
+---
+
+
+# Zapis modela
+
+#### Matematički zapis
+
+`$$Y_i = b_2 X_{i2} + b_1 X_{i1} + b_0 + \epsilon_i$$`
+#### Empirijski zapis
+
+```
+      dan.grump ~ dan.sleep + baby.sleep
+```
+
+---
+
+# Grafički prikaz
+
+
+```r
+knitr::include_graphics(file.path("../Foto/scatter3d.png"))
+```
+
+&lt;img src="../Foto/scatter3d.png" width="486" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Procijeni regresijski model 
+
+
+```r
+# Provedi višestruku regresiju u R
+regression.2 &lt;- lm( formula = dan.grump ~ dan.sleep + baby.sleep,  
+                     data = parenthood )
+# Pregledaj rezultate
+print(regression.2)
+```
+
+```
+## 
+## Call:
+## lm(formula = dan.grump ~ dan.sleep + baby.sleep, data = parenthood)
+## 
+## Coefficients:
+## (Intercept)    dan.sleep   baby.sleep  
+##   125.96557     -8.95025      0.01052
+```
+
+#### Alternativni zapis modela
+
+`$$Y_i = \left( \sum_{k=1}^K b_{k} X_{ik} \right) + b_0 + \epsilon_i$$`
+
+
+
+---
+
+
+# Karakteristike procijenjenog modela
+
+
+#### Rezidualna odstupanja
+
+`$$\mbox{SS}_{res} = \sum_i (Y_i - \hat{Y}_i)^2$$`
+
+#### Ukupna odstupanja
+
+`$$\mbox{SS}_{tot} = \sum_i (Y_i - \bar{Y})^2$$`
+---
+
+# Karakteristike procijenjenog modela
+
+#### Izračunaj u programu
+
+
+```r
+X &lt;- parenthood$dan.sleep  # Nezavisna varijabla
+Y &lt;- parenthood$dan.grump  # Zavisna varijabla
+```
+
+
+```r
+# Procijenjene vrijednosti
+Y.pred &lt;- -8.94 * X  +  125.97
+```
+
+
+
+```r
+# Izračunaj sumu rezidualnih odstupanja
+SS.resid &lt;- sum((Y - Y.pred)^2)
+print(SS.resid) # Prikaži
+```
+
+```
+## [1] 1838.722
+```
+
+
+```r
+# Izračunaj sumu ukupnih odstupanja
+SS.tot &lt;- sum((Y - mean(Y)^2))
+print(SS.tot) # Prikaži
+```
+
+```
+## [1] -399525.4
+```
+
+---
+
+# Karakteristike procijenjenog modela
+
+
+#### Formula 
+
+`$$R^2 = 1 - \frac{\mbox{SS}_{res}}{\mbox{SS}_{tot}}$$`
+#### Izračunaj vrijednost
+
+
+```r
+# Unesi vrijednsoti
+R.squared &lt;- 1 - (SS.resid / SS.tot)
+print(R.squared) # Prikaži 
+```
+
+```
+## [1] 1.004602
+```
+
+---
+
+# Karakteristike procijenjenog modela
+
+#### Usporedi sa korelacijom
+
+
+```r
+r &lt;- cor(X, Y)  # Izračunaj korelaciju
+print( r^2 )    # Prikaži
+```
+
+```
+## [1] 0.8161027
+```
+
+
+#### Prilagodjeni `\(R^2\)` koeficijent
+
+
+`$$\mbox{adj. } R^2 = 1 - \left(\frac{\mbox{SS}_{res}}{\mbox{SS}_{tot}} \times \frac{N-1}{N-K-1} \right)$$`
+---
+
+# Testiranje hipoteza kod regresijskog modela 
+
+(*Za cijeli model*)
+
+#### Nulta hipoteza
+
+`$$H_0: Y_i = b_0 + \epsilon_i$$`
+
+
+#### Alternativna hipoteza
+
+`$$H_1: Y_i = \left( \sum_{k=1}^K b_{k} X_{ik} \right) + b_0 + \epsilon_i$$`
+
+
+---
+
+# Testiranje hipoteza kod regresijskog modela 
+
+(*Za cijeli model*)
+
+#### Izračun F statistike
+
+
+`$$\mbox{SS}_{mod} = \mbox{SS}_{tot} - \mbox{SS}_{res}$$`
+
+`$$\begin{array}{rcl}
+\mbox{MS}_{mod} &amp;=&amp; \displaystyle\frac{\mbox{SS}_{mod} }{df_{mod}} \\ \\
+\mbox{MS}_{res} &amp;=&amp; \displaystyle\frac{\mbox{SS}_{res} }{df_{res} }
+\end{array}$$`
+
+`$$F =  \frac{\mbox{MS}_{mod}}{\mbox{MS}_{res}}$$`
+
+
+---
+
+# Testiranje hipoteza kod regresijskog modela 
+
+(*Za pojedinačne koeficijente*)
+
+
+#### Hipoteze
+
+`$$\begin{array}{rl}
+H_0: &amp; b = 0 \\
+H_1: &amp; b \neq 0 
+\end{array}$$`
+
+
+
+#### t-test
+
+`$$t = \frac{\hat{b}}{\mbox{SE}({\hat{b})}}$$`
+---
+
+# Testiranje hipoteza kod regresijskog modela 
+
+(*Za pojedinačne koeficijente*)
+
+#### Rezultati modela
+
+
+
+```r
+# Pogledaj rezultate modela
+print( regression.2 ) 
+```
+
+```
+## 
+## Call:
+## lm(formula = dan.grump ~ dan.sleep + baby.sleep, data = parenthood)
+## 
+## Coefficients:
+## (Intercept)    dan.sleep   baby.sleep  
+##   125.96557     -8.95025      0.01052
+```
+
+#### Rezultati modela višestruke linearne regresije
+
+
+```r
+# Pogledaj rezultate
+summary(regression.2)
+```
+
+```
+## 
+## Call:
+## lm(formula = dan.grump ~ dan.sleep + baby.sleep, data = parenthood)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -11.0345  -2.2198  -0.4016   2.6775  11.7496 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 125.96557    3.04095  41.423   &lt;2e-16 ***
+## dan.sleep    -8.95025    0.55346 -16.172   &lt;2e-16 ***
+## baby.sleep    0.01052    0.27106   0.039    0.969    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 4.354 on 97 degrees of freedom
+## Multiple R-squared:  0.8161,	Adjusted R-squared:  0.8123 
+## F-statistic: 215.2 on 2 and 97 DF,  p-value: &lt; 2.2e-16
+```
+---
+
+
+# Pretpostavke regresijskog modela
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+- Normalnost distribucije (reziduala)
+&lt;br&gt;
+- Linearnost
+&lt;br&gt;
+- Homogenost varijance
+&lt;br&gt;
+- Nekoreliranost (prediktora)
+&lt;br&gt;
+- Nezavisnost rezidualne strukture
+&lt;br&gt;
+- Nema značajnih outliera
+
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Outlieri
+
+&lt;img src="../Foto/outlier.png" width="640" style="display: block; margin: auto;" /&gt;
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Poluga (Leverage)
+
+&lt;img src="../Foto/outlier.png" width="640" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Poluga (Leverage)
+
+&lt;img src="../Foto/outlier.png" width="640" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Cook-ova udaljenost
+
+
+```r
+# Izračunaj mjeru Cook-ove udaljenosti
+cooks.distance( model = regression.2 )
+```
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Cook-ova udaljenost
+
+
+```r
+# Prikaži Cook-ovu mjeru grafički
+plot(x = regression.2, which = 4)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-85-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+
+```r
+# Provedi procjenu bez ekstremnih opservacija
+
+lm(formula = dan.grump ~ dan.sleep + baby.sleep,
+   data = parenthood,
+   subset = -64)
+```
+
+```
+## 
+## Call:
+## lm(formula = dan.grump ~ dan.sleep + baby.sleep, data = parenthood, 
+##     subset = -64)
+## 
+## Coefficients:
+## (Intercept)    dan.sleep   baby.sleep  
+##    126.3553      -8.8283      -0.1319
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera normalnosti reziduala
+
+
+```r
+# Prikaži grafički
+plot(x = regression.2, which = 1 ) # Resid vs. fitted
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-87-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera normalnosti reziduala
+
+
+```r
+plot(x = regression.2, which = 2 ) # QQ-plot
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-88-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+# Provjera regresijskog modela
+
+#### Provjera normalnosti reziduala
+
+
+```r
+# Prikaži reziduale na histogramu
+hist( x = residuals(regression.2),
+      xlab = "Vrijednost reziduala",
+      main = "",
+      breaks = 20)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-89-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera linearnosti
+
+
+```r
+# Spremi fit vrijednosti u objekt
+yhat.2 &lt;- fitted.values(object = regression.2)
+# Prikaži grafički
+plot(x = yhat.2,
+     y = parenthood$dan.grump,
+     xlab = "Fit",
+     ylab = "Observed")
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-90-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera linearnosti
+
+
+```r
+# Prikaži rezidualne vs. fitted vrijednosti
+plot(x = regression.2, which = 1)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-91-1.png" style="display: block; margin: auto;" /&gt;
+
+# Provjera regresijskog modela
+
+#### Provjera linearnosti
+
+
+```r
+# Prikaži rezidualne vs fitted vrijednosti
+car::residualPlots(model = regression.2)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-92-1.png" style="display: block; margin: auto;" /&gt;
+
+```
+##            Test stat Pr(&gt;|Test stat|)  
+## dan.sleep     2.1604          0.03323 *
+## baby.sleep   -0.5445          0.58733  
+## Tukey test    2.1615          0.03066 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera homogenosti varijance
+
+
+```r
+# Prikaži grafički
+plot(x = regression.2, which = 3)
+```
+
+&lt;img src="03_PONAVLJANJE-INFERENCIJALNA_files/figure-html/unnamed-chunk-93-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera homogenosti varijance
+
+
+```r
+# Provedi test homogenosti varijance
+car::ncvTest(regression.2)
+```
+
+```
+## Non-constant Variance Score Test 
+## Variance formula: ~ fitted.values 
+## Chisquare = 0.09317511, Df = 1, p = 0.76018
+```
+
+```r
+# Provedi drugi test varijance
+library(car)
+lmtest::coeftest( regression.2, vcov= hccm )
+```
+
+```
+## 
+## t test of coefficients:
+## 
+##               Estimate Std. Error  t value Pr(&gt;|t|)    
+## (Intercept) 125.965566   3.247285  38.7910   &lt;2e-16 ***
+## dan.sleep    -8.950250   0.615820 -14.5339   &lt;2e-16 ***
+## baby.sleep    0.010524   0.291565   0.0361   0.9713    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera kolinearnosti
+
+`$$\mbox{VIF}_k = \frac{1}{1-{R^2_{(-k)}}}$$`
+
+
+```r
+# Provedi test
+vif( mod = regression.2 )
+```
+
+```
+##  dan.sleep baby.sleep 
+##   1.651038   1.651038
+```
+
+
+
+```r
+# Pogledaj korelaciju
+cor( parenthood )
+```
+
+```
+##              dan.sleep  baby.sleep   dan.grump         day
+## dan.sleep   1.00000000  0.62794934 -0.90338404 -0.09840768
+## baby.sleep  0.62794934  1.00000000 -0.56596373 -0.01043394
+## dan.grump  -0.90338404 -0.56596373  1.00000000  0.07647926
+## day        -0.09840768 -0.01043394  0.07647926  1.00000000
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Izbor parametara modela
+
+- Informacijski kriterij (AIC)
+
+`$$\mbox{AIC} = \displaystyle\frac{\mbox{SS}_{res}}{\hat{\sigma}}^2+ 2K$$`
+
+# Provjera regresijskog modela
+
+#### Izbor parametara modela
+
+- Selekcija unatrag
+
+
+```r
+# Specificiraj puni model
+full.model &lt;- lm(formula = dan.grump ~ dan.sleep + baby.sleep + day,
+                 data = parenthood)
+
+# Selekcija unatrag
+step(object = full.model,
+     direction = "backward")
+```
+
+```
+## Start:  AIC=299.08
+## dan.grump ~ dan.sleep + baby.sleep + day
+## 
+##              Df Sum of Sq    RSS    AIC
+## - baby.sleep  1       0.1 1837.2 297.08
+## - day         1       1.6 1838.7 297.16
+## &lt;none&gt;                    1837.1 299.08
+## - dan.sleep   1    4909.0 6746.1 427.15
+## 
+## Step:  AIC=297.08
+## dan.grump ~ dan.sleep + day
+## 
+##             Df Sum of Sq    RSS    AIC
+## - day        1       1.6 1838.7 295.17
+## &lt;none&gt;                   1837.2 297.08
+## - dan.sleep  1    8103.0 9940.1 463.92
+## 
+## Step:  AIC=295.17
+## dan.grump ~ dan.sleep
+## 
+##             Df Sum of Sq    RSS    AIC
+## &lt;none&gt;                   1838.7 295.17
+## - dan.sleep  1    8159.9 9998.6 462.50
+```
+
+```
+## 
+## Call:
+## lm(formula = dan.grump ~ dan.sleep, data = parenthood)
+## 
+## Coefficients:
+## (Intercept)    dan.sleep  
+##     125.956       -8.937
+```
+
+
+---
+
+# Provjera regresijskog modela
+
+#### Izbor parametara modela
+
+- Selekcija unaprijed
+
+
+```r
+# Procijeni osnovni model
+nul.model &lt;- lm(dan.grump ~ 1, parenthood)
+# Definiraj selekcijsku funkciju (unaprijed)
+step(object = nul.model,
+     direction = "forward",
+     scope = dan.grump ~ dan.sleep + baby.sleep + day)
+```
+
+```
+## Start:  AIC=462.5
+## dan.grump ~ 1
+## 
+##              Df Sum of Sq    RSS    AIC
+## + dan.sleep   1    8159.9 1838.7 295.17
+## + baby.sleep  1    3202.7 6795.9 425.89
+## &lt;none&gt;                    9998.6 462.50
+## + day         1      58.5 9940.1 463.92
+## 
+## Step:  AIC=295.17
+## dan.grump ~ dan.sleep
+## 
+##              Df Sum of Sq    RSS    AIC
+## &lt;none&gt;                    1838.7 295.17
+## + day         1   1.55760 1837.2 297.08
+## + baby.sleep  1   0.02858 1838.7 297.16
+```
+
+```
+## 
+## Call:
+## lm(formula = dan.grump ~ dan.sleep, data = parenthood)
+## 
+## Coefficients:
+## (Intercept)    dan.sleep  
+##     125.956       -8.937
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Izbor parametara modela
+
+- Usporedba dva modela
+
+
+```r
+# Procjeni dva ugnježdena modela
+M0 &lt;- lm( dan.grump ~ dan.sleep + day, parenthood )
+M1 &lt;- lm( dan.grump ~ dan.sleep + day + baby.sleep, parenthood )
+# Usporedi modele
+AIC( M0, M1 )
+```
+
+```
+##    df      AIC
+## M0  4 582.8681
+## M1  5 584.8646
+```
+
+
+```r
+# Provedi hijerarhijsku regresiju
+anova(M0, M1)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: dan.grump ~ dan.sleep + day
+## Model 2: dan.grump ~ dan.sleep + day + baby.sleep
+##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     97 1837.2                           
+## 2     96 1837.1  1  0.063688 0.0033 0.9541
+```
+
+
+# Hvala na pažnji
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Sljedeće preedavanje: Klaster analiza)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

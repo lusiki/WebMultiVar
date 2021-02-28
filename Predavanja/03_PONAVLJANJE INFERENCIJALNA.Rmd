@@ -1314,55 +1314,489 @@ $$Y_i = b_2 X_{i2} + b_1 X_{i1} + b_0 + \epsilon_i$$
       dan.grump ~ dan.sleep + baby.sleep
 ```
 
+---
+
+# Grafički prikaz
+
+```{r, fig.height=6}
+
+knitr::include_graphics(file.path("../Foto/scatter3d.png"))
+
+```
+
+
+---
+
+# Procijeni regresijski model 
+
+```{r}
+# Provedi višestruku regresiju u R
+regression.2 <- lm( formula = dan.grump ~ dan.sleep + baby.sleep,  
+                     data = parenthood )
+# Pregledaj rezultate
+print(regression.2)
+
+```
+
+#### Alternativni zapis modela
+
+$$Y_i = \left( \sum_{k=1}^K b_{k} X_{ik} \right) + b_0 + \epsilon_i$$
 
 
 
+---
+
+
+# Karakteristike procijenjenog modela
+
+
+#### Rezidualna odstupanja
+
+$$\mbox{SS}_{res} = \sum_i (Y_i - \hat{Y}_i)^2$$
+
+#### Ukupna odstupanja
+
+$$\mbox{SS}_{tot} = \sum_i (Y_i - \bar{Y})^2$$
+---
+
+# Karakteristike procijenjenog modela
+
+#### Izračunaj u programu
+
+```{r}
+X <- parenthood$dan.sleep  # Nezavisna varijabla
+Y <- parenthood$dan.grump  # Zavisna varijabla
+```
+
+```{r}
+# Procijenjene vrijednosti
+Y.pred <- -8.94 * X  +  125.97
+```
+
+
+```{r}
+# Izračunaj sumu rezidualnih odstupanja
+SS.resid <- sum((Y - Y.pred)^2)
+print(SS.resid) # Prikaži
+
+```
+
+```{r}
+# Izračunaj sumu ukupnih odstupanja
+SS.tot <- sum((Y - mean(Y)^2))
+print(SS.tot) # Prikaži
+
+```
+
+---
+
+# Karakteristike procijenjenog modela
+
+
+#### Formula 
+
+$$R^2 = 1 - \frac{\mbox{SS}_{res}}{\mbox{SS}_{tot}}$$
+#### Izračunaj vrijednost
+
+```{r}
+# Unesi vrijednsoti
+R.squared <- 1 - (SS.resid / SS.tot)
+print(R.squared) # Prikaži 
+
+```
+
+---
+
+# Karakteristike procijenjenog modela
+
+#### Usporedi sa korelacijom
+
+```{r}
+r <- cor(X, Y)  # Izračunaj korelaciju
+print( r^2 )    # Prikaži
+```
+
+
+#### Prilagodjeni $R^2$ koeficijent
+
+
+$$\mbox{adj. } R^2 = 1 - \left(\frac{\mbox{SS}_{res}}{\mbox{SS}_{tot}} \times \frac{N-1}{N-K-1} \right)$$
+---
+
+# Testiranje hipoteza kod regresijskog modela 
+
+(*Za cijeli model*)
+
+#### Nulta hipoteza
+
+$$H_0: Y_i = b_0 + \epsilon_i$$
+
+
+#### Alternativna hipoteza
+
+$$H_1: Y_i = \left( \sum_{k=1}^K b_{k} X_{ik} \right) + b_0 + \epsilon_i$$
+
+
+---
+
+# Testiranje hipoteza kod regresijskog modela 
+
+(*Za cijeli model*)
+
+#### Izračun F statistike
+
+
+$$\mbox{SS}_{mod} = \mbox{SS}_{tot} - \mbox{SS}_{res}$$
+
+$$\begin{array}{rcl}
+\mbox{MS}_{mod} &=& \displaystyle\frac{\mbox{SS}_{mod} }{df_{mod}} \\ \\
+\mbox{MS}_{res} &=& \displaystyle\frac{\mbox{SS}_{res} }{df_{res} }
+\end{array}$$
+
+$$F =  \frac{\mbox{MS}_{mod}}{\mbox{MS}_{res}}$$
+
+
+---
+
+# Testiranje hipoteza kod regresijskog modela 
+
+(*Za pojedinačne koeficijente*)
+
+
+#### Hipoteze
+
+$$\begin{array}{rl}
+H_0: & b = 0 \\
+H_1: & b \neq 0 
+\end{array}$$
 
 
 
+#### t-test
+
+$$t = \frac{\hat{b}}{\mbox{SE}({\hat{b})}}$$
+---
+
+# Testiranje hipoteza kod regresijskog modela 
+
+(*Za pojedinačne koeficijente*)
+
+#### Rezultati modela
 
 
+```{r}
+# Pogledaj rezultate modela
+print( regression.2 ) 
+```
+
+#### Rezultati modela višestruke linearne regresije
+
+```{r}
+# Pogledaj rezultate
+summary(regression.2)
+
+```
+---
 
 
+# Pretpostavke regresijskog modela
+
+<br>
+<br>
+<br>
+
+- Normalnost distribucije (reziduala)
+<br>
+- Linearnost
+<br>
+- Homogenost varijance
+<br>
+- Nekoreliranost (prediktora)
+<br>
+- Nezavisnost rezidualne strukture
+<br>
+- Nema značajnih outliera
+
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Outlieri
+
+```{r, echo=FALSE, eval = T, fig.height=6}
+knitr::include_graphics(file.path("../Foto/outlier.png"))
+
+```
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Poluga (Leverage)
+
+```{r, echo=FALSE, eval = T, fig.height=6}
+
+knitr::include_graphics(file.path("../Foto/outlier.png"))
 
 
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Poluga (Leverage)
+
+```{r, echo=FALSE, eval = T, fig.height=6}
+
+knitr::include_graphics(file.path("../Foto/outlier.png"))
 
 
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Cook-ova udaljenost
+
+```{r,eval = FALSE}
+# Izračunaj mjeru Cook-ove udaljenosti
+cooks.distance( model = regression.2 )
+```
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+- Cook-ova udaljenost
+
+```{r, fig.height=5}
+# Prikaži Cook-ovu mjeru grafički
+plot(x = regression.2, which = 4)
+
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Ekstremni podatci
+
+```{r}
+# Provedi procjenu bez ekstremnih opservacija
+
+lm(formula = dan.grump ~ dan.sleep + baby.sleep,
+   data = parenthood,
+   subset = -64)
+
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera normalnosti reziduala
+
+```{r}
+# Prikaži grafički
+plot(x = regression.2, which = 1 ) # Resid vs. fitted
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera normalnosti reziduala
+
+```{r}
+plot(x = regression.2, which = 2 ) # QQ-plot
+```
+
+---
 
 
+# Provjera regresijskog modela
+
+#### Provjera normalnosti reziduala
+
+```{r}
+
+# Prikaži reziduale na histogramu
+hist( x = residuals(regression.2),
+      xlab = "Vrijednost reziduala",
+      main = "",
+      breaks = 20)
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera linearnosti
+
+```{r, fig.height=6}
+# Spremi fit vrijednosti u objekt
+yhat.2 <- fitted.values(object = regression.2)
+# Prikaži grafički
+plot(x = yhat.2,
+     y = parenthood$dan.grump,
+     xlab = "Fit",
+     ylab = "Observed")
+
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera linearnosti
+
+```{r}
+# Prikaži rezidualne vs. fitted vrijednosti
+plot(x = regression.2, which = 1)
+
+```
+
+# Provjera regresijskog modela
+
+#### Provjera linearnosti
+
+```{r}
+# Prikaži rezidualne vs fitted vrijednosti
+car::residualPlots(model = regression.2)
+
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera homogenosti varijance
+
+```{r}
+# Prikaži grafički
+plot(x = regression.2, which = 3)
+
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera homogenosti varijance
+
+```{r}
+
+# Provedi test homogenosti varijance
+car::ncvTest(regression.2)
+
+# Provedi drugi test varijance
+library(car)
+lmtest::coeftest( regression.2, vcov= hccm )
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Provjera kolinearnosti
+
+$$\mbox{VIF}_k = \frac{1}{1-{R^2_{(-k)}}}$$
+
+```{r}
+# Provedi test
+vif( mod = regression.2 )
+```
 
 
+```{r}
+# Pogledaj korelaciju
+cor( parenthood )
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Izbor parametara modela
+
+- Informacijski kriterij (AIC)
+
+$$\mbox{AIC} = \displaystyle\frac{\mbox{SS}_{res}}{\hat{\sigma}}^2+ 2K$$
+
+# Provjera regresijskog modela
+
+#### Izbor parametara modela
+
+- Selekcija unatrag
+
+```{r}
+# Specificiraj puni model
+full.model <- lm(formula = dan.grump ~ dan.sleep + baby.sleep + day,
+                 data = parenthood)
+
+# Selekcija unatrag
+step(object = full.model,
+     direction = "backward")
+
+```
 
 
+---
+
+# Provjera regresijskog modela
+
+#### Izbor parametara modela
+
+- Selekcija unaprijed
+
+```{r}
+# Procijeni osnovni model
+nul.model <- lm(dan.grump ~ 1, parenthood)
+# Definiraj selekcijsku funkciju (unaprijed)
+step(object = nul.model,
+     direction = "forward",
+     scope = dan.grump ~ dan.sleep + baby.sleep + day)
+
+```
+
+---
+
+# Provjera regresijskog modela
+
+#### Izbor parametara modela
+
+- Usporedba dva modela
+
+```{r}
+# Procjeni dva ugnježdena modela
+M0 <- lm( dan.grump ~ dan.sleep + day, parenthood )
+M1 <- lm( dan.grump ~ dan.sleep + day + baby.sleep, parenthood )
+# Usporedi modele
+AIC( M0, M1 )
+```
+
+```{r}
+# Provedi hijerarhijsku regresiju
+anova(M0, M1)
+
+```
 
 
+# Hvala na pažnji
 
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(Sljedeće preedavanje: Klaster analiza)
 
 
 
