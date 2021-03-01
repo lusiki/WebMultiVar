@@ -18,7 +18,7 @@ navbar:
         - text: "Deskriptivna statistika"
           href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/03_PONAVLJANJE-DESKRIPTIVNA.html#1"
         - text: "Infencijalna statistika"
-          href: ""
+          href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/03_PONAVLJANJE-INFERENCIJALNA.html#1"
         - text: "Klaster analiza"
           href: ""
         - text: "Analiza glavnih komponenti"

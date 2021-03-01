@@ -1,0 +1,827 @@
+---
+title: "MULTIVARIJATNE STATISTIČKE METODE"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
+subtitle: "Predavanje 3: Deskriptivna statistika"
+author: "Luka Sikic, PhD"
+date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)" #"`r format(Sys.time(), '%d %B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+name: toc
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=F#, echo=F, warning=F, message=F
+  )
+```
+
+```{css, echo = F, eval = T}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+```
+
+# Pregled predavanja
+
+<br>
+<br>
+<br>
+
+
+1. [Podatci](#podatci)
+
+2. [Mjere centralne tendencije](#mct)
+
+3. [Mjere varijabilnosti](#mv)
+
+4. [Varijable i podatkovni okviri](#vpo)
+
+5. [Standardizirane vrijednosti](#sv)
+
+6. [Korelacija](#kor)
+
+
+---
+class: inverse, center, middle
+name: podatci
+
+# PODATCI
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Sve kreće od podataka)
+
+---
+
+# Učitaj i pregledaj podatke
+
+```{r}
+# Učitaj paket
+library(lsr)
+# Učitaj podatke u radni prostor
+load("../Podatci/aflsmall.Rdata") 
+
+who() # Pregledaj učitane podatke
+
+# Pregledaj podatke
+print(afl.margins[1:11])
+print(afl.finalists[1:5])
+```
+
+---
+
+# Grafički pregled podataka
+
+```{r histogram1, fig.cap="Histogram pobjedničkih bodova iz AFL 2010 lige američkog nogometa.", fig.height=4, echo=FALSE}
+# Prikaži podatke grafički
+	hist( afl.margins, breaks=  seq(0,120,10), border="white", col= "grey",
+		xlab = "Pobjednički bodovi", ylab = "Frekvencija", main = ""
+	)
+```
+
+
+
+---
+class: inverse, center, middle
+name: mct
+
+# MJERE CENTRALNE TENDENCIJE
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Zlatna sredina)
+
+---
+
+
+# Najčešće korištene mjere
+
+<br>
+<br>
+<br>
+<br>
+
+- Aritmetička sredina
+<br>
+<br>
+- Medijan
+<br>
+<br>
+- Mod
+
+---
+
+# Aritmetička sredina
+
+<br>
+<br>
+
+#### Matematička definicija
+
+
+$$\bar{X} = \frac{X_1 + X_2 + ... + X_{N-1} + X_N}{N}$$
+#### Operator za sumiranje
+$$
+\sum_{i=1}^5 X_i
+$$
+
+#### Skraćeni zapis
+$$
+\bar{X} = \frac{1}{N} \sum_{i=1}^N X_i 
+$$
+---
+
+# Aritmetička sredina
+
+<br>
+<br>
+
+#### Izračun rukom
+$$
+\frac{56 + 31 + 56 + 8 + 32}{5} = \frac{183}{5} = 36.60
+$$
+
+#### Kalkulator
+```{r}
+(56 + 31 + 56 + 8 + 32) / 5
+```
+
+
+#### Funkcija
+```{r}
+sum( afl.margins[1:5]) / 5
+```
+
+
+
+---
+
+# Medijan
+<br>
+<br>
+
+#### Neparni niz
+$$
+8, 31, \mathbf{32}, 56, 56
+$$
+
+#### Parni niz
+$$
+8, 14, \mathbf{31}, \mathbf{32}, 56, 56
+$$
+
+```{r}
+#  Izračunaj medijan putem funkcije
+median( x = afl.margins ) # Cijeli podatkovni skup
+```
+
+---
+
+# Mod
+
+```{r, fig.width= 8}
+# Pogledaj frekvenciju podataka
+table(afl.finalists)
+# Izračunaj modalnu vrijednost
+modeOf( x = afl.finalists )
+
+```
+
+---
+
+# Mod
+
+<br>
+<br>
+
+```{r}
+# Izračunaj modalnu frekvenciju
+maxFreq(x = afl.finalists)
+# Izaračun za afl.margins podatke
+modeOf(afl.margins)  # Mod
+maxFreq(afl.margins) # Modalna frekvencija
+```
+
+
+
+---
+class: inverse, center, middle
+name: mv
+
+# MJERE VARIJABILNOSTI
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Raspršenost podataka)
+
+---
+
+# Najčešće korištene mjere
+<br>
+<br>
+<br>
+<br>
+- Raspon/Min-Max
+<br>
+<br>
+- Kvartili
+<br>
+<br>
+- Varijanca
+<br>
+<br>
+- Standardna devijacija 
+
+---
+
+# Raspon (Min-Max)
+
+<br>
+<br>
+```{r}
+# Maksimalna vrijednost
+max(afl.margins)
+# Minimalna vrijednost
+min(afl.margins)
+# Raspon podataka
+range(afl.margins)
+```
+
+
+---
+
+# Kvartili
+
+```{r}
+# Izračunaj pedeseti (50i) kvartil/percentil
+quantile(x = afl.margins, probs = .5)
+# Izračunaj 25i i 75i kvartil/percentil
+quantile(afl.margins, probs = c(.25,.75))
+# Izračunaj interkvartilni raspon
+IQR(x = afl.margins)
+
+```
+
+---
+
+# Varijanca
+<br>
+<br>
+
+#### Matematička definicija
+<br>
+<br>
+$$\mbox{Var}(X) = \frac{1}{N} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2$$
+<br>
+<br>
+#### Alternativni zapis
+$$\mbox{Var}(X) = \frac{\sum_{i=1}^N \left( X_i - \bar{X} \right)^2}{N}$$
+
+---
+
+# Varijanca
+<br>
+<br>
+
+```{r echo=FALSE}
+knitr::kable(rbind(c(1 , 56 , 19.4  , 376.36),
+                   c(2 , 31 ,  -5.6 , 31.36),
+                   c(3 , 56 , 19.4  , 376.36),
+                   c(4 , 8 , -28.6  , 817.96),
+                   c(5 , 32 , -4.6  , 21.16)),
+caption = 'Ručni izračun varijance.',
+col.names = c( "$i$",
+               "$X_i$", 
+               "$X_i - \\bar{X}$",
+               "$(X_i - \\bar{X})^2$"),
+  booktabs = TRUE)
+```
+
+---
+
+# Varijanca
+<br>
+<br>
+```{r}
+# Kalkulator
+(376.36 + 31.36 + 376.36 + 817.96 + 21.16 ) / 5
+```
+
+```{r}
+
+# Izračunaj varijancu pomoću funkcija
+mean( (afl.margins - mean(afl.margins) )^2)
+var( afl.margins ) # Skrati postupak
+```
+
+---
+
+
+# Standardna devijacija 
+<br>
+<br>
+#### Matematička definicija
+<br>
+
+
+$$s = \sqrt{ \frac{1}{N} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2 }$$
+
+<br>
+
+#### **Procjena** standardne devijacije
+
+$$\hat\sigma = \sqrt{ \frac{1}{N-1} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2 }$$
+
+```{r}
+# Izračunaj pomoću funkcije
+sd( afl.margins ) 
+```
+
+
+---
+class: inverse, center, middle
+name: vpo
+
+# VARIJABLE I PODTAKOVNI OKVIRI
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Deskriptivna statistika u praksi)
+
+---
+
+# Deskriptivna statistika na varijabli
+
+<br>
+<br>
+```{r}
+# Pregled numeričke varijable
+summary( object = afl.margins ) # Deskriptivna stat 
+```
+
+```{r}
+# Pregled logičke varijable
+ekstremi <-  afl.margins > 50 # Stvori log varijablu
+head(ekstremi,5) # Pogledaj podatke
+summary(ekstremi) # Deskriptivna stat
+```
+---
+
+# Deskriptivna statistika na varijabli
+
+```{r}
+# Pregled faktorske varijable
+summary(object = afl.finalists) # Deskriptivna stat
+
+# Pregled tekstualne varijable
+txt <- as.character( afl.finalists ) # Stvori txt var
+summary( object = txt ) # Deskriptivna stat
+```
+
+---
+
+# Drugi podatci
+
+```{r}
+rm(list = ls()) # Očisti radni prostor
+load("../PODATCI/clinicaltrial.Rdata") # Učitaj podatke
+who(TRUE) # Pregled podataka 
+head(clin.trial, 5) #Pregled podataka
+
+```
+
+
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+
+```{r}
+# Deksriptivna statistika na podatkovnom okviru
+summary(clin.trial) # Desktiptivna stat
+```
+
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+.tiny[
+```{r, fig.height=6}
+# Deksriptivna statistika na podatkovnom okviru
+Hmisc::describe(clin.trial) # Desktiptivna stat/ druga funkcija
+```
+]
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+.tiny[
+```{r, fig.height=6}
+# Pregledaj grupirano prema terapiji
+by(data = clin.trial, # Izvor podataka
+   INDICES = clin.trial$therapy, # Odredi grupiranje
+   FUN = summary) # Odredi funkciju
+```
+]
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+
+```{r}
+# Pregledaj grupirano prema razlici u raspoloženju
+aggregate(formula = mood.gain ~ drug + therapy, # Prikaz
+          data = clin.trial, # Podatci
+          FUN = mean) # AS
+
+```
+
+
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+
+```{r}
+# Pregledaj grupirano prema razlici u raspoloženju
+aggregate(mood.gain ~ drug + therapy,  # Prikaz
+          clin.trial, # Podatci
+          sd) # Standardna devijacija
+```
+
+
+---
+class: inverse, center, middle
+name: sv
+
+# STANDARDIZIRANE VRIJEDNOSTI
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Usporedba kruški i jabuka)
+
+---
+
+# Standardizirane vrijednosti
+
+#### Matematička definicija
+<br>
+$$\mbox{standardna vrijednost} = \frac{\mbox{vrijednost opservacije} - \mbox{prosjek}}{\mbox{standardna devijacija}}$$ 
+<br>
+
+$$z_i = \frac{X_i - \bar{X}}{\hat\sigma}$$
+<br>
+
+$$z = \frac{35 - 17}{5} = 3.6$$
+
+```{r}
+# Vidi dio u distribuciji
+pnorm( 3.6 ) 
+```
+
+
+---
+class: inverse, center, middle
+name: kor
+
+# KORELACIJA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Međusobni odnos dvije ili više varjabli)
+
+---
+
+
+# Podatci
+
+```{r, warning = F}
+rm(list = ls()) # Očisti radni prostor
+ # Učitaj podatke
+load("../PODATCI/parenthood.Rdata")
+who(TRUE) # Pregled podataka 
+# Pregledaj podatke
+head(parenthood, 7) # Prvih 7 redova
+```
+
+---
+
+# Podatci
+
+.tiny[
+```{r, fig.height=6}
+# Pogledaj deskriptivnu statistiku
+Hmisc::describe(parenthood)
+```
+]
+---
+
+# Podatci
+
+```{r parenthood, fig.cap="Grafički prikaz varijabli u podatkovnom skupu.", echo=FALSE, fig.height =4}
+par(mfcol = c(1, 3)) # Create a 2 x 2 plotting matrix
+	plotOne <- function( x,... ) {
+	
+		hist( x, border="white",
+			col=("cornflowerblue"),
+			ylab="Frekvencija", main="",
+			...
+		)
+		
+	}
+	
+	plotOne( parenthood$dan.grump, xlab="Raspoloženje" )
+	plotOne( parenthood$dan.sleep, xlab="Sati spavanja/roditelj" )
+	plotOne( parenthood$baby.sleep, xlab="Sati spavanja/dijete" )	
+```
+
+
+
+---
+
+# Korelacija
+
+
+```{r scatterparent1a, fig.cap="Dijagram rasipanja za varijable `Sati spavanja/roditelj` i `Raspoloženje`.", echo=FALSE, fig.height=5}
+oneCorPlot <- function(x,y,...) {
+		
+		plot(x,y,pch=19,col=("black"),...)
+		
+	}
+	
+	oneCorPlot( parenthood$dan.sleep, parenthood$dan.grump, 
+		xlab="Sati spavanja/roditelj", ylab="Raspoloženje"
+	)
+```
+
+---
+
+# Korelacija
+
+```{r scatterparent1b, fig.cap="Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Raspoloženje`.", echo=FALSE,fig.height=5}
+oneCorPlot <- function(x,y,...) {
+		
+		plot(x,y,pch=19,col=("black"),...)
+		
+	}
+	
+	oneCorPlot( parenthood$baby.sleep, parenthood$dan.grump, 
+		xlab="Sati spavanja/dijete", ylab="Raspoloženje"
+	)
+```
+
+---
+
+# Korelacija
+
+```{r scatterparent2, fig.cap="Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Sati spavanja/roditelj`.", echo=FALSE, ,fig.height=5}
+oneCorPlot <- function(x,y,...) {
+		
+		plot(x,y,pch=19,col=("black"),...)
+		
+	}
+	
+	oneCorPlot( parenthood$baby.sleep, parenthood$dan.sleep, 
+		xlab="Sati spavanja/dijete", ylab="Sati spavanja/roditelj")
+``` 
+
+---
+
+# Kovarijanca
+<br>
+<br>
+#### Matematička definicija
+
+$$\mbox{Cov}(X,Y) = \frac{1}{N-1} \sum_{i=1}^N \left( X_i - \bar{X} \right) \left( Y_i - \bar{Y} \right)$$
+<br>
+<br>
+
+#### Pearsonov korelacijski koeficijent (standardizacija kovarijance)
+
+$$r_{XY}  = \frac{\mbox{Cov}(X,Y)}{ \hat{\sigma}_X \ \hat{\sigma}_Y}$$
+
+
+---
+
+# Smjer i intenzitet korelacije
+
+
+```{r corr, fig.height=6, echo=FALSE, fig.cap="Različiti smjer i intenzitet korelacije.", message=FALSE, warning=F}
+library(MASS)
+par(mfcol = c(4, 2)) # Create a 2 x 2 plotting matrix
+# The next 4 plots created will be plotted next to each other
+d.cor <- 0.0
+out.0 <- as.data.frame(mvrnorm(100, mu = c(0,0), 
+                             Sigma = matrix(c(1,d.cor,d.cor,1), ncol = 2), 
+                             empirical = TRUE))
+plot(out.0,frame.plot=FALSE, axes=FALSE,xlab=paste("r = ",d.cor),ylab= "" )
+d.cor <- 0.33
+out.1 <- as.data.frame(mvrnorm(100, mu = c(0,0), 
+                             Sigma = matrix(c(1,d.cor,d.cor,1), ncol = 2), 
+                             empirical = TRUE))
+plot(out.1,frame.plot=FALSE, axes=FALSE,xlab=paste("r = ",d.cor),ylab= "" )
+d.cor <- 0.66
+out.2 <- as.data.frame(mvrnorm(100, mu = c(0,0), 
+                             Sigma = matrix(c(1,d.cor,d.cor,1), ncol = 2), 
+                             empirical = TRUE))
+plot(out.2,frame.plot=FALSE, axes=FALSE,xlab=paste("r = ",d.cor),ylab= "" )
+d.cor <- 1
+out.2 <- as.data.frame(mvrnorm(100, mu = c(0,0), 
+                             Sigma = matrix(c(1,d.cor,d.cor,1), ncol = 2), 
+                             empirical = TRUE))
+plot(out.2,frame.plot=FALSE, axes=FALSE,xlab=paste("r = ",d.cor),ylab= "" )
+d.cor <- 0.0
+out.0 <- as.data.frame(mvrnorm(100, mu = c(0,0), 
+                             Sigma = matrix(c(1,d.cor,d.cor,1), ncol = 2), 
+                             empirical = TRUE))
+plot(out.0,frame.plot=FALSE, axes=FALSE,xlab=paste("r = ",d.cor),ylab= "" )
+d.cor <- -0.33
+out.1 <- as.data.frame(mvrnorm(100, mu = c(0,0), 
+                             Sigma = matrix(c(1,d.cor,d.cor,1), ncol = 2), 
+                             empirical = TRUE))
+plot(out.1,frame.plot=FALSE, axes=FALSE,xlab=paste("r = ",d.cor),ylab= "" )
+d.cor <- -0.66
+out.2 <- as.data.frame(mvrnorm(100, mu = c(0,0), 
+                             Sigma = matrix(c(1,d.cor,d.cor,1), ncol = 2), 
+                             empirical = TRUE))
+plot(out.2,frame.plot=FALSE, axes=FALSE,xlab=paste("r = ",d.cor),ylab= "" )
+d.cor <- -1
+out.2 <- as.data.frame(mvrnorm(100, mu = c(0,0), 
+                             Sigma = matrix(c(1,d.cor,d.cor,1), ncol = 2), 
+                             empirical = TRUE))
+plot(out.2,frame.plot=FALSE, axes=FALSE,xlab=paste("r =",d.cor),ylab= "" )
+
+```
+
+---
+
+# Izračun korelacije u R
+
+<br>
+<br>
+```{r}
+# Izračunaj korelaciju između spavanja i raspoloženja
+cor(x = parenthood$dan.sleep, y = parenthood$dan.grump)
+# Izračunaj korelacijsku tablicu
+cor(x = parenthood)
+```
+
+
+---
+
+# Interpretacija korelacije
+
+
+```{r interpretingcorrelations, echo=FALSE}
+knitr::kable(
+rbind(
+c("-1.0 to -0.9" ,"Izrazito jaka", "Negativna"),
+c("-0.9 to -0.7", "Jaka", "Negativna") ,
+c("-0.7 to -0.4", "Umjerena", "Negativna") ,
+c("-0.4 to -0.2", "Slaba", "Negativna"),
+c("-0.2 to 0","Zanemariva", "Negativna") ,
+c("0 to 0.2","Zanemariva", "Pozitivna"),
+c("0.2 to 0.4", "Slaba", "Pozitivna"), 
+c("0.4 to 0.7", "Umjerena", "Pozitivna"), 
+c("0.7 to 0.9", "Jaka", "Pozitivna"), 
+c("0.9 to 1.0", "Izrazito jaka", "Pozitivna")), col.names=c("Korelacija", "Snaga", "Smjer"),
+  booktabs = TRUE, caption = "Okvirne smjernice za interpretaciju korelacije.")
+```
+
+
+---
+
+# Podatci
+
+```{r}
+rm(list=ls()) # Očisti radni prostor
+load("../PODATCI/effort.Rdata") # Učitaj podatke
+lsr::who(TRUE) # Pregledaj podatke
+head(effort, 5) #Pregledaj podatke
+cor(effort$hours, effort$grade) # Izračunaj korelaciju
+```
+
+---
+
+# Podatci
+
+.tiny[
+```{r, fig.height=6}
+Hmisc::describe(effort)
+```
+]
+---
+
+# Podatci
+
+```{r rankcorrpic, fig.cap="Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta).", echo=FALSE, fig.height=4}
+
+describeImg <- list()
+emphCol <- rgb(0,0,1)
+emphColLight <- rgb(.5,.5,1)
+emphGrey <- grey(.5)
+eps <- TRUE
+colour <- TRUE
+width <- 7
+	height <- 6
+	
+	# load data
+	load("../PODATCI/effort.Rdata")
+	require(lsr)
+	effort <- sortFrame(effort,hours)
+	# draw the plot
+	plot(effort$hours,effort$grade,type="b",col=ifelse(colour,emphCol,"black"),
+		xlab="Sati studiranja",ylab="Ocjena",xlim=c(0,80),ylim=c(0,100),
+		pch=19,lwd=3)
+	abline(coef=lm(grade~hours,effort)$coef,lty=2)
+	
+```
+
+
+---
+
+# Spearmanova korelacija
+
+
+```{r}
+sati_studiranja <- rank( effort$hours ) # Rang sati
+ocjena <- rank( effort$grade ) # Rang ocjena
+```
+
+| | Rang sati rada | Rang visine ocjene |
+|-|---------------------|-----------------------|
+|student | 1 |   1 |   1 |
+|student | 2  | 10   |10 |
+|student | 3 |   6  |  6 |
+|student | 4 |   2 |   2 |
+|student | 5 |   3 |   3 |
+|student | 6  |  5  |  5 |
+|student | 7  |  4  |  4 |
+|student | 8  |  8  |  8 |
+|student | 9   | 7  |  7 |
+|student | 10 | 9| 9
+
+---
+
+# Spearmanova korelacija
+
+```{r}
+cor(sati_studiranja,ocjena) # Izračunaj korelaciju
+# Dodaj argument "spearman"
+cor(effort$hours, effort$grade, method = "spearman")
+```
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Nastavak: inferencijalna statistika)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

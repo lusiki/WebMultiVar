@@ -46,6 +46,39 @@ title: " "
 
 ### Predavanje 03: Osnove deskriptivne i infencijalne statistike
 
+<br>
+
+##### **Deskriptivna statistika**
+
+- Mjere centralne tendencije
+- Mjere varijabilnosti
+- Varijable i podatkovni okviri
+- Standardizirane vrijednosti
+- Korelacija
+
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/03_PONAVLJANJE-DESKRIPTIVNA.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/03_PONAVLJANJE%20DESKRIPTIVNA.Rmd) 
+<br>
+**Čitanje:** [Skripta iz deskriptivne statistike](http://matematika.fkit.hr/novo/statistika_i_vjerojatnost/predavanja/1%20-%20Deskriptivna%20statistika.pdf) + [Deskriptivna statistika u R](https://rcompanion.org/handbook/C_02.html)
+<br>
+<br>
+
+
+##### **Inferencijalna statistika**
+
+- Pretpostavke statističkih testova
+- Normalnost distribucije
+- Testovi korelacije
+- Testovi za usporedbu prosjeka
+- Testovi za usporedbu varijance
+- Testovi za usporedbu kategorija
+- Linearna regresija
+- Višestruka linearna regresija
+
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/03_PONAVLJANJE-INFERENCIJALNA.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/03_PONAVLJANJE%20DESKRIPTIVNA.Rmd) 
+<br>
+**Čitanje:** [simpleR viggnete](https://cran.r-project.org/doc/contrib/Verzani-SimpleR.pdf)
+<br>
+<br>
 
 
 ### Predavanje 04: Analiza glavnih komponenti
