@@ -305,6 +305,7 @@ shapiro.test(cor_dta$wt)
 # Provjera pretpostavki
 
 # Test korelacije izmedju dvije varijable
+
 .tiny[
 ```{r , warning = F}
 # Provedi Pearsonov korelacijski test
