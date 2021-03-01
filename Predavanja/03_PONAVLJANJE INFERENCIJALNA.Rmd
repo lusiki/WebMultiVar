@@ -1528,7 +1528,7 @@ summary(regression.2)
 
 - Outlieri
 
-```{r, echo=FALSE, eval = T, fig.height=6}
+```{r, echo=FALSE, eval = T, fig.height=4}
 knitr::include_graphics(file.path("../Foto/outlier.png"))
 ```
 ---
@@ -1539,7 +1539,7 @@ knitr::include_graphics(file.path("../Foto/outlier.png"))
 
 - Poluga (Leverage)
 
-```{r, echo=FALSE, eval = T, fig.height=6}
+```{r, echo=FALSE, eval = T, fig.height=4}
 knitr::include_graphics(file.path("../Foto/outlier.png"))
 ```
 
@@ -1551,7 +1551,7 @@ knitr::include_graphics(file.path("../Foto/outlier.png"))
 
 - Poluga (Leverage)
 
-```{r, echo=FALSE, eval = T, fig.height=6}
+```{r, echo=FALSE, eval = T, fig.height=4}
 knitr::include_graphics(file.path("../Foto/outlier.png"))
 ```
 
