@@ -87,11 +87,13 @@ title: " "
 <ul>
 <li><a href="https://towardsdatascience.com/best-data-science-blogs-to-follow-in-2020-d03044169eb4">Data science blogovi</a></li>
 <li><a href="https://towardsdatascience.com/data-science-books-you-should-read-in-2020-358f70e1d9b2">Data science knjige</a></li>
+<li><a href="https://srdas.github.io/Papers/DSA_Book.pdf">Izvrsna knjiga iz Podatkovnih znaosti</a></li>
 <li><a href="https://nealcaren.github.io/python-tutorials/">Izvrstan online tečaj iz Pythona za društvene znanosti</a></li>
 <li><a href="https://lusiki.github.io/WebStatistika/">Kolegij iz Primjenjene statistike</a></li>
 <li><a href="https://lusiki.github.io/WebObradaPodataka/">Kolegij iz Obrade podataka</a></li>
 <li><a href="https://rpubs.com/shichich">Prošlogodišnja predavanja</a></li>
 <ul>
+
 
 
 <br>
