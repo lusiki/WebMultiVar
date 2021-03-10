@@ -921,20 +921,45 @@ fviz_pca_var(procjena_PCA, col.var = group,
              legend.title = "cluster")
 ```
 
+---
+
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
 
 ```{r}
 
 ## OPIS DIMENZIJA ##
-
 opis_PCA <- dimdesc(procjena_PCA, axes = c(1,2), proba = 0.05)
 head(opis_PCA,10)
-
-opis_PCA$Dim.1
-opis_PCA$Dim.2
-
-
 ```
 
+---
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
+
+```{r}
+# Prva dimenzija
+opis_PCA$Dim.1
+```
+
+---
+
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
+
+```{r}
+# Druga dimenzija
+opis_PCA$Dim.2
+```
+
+---
+
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
 
 ```{r}
 
@@ -943,35 +968,170 @@ opis_PCA$Dim.2
 inds <- get_pca_ind(procjena_PCA) # Stvori IE objekt
 print(inds) # Pregledaj
 
-head(inds$coord)     # Kordinate za IE
-head(inds$cos2)      # Reprezentativnost IE
-head(inds$contrib)   # Doprinos IE
+```
 
+---
+
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
+
+```{r}
+
+head(inds$coord)     # Kordinate za IE
+```
+
+---
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
+
+```{r}
+head(inds$cos2)      # Reprezentativnost IE
+```
+
+---
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
+
+```{r}
+head(inds$contrib)   # Doprinos IE
+```
+
+---
+
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
+
+```{r}
 # Prikaži doprinos IE
 
 fviz_pca_ind(procjena_PCA, col.ind = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE)
 
+```
+
+---
+
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
+
+```{r}
+
 # Prikaži doprinos IE na stupčastom grafikonu
 
 fviz_cos2(procjena_PCA, choice = "ind")
+```
+
+---
+
+# Primjer 2 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
+
+```{r}
 fviz_cos2(procjena_PCA, choice = "ind",
           axses = 1:2) # Prve dvije dimenzije
 
+```
 
+
+---
+
+# Primjer 3 (Sportski rezultati)
+
+##### Analiza PCA dimenzija
+
+```{r}
+fviz_cos2(procjena_PCA, choice = "ind",
+          axses = 1:2) # Prve dvije dimenzije
 
 ```
 
 
 
+---
 
 
+# Primjer 3 (Cvijeće)
+
+##### Podatci
 
 
+```{r}
+
+head(iris,10) # Pogledaj podatke
+```
+
+---
+
+# Primjer 3 (Cvijeće)
+
+##### Provedi PCA
+
+```{r}
+# Provedi PCA
+iris_PCA <- PCA(iris[,-5], graph = F)
+iris_PCA
+```
+
+---
+
+# Primjer 3 (Cvijeće)
+
+##### Grafički prikaz
+
+```{r}
+
+# Vizualizacija 1
+
+fviz_pca_ind(iris_PCA,
+             geom.ind = "point",
+             col.ind = iris$Species, 
+             addEllipses = T,
+             legend.title = "Grupa",
+             palette = c("#00AFBB", "#E7B800", "#FC4E07"))
+```
 
 
+---
 
+
+# Primjer 3 (Cvijeće)
+
+##### Grafički prikaz
+
+```{r}
+
+# Vizualizacija 2
+
+fviz_pca_biplot(iris_PCA,
+             geom.ind = "point",
+             col.ind = iris$Species, 
+             addEllipses = T,
+             legend.title = "Grupa",
+             palette = "jco",
+             col.var = "black",
+             label = "var",
+             repel = T)
+
+
+```
+
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Nastavak: Faktorska analiza)
 
 
 
