@@ -1,0 +1,783 @@
+---
+title: "MULTIVARIJATNE STATISTIČKE METODE"
+author: "Luka Šikić, PhD"
+date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
+subtitle: "Predavanje 4: Analiza glavnih komponenti"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=F#, echo=F, warning=F, message=F
+  )
+```
+
+```{css, echo = F, eval = T}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+```
+
+```{r paketi, warning=F, echo=F, message=F}
+
+library(FactoMineR)
+library(factoextra)
+library(FactoMineR)
+library(tidyverse)  # data manipulation and visualization
+library(gridExtra)  # plot arrangement
+library(patchwork)
+library(ggplot2)
+
+```
+
+
+
+# Pregled predavanja
+
+<br>
+<br>
+<br>
+
+
+1. [Opis analize glavnih komponenti (PCA)](#opis)
+
+2. [Primjeri](#primjer)
+
+3. [Praktična primjena](#primjena)
+
+
+---
+class: inverse, center, middle
+name: opis
+
+# ANALIZA GLAVNIH KOMPONENTI
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Definicija)
+
+---
+
+# Osnovne karakteristike PCA
+<br>
+<br>
+
+- PCA uvodi K. Pearson (1901), a metode izračuna u praksi Hotelling (1933)
+<br>
+- Jedna od jednostavnijih metoda multivarijatne analize
+<br>
+- Polazište za PCA je skup (visoko) koreliranih varijabli
+<br>
+- Cilj PCA je redukcija mnoštva *koreliranih* varijabli na mali broj (2-3) međusobno nekoreliranih varijabli, odnosno smanjenje
+dimenzionalnosti podataka
+<br>
+- Redukcija se provodi linearnom projekcijom početnog skupa varijabli na nove, sintetičke varijable (glavne komponente:GK) koje su poredane prema veličini varijance
+<br>
+- Nove varijable (GK) od interesa su one sa najvećom varijancom
+<br>
+- U praktičnom smislu je najčešće riječ o dvije ili tri komponente
+<br>
+- Nove varijable (GK) se najčešće koriste za dvodimenzionalnu
+vizualizaciju, odnosno pojednostavljenje velikog skupa podataka
+<br>
+- Nove varijable (GK) se također mogu koristiti kao imputi za daljnju analizu (primjerice regresijski model) 
+
+
+---
+
+# Proceura provedbe PCA
+
+<br>
+<br>
+
+
+1. Provedi skaliranje originalnih varijabli tako da imaju prosjek 0 i standardnu devijaciju 1.
+<br>
+2. Izračunaj kovarijančnu matricu. U slučaju da je prvi korak proveden, dovoljno je izračunati korelacijsku matricu!
+<br>
+3. Izračunaj svojstvene vrijednosti i pripadajuće svojstvene vektore matrice iz prethodnog koraka. Koeficijenti glavnih komponenti su svojstveni vektori, a svojstvene vrijednosti su varijanca glavnih kmponenti.
+<br>
+4. Zadrži onaj dio glavnih komponenti koji sadržava najveći stupanj varijabilnosti (2-3 komponente).
+
+
+
+---
+class: inverse, center, middle
+name: primjer
+
+# PRIMJERI PCA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Gdje se koristi PCA!?)
+
+---
+
+# Ptice i vremenska nepogoda
+
+##### Pregled podataka
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="300px"}
+
+knitr::include_graphics("../Foto/sparrow_dta_0.png")
+```
+
+---
+# Ptice i vremenska nepogoda
+
+##### ...nastavak
+
+
+
+```{r, include=TRUE, fig.align="center",  echo=FALSE, out.width="400px"}
+
+
+knitr::include_graphics("../Foto/sparrow_dta.png")
+```
+
+
+---
+
+# Ptice i vremenska nepogoda
+
+##### Korelacija između pet mjera veličine ptica
+<br>
+<br>
+<br>
+```{r, out.width="500px", include=TRUE, fig.align="center", echo=FALSE}
+
+
+knitr::include_graphics("../Foto/sparrow_cor.png")
+```
+
+
+---
+
+# Ptice i vremenska nepogoda
+
+##### Svojstvene vrijednosti i vektori 
+<br>
+<br>
+<br>
+
+```{r, out.width="500px", include=TRUE, fig.align="center",  echo=FALSE}
+
+
+knitr::include_graphics("../Foto/sparrow_eigen.png")
+```
+
+---
+
+# Ptice i vremenska nepogoda
+
+##### Provedena PCA 
+<br>
+<br>
+<br>
+
+
+```{r, out.width="500px", include=TRUE, fig.align="center",  echo=FALSE}
+
+
+knitr::include_graphics("../Foto/sparrow_compare.png")
+
+
+```
+---
+
+# Ptice i vremenska nepogoda
+
+##### PCA vizualizacija (Crne točkice označavaju umrle ptice)
+
+```{r, include=TRUE,out.width="500px", fig.align="center",  echo=FALSE}
+
+
+knitr::include_graphics("../Foto/sparrow_PCA.png")
+```
+
+---
+
+# Struktura zaposlenosti u europskim zemljama
+
+##### Pregled podataka
+
+
+```{r, include=TRUE,out.width="300px", fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/european_dta.png")
+```
+
+
+
+---
+
+# Struktura zaposlenosti u europskim zemljama
+
+##### Korelacijska matrica
+<br>
+<br>
+
+
+```{r, include=TRUE,out.width="500px", fig.align="center",  echo=FALSE}
+
+
+knitr::include_graphics("../Foto/european_cor.png")
+```
+
+---
+
+# Struktura zaposlenosti u europskim zemljama
+
+##### PCA vizualizacija
+
+
+```{r, include=TRUE,out.width="500px", fig.align="center", echo=FALSE}
+
+
+knitr::include_graphics("../Foto/european_PCA.png")
+```
+
+---
+
+# Elementi razvoja osobnosti kod djece
+
+##### PCA opterećenja
+
+<br>
+<br>
+
+```{r, include=TRUE,out.width="450px", fig.align="center",  echo=FALSE}
+
+
+knitr::include_graphics("../Foto/djeca_PCA.png")
+```
+
+---
+
+# Uspjeh u srednjoj školi
+
+##### Korelacija između postignuća na različitim predmetima 
+<br>
+<br>
+```{r, include=TRUE,out.width="500px", fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/grades_cor.png")
+```
+
+---
+
+# Uspjeh u srednjoj školi
+
+##### Provedena PCA
+<br>
+<br>
+
+```{r, include=TRUE,out.width="500px", fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/grades_PCA.png")
+```
+
+---
+
+# Uspjeh u srednjoj školi
+
+##### Vizualizacija dvije dominantne PCA komponente
+
+```{r, include=TRUE,out.width="500px", fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/grades_PCA_gg.png")
+```
+
+---
+
+# Uspjeh u srednjoj školi
+
+##### Opterećenja za prve dvije PCA komponente
+
+```{r, include=TRUE,out.width="400px", fig.align="center",  echo=FALSE}
+
+
+knitr::include_graphics("../Foto/grades_loadings.png")
+```
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Opis varijabli 
+<br>
+<br>
+
+
+```{r, include=TRUE,out.width="500px", fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/zaposlenost_sifranik.png")
+```
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Korelacijska matrica
+
+```{r, include=TRUE,out.width="450px", fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/zaposlenost_cor.png")
+```
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Varijanca pripadajućih PCA komponenti
+
+```{r, include=TRUE,out.width="500px", fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/zaposlenost_PCA.png")
+```
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### PCA opterećenja komponenti
+
+
+```{r, include=TRUE,out.width="500px", fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/zaposlenost_loadings.png")
+```
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Scree grafikon za PCA analizu
+
+```{r, include=TRUE,out.width="450px", fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/zaposlenost_scree.png")
+```
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Vizualizacija dvije glavne PCA komponente po sektorima
+
+
+```{r, include=TRUE, out.width="450px",fig.align="center",  echo=FALSE}
+
+knitr::include_graphics("../Foto/zaposlenost_PCA_gg.png")
+```
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Vizualizacija dvije glavne PCA komponente po zemljama
+
+```{r, include=TRUE,out.width="450px",fig.align="center",  echo=FALSE}
+
+
+knitr::include_graphics("../Foto/zaposlenost_zemlje.png")
+```
+
+---
+
+# Socijalna mobilnost u UK
+
+##### Pregled varijabli
+
+
+```{r, include=TRUE,out.width="500px", fig.align="center", echo=FALSE}
+
+
+knitr::include_graphics("../Foto/socmob_sifranik.png")
+```
+
+---
+
+# Socijalna mobilnost u UK
+
+##### Korelacijska matrica 
+
+```{r, include=TRUE,out.width="500px", fig.align="center", echo=FALSE}
+
+
+knitr::include_graphics("../Foto/socmob_cor.png")
+```
+
+---
+
+# Socijalna mobilnost u UK
+
+##### PCA opterećenja
+
+```{r, include=TRUE,out.width="500px", fig.align="center", echo=FALSE}
+
+knitr::include_graphics("../Foto/socmob_loadings.png")
+```
+
+---
+
+# Gledanje televizije u UK
+
+##### Korelacijska matrica
+
+
+```{r, include=TRUE,out.width="500px", fig.align="center", echo=FALSE}
+
+
+knitr::include_graphics("../Foto/tv_cor.png")
+```
+
+---
+
+# Gledanje televizije u UK
+
+##### Scree grafikon
+
+```{r, include=TRUE,out.width="500px", fig.align="center", echo=FALSE}
+
+
+knitr::include_graphics("../Foto/tv_scree.png")
+```
+
+---
+
+# Gledanje televizije u UK
+
+##### PCA vizualizacija
+
+
+```{r, include=TRUE,out.width="500px", fig.align="center", echo=FALSE}
+
+
+knitr::include_graphics("../Foto/tv_pca_gg.png")
+```
+
+---
+class: inverse, center, middle
+name: primjena
+
+# PRAKTIČNA PRIMJENA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Provedi analizu u praksi)
+
+---
+
+# Primjer 1 (Kriminal u SAD)
+
+##### Potaci
+
+```{r}
+
+data("USArrests")  # Učitaj podatke
+head(USArrests,10) # Pregledaj podatke
+```
+
+---
+
+# Primjer 1 (Kriminal u SAD)
+
+##### Skaliranje varijabli
+
+```{r}
+
+apply(USArrests, 2, var) # Pogledaj varijance verijabli
+skalirano_dta <- apply(USArrests,2, scale) # Standardiziraj varijable
+str(skalirano_dta) # Pogledaj novi objekt
+head(skalirano_dta,5) # pogledaj podatke
+
+```
+
+---
+
+# Primjer 1 (Kriminal u SAD)
+
+##### Prilagodba podataka
+
+```{r}
+
+# Za izračun glavnih komponenti:
+## 1. izračunaj kovarijančnu matricu
+kov_dta <- cov(skalirano_dta)
+## 2. Izračunaj svojstvene vrijednosti km
+eig_kov_dta <- eigen(kov_dta)
+str(eig_kov_dta) # Pogledaj objekt
+## 3. Spremi opterećenja u novi objekt
+opt <- eig_kov_dta$vectors[,1:2]
+## 4. Okreni smjer svojstvenih vektora
+opt <- -opt
+## 5. Pripiši nazive
+row.names(opt) <- c("Murder", "Assault", "UrbanPop", "Rape")
+colnames(opt) <- c("PC1", "PC2")
+head(opt) # Pogledaj objekt
+```
+
+---
+
+
+# Primjer 1 (Kriminal u SAD)
+
+##### Prilagodba podataka (nastavak)
+
+
+```{r}
+
+## 6. Izračunaj koeficijente glavnih komponenti
+PC1 <- as.matrix(skalirano_dta) %*% opt[,1]
+PC2 <- as.matrix(skalirano_dta) %*% opt[,2]
+## 7. Poveži u podatkovni okvir
+PC <- data.frame(GEO = row.names(USArrests), PC1, PC2)
+head(PC)
+
+```
+
+---
+
+# Primjer 1 (Kriminal u SAD)
+
+##### Prikaži grafički 
+
+```{r, fig.height=6}
+# Prikaži prve dvije PC komponente grafički
+ggplot2:: ggplot(PC, aes(PC1,PC2)) + 
+  modelr:: geom_ref_line(h=0) + 
+  modelr:: geom_ref_line(v= 0) +
+  geom_text(aes(label = GEO), size = 4) +
+  xlab("PC1") + 
+  ylab("PC2") + 
+  ggtitle("Prve dvije glavne komponente za USArrests podatkovni okvir")
+  
+
+
+```
+
+---
+
+
+# Primjer 1 (Kriminal u SAD)
+
+##### Scree grafika 
+
+```{r, fig.height=6}
+
+# Izračunaj varijabilnost vezanu uz glavne komponente
+
+PCvar <- eig_kov_dta$values / sum(eig_kov_dta$values)
+print(round(PCvar,2)) # Prikaži podatke
+
+# Prikaži grafički
+
+## Scree
+
+PVEplot <- qplot(c(1:4), PCvar) + 
+  geom_line() + 
+  xlab("PC") + 
+  ylab("PVE") +
+  ggtitle("Scree") +
+  ylim(0, 1)
+
+PVEplot
+
+```
+
+
+---
+
+
+# Primjer 1 (Kriminal u SAD)
+
+##### Kumulativni zbroj 
+
+```{r, fig.height=6}
+
+## CumSum scree
+
+cumPVE <- qplot(c(1:4), cumsum(PCvar)) + 
+  geom_line() + 
+  xlab("PC") + 
+  ylab(NULL) + 
+  ggtitle("Cumulative Sum Scree") +
+  ylim(0,1)
+
+cumPVE
+
+```
+
+---
+
+
+# Primjer 1 (Kriminal u SAD)
+
+##### PCA pomoću funkcija 
+
+```{r}
+## PROVEDI PROCEDURU PUTEM FORMULA ##
+
+PCA_fun <- prcomp(USArrests, scale = T)
+names(PCA_fun) # Pregledaj objekt
+
+# Pogledaj prosjek komponenti po varijablama
+PCA_fun$center
+
+# Pogledaj stdev komponenti po varijablama
+PCA_fun$scale
+
+# Pogledaj opterećenja
+PCA_fun$rotation
+
+```
+
+---
+
+
+# Primjer 1 (Kriminal u SAD)
+
+##### PCA pomoću funkcija 
+
+```{r}
+
+# Promjeni predznak
+PCA_fun$rotation <- -PCA_fun$rotation
+PCA_fun$rotation 
+
+# Izračunaj koeficijente
+PCA_fun$x <- -PCA_fun$x
+head(PCA_fun$x)
+```
+
+
+---
+
+
+# Primjer 1 (Kriminal u SAD)
+
+##### PCA pomoću funkcija 
+
+
+```{r, fig.height=5}
+
+# Vizualiziraj
+biplot(PCA_fun, scale = 0)
+
+# Izračunaj varijancu po glavnim komponentama
+VE <- PCA_fun$sdev^2
+PCv <- VE / sum(VE)
+print(round(PCv, 2))
+
+
+```
+
+
+---
+
+
+# Primjer 2 (Sportski rezultati)
+
+##### Pregled podataka
+
+
+```{r}
+# Podatci
+
+data(decathlon2)
+head(decathlon2, 7)
+```
+
+---
+
+# Primjer 2 (Sportski rezultati)
+
+##### Pregled podataka
+
+```{r}
+
+str(decathlon2)
+
+# Definiraj podatke za analizu
+
+decathlon2.active <- decathlon2[1:23, 1:10]
+head(decathlon2.active[, 1:6], 10)
+
+# Provedi PCA
+
+procjena_PCA <- FactoMineR::PCA(decathlon2.active, graph = F)
+print(procjena_PCA)
+
+# Izvuci svojstvene vrijednosti
+
+svojstvene_vrijednosti <- get_eigenvalue(procjena_PCA)
+print(svojstvene_vrijednosti)
+
+# Prikaži grafički
+fviz_eig(procjena_PCA, addlabels = T, ylim = c(0,45))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MULTIVARIJATNE STATISTIČKE METODE</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Luka Šikić, PhD" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# MULTIVARIJATNE STATISTIČKE METODE
+## Predavanje 4: Analiza glavnih komponenti
+### Luka Šikić, PhD
+### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
+
+---
+
+
+
+
+
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+&lt;/style&gt;
+
+
+
+
+
+# Pregled predavanja
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+
+1. [Opis analize glavnih komponenti (PCA)](#opis)
+
+2. [Primjeri](#primjer)
+
+3. [Praktična primjena](#primjena)
+
+
+---
+class: inverse, center, middle
+name: opis
+
+# ANALIZA GLAVNIH KOMPONENTI
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Definicija)
+
+---
+
+# Osnovne karakteristike PCA
+&lt;br&gt;
+&lt;br&gt;
+
+- PCA uvodi K. Pearson (1901), a metode izračuna u praksi Hotelling (1933)
+&lt;br&gt;
+- Jedna od jednostavnijih metoda multivarijatne analize
+&lt;br&gt;
+- Polazište za PCA je skup (visoko) koreliranih varijabli
+&lt;br&gt;
+- Cilj PCA je redukcija mnoštva *koreliranih* varijabli na mali broj (2-3) međusobno nekoreliranih varijabli, odnosno smanjenje
+dimenzionalnosti podataka
+&lt;br&gt;
+- Redukcija se provodi linearnom projekcijom početnog skupa varijabli na nove, sintetičke varijable (glavne komponente:GK) koje su poredane prema veličini varijance
+&lt;br&gt;
+- Nove varijable (GK) od interesa su one sa najvećom varijancom
+&lt;br&gt;
+- U praktičnom smislu je najčešće riječ o dvije ili tri komponente
+&lt;br&gt;
+- Nove varijable (GK) se najčešće koriste za dvodimenzionalnu
+vizualizaciju, odnosno pojednostavljenje velikog skupa podataka
+&lt;br&gt;
+- Nove varijable (GK) se također mogu koristiti kao imputi za daljnju analizu (primjerice regresijski model) 
+
+
+---
+
+# Proceura provedbe PCA
+
+&lt;br&gt;
+&lt;br&gt;
+
+
+1. Provedi skaliranje originalnih varijabli tako da imaju prosjek 0 i standardnu devijaciju 1.
+&lt;br&gt;
+2. Izračunaj kovarijančnu matricu. U slučaju da je prvi korak proveden, dovoljno je izračunati korelacijsku matricu!
+&lt;br&gt;
+3. Izračunaj svojstvene vrijednosti i pripadajuće svojstvene vektore matrice iz prethodnog koraka. Koeficijenti glavnih komponenti su svojstveni vektori, a svojstvene vrijednosti su varijanca glavnih kmponenti.
+&lt;br&gt;
+4. Zadrži onaj dio glavnih komponenti koji sadržava najveći stupanj varijabilnosti (2-3 komponente).
+
+
+
+---
+class: inverse, center, middle
+name: primjer
+
+# PRIMJERI PCA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Gdje se koristi PCA!?)
+
+---
+
+# Ptice i vremenska nepogoda
+
+##### Pregled podataka
+
+&lt;img src="../Foto/sparrow_dta_0.png" width="300px" style="display: block; margin: auto;" /&gt;
+
+---
+# Ptice i vremenska nepogoda
+
+##### Pregled podataka
+
+
+
+&lt;img src="../Foto/sparrow_dta.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Ptice i vremenska nepogoda
+
+##### Korelacija između pet mjera veličine ptica
+
+&lt;img src="../Foto/sparrow_cor.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Ptice i vremenska nepogoda
+
+##### Svojstvene vrijednosti i vektori 
+
+
+&lt;img src="../Foto/sparrow_eigen.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Ptice i vremenska nepogoda
+
+##### Provedena PCA 
+
+
+
+&lt;img src="../Foto/sparrow_compare.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+# Ptice i vremenska nepogoda
+
+##### PCA vizualizacija (Crne točkice označavaju umrle ptice)
+
+&lt;img src="../Foto/sparrow_PCA.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Struktura zaposlenosti u europskim zemljama
+
+##### Pregled podataka
+
+
+&lt;img src="../Foto/european_dta.png" width="300px" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# Struktura zaposlenosti u europskim zemljama
+
+##### Korelacijska matrica
+
+
+&lt;img src="../Foto/european_cor.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Struktura zaposlenosti u europskim zemljama
+
+##### PCA vizualizacija
+
+
+&lt;img src="../Foto/european_PCA.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Elementi razvoja osobnosti kod djece
+
+##### PCA opterećenja
+
+
+&lt;img src="../Foto/djeca_PCA.png" width="450px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Uspjeh u srednjoj školi
+
+##### Korelacija između postignuća na različitim predmetima 
+
+&lt;img src="../Foto/grades_cor.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Uspjeh u srednjoj školi
+
+##### Provedena PCA
+
+
+&lt;img src="../Foto/grades_PCA.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Uspjeh u srednjoj školi
+
+##### Vizualizacija dvije dominantne PCA komponente
+
+&lt;img src="../Foto/grades_PCA_gg.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Uspjeh u srednjoj školi
+
+##### Opterećenja za prve dvije PCA komponente
+
+&lt;img src="../Foto/grades_loadings.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Opis varijabli 
+
+
+&lt;img src="../Foto/zaposlenost_sifranik.png" width="450px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Korelacijska matrica
+
+&lt;img src="../Foto/zaposlenost_cor.png" width="450px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Varijanca pripadajućih PCA komponenti
+
+&lt;img src="../Foto/zaposlenost_PCA.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### PCA opterećenja komponenti
+
+
+&lt;img src="../Foto/zaposlenost_loadings.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Scree grafikon za PCA analizu
+
+&lt;img src="../Foto/zaposlenost_scree.png" width="450px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Vizualizacija dvije glavne PCA komponente po sektorima
+
+
+&lt;img src="../Foto/zaposlenost_PCA_gg.png" width="450px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Zaposlenost u sektorima europskih zemalja
+
+##### Vizualizacija dvije glavne PCA komponente po zemljama
+
+&lt;img src="../Foto/zaposlenost_zemlje.png" width="450px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Socijalna mobilnost u UK
+
+##### Pregled varijabli
+
+
+&lt;img src="../Foto/socmob_sifranik.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Socijalna mobilnost u UK
+
+##### Korelacijska matrica 
+
+&lt;img src="../Foto/socmob_cor.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Socijalna mobilnost u UK
+
+##### PCA opterećenja
+
+&lt;img src="../Foto/socmob_loadings.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Gledanje televizije u UK
+
+##### Korelacijska matrica
+
+
+&lt;img src="../Foto/tv_cor.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Gledanje televizije u UK
+
+##### Scree grafikon
+
+&lt;img src="../Foto/tv_scree.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Gledanje televizije u UK
+
+##### Scree grafikon
+
+
+&lt;img src="../Foto/tv_pca_gg.png" width="500px" style="display: block; margin: auto;" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
