@@ -81,8 +81,16 @@ title: " "
 <br>
 
 
-### Predavanje 04: Analiza glavnih komponenti
+### Predavanje 04: Analiza glavnih komponenti (PCA)
 
+- Definicija PCA
+- Primjeri 
+- PCA u praktičnoj primjeni
+
+
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/04_PCA.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/04_PCA.Rmd) 
+<br>
+**Čitanje:** [Blog post](https://towardsdatascience.com/learn-principle-component-analysis-in-r-ddba7c9b1064)
 
 
 ### Predavanje 05: Klaster analiza
