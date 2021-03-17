@@ -396,6 +396,7 @@ name: primjena
 
 
 ```r
+# vidi https://uc-r.github.io/pca
 data("USArrests")  # Učitaj podatke
 head(USArrests,10) # Pregledaj podatke
 ```
@@ -649,7 +650,7 @@ cumPVE
 
 ```r
 ## PROVEDI PROCEDURU PUTEM FORMULA ##
-PCA_fun &lt;- prcomp(USArrests, scale = T)
+PCA_fun &lt;- stats::prcomp(USArrests, scale = T)
 names(PCA_fun) # Pregledaj objekt
 ```
 
@@ -738,7 +739,7 @@ head(PCA_fun$x)
 
 ```r
 # Vizualiziraj 
-# biplot(PCA_fun, scale = 0) bi se koristio uobičajeno
+# biplot(PCA_fun, scale = 0) # standardna funkcija
 PCbiplot(PCA_fun) # custom made funkcija; vidi .Rmd
 ```
 
@@ -768,10 +769,12 @@ print(round(PCv, 2))
 ##### Pregled podataka
 
 
+
 ```r
+# Vidi niže za detaljnjiji opis
 # Podatci
 data(decathlon2)
-head(decathlon2, 7)
+head(decathlon2, 5)
 ```
 
 ```
@@ -781,18 +784,15 @@ head(decathlon2, 7)
 ## BERNARD   11.02      7.23    14.25      1.92 48.93        14.99  40.87
 ## YURKOV    11.34      7.09    15.19      2.10 50.42        15.31  46.26
 ## ZSIVOCZKY 11.13      7.30    13.48      2.01 48.62        14.17  45.67
-## McMULLEN  10.83      7.31    13.76      2.13 49.91        14.38  44.41
-## MARTINEAU 11.64      6.81    14.57      1.95 50.14        14.93  47.60
 ##           Pole.vault Javeline X1500m Rank Points Competition
 ## SEBRLE          5.02    63.19  291.7    1   8217    Decastar
 ## CLAY            4.92    60.15  301.5    2   8122    Decastar
 ## BERNARD         5.32    62.77  280.1    4   8067    Decastar
 ## YURKOV          4.72    63.44  276.4    5   8036    Decastar
 ## ZSIVOCZKY       4.42    55.37  268.0    7   8004    Decastar
-## McMULLEN        4.42    56.37  285.1    8   7995    Decastar
-## MARTINEAU       4.92    52.33  262.1    9   7802    Decastar
 ```
 
+.footnote[[analiza](https://raw.githack.com/clemonster/decathlon-pca/master/decathlon_full_analysis.html) + [Analiza](https://husson.github.io/MOOC_GB/RMarkdown_PCA_Decathlon.pdf) ]
 ---
 
 # Primjer 2 (Sportski rezultati)
@@ -895,7 +895,7 @@ print(procjena_PCA)
 
 ```r
 # Izvuci svojstvene vrijednosti
-svojstvene_vrijednosti &lt;- get_eigenvalue(procjena_PCA)
+svojstvene_vrijednosti &lt;- factoextra::get_eigenvalue(procjena_PCA)
 print(svojstvene_vrijednosti)
 ```
 
@@ -922,7 +922,7 @@ print(svojstvene_vrijednosti)
 
 ```r
 # Prikaži grafički
-fviz_eig(procjena_PCA, addlabels = T, ylim = c(0,45))
+factoextra::fviz_eig(procjena_PCA, addlabels = T, ylim = c(0,45))
 ```
 
 &lt;img src="04_PCA_files/figure-html/unnamed-chunk-50-1.png" style="display: block; margin: auto;" /&gt;
@@ -936,7 +936,7 @@ fviz_eig(procjena_PCA, addlabels = T, ylim = c(0,45))
 
 ```r
 ## VARIJABLE ##
-vars &lt;- get_pca_var(procjena_PCA)
+vars &lt;- factoextra::get_pca_var(procjena_PCA)
 print(vars)
 ```
 
@@ -1022,7 +1022,7 @@ head(vars$contrib) # Doprinos varijabli komponentama
 
 ```r
 # Prikaži varijable u prostoru glavnih komponenti
-fviz_pca_var(procjena_PCA, col.var = "contrib")
+factoextra::fviz_pca_var(procjena_PCA, col.var = "contrib", labelsize = 2)
 ```
 
 &lt;img src="04_PCA_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
@@ -1051,7 +1051,7 @@ corrplot::corrplot(vars$cos2, is.corr = F)
 
 ```r
 # Prikaži doprinos na stupčastom grafikonu
-fviz_cos2(procjena_PCA, choice = "var", axes = 1:2)
+factoextra::fviz_cos2(procjena_PCA, choice = "var", axes = 1:2)
 ```
 
 &lt;img src="04_PCA_files/figure-html/unnamed-chunk-57-1.png" style="display: block; margin: auto;" /&gt;
@@ -1079,7 +1079,7 @@ corrplot::corrplot(vars$contrib, is.corr = F)
 
 ```r
 # Prikaži na stupčastom grafikonu
-fviz_contrib(procjena_PCA, choice = "var", axses = 1, top = 10)
+factoextra::fviz_contrib(procjena_PCA, choice = "var", axses = 1, top = 10)
 ```
 
 &lt;img src="04_PCA_files/figure-html/unnamed-chunk-59-1.png" style="display: block; margin: auto;" /&gt;
@@ -1092,9 +1092,9 @@ fviz_contrib(procjena_PCA, choice = "var", axses = 1, top = 10)
 
 ```r
 set.seed(123) # Grupiranje na osnovi Kmeans algoritma #
-group_km &lt;- kmeans(vars$coord, centers = 3, nstart = 25)
+group_km &lt;- stats::kmeans(vars$coord, centers = 3, nstart = 25)
 group &lt;- as.factor(group_km$cluster)
-fviz_pca_var(procjena_PCA, col.var = group,
+factoextra::fviz_pca_var(procjena_PCA, col.var = group, labelsize = 2,
              palette = c("#0073C2FF", "#EFC000FF", "#868686FF"),
              legend.title = "cluster")
 ```
@@ -1109,8 +1109,7 @@ fviz_pca_var(procjena_PCA, col.var = group,
 .tiny[
 
 ```r
-## OPIS DIMENZIJA ##
-opis_PCA &lt;- dimdesc(procjena_PCA, axes = c(1,2), proba = 0.05)
+opis_PCA &lt;- FactoMineR::dimdesc(procjena_PCA, axes = c(1,2), proba = 0.05)
 head(opis_PCA,10)
 ```
 
@@ -1262,7 +1261,7 @@ opis_PCA$Dim.2
 ```r
 ## INDIVIDUALNI ELEMENTI ##
 
-inds &lt;- get_pca_ind(procjena_PCA) # Stvori IE objekt
+inds &lt;- factoextra::get_pca_ind(procjena_PCA) # Stvori IE objekt
 print(inds) # Pregledaj
 ```
 
@@ -1345,7 +1344,7 @@ head(inds$contrib)   # Doprinos IE
 
 ```r
 # Prikaži doprinos IE
-fviz_pca_ind(procjena_PCA, col.ind = "cos2",gradient.cols = c("#00AFBB", "#E7B800","#FC4E07"),repel = TRUE)
+factoextra::fviz_pca_ind(procjena_PCA, col.ind = "cos2",gradient.cols = c("#00AFBB", "#E7B800","#FC4E07"),repel = TRUE, labelsize = 3 )
 ```
 
 &lt;img src="04_PCA_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
@@ -1359,7 +1358,7 @@ fviz_pca_ind(procjena_PCA, col.ind = "cos2",gradient.cols = c("#00AFBB", "#E7B80
 
 ```r
 # Prikaži doprinos IE na stupčastom grafikonu
-fviz_cos2(procjena_PCA, choice = "ind")
+factoextra::fviz_cos2(procjena_PCA, choice = "ind")
 ```
 
 &lt;img src="04_PCA_files/figure-html/unnamed-chunk-69-1.png" style="display: block; margin: auto;" /&gt;
@@ -1372,7 +1371,7 @@ fviz_cos2(procjena_PCA, choice = "ind")
 
 
 ```r
-fviz_cos2(procjena_PCA, choice = "ind",
+factoextra::fviz_cos2(procjena_PCA, choice = "ind",
           axses = 1:2) # Prve dvije dimenzije
 ```
 
@@ -1386,7 +1385,7 @@ fviz_cos2(procjena_PCA, choice = "ind",
 
 
 ```r
-fviz_cos2(procjena_PCA, choice = "ind",
+factoextra::fviz_cos2(procjena_PCA, choice = "ind",
           axses = 1:2) # Prve dvije dimenzije
 ```
 
@@ -1401,6 +1400,7 @@ fviz_cos2(procjena_PCA, choice = "ind",
 
 
 ```r
+data(iris)
 head(iris,10) # Pogledaj podatke
 ```
 
@@ -1428,7 +1428,7 @@ head(iris,10) # Pogledaj podatke
 
 ```r
 # Provedi PCA
-iris_PCA &lt;- PCA(iris[,-5], graph = F)
+iris_PCA &lt;- FactoMineR::PCA(iris[,-5], graph = F)
 iris_PCA
 ```
 
@@ -1465,7 +1465,7 @@ iris_PCA
 
 ```r
 # Vizualizacija 1
-fviz_pca_ind(iris_PCA,
+factoextra::fviz_pca_ind(iris_PCA,
              geom.ind = "point",
              col.ind = iris$Species, 
              addEllipses = T,
@@ -1484,7 +1484,7 @@ fviz_pca_ind(iris_PCA,
 
 ```r
 # Vizualizacija 2
-fviz_pca_biplot(iris_PCA,
+factoextra::fviz_pca_biplot(iris_PCA,
              geom.ind = "point",
              col.ind = iris$Species, 
              addEllipses = T,
@@ -1492,7 +1492,8 @@ fviz_pca_biplot(iris_PCA,
              palette = "jco",
              col.var = "black",
              label = "var",
-             repel = T)
+             repel = T,
+             labelsize = 3)
 ```
 
 &lt;img src="04_PCA_files/figure-html/unnamed-chunk-75-1.png" style="display: block; margin: auto;" /&gt;
