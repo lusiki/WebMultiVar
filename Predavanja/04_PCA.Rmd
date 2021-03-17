@@ -334,7 +334,7 @@ knitr::include_graphics("../Foto/grades_loadings.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Opis varijabli 
 <br>
@@ -348,7 +348,7 @@ knitr::include_graphics("../Foto/zaposlenost_sifranik.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Korelacijska matrica
 
@@ -359,7 +359,7 @@ knitr::include_graphics("../Foto/zaposlenost_cor.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Varijanca pripadajućih PCA komponenti
 
@@ -370,7 +370,7 @@ knitr::include_graphics("../Foto/zaposlenost_PCA.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### PCA opterećenja komponenti
 
@@ -382,7 +382,7 @@ knitr::include_graphics("../Foto/zaposlenost_loadings.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+#Zaposlenost u EU
 
 ##### Scree grafikon za PCA analizu
 
@@ -393,7 +393,7 @@ knitr::include_graphics("../Foto/zaposlenost_scree.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Vizualizacija dvije glavne PCA komponente po sektorima
 
@@ -405,7 +405,7 @@ knitr::include_graphics("../Foto/zaposlenost_PCA_gg.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Vizualizacija dvije glavne PCA komponente po zemljama
 
@@ -547,6 +547,15 @@ opt <- -opt
 ## 5. Pripiši nazive
 row.names(opt) <- c("Murder", "Assault", "UrbanPop", "Rape")
 colnames(opt) <- c("PC1", "PC2")
+```
+
+---
+
+# Primjer 1 (Kriminal u SAD)
+
+##### Prilagodba podataka
+
+```{r}
 head(opt) # Pogledaj objekt
 ```
 
@@ -580,10 +589,11 @@ head(PC)
 ggplot2:: ggplot(PC, aes(PC1,PC2)) + 
   modelr:: geom_ref_line(h=0) + 
   modelr:: geom_ref_line(v= 0) +
-  geom_text(aes(label = GEO), size = 4) +
+  geom_text(aes(label = GEO), size = 1.5) +
   xlab("PC1") + 
   ylab("PC2") + 
-  ggtitle("Prve dvije glavne komponente za USArrests podatkovni okvir") -> USArViz
+  ggtitle("Prve dvije glavne komponente za USArrests podatkovni okvir") +
+theme_grey(base_size = 10)  -> USArViz
 ```
 
 ---
