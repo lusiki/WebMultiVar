@@ -90,7 +90,7 @@ title: " "
 
 **Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/04_PCA.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/04_PCA.Rmd) 
 <br>
-**Čitanje:** [Blog post](https://towardsdatascience.com/learn-principle-component-analysis-in-r-ddba7c9b1064)
+**Čitanje:** [Blog post](https://towardsdatascience.com/learn-principle-component-analysis-in-r-ddba7c9b1064) + [Tehničko poglavlje u knjizi](http://staff.ustc.edu.cn/~zwp/teach/MVA/abdi-awPCA2010.pdf)
 
 
 ### Predavanje 05: Klaster analiza

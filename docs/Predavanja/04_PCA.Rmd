@@ -334,7 +334,7 @@ knitr::include_graphics("../Foto/grades_loadings.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Opis varijabli 
 <br>
@@ -348,7 +348,7 @@ knitr::include_graphics("../Foto/zaposlenost_sifranik.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Korelacijska matrica
 
@@ -359,7 +359,7 @@ knitr::include_graphics("../Foto/zaposlenost_cor.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Varijanca pripadajućih PCA komponenti
 
@@ -370,7 +370,7 @@ knitr::include_graphics("../Foto/zaposlenost_PCA.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### PCA opterećenja komponenti
 
@@ -382,7 +382,7 @@ knitr::include_graphics("../Foto/zaposlenost_loadings.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+#Zaposlenost u EU
 
 ##### Scree grafikon za PCA analizu
 
@@ -393,7 +393,7 @@ knitr::include_graphics("../Foto/zaposlenost_scree.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Vizualizacija dvije glavne PCA komponente po sektorima
 
@@ -405,7 +405,7 @@ knitr::include_graphics("../Foto/zaposlenost_PCA_gg.png")
 
 ---
 
-# Zaposlenost u sektorima europskih zemalja
+# Zaposlenost u EU
 
 ##### Vizualizacija dvije glavne PCA komponente po zemljama
 
@@ -506,7 +506,7 @@ name: primjena
 ##### Podatci
 
 ```{r}
-
+# vidi https://uc-r.github.io/pca
 data("USArrests")  # Učitaj podatke
 head(USArrests,10) # Pregledaj podatke
 ```
@@ -547,6 +547,15 @@ opt <- -opt
 ## 5. Pripiši nazive
 row.names(opt) <- c("Murder", "Assault", "UrbanPop", "Rape")
 colnames(opt) <- c("PC1", "PC2")
+```
+
+---
+
+# Primjer 1 (Kriminal u SAD)
+
+##### Prilagodba podataka
+
+```{r}
 head(opt) # Pogledaj objekt
 ```
 
@@ -580,10 +589,11 @@ head(PC)
 ggplot2:: ggplot(PC, aes(PC1,PC2)) + 
   modelr:: geom_ref_line(h=0) + 
   modelr:: geom_ref_line(v= 0) +
-  geom_text(aes(label = GEO), size = 4) +
+  geom_text(aes(label = GEO), size = 1.5) +
   xlab("PC1") + 
   ylab("PC2") + 
-  ggtitle("Prve dvije glavne komponente za USArrests podatkovni okvir") -> USArViz
+  ggtitle("Prve dvije glavne komponente za USArrests podatkovni okvir") +
+theme_grey(base_size = 10)  -> USArViz
 ```
 
 ---
@@ -665,9 +675,10 @@ cumPVE
 
 ##### PCA pomoću funkcija 
 
+.tiny[
 ```{r}
 ## PROVEDI PROCEDURU PUTEM FORMULA ##
-PCA_fun <- prcomp(USArrests, scale = T)
+PCA_fun <- stats::prcomp(USArrests, scale = T)
 names(PCA_fun) # Pregledaj objekt
 # Pogledaj prosjek komponenti po varijablama
 PCA_fun$center
@@ -676,7 +687,7 @@ PCA_fun$scale
 # Pogledaj opterećenja
 PCA_fun$rotation
 ```
-
+]
 ---
 
 # Primjer 1 (Kriminal u SAD)
@@ -692,15 +703,37 @@ PCA_fun$x <- -PCA_fun$x
 head(PCA_fun$x)
 ```
 
-
 ---
 
 # Primjer 1 (Kriminal u SAD)
 
 ##### PCA pomoću funkcija 
 
-```{r, fig.height=4}
-biplot(PCA_fun, scale = 0) # Vizualiziraj
+```{r, echo = FALSE, message = F, warning = FALSE}
+# funkcija za ljepši biplot
+PCbiplot <- function(PC, x="PC1", y="PC2") {
+    # PC being a prcomp object
+    data <- data.frame(obsnames=row.names(PC$x), PC$x)
+    plot <- ggplot(data, aes_string(x=x, y=y)) + geom_text(alpha=.99, size=1.8, aes(label=obsnames))
+    datapc <- data.frame(varnames=rownames(PC$rotation), PC$rotation)
+    mult <- min(
+        (max(data[,y]) - min(data[,y])/(max(datapc[,y])-min(datapc[,y]))),
+        (max(data[,x]) - min(data[,x])/(max(datapc[,x])-min(datapc[,x])))
+        )
+    datapc <- transform(datapc,
+            v1 = .7 * mult * (get(x)),
+            v2 = .7 * mult * (get(y))
+            )
+    plot <- plot + coord_equal() + geom_text(data=datapc, aes(x=v1, y=v2, label=varnames), size = 3, vjust=1, color="red")
+    plot <- plot + geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="red")
+    plot
+}
+```
+
+```{r, fig.height=3}
+# Vizualiziraj 
+# biplot(PCA_fun, scale = 0) # standardna funkcija
+PCbiplot(PCA_fun) # custom made funkcija; vidi .Rmd
 ```
 
 ---
@@ -721,12 +754,15 @@ print(round(PCv, 2))
 
 ##### Pregled podataka
 
+
 ```{r}
+# Vidi niže za detaljnjiji opis
 # Podatci
 data(decathlon2)
-head(decathlon2, 7)
+head(decathlon2, 5)
 ```
 
+.footnote[[analiza](https://raw.githack.com/clemonster/decathlon-pca/master/decathlon_full_analysis.html) + [Analiza](https://husson.github.io/MOOC_GB/RMarkdown_PCA_Decathlon.pdf) ]
 ---
 
 # Primjer 2 (Sportski rezultati)
@@ -771,7 +807,7 @@ print(procjena_PCA)
 
 ```{r}
 # Izvuci svojstvene vrijednosti
-svojstvene_vrijednosti <- get_eigenvalue(procjena_PCA)
+svojstvene_vrijednosti <- factoextra::get_eigenvalue(procjena_PCA)
 print(svojstvene_vrijednosti)
 ```
 
@@ -783,7 +819,7 @@ print(svojstvene_vrijednosti)
 
 ```{r, fig.height=3}
 # Prikaži grafički
-fviz_eig(procjena_PCA, addlabels = T, ylim = c(0,45))
+factoextra::fviz_eig(procjena_PCA, addlabels = T, ylim = c(0,45))
 ```
 
 ---
@@ -794,7 +830,7 @@ fviz_eig(procjena_PCA, addlabels = T, ylim = c(0,45))
 
 ```{r}
 ## VARIJABLE ##
-vars <- get_pca_var(procjena_PCA)
+vars <- factoextra::get_pca_var(procjena_PCA)
 print(vars)
 ```
 
@@ -840,7 +876,7 @@ head(vars$contrib) # Doprinos varijabli komponentama
 
 ```{r, fig.height=3}
 # Prikaži varijable u prostoru glavnih komponenti
-fviz_pca_var(procjena_PCA, col.var = "contrib")
+factoextra::fviz_pca_var(procjena_PCA, col.var = "contrib", labelsize = 2)
 ```
 
 ---
@@ -863,7 +899,7 @@ corrplot::corrplot(vars$cos2, is.corr = F)
 
 ```{r, fig.height=3}
 # Prikaži doprinos na stupčastom grafikonu
-fviz_cos2(procjena_PCA, choice = "var", axes = 1:2)
+factoextra::fviz_cos2(procjena_PCA, choice = "var", axes = 1:2)
 ```
 
 ---
@@ -885,7 +921,7 @@ corrplot::corrplot(vars$contrib, is.corr = F)
 
 ```{r, fig.height=3}
 # Prikaži na stupčastom grafikonu
-fviz_contrib(procjena_PCA, choice = "var", axses = 1, top = 10)
+factoextra::fviz_contrib(procjena_PCA, choice = "var", axses = 1, top = 10)
 ```
 
 ---
@@ -895,9 +931,9 @@ fviz_contrib(procjena_PCA, choice = "var", axses = 1, top = 10)
 ##### Proširena analiza
 ```{r, fig.height=3}
 set.seed(123) # Grupiranje na osnovi Kmeans algoritma #
-group_km <- kmeans(vars$coord, centers = 3, nstart = 25)
+group_km <- stats::kmeans(vars$coord, centers = 3, nstart = 25)
 group <- as.factor(group_km$cluster)
-fviz_pca_var(procjena_PCA, col.var = group,
+factoextra::fviz_pca_var(procjena_PCA, col.var = group, labelsize = 2,
              palette = c("#0073C2FF", "#EFC000FF", "#868686FF"),
              legend.title = "cluster")
 ```
@@ -909,8 +945,7 @@ fviz_pca_var(procjena_PCA, col.var = group,
 ##### Analiza PCA dimenzija
 .tiny[
 ```{r}
-## OPIS DIMENZIJA ##
-opis_PCA <- dimdesc(procjena_PCA, axes = c(1,2), proba = 0.05)
+opis_PCA <- FactoMineR::dimdesc(procjena_PCA, axes = c(1,2), proba = 0.05)
 head(opis_PCA,10)
 ```
 ]
@@ -946,7 +981,7 @@ opis_PCA$Dim.2
 
 ## INDIVIDUALNI ELEMENTI ##
 
-inds <- get_pca_ind(procjena_PCA) # Stvori IE objekt
+inds <- factoextra::get_pca_ind(procjena_PCA) # Stvori IE objekt
 print(inds) # Pregledaj
 
 ```
@@ -988,7 +1023,7 @@ head(inds$contrib)   # Doprinos IE
 
 ```{r, fig.height=3}
 # Prikaži doprinos IE
-fviz_pca_ind(procjena_PCA, col.ind = "cos2",gradient.cols = c("#00AFBB", "#E7B800","#FC4E07"),repel = TRUE)
+factoextra::fviz_pca_ind(procjena_PCA, col.ind = "cos2",gradient.cols = c("#00AFBB", "#E7B800","#FC4E07"),repel = TRUE, labelsize = 3 )
 ```
 
 ---
@@ -999,7 +1034,7 @@ fviz_pca_ind(procjena_PCA, col.ind = "cos2",gradient.cols = c("#00AFBB", "#E7B80
 
 ```{r, fig.height=3}
 # Prikaži doprinos IE na stupčastom grafikonu
-fviz_cos2(procjena_PCA, choice = "ind")
+factoextra::fviz_cos2(procjena_PCA, choice = "ind")
 ```
 
 ---
@@ -1009,7 +1044,7 @@ fviz_cos2(procjena_PCA, choice = "ind")
 ##### Analiza PCA dimenzija
 
 ```{r, fig.height=3}
-fviz_cos2(procjena_PCA, choice = "ind",
+factoextra::fviz_cos2(procjena_PCA, choice = "ind",
           axses = 1:2) # Prve dvije dimenzije
 ```
 
@@ -1020,7 +1055,7 @@ fviz_cos2(procjena_PCA, choice = "ind",
 ##### Analiza PCA dimenzija
 
 ```{r, fig.height=3}
-fviz_cos2(procjena_PCA, choice = "ind",
+factoextra::fviz_cos2(procjena_PCA, choice = "ind",
           axses = 1:2) # Prve dvije dimenzije
 
 ```
@@ -1033,6 +1068,7 @@ fviz_cos2(procjena_PCA, choice = "ind",
 ##### Podatci
 
 ```{r}
+data(iris)
 head(iris,10) # Pogledaj podatke
 ```
 
@@ -1045,7 +1081,7 @@ head(iris,10) # Pogledaj podatke
 .tiny[
 ```{r}
 # Provedi PCA
-iris_PCA <- PCA(iris[,-5], graph = F)
+iris_PCA <- FactoMineR::PCA(iris[,-5], graph = F)
 iris_PCA
 ```
 ]
@@ -1058,7 +1094,7 @@ iris_PCA
 
 ```{r, fig.height=2}
 # Vizualizacija 1
-fviz_pca_ind(iris_PCA,
+factoextra::fviz_pca_ind(iris_PCA,
              geom.ind = "point",
              col.ind = iris$Species, 
              addEllipses = T,
@@ -1074,7 +1110,7 @@ fviz_pca_ind(iris_PCA,
 
 ```{r, fig.height=2}
 # Vizualizacija 2
-fviz_pca_biplot(iris_PCA,
+factoextra::fviz_pca_biplot(iris_PCA,
              geom.ind = "point",
              col.ind = iris$Species, 
              addEllipses = T,
@@ -1082,7 +1118,8 @@ fviz_pca_biplot(iris_PCA,
              palette = "jco",
              col.var = "black",
              label = "var",
-             repel = T)
+             repel = T,
+             labelsize = 3)
 ```
 
 
