@@ -645,6 +645,7 @@ cumPVE
 
 ##### PCA pomoću funkcija 
 
+.tiny[
 
 ```r
 ## PROVEDI PROCEDURU PUTEM FORMULA ##
@@ -688,7 +689,7 @@ PCA_fun$rotation
 ## UrbanPop -0.2781909 -0.8728062 -0.3780158  0.13387773
 ## Rape     -0.5434321 -0.1673186  0.8177779  0.08902432
 ```
-
+]
 ---
 
 # Primjer 1 (Kriminal u SAD)
@@ -726,7 +727,6 @@ head(PCA_fun$x)
 ## Colorado    1.4993407  0.9776297 -1.08400162 -0.001450164
 ```
 
-
 ---
 
 # Primjer 1 (Kriminal u SAD)
@@ -734,11 +734,15 @@ head(PCA_fun$x)
 ##### PCA pomoću funkcija 
 
 
+
+
 ```r
-biplot(PCA_fun, scale = 0) # Vizualiziraj
+# Vizualiziraj 
+# biplot(PCA_fun, scale = 0) bi se koristio uobičajeno
+PCbiplot(PCA_fun) # custom made funkcija; vidi .Rmd
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -921,7 +925,7 @@ print(svojstvene_vrijednosti)
 fviz_eig(procjena_PCA, addlabels = T, ylim = c(0,45))
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-50-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1021,7 +1025,7 @@ head(vars$contrib) # Doprinos varijabli komponentama
 fviz_pca_var(procjena_PCA, col.var = "contrib")
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-54-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1036,7 +1040,7 @@ fviz_pca_var(procjena_PCA, col.var = "contrib")
 corrplot::corrplot(vars$cos2, is.corr = F)
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-56-1.png" style="display: block; margin: auto;" /&gt;
 ]
 ---
 
@@ -1050,7 +1054,7 @@ corrplot::corrplot(vars$cos2, is.corr = F)
 fviz_cos2(procjena_PCA, choice = "var", axes = 1:2)
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-56-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-57-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1064,7 +1068,7 @@ fviz_cos2(procjena_PCA, choice = "var", axes = 1:2)
 corrplot::corrplot(vars$contrib, is.corr = F)
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-57-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-58-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1078,7 +1082,7 @@ corrplot::corrplot(vars$contrib, is.corr = F)
 fviz_contrib(procjena_PCA, choice = "var", axses = 1, top = 10)
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-58-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-59-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1095,7 +1099,7 @@ fviz_pca_var(procjena_PCA, col.var = group,
              legend.title = "cluster")
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-59-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-60-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1344,7 +1348,7 @@ head(inds$contrib)   # Doprinos IE
 fviz_pca_ind(procjena_PCA, col.ind = "cos2",gradient.cols = c("#00AFBB", "#E7B800","#FC4E07"),repel = TRUE)
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-67-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1358,7 +1362,7 @@ fviz_pca_ind(procjena_PCA, col.ind = "cos2",gradient.cols = c("#00AFBB", "#E7B80
 fviz_cos2(procjena_PCA, choice = "ind")
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-69-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1372,7 +1376,7 @@ fviz_cos2(procjena_PCA, choice = "ind",
           axses = 1:2) # Prve dvije dimenzije
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-69-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-70-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1386,7 +1390,7 @@ fviz_cos2(procjena_PCA, choice = "ind",
           axses = 1:2) # Prve dvije dimenzije
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-70-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-71-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1469,7 +1473,7 @@ fviz_pca_ind(iris_PCA,
              palette = c("#00AFBB", "#E7B800", "#FC4E07"))
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-73-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-74-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1491,7 +1495,7 @@ fviz_pca_biplot(iris_PCA,
              repel = T)
 ```
 
-&lt;img src="04_PCA_files/figure-html/unnamed-chunk-74-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04_PCA_files/figure-html/unnamed-chunk-75-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---

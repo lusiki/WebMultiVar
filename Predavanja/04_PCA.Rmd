@@ -675,6 +675,7 @@ cumPVE
 
 ##### PCA pomoću funkcija 
 
+.tiny[
 ```{r}
 ## PROVEDI PROCEDURU PUTEM FORMULA ##
 PCA_fun <- prcomp(USArrests, scale = T)
@@ -686,7 +687,7 @@ PCA_fun$scale
 # Pogledaj opterećenja
 PCA_fun$rotation
 ```
-
+]
 ---
 
 # Primjer 1 (Kriminal u SAD)
@@ -702,15 +703,37 @@ PCA_fun$x <- -PCA_fun$x
 head(PCA_fun$x)
 ```
 
-
 ---
 
 # Primjer 1 (Kriminal u SAD)
 
 ##### PCA pomoću funkcija 
 
-```{r, fig.height=4}
-biplot(PCA_fun, scale = 0) # Vizualiziraj
+```{r, echo = FALSE, message = F, warning = FALSE}
+# funkcija za ljepši biplot
+PCbiplot <- function(PC, x="PC1", y="PC2") {
+    # PC being a prcomp object
+    data <- data.frame(obsnames=row.names(PC$x), PC$x)
+    plot <- ggplot(data, aes_string(x=x, y=y)) + geom_text(alpha=.99, size=0.8, aes(label=obsnames))
+    datapc <- data.frame(varnames=rownames(PC$rotation), PC$rotation)
+    mult <- min(
+        (max(data[,y]) - min(data[,y])/(max(datapc[,y])-min(datapc[,y]))),
+        (max(data[,x]) - min(data[,x])/(max(datapc[,x])-min(datapc[,x])))
+        )
+    datapc <- transform(datapc,
+            v1 = .7 * mult * (get(x)),
+            v2 = .7 * mult * (get(y))
+            )
+    plot <- plot + coord_equal() + geom_text(data=datapc, aes(x=v1, y=v2, label=varnames), size = 5, vjust=1, color="red")
+    plot <- plot + geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="red")
+    plot
+}
+```
+
+```{r, fig.height=3}
+# Vizualiziraj 
+# biplot(PCA_fun, scale = 0) bi se koristio uobičajeno
+PCbiplot(PCA_fun) # custom made funkcija; vidi .Rmd
 ```
 
 ---
