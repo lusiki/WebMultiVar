@@ -59,6 +59,8 @@ library(tidyverse)  # data manipulation and visualization
 library(gridExtra)  # plot arrangement
 library(patchwork)
 library(ggplot2)
+library(lavaan)
+library(sem)
 
 ```
 
@@ -71,7 +73,7 @@ library(ggplot2)
 
 1. [Jednodimenzionalna faktorska analiza (FA)](#uni)
 
-2. [Multidimenzionalna FA ](#multi)
+2. [Multidimenzionalna FA](#multi)
 
 3. [Konfirmatorna FA](#conf)
 
@@ -487,27 +489,133 @@ EFA_model$loadings
 head(EFA_model$scores)
 ```
 
+---
+
+# Procjena kvalitete modela (fit)
+
+##### Apsolutne mjere
+
+- Chi-square test: nesignifikanstnost
+- Tucker-Lewis Index (TLI) : > 0.90
+- Root Mean Square Error of Approximation (RMSEA): < 0.05
+
+##### Relativne mjere
+
+- Bayesian Information Criterion (BIC)
+
+---
+
+# Procjena kvalitete modela
+
+.tiny[
+```{r, eval = FALSE}
+EFA_model <- fa(bfi_EFA, nfactors = 6)
+EFA_model
+```
+]
+
+---
+
+# Procjena kvalitete modela (relativna)
+
+```{r}
+bfi_theory <- fa(bfi_EFA, nfactors = 5)
+bfi_eigen <- fa(bfi_EFA, nfactors = 6)
+
+bfi_theory$BIC
+bfi_eigen$BIC
+bfi_theory$BIC
+bfi_eigen$BIC
+```
 
 
+---
+class: inverse, center, middle
+name: conf
+
+# KONFIRMATORNA FA (CFA)
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Kada postoji teorija!)
+
+---
+
+# Razlozi za korištenje
+<br>
+<br>
+<br>
+- Eksplicitno specificiran odnos među varijablama
+<br>
+- Testiranje teorije koja je unaprijed poznata
+<br>
+- Pristup koji se koristi kod razvoja nove mjere
 
 
+---
+
+# Skica
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="300px"}
+knitr::include_graphics("../Foto/skica_FA.png")
+```
+
+---
+
+# Provedi CFA
 
 
+```{r}
+EFA_syn <- structure.sem(EFA_model)
+head(EFA_syn,15)
+```
+
+---
+
+# CFA na osnovi teorije
+
+```{r}
+# Uredi sintaksu
+theory_syn_eq <- "
+AGE: A1, A2, A3, A4, A5 #Agreeableness
+CON: C1, C2, C3, C4, C5 #Conscientiousness
+EXT: E1, E2, E3, E4, E5 #Extraversion
+NEU: N1, N2, N3, N4, N5 #Neuroticism
+OPE: O1, O2, O3, O4, O  #Openness
+"
+
+```
+
+- Kraki nazivi
+- Naziv faktora pa dvotočka
+- Elementi kao comma-separated lista
+
+```{r}
+theory_syn <- sem::cfa(text = theory_syn_eq, reference.indicators = FALSE)
+```
+
+---
+
+# Odnos između varijabli i faktora
+.tiny[
+```{r}
+head(theory_syn,25)
+```
+]
 
 
+---
+
+# Provedi CFA
 
 
+```{r, eval = FALSE}
+theory_CFA <- sem::sem(theory_syn, data = bfi_CFA)
+summary(theory_CFA)
+```
 
 
-
-
-
-
-
-
-
-
-
+`Model Chisquare =  2212.032   Df =  265 Pr(>Chisq) = 9.662018e-304 AIC =  2332.032 BIC =  326.618 Normalized Residuals   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. -5.5800 -0.3732  1.0350  1.1220  2.4710  8.9000  R-square for Endogenous Variables    A1     A2     A3     A4     A5     C1     C2     C3     C4 0.1178 0.4475 0.5731 0.2994 0.4713 0.3006 0.3667 0.2947 0.4886 ... Parameter Estimates            Estimate   Std Error  z value    Pr(>|z|)                  lam[A1:AGE] -0.5011716 0.04487184 -11.168956  5.785714e-29 A1 <--- AGE lam[A2:AGE]  0.8230960 0.03447831  23.872862 5.863008e-126 A2 <--- AGE`
 
 
 
