@@ -93,6 +93,7 @@ name: uni
 
 ---
 
+# Karakteristike FA
 
 - Charles Spearman (1904) zaslužan za uvođenje FA
 - FA ima mnogo sičnosti sa PCA
@@ -250,7 +251,7 @@ class: inverse, center, middle
 
 ---
 
-# Upoznaj se sa podatcima
+# Podatci
 
 ```{r}
 psych::describe(gcbs)
@@ -298,11 +299,11 @@ describeBy(gcbs_grouped, group = group_var)
 ---
 
 # Usporedi polovice
-
+.tiny[
 ```{r}
 statsBy(gcbs_grouped, group = "group_var")
 ```
-
+]
 ---
 
 # Korelacije varijabli
@@ -403,7 +404,8 @@ knitr::include_graphics("../Foto/bfi_FA.png")
 
 - konstrukt se ne može direktno mjeriti
 - primjeri: samoodređenost, sposobnost razmišljanja, politička pripadnost, ekstrovertiranost 
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="450px"}
 knitr::include_graphics("../Foto/konstrukt_FA.png")
 ```
