@@ -13,7 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # MULTIVARIJATNE STATISTIČKE METODE
-## Predavanje 5: Faktorska analiya
+## Predavanje 5: Faktorska analiza
 ### Luka Šikić, PhD
 ### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
 
@@ -76,27 +76,13 @@ name: uni
 ---
 
 
-- Charles Spearman (1904) je zaslužan za uvođenje FA
+- Charles Spearman (1904) zaslužan za uvođenje FA
 - FA ima mnogo sičnosti sa PCA
 - Cilj FA je reducirati veliki broj (koreliranih) varijabli na mali broj indeksa (faktora)
 - FA je statistički model (za razliku od PCA koja je statistička metoda)
+- Ekstenzija (C)FA je modeliranje strukturnih jednadžbi SEM 
 &lt;br&gt;
 &lt;br&gt;
-##### **Procedura provođenja FA**:
-1. Izračunaj faktorska opterećenja (~PCA)
-2. Faktorska rotacija (ortogonalna/zaobljena)
-3. Izračunaj faktorske koeficijente (za pripadajuće individualne elemente)
-
-
----
-
-# Odnos FA i drugih analiza
-&lt;br&gt;
-&lt;br&gt;
-
-- Klasična analiza: opterećenja su neponderirana suma varijabli
-- FA: opterećenja su empirisjki ponderirana suma varijabli pri čemu su ponderi određeni na osnovi korelacije varijabli
-- SEM: proširenje faktorske analize na način da uključuje odnose između latentnih varijabli
 
 ---
 
@@ -148,7 +134,7 @@ library(psych)
 # Podatci
 
 - koristimo `gcbs` podatkovni skup (Generic Conspiracist Beliefs Survey)
-- provjerite da li i vas prisluškuju na [Open psychometrics](https://openpsychometrics.org/tests/GCBS/) 
+- provjerite da li **i** vas prisluškuju na [Open psychometrics](https://openpsychometrics.org/tests/GCBS/) :-)
 
 
 
@@ -180,26 +166,31 @@ str(gcbs)
 ---
 
 # Konstrukti
-
+&lt;br&gt;
+&lt;br&gt;
 - Zavjera vlade (GM)
+&lt;br&gt;
 - Prikrivanje vanzemaljaca (ET)
+&lt;br&gt;
 - Zle i zavjereničke globalne organizacije (MG)
-- osobna dobrobit (PW)
-- kontrola informacija (CI)
+&lt;br&gt;
+- Osobna dobrobit (PW)
+&lt;br&gt;
+- Kontrola informacija (CI)
 
-Za detalje o varijablama pogledajte [Measuring belief in conspiracy theories](https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00279/full)
+Za detalje o varijablama pogledajte [Measuring belief in conspiracy theories](https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00279/full).
 
 ---
 
 # Varijable i konstrukti
 
-&lt;img src="../Foto/konstrukti_FA.png" width="300px" style="display: block; margin: auto;" /&gt;
+&lt;img src="../Foto/konstrukti_FA.png" width="400px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Jednodimenzionalni konstrukt
 
-&lt;img src="../Foto/unidim_FA.png" width="300px" style="display: block; margin: auto;" /&gt;
+&lt;img src="../Foto/unidim_FA.png" width="400px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -262,12 +253,24 @@ class: inverse, center, middle
 ---
 
 # Procedura razvoja konstrukta
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 - Odredi elemente konstrukta
+&lt;br&gt;
+&lt;br&gt;
 - Prikupi podatke 
+&lt;br&gt;
+&lt;br&gt;
 - Upoznaj se sa podatcima
+&lt;br&gt;
+&lt;br&gt;
 - Odluka što koristiti EFA, CFA ili obje analize
+&lt;br&gt;
+&lt;br&gt;
 - Podijeli uzorak u dva (slučajna; *random*) dijela (za obje)
+&lt;br&gt;
+&lt;br&gt;
 - Usporedi uzorke
 
 
@@ -277,7 +280,7 @@ class: inverse, center, middle
 
 
 ```r
-describe(gcbs)
+psych::describe(gcbs)
 ```
 
 ```
@@ -303,7 +306,9 @@ describe(gcbs)
 ---
 
 # Podijeli podatke
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 N &lt;- nrow(gcbs)
@@ -317,24 +322,38 @@ gcbs_CFA &lt;- gcbs[indices_CFA, ]
 ---
 
 # Usporedi polovice
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 group_var &lt;- vector("numeric", nrow(gcbs))
 group_var[indices_EFA] &lt;- 1
 group_var[indices_CFA] &lt;- 2
-head(group_var,15)
+head(group_var,450)
 ```
 
 ```
-##  [1] 1 2 2 1 1 1 1 1 1 2 2 2 2 2 1
+##   [1] 2 2 2 2 1 1 1 2 2 2 1 1 1 1 2 2 2 2 2 1 1 2 1 2 1 1 2 1 1 2 2 1 2 2 2 2 1
+##  [38] 2 2 1 1 1 2 1 2 2 1 2 2 2 1 2 1 1 2 2 1 2 1 2 2 2 1 2 2 2 1 2 1 2 1 2 1 2
+##  [75] 1 1 1 1 1 1 2 2 1 1 1 2 2 2 1 2 1 1 1 2 1 2 1 2 2 2 1 1 2 2 1 2 2 2 1 1 2
+## [112] 2 1 1 2 1 2 1 1 2 2 1 1 2 1 2 1 1 2 1 1 2 1 2 1 2 1 1 2 2 2 2 2 1 2 2 1 2
+## [149] 1 1 1 1 2 2 2 1 1 2 1 1 1 1 1 2 1 2 2 2 1 1 2 1 1 2 2 2 1 1 1 2 2 1 2 1 2
+## [186] 2 1 1 2 2 1 1 2 1 1 2 1 1 2 2 2 1 2 2 2 2 1 2 1 2 2 2 2 1 2 1 2 1 2 1 1 1
+## [223] 1 2 1 1 2 1 1 1 1 2 2 1 2 1 1 2 2 1 2 1 2 1 1 1 1 2 2 1 2 1 2 2 2 2 2 1 1
+## [260] 2 1 1 2 2 1 2 2 1 2 1 1 1 1 1 1 2 2 2 1 2 2 2 2 2 1 1 2 2 1 2 2 1 2 2 1 1
+## [297] 1 1 1 2 1 1 1 1 2 2 2 2 1 1 2 2 2 1 1 2 1 2 2 2 2 2 1 1 1 1 1 1 1 1 1 2 2
+## [334] 1 2 2 2 2 1 2 1 1 2 1 1 1 2 1 1 1 2 1 2 2 2 2 1 2 2 1 1 1 2 2 2 2 1 2 1 2
+## [371] 1 2 2 2 2 1 1 1 1 1 1 2 2 2 2 2 1 2 1 2 1 2 1 1 2 1 1 1 2 1 1 1 1 1 2 1 2
+## [408] 1 1 2 2 2 2 1 2 2 1 1 1 2 2 1 2 2 2 2 1 1 1 1 2 1 2 2 2 1 1 2 1 1 1 2 1 2
+## [445] 1 1 2 1 1 2
 ```
 
 ---
 
 # Usporedi polovice
 
-
+.tiny[
 
 ```r
 gcbs_grouped &lt;- cbind(gcbs, group_var)
@@ -346,21 +365,21 @@ describeBy(gcbs_grouped, group = group_var)
 ##  Descriptive statistics by group 
 ## group: 1
 ##           vars    n mean   sd median trimmed  mad min max range  skew kurtosis
-## Q1           1 1247 3.39 1.47      4    3.49 1.48   0   5     5 -0.48    -1.20
-## Q2           2 1247 2.89 1.49      3    2.87 1.48   0   5     5  0.08    -1.38
-## Q3           3 1247 1.96 1.34      1    1.73 0.00   0   5     5  1.11    -0.14
-## Q4           4 1247 2.55 1.44      2    2.44 1.48   0   5     5  0.34    -1.27
-## Q5           5 1247 3.20 1.47      4    3.26 1.48   0   5     5 -0.29    -1.32
-## Q6           6 1247 3.05 1.52      3    3.06 1.48   1   5     4 -0.09    -1.47
-## Q7           7 1247 2.58 1.51      2    2.47 1.48   0   5     5  0.37    -1.34
-## Q8           8 1247 2.39 1.54      2    2.24 1.48   0   5     5  0.59    -1.20
-## Q9           9 1247 2.21 1.40      2    2.02 1.48   0   5     5  0.76    -0.78
-## Q10         10 1247 3.43 1.39      4    3.54 1.48   1   5     4 -0.51    -1.04
-## Q11         11 1247 3.15 1.43      3    3.20 1.48   0   5     5 -0.26    -1.20
-## Q12         12 1247 2.57 1.50      2    2.46 1.48   0   5     5  0.39    -1.31
-## Q13         13 1247 2.04 1.36      1    1.82 0.00   0   5     5  0.98    -0.37
-## Q14         14 1247 2.89 1.50      3    2.87 1.48   0   5     5  0.05    -1.45
-## Q15         15 1247 4.18 1.13      5    4.41 0.00   0   5     5 -1.48     1.41
+## Q1           1 1247 3.49 1.48      4    3.61 1.48   0   5     5 -0.58    -1.10
+## Q2           2 1247 3.02 1.50      3    3.03 1.48   0   5     5 -0.06    -1.43
+## Q3           3 1247 2.04 1.38      1    1.82 0.00   0   5     5  0.97    -0.46
+## Q4           4 1247 2.67 1.46      3    2.59 1.48   0   5     5  0.23    -1.36
+## Q5           5 1247 3.29 1.49      4    3.36 1.48   0   5     5 -0.38    -1.30
+## Q6           6 1247 3.15 1.51      3    3.19 1.48   0   5     5 -0.20    -1.41
+## Q7           7 1247 2.69 1.51      2    2.62 1.48   0   5     5  0.24    -1.41
+## Q8           8 1247 2.47 1.57      2    2.35 1.48   0   5     5  0.48    -1.34
+## Q9           9 1247 2.28 1.44      2    2.11 1.48   0   5     5  0.69    -0.95
+## Q10         10 1247 3.57 1.38      4    3.71 1.48   1   5     4 -0.67    -0.84
+## Q11         11 1247 3.31 1.40      4    3.39 1.48   0   5     5 -0.43    -1.04
+## Q12         12 1247 2.67 1.52      2    2.60 1.48   0   5     5  0.23    -1.43
+## Q13         13 1247 2.13 1.40      1    1.92 0.00   0   5     5  0.85    -0.65
+## Q14         14 1247 3.03 1.47      3    3.04 1.48   1   5     4 -0.09    -1.40
+## Q15         15 1247 4.24 1.11      5    4.48 0.00   0   5     5 -1.59     1.75
 ## group_var   16 1247 1.00 0.00      1    1.00 0.00   1   1     0   NaN      NaN
 ##             se
 ## Q1        0.04
@@ -382,21 +401,21 @@ describeBy(gcbs_grouped, group = group_var)
 ## ------------------------------------------------------------ 
 ## group: 2
 ##           vars    n mean   sd median trimmed  mad min max range  skew kurtosis
-## Q1           1 1248 3.56 1.43      4    3.69 1.48   0   5     5 -0.62    -0.99
-## Q2           2 1248 3.04 1.49      3    3.05 1.48   0   5     5 -0.10    -1.40
-## Q3           3 1248 2.13 1.43      1    1.92 0.00   0   5     5  0.86    -0.69
-## Q4           4 1248 2.72 1.46      3    2.65 1.48   0   5     5  0.18    -1.39
-## Q5           5 1248 3.31 1.47      4    3.39 1.48   0   5     5 -0.41    -1.21
-## Q6           6 1248 3.17 1.49      3    3.21 1.48   0   5     5 -0.24    -1.36
-## Q7           7 1248 2.76 1.51      3    2.70 1.48   0   5     5  0.20    -1.42
-## Q8           8 1248 2.51 1.59      2    2.40 1.48   0   5     5  0.44    -1.38
-## Q9           9 1248 2.26 1.44      2    2.08 1.48   0   5     5  0.75    -0.87
-## Q10         10 1248 3.57 1.38      4    3.71 1.48   1   5     4 -0.67    -0.83
-## Q11         11 1248 3.38 1.36      4    3.47 1.48   0   5     5 -0.44    -1.00
-## Q12         12 1248 2.72 1.50      3    2.66 1.48   0   5     5  0.18    -1.40
-## Q13         13 1248 2.17 1.40      2    1.97 1.48   0   5     5  0.80    -0.73
-## Q14         14 1248 3.02 1.48      3    3.03 1.48   0   5     5 -0.08    -1.40
-## Q15         15 1248 4.28 1.07      5    4.51 0.00   1   5     4 -1.64     2.04
+## Q1           1 1248 3.46 1.44      4    3.58 1.48   0   5     5 -0.51    -1.11
+## Q2           2 1248 2.91 1.49      3    2.89 1.48   0   5     5  0.04    -1.36
+## Q3           3 1248 2.05 1.40      1    1.82 0.00   0   5     5  0.99    -0.43
+## Q4           4 1248 2.60 1.44      2    2.51 1.48   0   5     5  0.30    -1.31
+## Q5           5 1248 3.22 1.46      4    3.28 1.48   0   5     5 -0.32    -1.24
+## Q6           6 1248 3.07 1.50      3    3.09 1.48   0   5     5 -0.13    -1.42
+## Q7           7 1248 2.64 1.51      2    2.56 1.48   0   5     5  0.33    -1.37
+## Q8           8 1248 2.43 1.56      2    2.29 1.48   0   5     5  0.55    -1.25
+## Q9           9 1248 2.19 1.39      2    1.99 1.48   0   5     5  0.82    -0.68
+## Q10         10 1248 3.44 1.39      4    3.55 1.48   1   5     4 -0.51    -1.03
+## Q11         11 1248 3.22 1.40      3    3.28 1.48   0   5     5 -0.27    -1.17
+## Q12         12 1248 2.62 1.49      2    2.52 1.48   0   5     5  0.35    -1.30
+## Q13         13 1248 2.07 1.36      1    1.86 0.00   0   5     5  0.92    -0.48
+## Q14         14 1248 2.88 1.50      3    2.86 1.48   0   5     5  0.05    -1.44
+## Q15         15 1248 4.22 1.10      5    4.45 0.00   1   5     4 -1.54     1.65
 ## group_var   16 1248 2.00 0.00      2    2.00 0.00   2   2     0   NaN      NaN
 ##             se
 ## Q1        0.04
@@ -406,7 +425,7 @@ describeBy(gcbs_grouped, group = group_var)
 ## Q5        0.04
 ## Q6        0.04
 ## Q7        0.04
-## Q8        0.05
+## Q8        0.04
 ## Q9        0.04
 ## Q10       0.04
 ## Q11       0.04
@@ -416,7 +435,7 @@ describeBy(gcbs_grouped, group = group_var)
 ## Q15       0.03
 ## group_var 0.00
 ```
-
+]
 ---
 
 # Usporedi polovice
@@ -431,19 +450,19 @@ statsBy(gcbs_grouped, group = "group_var")
 ## Call: statsBy(data = gcbs_grouped, group = "group_var")
 ## Intraclass Correlation 1 (Percentage of variance due to groups) 
 ##        Q1        Q2        Q3        Q4        Q5        Q6        Q7        Q8 
-##      0.01      0.00      0.01      0.01      0.00      0.00      0.01      0.00 
+##         0         0         0         0         0         0         0         0 
 ##        Q9       Q10       Q11       Q12       Q13       Q14       Q15 group_var 
-##      0.00      0.00      0.01      0.00      0.00      0.00      0.00      1.00 
+##         0         0         0         0         0         0         0         1 
 ## Intraclass Correlation 2 (Reliability of group differences) 
 ##        Q1        Q2        Q3        Q4        Q5        Q6        Q7        Q8 
-##      0.88      0.83      0.89      0.88      0.68      0.74      0.89      0.75 
+##     -4.34      0.73    -58.92      0.28      0.31      0.45     -0.55     -1.23 
 ##        Q9       Q10       Q11       Q12       Q13       Q14       Q15 group_var 
-##     -0.20      0.83      0.94      0.85      0.81      0.79      0.82      1.00 
+##      0.65      0.81      0.57     -0.10      0.15      0.83     -5.16      1.00 
 ## eta^2 between groups  
 ##  Q1.bg  Q2.bg  Q3.bg  Q4.bg  Q5.bg  Q6.bg  Q7.bg  Q8.bg  Q9.bg Q10.bg Q11.bg 
-##   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.01 
+##      0      0      0      0      0      0      0      0      0      0      0 
 ## Q12.bg Q13.bg Q14.bg Q15.bg 
-##   0.00   0.00   0.00   0.00 
+##      0      0      0      0 
 ## 
 ## To see the correlations between and within groups, use the short=FALSE option in your print statement.
 ## Many results are not shown directly. To see specific objects select from the following list:
@@ -486,7 +505,7 @@ lowerCor(gcbs)
 ---
 
 # Signifikantnost korelacija
-
+.tiny[
 
 ```r
 corr.test(gcbs, use = "pairwise.complete.obs")$p
@@ -542,12 +561,12 @@ corr.test(gcbs, use = "pairwise.complete.obs")$p
 ## Q14 1.851647e-207 1.534183e-208 1.013162e-155  0.000000e+00 2.883420e-130
 ## Q15 1.629274e-188 1.171847e-101  1.375737e-52 5.766839e-132  0.000000e+00
 ```
-
+]
 
 ---
 
 # Intervali pouzdanosti
-
+.tiny[
 
 ```r
 corr.test(gcbs, use = "pairwise.complete.obs")$ci
@@ -661,11 +680,13 @@ corr.test(gcbs, use = "pairwise.complete.obs")$ci
 ## Q13-Q15 0.2625236 0.2986885 0.3340155  1.375737e-52
 ## Q14-Q15 0.4302457 0.4616926 0.4920203 5.766839e-132
 ```
+]
 
 ---
 
 # Alfa koeficijent
 
+.tiny[
 
 ```r
 alpha(gcbs)
@@ -736,6 +757,7 @@ alpha(gcbs)
 ## Q14 0.00 0.25 0.17 0.15 0.22 0.20    0
 ## Q15 0.00 0.05 0.05 0.08 0.27 0.55    0
 ```
+]
 
 ---
 
@@ -773,7 +795,7 @@ name: uni
 
 # Podatci
 
-- koristimo podatke Synthetic Aperture Personality Assessment(SAPA)
+- koristimo podatke Synthetic Aperture Personality Assessment (SAPA)
 - 2.800 osoba
 - 25 pitanja
 .tiny[
@@ -845,7 +867,8 @@ head(bfi)
 ---
 
 # Podatci
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 names(bfi)
@@ -871,13 +894,15 @@ names(bfi)
 # Konstrukt
 
 - konstrukt se ne može direktno mjeriti
-- primjeri: samoodređenost, sposobnost razmišlljanja, politička pripadnost, ekstrovertiranost 
+- primjeri: samoodređenost, sposobnost razmišljanja, politička pripadnost, ekstrovertiranost 
 
-&lt;img src="../Foto/konstrukt_FA.png" width="200px" style="display: block; margin: auto;" /&gt;
+&lt;img src="../Foto/konstrukt_FA.png" width="450px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Podijeli podatke
+&lt;br&gt;
+&lt;br&gt;
 
 
 ```r
@@ -900,11 +925,11 @@ head(bfi_EFA, 2)
 
 ```
 ##       A1 A2 A3 A4 A5 C1 C2 C3 C4 C5 E1 E2 E3 E4 E5 N1 N2 N3 N4 N5 O1 O2 O3 O4
-## 62299  4  4  4  4  4  5  5  5  5  5  3  3  3  3  3  4  4  4  4  4  3  3  3  3
-## 63793  4  6  6  6  5  4  3  3  2  3  2  3  5  6  4  2  2  2  2  2  3  3  4  3
+## 62166  5  5  5  6  6  5  4  5  2  2  4  1  5  6  5  1  1  2  5  1  6  5  4  4
+## 61782  1  2  2  4  2  2  4  2  5  1  2  2  4  2  2  4  2  2  2  4  2  3  4  2
 ##       O5 gender education age
-## 62299  3      1         4  33
-## 63793  3      2         4  25
+## 62166  4      2         3  46
+## 61782  4      2         3  54
 ```
 
 ```r
@@ -913,11 +938,11 @@ head(bfi_CFA, 2)
 
 ```
 ##       A1 A2 A3 A4 A5 C1 C2 C3 C4 C5 E1 E2 E3 E4 E5 N1 N2 N3 N4 N5 O1 O2 O3 O4
-## 61618  2  4  5  2  5  5  4  4  3  4  1  1  6  4  3  3  3  3  5  5  4  2  4  3
 ## 61620  5  4  5  4  4  4  5  4  2  5  2  4  4  4  5  4  5  4  2  3  4  2  5  5
+## 61643  4  3  6  6  3  5  5  5  3  5  1  1  6  6  4  4  5  4  5  5  6  6  6  3
 ##       O5 gender education age
-## 61618  3      2        NA  18
 ## 61620  2      2        NA  17
+## 61643  2      1        NA  17
 ```
 
 ---
@@ -925,13 +950,13 @@ head(bfi_CFA, 2)
 # ...bez teorije
 
 
-&lt;img src="../Foto/noTheory_FA.png" width="300px" style="display: block; margin: auto;" /&gt;
+&lt;img src="../Foto/noTheory_FA.png" width="550px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Korelacijska matrica
 
-
+.tiny[
 
 ```r
 bfi_EFA_cor &lt;- cor(bfi_EFA, use = "pairwise.complete.obs")
@@ -939,33 +964,33 @@ head(bfi_EFA_cor,4)
 ```
 
 ```
-##            A1         A2         A3         A4         A5         C1         C2
-## A1  1.0000000 -0.3587000 -0.2732938 -0.1553950 -0.2163085 0.02443771 0.02449459
-## A2 -0.3587000  1.0000000  0.5056976  0.3231986  0.3942280 0.09519292 0.15079346
-## A3 -0.2732938  0.5056976  1.0000000  0.3716902  0.5006106 0.10219211 0.14129159
-## A4 -0.1553950  0.3231986  0.3716902  1.0000000  0.2838247 0.09673165 0.22500150
-##              C3         C4          C5          E1          E2          E3
-## A1 -0.007606675  0.1393310  0.06739782  0.10126743  0.08504866 -0.07108263
-## A2  0.173296188 -0.1430230 -0.12541516 -0.19192347 -0.19951355  0.27554062
-## A3  0.126197203 -0.1166140 -0.14953369 -0.20957189 -0.26260999  0.36726439
-## A4  0.103855726 -0.1452042 -0.22882682 -0.07894721 -0.16963697  0.17066147
-##             E4          E5         N1          N2          N3          N4
-## A1 -0.03810448 -0.03427013  0.1867101  0.16631266  0.14424673  0.06460599
-## A2  0.27190332  0.28468359 -0.1054338 -0.04484159 -0.04164989 -0.07627244
-## A3  0.37077832  0.25074387 -0.1112189 -0.08552150 -0.04587450 -0.11992552
-## A4  0.30950339  0.12771772 -0.1138893 -0.14479006 -0.05107988 -0.14891617
-##              N5         O1          O2          O3          O4          O5
-## A1  0.007541368 0.04288296  0.07805083 -0.07172950 -0.05172439  0.12118698
-## A2  0.032384561 0.15032533  0.02731302  0.18439325  0.09573143 -0.10563199
-## A3 -0.013429381 0.13465516 -0.01289897  0.22435819  0.03757668 -0.07603454
-## A4 -0.008614723 0.05827560  0.06115183  0.06128589 -0.02834531  0.02537812
-##        gender     education         age
-## A1 -0.1668183 -0.1362166730 -0.15112069
-## A2  0.1881389 -0.0103841860  0.05445136
-## A3  0.1765782 -0.0004972816  0.03113489
-## A4  0.1231355 -0.0138150873  0.14427519
+##            A1         A2         A3         A4         A5          C1
+## A1  1.0000000 -0.3267716 -0.2500413 -0.1679873 -0.1755891 0.009679836
+## A2 -0.3267716  1.0000000  0.4758646  0.3503952  0.3567291 0.100853309
+## A3 -0.2500413  0.4758646  1.0000000  0.3710598  0.4953984 0.100901238
+## A4 -0.1679873  0.3503952  0.3710598  1.0000000  0.3201257 0.081659934
+##             C2          C3         C4          C5          E1          E2
+## A1 -0.01748352 -0.02401766  0.1654333  0.06131941  0.08647117  0.08509931
+## A2  0.12621120  0.21203196 -0.1631317 -0.12612829 -0.16713631 -0.21056765
+## A3  0.14199117  0.12931807 -0.1164889 -0.16105228 -0.18543976 -0.26893301
+## A4  0.21287630  0.12644744 -0.1679339 -0.24844467 -0.10121932 -0.16855214
+##            E3          E4          E5         N1          N2          N3
+## A1 -0.0333908 -0.05185017 -0.03637724  0.1724226  0.13507242  0.09612288
+## A2  0.2203451  0.23874869  0.27659229 -0.1022207 -0.04563157 -0.06077185
+## A3  0.3656771  0.34814293  0.26397044 -0.1047591 -0.11264480 -0.05719388
+## A4  0.1969926  0.28784128  0.14838130 -0.1407305 -0.19011655 -0.08715313
+##             N4           N5          O1           O2          O3          O4
+## A1  0.05722656  0.005910233 -0.01496832 0.0983430562 -0.05976997 -0.07787686
+## A2 -0.11968632  0.028973661  0.10445750 0.0098181923  0.15859374  0.06796809
+## A3 -0.14343190 -0.035863264  0.14267063 0.0005058507  0.23169884  0.07813169
+## A4 -0.17987690 -0.033889847  0.05628856 0.0158678963  0.10742926 -0.01276041
+##             O5     gender   education         age
+## A1  0.11689977 -0.1572100 -0.14643013 -0.18296034
+## A2 -0.11389851  0.2000338  0.01830609  0.12224352
+## A3 -0.04976194  0.1681657 -0.02364315  0.06662773
+## A4 -0.02388071  0.1544686  0.03904128  0.18475012
 ```
-
+]
 
 ---
 
@@ -985,26 +1010,20 @@ scree(bfi_EFA_cor, factors = FALSE)
 # Eksplorativna vs. konfirmatorna FA
 
 
-&lt;img src="../Foto/konf_FA.png" width="150px" style="display: block; margin: auto;" /&gt;
+&lt;img src="../Foto/konf_FA.png" width="350px" style="display: block; margin: auto;" /&gt;
 
 
-&lt;img src="../Foto/eksp_FA.png" width="150px" style="display: block; margin: auto;" /&gt;
+&lt;img src="../Foto/eksp_FA.png" width="350px" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Provedi FA
 
+.tiny[
 
 ```r
 EFA_model &lt;- fa(bfi_EFA, nfactors = 6)
-```
-
-```
-## Loading required namespace: GPArotation
-```
-
-```r
 EFA_model
 ```
 
@@ -1012,74 +1031,75 @@ EFA_model
 ## Factor Analysis using method =  minres
 ## Call: fa(r = bfi_EFA, nfactors = 6)
 ## Standardized loadings (pattern matrix) based upon correlation matrix
-##             MR2   MR3   MR1   MR5   MR4   MR6    h2   u2 com
-## A1         0.10  0.06 -0.07 -0.61  0.03  0.34 0.435 0.57 1.7
-## A2         0.03  0.09 -0.06  0.62  0.06  0.02 0.465 0.54 1.1
-## A3        -0.03  0.04 -0.13  0.59  0.08  0.14 0.503 0.50 1.3
-## A4        -0.09  0.18 -0.06  0.37 -0.11  0.17 0.267 0.73 2.3
-## A5        -0.19  0.01 -0.18  0.44  0.15  0.24 0.486 0.51 2.6
-## C1         0.03  0.58  0.08 -0.05  0.17  0.10 0.386 0.61 1.3
-## C2         0.11  0.67  0.12  0.03  0.09  0.17 0.501 0.50 1.3
-## C3         0.04  0.56  0.02  0.02 -0.02  0.06 0.314 0.69 1.0
-## C4         0.11 -0.68  0.03 -0.05  0.04  0.23 0.557 0.44 1.3
-## C5         0.14 -0.56  0.20 -0.01  0.13  0.09 0.436 0.56 1.6
-## E1        -0.15  0.12  0.63 -0.11 -0.08  0.08 0.420 0.58 1.3
-## E2         0.07 -0.04  0.68 -0.04 -0.06  0.01 0.538 0.46 1.0
-## E3        -0.01 -0.02 -0.34  0.17  0.37  0.21 0.468 0.53 3.1
-## E4        -0.10  0.03 -0.54  0.17  0.00  0.35 0.593 0.41 2.1
-## E5         0.17  0.28 -0.40  0.05  0.26  0.01 0.404 0.60 3.1
-## N1         0.80 -0.01 -0.10 -0.11 -0.02 -0.04 0.637 0.36 1.1
-## N2         0.83  0.00 -0.06 -0.05  0.00 -0.06 0.663 0.34 1.0
-## N3         0.68 -0.01  0.14  0.07  0.04  0.11 0.558 0.44 1.2
-## N4         0.42 -0.14  0.41  0.09  0.10  0.06 0.461 0.54 2.5
-## N5         0.49  0.00  0.20  0.23 -0.16  0.14 0.404 0.60 2.2
-## O1        -0.04  0.09 -0.01 -0.06  0.58  0.11 0.376 0.62 1.2
-## O2         0.12 -0.06 -0.02  0.07 -0.39  0.33 0.274 0.73 2.3
-## O3         0.01  0.00 -0.11  0.07  0.64 -0.04 0.467 0.53 1.1
-## O4         0.11  0.00  0.34  0.14  0.37  0.01 0.242 0.76 2.5
-## O5         0.02 -0.04 -0.03 -0.06 -0.47  0.33 0.317 0.68 1.9
-## gender     0.22  0.14 -0.07  0.35 -0.24 -0.09 0.196 0.80 3.3
-## education -0.06 -0.01  0.09  0.08  0.15 -0.20 0.070 0.93 3.0
-## age       -0.10  0.09  0.06  0.15  0.04 -0.17 0.075 0.92 3.8
+##             MR2   MR3   MR5   MR1   MR4   MR6    h2   u2 com
+## A1         0.08  0.06 -0.48 -0.06 -0.01  0.37 0.327 0.67 2.0
+## A2         0.02  0.08  0.62 -0.05  0.02 -0.11 0.428 0.57 1.1
+## A3        -0.06  0.03  0.61 -0.08  0.08  0.11 0.494 0.51 1.2
+## A4        -0.12  0.16  0.46 -0.02 -0.08  0.04 0.300 0.70 1.5
+## A5        -0.17  0.01  0.50 -0.16  0.07  0.16 0.461 0.54 1.8
+## C1         0.02  0.54 -0.05  0.06  0.17  0.11 0.332 0.67 1.4
+## C2         0.09  0.66  0.05  0.16  0.08  0.17 0.474 0.53 1.3
+## C3         0.04  0.53  0.09  0.05 -0.05  0.04 0.290 0.71 1.1
+## C4         0.06 -0.66 -0.02  0.08  0.01  0.26 0.562 0.44 1.4
+## C5         0.14 -0.57 -0.01  0.16  0.11  0.02 0.430 0.57 1.4
+## E1        -0.14  0.09 -0.10  0.60 -0.10  0.03 0.390 0.61 1.3
+## E2         0.03 -0.02 -0.09  0.66 -0.09  0.01 0.537 0.46 1.1
+## E3         0.00  0.03  0.19 -0.29  0.38  0.27 0.496 0.50 3.3
+## E4        -0.08  0.02  0.24 -0.48  0.01  0.30 0.519 0.48 2.3
+## E5         0.16  0.29  0.09 -0.35  0.27  0.01 0.407 0.59 3.4
+## N1         0.83  0.00 -0.08 -0.10 -0.05  0.00 0.676 0.32 1.1
+## N2         0.81  0.01 -0.06 -0.06  0.00 -0.05 0.639 0.36 1.0
+## N3         0.63 -0.03  0.10  0.20  0.04  0.08 0.525 0.47 1.3
+## N4         0.41 -0.14  0.07  0.44  0.11  0.01 0.498 0.50 2.4
+## N5         0.41 -0.02  0.23  0.24 -0.15  0.12 0.351 0.65 2.9
+## O1        -0.07  0.03 -0.02  0.00  0.58  0.09 0.358 0.64 1.1
+## O2         0.12 -0.12  0.16  0.01 -0.42  0.26 0.306 0.69 2.4
+## O3         0.02  0.01  0.05 -0.10  0.66  0.03 0.506 0.49 1.1
+## O4         0.08 -0.04  0.16  0.33  0.36  0.00 0.225 0.77 2.5
+## O5         0.05 -0.04  0.01 -0.04 -0.50  0.31 0.348 0.65 1.7
+## gender     0.19  0.10  0.37 -0.04 -0.19 -0.13 0.187 0.81 2.6
+## education -0.03  0.01  0.10  0.03  0.06 -0.23 0.063 0.94 1.6
+## age       -0.07  0.05  0.22  0.00  0.01 -0.32 0.154 0.85 2.0
 ## 
-##                        MR2  MR3  MR1  MR5  MR4  MR6
-## SS loadings           2.58 2.16 2.16 1.95 1.76 0.90
-## Proportion Var        0.09 0.08 0.08 0.07 0.06 0.03
-## Cumulative Var        0.09 0.17 0.25 0.32 0.38 0.41
-## Proportion Explained  0.22 0.19 0.19 0.17 0.15 0.08
-## Cumulative Proportion 0.22 0.41 0.60 0.77 0.92 1.00
+##                        MR2  MR3  MR5  MR1  MR4  MR6
+## SS loadings           2.43 2.08 2.08 2.03 1.82 0.86
+## Proportion Var        0.09 0.07 0.07 0.07 0.06 0.03
+## Cumulative Var        0.09 0.16 0.24 0.31 0.37 0.40
+## Proportion Explained  0.22 0.18 0.18 0.18 0.16 0.08
+## Cumulative Proportion 0.22 0.40 0.58 0.76 0.92 1.00
 ## 
 ##  With factor correlations of 
-##       MR2   MR3   MR1   MR5   MR4   MR6
-## MR2  1.00 -0.15  0.26 -0.10  0.01  0.14
-## MR3 -0.15  1.00 -0.16  0.18  0.17  0.04
-## MR1  0.26 -0.16  1.00 -0.25 -0.20 -0.12
-## MR5 -0.10  0.18 -0.25  1.00  0.18  0.14
-## MR4  0.01  0.17 -0.20  0.18  1.00  0.08
-## MR6  0.14  0.04 -0.12  0.14  0.08  1.00
+##       MR2   MR3   MR5   MR1   MR4   MR6
+## MR2  1.00 -0.16 -0.09  0.28 -0.04  0.14
+## MR3 -0.16  1.00  0.21 -0.21  0.21 -0.04
+## MR5 -0.09  0.21  1.00 -0.25  0.20  0.14
+## MR1  0.28 -0.21 -0.25  1.00 -0.21 -0.10
+## MR4 -0.04  0.21  0.20 -0.21  1.00  0.05
+## MR6  0.14 -0.04  0.14 -0.10  0.05  1.00
 ## 
-## Mean item complexity =  1.9
+## Mean item complexity =  1.8
 ## Test of the hypothesis that 6 factors are sufficient.
 ## 
-## The degrees of freedom for the null model are  378  and the objective function was  7.77 with Chi Square of  10791.26
-## The degrees of freedom for the model are 225  and the objective function was  0.6 
+## The degrees of freedom for the null model are  378  and the objective function was  7.61 with Chi Square of  10567.41
+## The degrees of freedom for the model are 225  and the objective function was  0.68 
 ## 
-## The root mean square of the residuals (RMSR) is  0.02 
+## The root mean square of the residuals (RMSR) is  0.03 
 ## The df corrected root mean square of the residuals is  0.03 
 ## 
-## The harmonic number of observations is  1375 with the empirical chi square  604.07  with prob &lt;  1.9e-36 
-## The total number of observations was  1400  with Likelihood Chi Square =  837.52  with prob &lt;  2.2e-71 
+## The harmonic number of observations is  1373 with the empirical chi square  703.86  with prob &lt;  9.6e-51 
+## The total number of observations was  1400  with Likelihood Chi Square =  939.31  with prob &lt;  6e-88 
 ## 
-## Tucker Lewis Index of factoring reliability =  0.901
-## RMSEA index =  0.044  and the 90 % confidence intervals are  0.041 0.047
-## BIC =  -792.43
+## Tucker Lewis Index of factoring reliability =  0.882
+## RMSEA index =  0.048  and the 90 % confidence intervals are  0.045 0.051
+## BIC =  -690.64
 ## Fit based upon off diagonal values = 0.98
 ## Measures of factor score adequacy             
-##                                                    MR2  MR3  MR1  MR5  MR4  MR6
-## Correlation of (regression) scores with factors   0.93 0.89 0.89 0.88 0.86 0.78
-## Multiple R square of scores with factors          0.86 0.79 0.79 0.77 0.74 0.61
-## Minimum correlation of possible factor scores     0.72 0.59 0.59 0.53 0.47 0.22
+##                                                    MR2  MR3  MR5  MR1  MR4  MR6
+## Correlation of (regression) scores with factors   0.92 0.89 0.88 0.88 0.87 0.77
+## Multiple R square of scores with factors          0.85 0.78 0.77 0.78 0.75 0.59
+## Minimum correlation of possible factor scores     0.71 0.57 0.54 0.56 0.50 0.18
 ```
+]
 
 ---
 
@@ -1094,40 +1114,40 @@ EFA_model$loadings
 ```
 ## 
 ## Loadings:
-##           MR2    MR3    MR1    MR5    MR4    MR6   
-## A1         0.103               -0.611         0.337
-## A2                              0.625              
-## A3                      -0.135  0.590         0.141
-## A4                0.181         0.373 -0.105  0.170
-## A5        -0.186        -0.181  0.444  0.146  0.236
-## C1                0.577                0.174       
-## C2         0.114  0.666  0.124                0.171
-## C3                0.562                            
-## C4         0.113 -0.678                       0.231
-## C5         0.138 -0.559  0.204         0.134       
-## E1        -0.151  0.121  0.629 -0.112              
-## E2                       0.680                     
-## E3                      -0.339  0.175  0.369  0.215
-## E4                      -0.536  0.170         0.354
-## E5         0.169  0.278 -0.397         0.257       
-## N1         0.805               -0.107              
-## N2         0.830                                   
-## N3         0.682         0.137                0.115
-## N4         0.418 -0.138  0.410         0.101       
-## N5         0.494         0.204  0.227 -0.157  0.142
-## O1                                     0.581  0.110
-## O2         0.120                      -0.385  0.333
-## O3                      -0.115         0.636       
-## O4         0.109         0.335  0.141  0.368       
-## O5                                    -0.467  0.326
-## gender     0.224  0.139         0.346 -0.240       
-## education                              0.147 -0.196
-## age       -0.104                0.146        -0.167
+##           MR2    MR3    MR5    MR1    MR4    MR6   
+## A1                      -0.484                0.374
+## A2                       0.622               -0.108
+## A3                       0.615                0.110
+## A4        -0.125  0.164  0.461                     
+## A5        -0.174         0.502 -0.164         0.161
+## C1                0.536                0.170  0.114
+## C2                0.663         0.163         0.166
+## C3                0.534                            
+## C4               -0.655                       0.263
+## C5         0.138 -0.573         0.156  0.112       
+## E1        -0.136        -0.105  0.602              
+## E2                              0.664              
+## E3                       0.193 -0.293  0.379  0.271
+## E4                       0.242 -0.476         0.303
+## E5         0.159  0.287        -0.352  0.266       
+## N1         0.832                                   
+## N2         0.814                                   
+## N3         0.632                0.200              
+## N4         0.415 -0.141         0.440  0.109       
+## N5         0.409         0.232  0.242 -0.149  0.117
+## O1                                     0.579       
+## O2         0.119 -0.116  0.161        -0.423  0.261
+## O3                             -0.105  0.663       
+## O4                       0.163  0.333  0.356       
+## O5                                    -0.502  0.313
+## gender     0.194         0.374        -0.194 -0.125
+## education                0.103               -0.228
+## age                      0.225               -0.316
 ## 
-##                  MR2   MR3   MR1   MR5   MR4   MR6
-## SS loadings    2.482 2.066 1.931 1.793 1.673 0.849
-## Proportion Var 0.089 0.074 0.069 0.064 0.060 0.030
-## Cumulative Var 0.089 0.162 0.231 0.295 0.355 0.385
+##                  MR2   MR3   MR5   MR1   MR4   MR6
+## SS loadings    2.308 1.949 1.933 1.777 1.715 0.834
+## Proportion Var 0.082 0.070 0.069 0.063 0.061 0.030
+## Cumulative Var 0.082 0.152 0.221 0.285 0.346 0.376
 ```
 ]
 
@@ -1135,6 +1155,8 @@ EFA_model$loadings
 ---
 
 # Faktorski koeficijenti
+&lt;br&gt;
+&lt;br&gt;
 
 
 ```r
@@ -1142,19 +1164,20 @@ head(EFA_model$scores)
 ```
 
 ```
-##              MR2        MR3        MR1         MR5        MR4        MR6
-## 62299  0.5996731 -0.6783554  0.5497705 -0.94074624 -0.9592440  0.3685168
-## 63793 -0.9049044 -0.3525149 -0.9706180  0.53801293 -0.8318842  0.3811118
-## 66671         NA         NA         NA          NA         NA         NA
-## 66905  0.6583205 -0.2295610  0.4792019 -0.57475372 -0.9771162  0.8258308
-## 64634  1.5456978 -1.7096916  1.2634779 -1.55373221 -1.9031493 -0.6360884
-## 67294  0.4253905 -0.7996893 -0.8039986 -0.02607517  0.1638298  1.2376264
+##              MR2        MR3        MR5        MR1        MR4        MR6
+## 62166 -1.1669685  0.4531581  0.5338050 -0.6070969 -0.1577071  0.9949596
+## 61782 -0.2373171 -1.2008361 -1.5528147 -0.3515410 -1.7916431 -1.0599821
+## 64286 -1.3350976  0.5227501  0.7936170 -0.8163777  0.5089483  0.2527276
+## 62486 -0.4427381  0.3323557 -1.1497816  0.9602503 -2.0108928 -1.0766307
+## 62528  0.1909808  0.7573593 -0.6239879  0.2877236  0.9350523 -0.7271436
+## 61667 -0.7144399  1.0492501 -0.2048459 -0.8419074  0.8777190  0.6135356
 ```
 
 ---
 
 # Procjena kvalitete modela (fit)
-
+&lt;br&gt;
+&lt;br&gt;
 ##### Apsolutne mjere
 
 - Chi-square test: nesignifikanstnost
@@ -1167,19 +1190,13 @@ head(EFA_model$scores)
 
 ---
 
-# Procjena kvalitete modela
+# Procjena kvalitete modela (relativna)
 
-.tiny[
 
 ```r
 EFA_model &lt;- fa(bfi_EFA, nfactors = 6)
 EFA_model
 ```
-]
-
----
-
-# Procjena kvalitete modela (relativna)
 
 
 ```r
@@ -1190,7 +1207,7 @@ bfi_theory$BIC
 ```
 
 ```
-## [1] -495.2493
+## [1] -394.9923
 ```
 
 ```r
@@ -1198,7 +1215,7 @@ bfi_eigen$BIC
 ```
 
 ```
-## [1] -792.4348
+## [1] -690.6391
 ```
 
 ```r
@@ -1206,7 +1223,7 @@ bfi_theory$BIC
 ```
 
 ```
-## [1] -495.2493
+## [1] -394.9923
 ```
 
 ```r
@@ -1214,7 +1231,7 @@ bfi_eigen$BIC
 ```
 
 ```
-## [1] -792.4348
+## [1] -690.6391
 ```
 
 
@@ -1236,7 +1253,9 @@ name: conf
 &lt;br&gt;
 - Eksplicitno specificiran odnos među varijablama
 &lt;br&gt;
+&lt;br&gt;
 - Testiranje teorije koja je unaprijed poznata
+&lt;br&gt;
 &lt;br&gt;
 - Pristup koji se koristi kod razvoja nove mjere
 
@@ -1244,58 +1263,17 @@ name: conf
 ---
 
 
-# Skica I
+# Skica I (*jedan konstrukt*)
 
 
-```r
-library(DiagrammeR)
-library(DiagrammeRsvg)
 
-knit_gv &lt;- function(code, filename=NULL, width=NULL, height=800){
-
-  assetpath &lt;- "assets"
-  dir.create(assetpath, showWarnings = F)
-
-  if (!is.character(knitr::current_input())){
-    format &lt;- "png"
-  } else {
-    if (stringr::str_detect(
-      knitr::opts_knit$get("rmarkdown.pandoc.to"), "beamer|latex|pdf")) {
-      format &lt;- "pdf"
-    } else {
-      format &lt;- "png"
-    }
-  }
-  if (!is.character(filename)){
-    filename &lt;- file.path(assetpath, paste0(sample(1e6:1e7, 1), ".", format))
-  } else {
-    filename = paste0(filename, ".", format)
-  }
-
-  library('rsvg')
-  outfun &lt;- get(paste0("rsvg_", format))
-  capture.output({
-    g &lt;- grViz(paste("digraph{", code, "}"))
-    DiagrammeRsvg::export_svg(g) %&gt;% charToRaw %&gt;% outfun(filename, width=width, height=height)
-  },  file='NUL')
-
-  knitr::include_graphics(filename)
-
-}
-```
-
-
-```
-## Warning: package 'rsvg' was built under R version 4.0.4
-```
-
-&lt;img src="assets/9804912.png" width="614" style="display: block; margin: auto;" /&gt;
+&lt;img src="assets/3742377.png" width="614" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Skica II
+# Skica II (*više konstrukta*)
 
-&lt;img src="assets/6939233.png" width="507" style="display: block; margin: auto;" /&gt;
+&lt;img src="assets/3013468.png" width="507" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1333,6 +1311,10 @@ hz %&gt;% dplyr::glimpse()
 
 # Definiraj model
 
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
 
 ```r
 hz.model &lt;- '
@@ -1342,14 +1324,14 @@ maths =~ x7 + x8 + x9
 '
 ```
 
-.footnote[ [*]Za detalje o lavaan projektu pogledajte [stranicu](https://lavaan.ugent.be/tutorial/syntax1.html) ]
+.footnote[ [*]Za detalje o lavaan projektu pogledajte [stranicu](https://lavaan.ugent.be/tutorial/syntax1.html)].
 
 
 ---
 
 # Provedi model
 
-.tiny[
+
 
 ```r
 hz.fit &lt;- lavaan::cfa(hz.model, data=hz)
@@ -1360,7 +1342,7 @@ summary(hz.fit, standardized=TRUE)
 ## Length  Class   Mode 
 ##      1 lavaan     S4
 ```
-]
+
 
 ---
 
@@ -1392,7 +1374,8 @@ semPlot::semPaths(hz.fit, "std")
 
 # Kvaliteta procjene (Fit)
 
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 lavaan::fitmeasures(hz.fit, c('cfi', 'rmsea', 'rmsea.ci.upper', 'bic'))

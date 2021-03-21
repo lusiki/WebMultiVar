@@ -3,7 +3,7 @@ title: "MULTIVARIJATNE STATISTIČKE METODE"
 author: "Luka Šikić, PhD"
 date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
 # subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
-subtitle: "Predavanje 5: Faktorska analiya"
+subtitle: "Predavanje 5: Faktorska analiza"
 output:
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts] 
@@ -94,27 +94,13 @@ name: uni
 ---
 
 
-- Charles Spearman (1904) je zaslužan za uvođenje FA
+- Charles Spearman (1904) zaslužan za uvođenje FA
 - FA ima mnogo sičnosti sa PCA
 - Cilj FA je reducirati veliki broj (koreliranih) varijabli na mali broj indeksa (faktora)
 - FA je statistički model (za razliku od PCA koja je statistička metoda)
+- Ekstenzija (C)FA je modeliranje strukturnih jednadžbi SEM 
 <br>
 <br>
-##### **Procedura provođenja FA**:
-1. Izračunaj faktorska opterećenja (~PCA)
-2. Faktorska rotacija (ortogonalna/zaobljena)
-3. Izračunaj faktorske koeficijente (za pripadajuće individualne elemente)
-
-
----
-
-# Odnos FA i drugih analiza
-<br>
-<br>
-
-- Klasična analiza: opterećenja su neponderirana suma varijabli
-- FA: opterećenja su empirisjki ponderirana suma varijabli pri čemu su ponderi određeni na osnovi korelacije varijabli
-- SEM: proširenje faktorske analize na način da uključuje odnose između latentnih varijabli
 
 ---
 
@@ -165,7 +151,7 @@ library(psych)
 # Podatci
 
 - koristimo `gcbs` podatkovni skup (Generic Conspiracist Beliefs Survey)
-- provjerite da li i vas prisluškuju na [Open psychometrics](https://openpsychometrics.org/tests/GCBS/) 
+- provjerite da li **i** vas prisluškuju na [Open psychometrics](https://openpsychometrics.org/tests/GCBS/) :-)
 
 
 ```{r}
@@ -177,20 +163,25 @@ str(gcbs)
 ---
 
 # Konstrukti
-
+<br>
+<br>
 - Zavjera vlade (GM)
+<br>
 - Prikrivanje vanzemaljaca (ET)
+<br>
 - Zle i zavjereničke globalne organizacije (MG)
-- osobna dobrobit (PW)
-- kontrola informacija (CI)
+<br>
+- Osobna dobrobit (PW)
+<br>
+- Kontrola informacija (CI)
 
-Za detalje o varijablama pogledajte [Measuring belief in conspiracy theories](https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00279/full)
+Za detalje o varijablama pogledajte [Measuring belief in conspiracy theories](https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00279/full).
 
 ---
 
 # Varijable i konstrukti
 
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="300px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="400px"}
 
 knitr::include_graphics("../Foto/konstrukti_FA.png")
 ```
@@ -199,7 +190,7 @@ knitr::include_graphics("../Foto/konstrukti_FA.png")
 
 # Jednodimenzionalni konstrukt
 
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="300px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="400px"}
 
 knitr::include_graphics("../Foto/unidim_FA.png")
 ```
@@ -236,12 +227,24 @@ class: inverse, center, middle
 ---
 
 # Procedura razvoja konstrukta
-
+<br>
+<br>
+<br>
 - Odredi elemente konstrukta
+<br>
+<br>
 - Prikupi podatke 
+<br>
+<br>
 - Upoznaj se sa podatcima
+<br>
+<br>
 - Odluka što koristiti EFA, CFA ili obje analize
+<br>
+<br>
 - Podijeli uzorak u dva (slučajna; *random*) dijela (za obje)
+<br>
+<br>
 - Usporedi uzorke
 
 
@@ -250,14 +253,16 @@ class: inverse, center, middle
 # Upoznaj se sa podatcima
 
 ```{r}
-describe(gcbs)
+psych::describe(gcbs)
 ```
 
 
 ---
 
 # Podijeli podatke
-
+<br>
+<br>
+<br>
 ```{r}
 N <- nrow(gcbs)
 indices <- seq(1,N)
@@ -270,24 +275,26 @@ gcbs_CFA <- gcbs[indices_CFA, ]
 ---
 
 # Usporedi polovice
-
+<br>
+<br>
+<br>
 ```{r}
 group_var <- vector("numeric", nrow(gcbs))
 group_var[indices_EFA] <- 1
 group_var[indices_CFA] <- 2
-head(group_var,15)
+head(group_var,450)
 ```
 
 ---
 
 # Usporedi polovice
 
-
+.tiny[
 ```{r}
 gcbs_grouped <- cbind(gcbs, group_var)
 describeBy(gcbs_grouped, group = group_var)
 ```
-
+]
 ---
 
 # Usporedi polovice
@@ -307,27 +314,30 @@ lowerCor(gcbs)
 ---
 
 # Signifikantnost korelacija
-
+.tiny[
 ```{r}
 corr.test(gcbs, use = "pairwise.complete.obs")$p
 ```
-
+]
 
 ---
 
 # Intervali pouzdanosti
-
+.tiny[
 ```{r}
 corr.test(gcbs, use = "pairwise.complete.obs")$ci
 ```
+]
 
 ---
 
 # Alfa koeficijent
 
+.tiny[
 ```{r}
 alpha(gcbs)
 ```
+]
 
 ---
 
@@ -351,7 +361,7 @@ name: uni
 
 # Podatci
 
-- koristimo podatke Synthetic Aperture Personality Assessment(SAPA)
+- koristimo podatke Synthetic Aperture Personality Assessment (SAPA)
 - 2.800 osoba
 - 25 pitanja
 .tiny[
@@ -372,7 +382,8 @@ head(bfi)
 ---
 
 # Podatci
-
+<br>
+<br>
 ```{r}
 names(bfi)
 ```
@@ -391,15 +402,17 @@ knitr::include_graphics("../Foto/bfi_FA.png")
 # Konstrukt
 
 - konstrukt se ne može direktno mjeriti
-- primjeri: samoodređenost, sposobnost razmišlljanja, politička pripadnost, ekstrovertiranost 
+- primjeri: samoodređenost, sposobnost razmišljanja, politička pripadnost, ekstrovertiranost 
 
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="200px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="450px"}
 knitr::include_graphics("../Foto/konstrukt_FA.png")
 ```
 
 ---
 
 # Podijeli podatke
+<br>
+<br>
 
 ```{r}
 N <- nrow(bfi)
@@ -424,7 +437,7 @@ head(bfi_CFA, 2)
 # ...bez teorije
 
 
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="300px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="550px"}
 knitr::include_graphics("../Foto/noTheory_FA.png")
 ```
 
@@ -432,19 +445,19 @@ knitr::include_graphics("../Foto/noTheory_FA.png")
 
 # Korelacijska matrica
 
-
+.tiny[
 ```{r}
 bfi_EFA_cor <- cor(bfi_EFA, use = "pairwise.complete.obs")
 head(bfi_EFA_cor,4) 
 ```
-
+]
 
 ---
 
 # Svojsvene vrijednosti
 
 
-```{r}
+```{r, fig.height=4}
 scree(bfi_EFA_cor, factors = FALSE)
 ```
 
@@ -454,12 +467,12 @@ scree(bfi_EFA_cor, factors = FALSE)
 # Eksplorativna vs. konfirmatorna FA
 
 
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="150px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
 knitr::include_graphics("../Foto/konf_FA.png")
 ```
 
 
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="150px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
 knitr::include_graphics("../Foto/eksp_FA.png")
 ```
 
@@ -468,10 +481,12 @@ knitr::include_graphics("../Foto/eksp_FA.png")
 
 # Provedi FA
 
-```{r}
+.tiny[
+```{r, warning=FALSE, message=FALSE}
 EFA_model <- fa(bfi_EFA, nfactors = 6)
 EFA_model
 ```
+]
 
 ---
 
@@ -487,6 +502,8 @@ EFA_model$loadings
 ---
 
 # Faktorski koeficijenti
+<br>
+<br>
 
 ```{r}
 head(EFA_model$scores)
@@ -495,7 +512,8 @@ head(EFA_model$scores)
 ---
 
 # Procjena kvalitete modela (fit)
-
+<br>
+<br>
 ##### Apsolutne mjere
 
 - Chi-square test: nesignifikanstnost
@@ -508,18 +526,12 @@ head(EFA_model$scores)
 
 ---
 
-# Procjena kvalitete modela
+# Procjena kvalitete modela (relativna)
 
-.tiny[
 ```{r, eval = FALSE}
 EFA_model <- fa(bfi_EFA, nfactors = 6)
 EFA_model
 ```
-]
-
----
-
-# Procjena kvalitete modela (relativna)
 
 ```{r}
 bfi_theory <- fa(bfi_EFA, nfactors = 5)
@@ -550,7 +562,9 @@ name: conf
 <br>
 - Eksplicitno specificiran odnos među varijablama
 <br>
+<br>
 - Testiranje teorije koja je unaprijed poznata
+<br>
 <br>
 - Pristup koji se koristi kod razvoja nove mjere
 
@@ -558,9 +572,10 @@ name: conf
 ---
 
 
-# Skica I
-
-```{r, warning=FALSE, message=FALSE}
+# Skica I (*jedan konstrukt*)
+<br>
+<br>
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
 library(DiagrammeR)
 library(DiagrammeRsvg)
 
@@ -597,7 +612,7 @@ knit_gv <- function(code, filename=NULL, width=NULL, height=800){
 }
 ```
 
-```{r, echo=FALSE, fig.height=5}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=5}
 knit_gv('
 Factor -> a
 Factor -> b
@@ -612,9 +627,10 @@ d[shape=rectangle]
 
 ---
 
-# Skica II
-
-```{r, echo=FALSE, fig.height=5}
+# Skica II (*više konstrukta*)
+<br>
+<br>
+```{r, echo=FALSE, fig.height=6}
 knit_gv('
         Affective -> a
 Affective -> b
@@ -649,35 +665,37 @@ hz %>% dplyr::glimpse()
 
 # Definiraj model
 
+<br>
+<br>
+<br>
+
 ```{r}
 hz.model <- '
 visual =~ x1 + x2 + x3
 writing =~ x4 + x5 + x6
 maths =~ x7 + x8 + x9
 '
-
 ```
 
-.footnote[ [*]Za detalje o lavaan projektu pogledajte [stranicu](https://lavaan.ugent.be/tutorial/syntax1.html) ]
 
-
+.footnote[ [*]Za detalje o lavaan projektu pogledajte [stranicu](https://lavaan.ugent.be/tutorial/syntax1.html)].
 ---
 
 # Provedi model
 
-.tiny[
+
 ```{r}
 hz.fit <- lavaan::cfa(hz.model, data=hz)
 summary(hz.fit, standardized=TRUE)
 ```
-]
+
 
 ---
 
 # Prikaži grafički
 
 
-```{r}
+```{r, fig.height=4}
 semPlot::semPaths(hz.fit)
 ```
 
@@ -687,7 +705,7 @@ semPlot::semPaths(hz.fit)
 # Prikaži grafički 
 
 
-```{r}
+```{r, fig.height=4}
 semPlot::semPaths(hz.fit, "std")
 ```
 
@@ -696,7 +714,8 @@ semPlot::semPaths(hz.fit, "std")
 
 # Kvaliteta procjene (Fit)
 
-
+<br>
+<br>
 ```{r}
 lavaan::fitmeasures(hz.fit, c('cfi', 'rmsea', 'rmsea.ci.upper', 'bic'))
 ```
