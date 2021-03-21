@@ -93,15 +93,24 @@ title: " "
 **Čitanje:** [Blog post](https://towardsdatascience.com/learn-principle-component-analysis-in-r-ddba7c9b1064) + [Tehničko poglavlje u knjizi](http://staff.ustc.edu.cn/~zwp/teach/MVA/abdi-awPCA2010.pdf)
 
 
-### Predavanje 05: Klaster analiza
+### Predavanje 05: Faktorska analiza
+
+- Jednodimenzionalna faktorska analiza (FA)
+
+- Multidimenzionalna FA
+
+- Konfirmatorna FA
 
 
+**Format predavanja:** [.html]() | [.Rmd]() 
+<br>
+**Čitanje:** []() + []()
 
 ### Predavanje 06: Diskriminantna analiza
 
 
 
-### Predavanje 07: Faktorska analiza
+### Predavanje 07: Klaster analiza
 
 
 
