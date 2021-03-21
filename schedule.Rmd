@@ -102,7 +102,7 @@ title: " "
 - Konfirmatorna FA
 
 
-**Format predavanja:** [.html]() | [.Rmd]() 
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/05_FA.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/05_FA.Rmd) 
 <br>
 **Čitanje:** []() + []()
 

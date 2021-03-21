@@ -22,7 +22,7 @@ navbar:
         - text: "Analiza glavnih komponenti"
           href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/04_PCA.html"
         - text: "Faktorska analiza"
-          href: ""
+          href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/05_FA.html"
         - text: "Diskriminantna analiza"
           href: ""
         - text: "Klaster analiza"
