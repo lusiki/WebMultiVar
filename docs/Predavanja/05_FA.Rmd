@@ -94,15 +94,21 @@ name: uni
 ---
 
 # Karakteristike FA
-
+<br>
+<br>
+<br>
 - Charles Spearman (1904) zaslužan za uvođenje FA
-- FA ima mnogo sičnosti sa PCA
+<br>
+- FA ima mnogo sličnosti sa PCA
+<br>
 - Cilj FA je reducirati veliki broj (koreliranih) varijabli na mali broj indeksa (faktora)
+<br>
 - FA je statistički model (za razliku od PCA koja je statistička metoda)
-- Ekstenzija (C)FA je modeliranje strukturnih jednadžbi SEM 
+<br>
+- Ekstenzija (C)FA je modeliranje strukturnih jednadžbi (SEM) 
 <br>
 <br>
-
+.footnote[[*]Izvstan uvodni [turorial](https://stats.idre.ucla.edu/spss/seminars/introduction-to-factor-analysis/a-practical-introduction-to-factor-analysis/).]
 ---
 
 # Vrste FA
@@ -120,11 +126,12 @@ name: uni
 .pull-right[
 ##### KONFIRMATORNA
 
-- procijeni kosntrukt
+- procijeni kostnrukt
 - koristi se nakon razvoja mjere
 
 ]
 
+.footnote[[*]Ogledni primjer za motivaciju FA na [poveznici](https://pdf.sciencedirectassets.com/280203/1-s2.0-S1877050915X00123/1-s2.0-S1877050915013605/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEGgaCXVzLWVhc3QtMSJGMEQCIEKL%2BgWTeDULrBDdHjLVVYTpTw0x1b3IcmAwY2fj49agAiB%2F6alKu3d8Cd6HSjQBNDTNSPxADKPdUigLTWG0YLbrpSq9Awih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDA1OTAwMzU0Njg2NSIMR5PnGB3hxYeBGMh5KpEDhNllxnviP6RXrFwFD6GCbdR4qA8%2BcDAcuyonvbAcLcYcjusNF1bVoxijJsUrTO7IHkq1%2F6gfTMW%2Fuis0iw0h5BZsVMg8d2xIt4XVDq2uCE1378Si6BN1zAc7%2BTpI1OX7MlwN0RFYXYcItSs0uGptpELpdqCSC5MbpvOHq2dSk32Rr96UfUtgWP5%2BK00neqh8raUZTOICa9qgQ1e2xraj1yH5PwwZjprfpODiFNnxbUX3FyzYw446DDa0o0hp5Nq0ftEFsQXXLt8PREU4DbGF6URs7yhNp3EUW8FsbNaFBW83FUkq5g8EB22KbnfoaMjL%2FGdX75QKy2Wi2IAKOJ0Gbg1dR8hEMfVvG25lzN3YWBHTZP1CDH43ucW01bUD47CoguLZJ3OlB1YX%2F8VirEyyMqS%2FZDTGRX6PVJw3tt5otbaMDOSxofNnEjIbLMz7POE4XcOPUiTzMorx7xZUqn3n8s6D7jtS%2F9rRExcwJ%2B8KGkG8npqhI70AGEthDjpR6Ja4%2FwnPp2LT07McMcYzGcfORrQwyJHhggY67AGoh98fTEoT0vbi3g%2FgJjuNSkhome8unAE873Wvjb0czEg8VUzqUmq2lgHQFbsrRqyly1HXxTi1garhIhwOXMs7OH%2F13G4dbweUnzHfvHGhkmCGPNEPCO%2BuiAzsv25woyDCYEabk1PIWUbmF5Zy2blhh4tvZ2STlB1w6tM6GVYbXVAHPO3m4CrLYfSDdw86vPFkzWAs2lav7u911%2FCJBWFX%2B18kZ0yN7ChfqR2t2M46ZtQWAbG3NLWlrnWMcpq4hwkth0VI84FgisBGO8jRU5L3wdJcNYFUj7K8DczHTrE6XzDJhIBVldLhUpXjAA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210322T080825Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYWHRILQQO%2F20210322%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=6d94252743a7ed60e313fbcccbf494512775492c51e14248e59850866d82cdde&hash=ff6722f6278a608c06c40e587140d6976c1cd76177433d4700cc253bb613a370&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S1877050915013605&tid=spdf-2c946717-28f9-49fa-b844-b8b4f083fea2&sid=b1057b8a1956c546f55a7420b46302cb07cbgxrqb&type=client).]
 
 ---
 class: inverse, center, middle
@@ -138,7 +145,9 @@ class: inverse, center, middle
 ---
 
 # Paket
-
+<br>
+<br>
+<br>
 - koristimo `psych` paket
 
 - za detalje o paketu pogledajte [Personality project](http://personality-project.org/r/psych/)
@@ -152,7 +161,7 @@ library(psych)
 # Podatci
 
 - koristimo `gcbs` podatkovni skup (Generic Conspiracist Beliefs Survey)
-- provjerite da li **i** vas prisluškuju na [Open psychometrics](https://openpsychometrics.org/tests/GCBS/) :-)
+- provjerite da li i vas prisluškuju na [Open psychometrics](https://openpsychometrics.org/tests/GCBS/) :-)
 
 
 ```{r}
@@ -203,7 +212,7 @@ knitr::include_graphics("../Foto/unidim_FA.png")
 .tiny[
 .pull-left[
 ```{r}
-EFA_model <- fa(gcbs)
+EFA_model <- fa(gcbs) # Default je 1 faktor
 EFA_model$loadings
 ```
 ]
@@ -240,7 +249,7 @@ class: inverse, center, middle
 - Upoznaj se sa podatcima
 <br>
 <br>
-- Odluka što koristiti EFA, CFA ili obje analize
+- Što koristiti? EFA, CFA ili obje analize
 <br>
 <br>
 - Podijeli uzorak u dva (slučajna; *random*) dijela (za obje)
@@ -263,7 +272,7 @@ psych::describe(gcbs)
 # Podijeli podatke
 <br>
 <br>
-<br>
+
 ```{r}
 N <- nrow(gcbs)
 indices <- seq(1,N)
@@ -271,6 +280,10 @@ indices_EFA <- sample(indices,floor((0.5 * N)))
 indices_CFA <- indices[!(indices %in% indices_EFA)]
 gcbs_EFA <- gcbs[indices_EFA, ]
 gcbs_CFA <- gcbs[indices_CFA, ]
+
+group_var <- vector("numeric", nrow(gcbs))
+group_var[indices_EFA] <- 1
+group_var[indices_CFA] <- 2
 ```
 
 ---
@@ -280,10 +293,7 @@ gcbs_CFA <- gcbs[indices_CFA, ]
 <br>
 <br>
 ```{r}
-group_var <- vector("numeric", nrow(gcbs))
-group_var[indices_EFA] <- 1
-group_var[indices_CFA] <- 2
-head(group_var,450)
+head(group_var,650)
 ```
 
 ---
@@ -394,7 +404,7 @@ names(bfi)
 # Konstrukt
 
 
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="300px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="550px"}
 knitr::include_graphics("../Foto/bfi_FA.png")
 ```
 
@@ -541,8 +551,6 @@ bfi_eigen <- fa(bfi_EFA, nfactors = 6)
 
 bfi_theory$BIC
 bfi_eigen$BIC
-bfi_theory$BIC
-bfi_eigen$BIC
 ```
 
 
@@ -554,7 +562,7 @@ name: conf
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-(Kada postoji teorija!)
+(Teorija u pozadini...)
 
 ---
 
@@ -662,6 +670,7 @@ f [shape=box]
 hz <- lavaan::HolzingerSwineford1939
 hz %>% dplyr::glimpse()
 ```
+.footnote[[*] Vidi detalje o podatcima na [poveznici](https://rdrr.io/cran/lavaan/man/HolzingerSwineford1939.html).]
 
 ---
 
@@ -670,6 +679,8 @@ hz %>% dplyr::glimpse()
 <br>
 <br>
 <br>
+
+##### Sintaksa za definiranje CFA modela:
 
 ```{r}
 hz.model <- '
@@ -680,16 +691,19 @@ maths =~ x7 + x8 + x9
 ```
 
 
+
 .footnote[ [*]Za detalje o lavaan projektu pogledajte [stranicu](https://lavaan.ugent.be/tutorial/syntax1.html)].
+
 ---
 
 # Provedi model
 
-
+.tiny[
 ```{r}
 hz.fit <- lavaan::cfa(hz.model, data=hz)
-summary(hz.fit, standardized=TRUE)
+lavaan::summary(hz.fit, fit.measures=TRUE)
 ```
+]
 
 
 ---
