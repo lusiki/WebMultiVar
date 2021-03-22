@@ -104,7 +104,7 @@ title: " "
 
 **Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/05_FA.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/05_FA.Rmd) 
 <br>
-**Čitanje:** <a href="./Foto/Faktorska_analiza.pdf">Faktorska analiza</a> + []()
+**Čitanje:** <a href="./Foto/Faktorska_analiza.pdf">Faktorska analiza (teorija)</a> + [Faktorska analiza (praktično;lavaan paket)](https://stats.idre.ucla.edu/r/seminars/rcfa/#s3)
 
 ### Predavanje 06: Diskriminantna analiza
 
