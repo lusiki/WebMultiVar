@@ -134,7 +134,25 @@ name: uni
 
 .footnote[[*]Ogledni primjer za motivaciju FA na [poveznici](https://pdf.sciencedirectassets.com/280203/1-s2.0-S1877050915X00123/1-s2.0-S1877050915013605/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEGgaCXVzLWVhc3QtMSJGMEQCIEKL%2BgWTeDULrBDdHjLVVYTpTw0x1b3IcmAwY2fj49agAiB%2F6alKu3d8Cd6HSjQBNDTNSPxADKPdUigLTWG0YLbrpSq9Awih%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDA1OTAwMzU0Njg2NSIMR5PnGB3hxYeBGMh5KpEDhNllxnviP6RXrFwFD6GCbdR4qA8%2BcDAcuyonvbAcLcYcjusNF1bVoxijJsUrTO7IHkq1%2F6gfTMW%2Fuis0iw0h5BZsVMg8d2xIt4XVDq2uCE1378Si6BN1zAc7%2BTpI1OX7MlwN0RFYXYcItSs0uGptpELpdqCSC5MbpvOHq2dSk32Rr96UfUtgWP5%2BK00neqh8raUZTOICa9qgQ1e2xraj1yH5PwwZjprfpODiFNnxbUX3FyzYw446DDa0o0hp5Nq0ftEFsQXXLt8PREU4DbGF6URs7yhNp3EUW8FsbNaFBW83FUkq5g8EB22KbnfoaMjL%2FGdX75QKy2Wi2IAKOJ0Gbg1dR8hEMfVvG25lzN3YWBHTZP1CDH43ucW01bUD47CoguLZJ3OlB1YX%2F8VirEyyMqS%2FZDTGRX6PVJw3tt5otbaMDOSxofNnEjIbLMz7POE4XcOPUiTzMorx7xZUqn3n8s6D7jtS%2F9rRExcwJ%2B8KGkG8npqhI70AGEthDjpR6Ja4%2FwnPp2LT07McMcYzGcfORrQwyJHhggY67AGoh98fTEoT0vbi3g%2FgJjuNSkhome8unAE873Wvjb0czEg8VUzqUmq2lgHQFbsrRqyly1HXxTi1garhIhwOXMs7OH%2F13G4dbweUnzHfvHGhkmCGPNEPCO%2BuiAzsv25woyDCYEabk1PIWUbmF5Zy2blhh4tvZ2STlB1w6tM6GVYbXVAHPO3m4CrLYfSDdw86vPFkzWAs2lav7u911%2FCJBWFX%2B18kZ0yN7ChfqR2t2M46ZtQWAbG3NLWlrnWMcpq4hwkth0VI84FgisBGO8jRU5L3wdJcNYFUj7K8DczHTrE6XzDJhIBVldLhUpXjAA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210322T080825Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYWHRILQQO%2F20210322%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=6d94252743a7ed60e313fbcccbf494512775492c51e14248e59850866d82cdde&hash=ff6722f6278a608c06c40e587140d6976c1cd76177433d4700cc253bb613a370&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S1877050915013605&tid=spdf-2c946717-28f9-49fa-b844-b8b4f083fea2&sid=b1057b8a1956c546f55a7420b46302cb07cbgxrqb&type=client).]
 
+
 ---
+
+# Eksplorativna vs. konfirmatorna FA
+
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
+knitr::include_graphics("../Foto/konf_FA.png")
+```
+
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
+knitr::include_graphics("../Foto/eksp_FA.png")
+```
+
+
+---
+
+
 class: inverse, center, middle
 
 # OGLEDNI PRIMJER
@@ -446,8 +464,9 @@ fa.parallel(bfi_c, n.obs = 200,fa = "fa", fm = "mle") # MLE metoda
 ---
 
 # Rotacija faktora
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="550px"}
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="750px"}
 knitr::include_graphics("../Foto/roto_FA.png")
 ```
 
@@ -458,8 +477,8 @@ knitr::include_graphics("../Foto/roto_FA.png")
 ```{r, eval=TRUE}
 f_bfi_varimax <- fa(bfi_c,fm = "minres",nfactors = 5,rotate = "varimax")
 ```
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="450px"}
 knitr::include_graphics("../Foto/varimax_FA.png")
 ```
 
