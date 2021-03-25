@@ -466,7 +466,8 @@ fa.parallel(bfi_c, n.obs = 200,fa = "fa", fm = "mle") # MLE metoda
 # Rotacija faktora
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="700px"}
 knitr::include_graphics("../Foto/roto_fa.png")
 ```
 
@@ -555,22 +556,6 @@ head(bfi_EFA_cor,4)
 ```{r, fig.height=4}
 scree(bfi_EFA_cor, factors = FALSE)
 ```
-
-
----
-
-# Eksplorativna vs. konfirmatorna FA
-
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
-knitr::include_graphics("../Foto/konf_FA.png")
-```
-
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
-knitr::include_graphics("../Foto/eksp_FA.png")
-```
-
 
 ---
 
