@@ -231,7 +231,7 @@ fa.diagram(EFA_model)
 
 ---
 class: inverse, center, middle
-name: uni
+name: multi
 
 # MULTIDIMENZIONALNA FA
 
@@ -275,7 +275,7 @@ names(bfi)
 # Konstrukt
 
 
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="550px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
 knitr::include_graphics("../Foto/bfi_FA.png")
 ```
 
@@ -508,7 +508,7 @@ d[shape=rectangle]
 
 ---
 
-# Skica II (*više konstrukta*)
+# Skica II (*više konstrukata*)
 <br>
 <br>
 ```{r, echo=FALSE, fig.height=6}
@@ -563,7 +563,7 @@ maths =~ x7 + x8 + x9
 
 
 
-.footnote[ [*]Za detalje o lavaan projektu pogledajte [stranicu](https://lavaan.ugent.be/tutorial/syntax1.html)].
+.footnote[ [*]Za detalje o lavaan projektu pogledajte [stranicu](https://lavaan.ugent.be/tutorial/syntax1.html).]
 
 ---
 
