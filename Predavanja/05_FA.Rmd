@@ -217,6 +217,7 @@ EFA_model$loadings
 ```
 ]
 ]
+
 .pull-right[
 ```{r}
 fa.diagram(EFA_model)
@@ -225,138 +226,8 @@ fa.diagram(EFA_model)
 ]
 
 
----
-class: inverse, center, middle
-
-# RAZVOJ KONSTRUKTA
-
-<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
-
-(Prije analize...)
-
----
-
-# Procedura razvoja konstrukta
-<br>
-<br>
-<br>
-- Odredi elemente konstrukta
-<br>
-<br>
-- Prikupi podatke 
-<br>
-<br>
-- Upoznaj se sa podatcima
-<br>
-<br>
-- Što koristiti? EFA, CFA ili obje analize
-<br>
-<br>
-- Podijeli uzorak u dva (slučajna; *random*) dijela (za obje)
-<br>
-<br>
-- Usporedi uzorke
 
 
----
-
-# Podatci
-
-```{r}
-psych::describe(gcbs)
-```
-
-
----
-
-# Podijeli podatke
-<br>
-<br>
-
-```{r}
-N <- nrow(gcbs)
-indices <- seq(1,N)
-indices_EFA <- sample(indices,floor((0.5 * N)))
-indices_CFA <- indices[!(indices %in% indices_EFA)]
-gcbs_EFA <- gcbs[indices_EFA, ]
-gcbs_CFA <- gcbs[indices_CFA, ]
-
-group_var <- vector("numeric", nrow(gcbs))
-group_var[indices_EFA] <- 1
-group_var[indices_CFA] <- 2
-```
-
----
-
-# Usporedi polovice
-<br>
-<br>
-<br>
-```{r}
-head(group_var,650)
-```
-
----
-
-# Usporedi polovice
-
-.tiny[
-```{r}
-gcbs_grouped <- cbind(gcbs, group_var)
-describeBy(gcbs_grouped, group = group_var)
-```
-]
----
-
-# Usporedi polovice
-.tiny[
-```{r}
-statsBy(gcbs_grouped, group = "group_var")
-```
-]
----
-
-# Korelacije varijabli
-
-```{r}
-lowerCor(gcbs)
-```
-
----
-
-# Signifikantnost korelacija
-.tiny[
-```{r}
-corr.test(gcbs, use = "pairwise.complete.obs")$p
-```
-]
-
----
-
-# Intervali pouzdanosti
-.tiny[
-```{r}
-corr.test(gcbs, use = "pairwise.complete.obs")$ci
-```
-]
-
----
-
-# Alfa koeficijent
-
-.tiny[
-```{r}
-alpha(gcbs)
-```
-]
-
----
-
-# Pouzdanost podjele
-
-```{r}
-splitHalf(gcbs)
-```
 
 ---
 class: inverse, center, middle
