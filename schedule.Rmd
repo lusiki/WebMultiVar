@@ -109,11 +109,11 @@ title: " "
 <br>
 <br>
 
-### Predavanje 06: Diskriminantna analiza
+### Predavanje 06: Klaster analiza
 
 
 
-### Predavanje 07: Klaster analiza
+### Predavanje 07: Diskriminantna analiza
 
 
 
