@@ -466,8 +466,8 @@ fa.parallel(bfi_c, n.obs = 200,fa = "fa", fm = "mle") # MLE metoda
 # Rotacija faktora
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="750px"}
-knitr::include_graphics("../Foto/roto_FA.png")
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
+knitr::include_graphics("../Foto/roto_fa.png")
 ```
 
 ---
@@ -479,7 +479,7 @@ f_bfi_varimax <- fa(bfi_c,fm = "minres",nfactors = 5,rotate = "varimax")
 ```
 <br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="450px"}
-knitr::include_graphics("../Foto/varimax_FA.png")
+knitr::include_graphics("../Foto/varimax_fa.png")
 ```
 
 ---
