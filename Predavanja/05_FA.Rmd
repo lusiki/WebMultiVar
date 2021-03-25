@@ -64,7 +64,8 @@ library(sem)
 library(semPlot)
 library(tidyverse)
 library(dplyr)
-
+library(polycor)
+library(GPArotation)
 ```
 
 # Pregled predavanja
@@ -136,7 +137,7 @@ name: uni
 ---
 class: inverse, center, middle
 
-# PODATCI I PODRŠKA
+# OGLEDNI PRIMJER
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
@@ -144,31 +145,32 @@ class: inverse, center, middle
 
 ---
 
-# Paket
+# Paket i podatci
 <br>
-<br>
-<br>
-- koristimo `psych` paket
 
+- koristimo `psych` paket
 - za detalje o paketu pogledajte [Personality project](http://personality-project.org/r/psych/)
 
 ```{r}
+# učitaj paket
 library(psych)
 ```
-
----
-
-# Podatci
 
 - koristimo `gcbs` podatkovni skup (Generic Conspiracist Beliefs Survey)
 - provjerite da li i vas prisluškuju na [Open psychometrics](https://openpsychometrics.org/tests/GCBS/) :-)
 
-
 ```{r}
 gcbs <- readRDS("../Podatci/GCBS_data.rds")
-str(gcbs)
 ```
 
+
+---
+
+# Pregledaj podatke
+
+```{r}
+str(gcbs)
+```
 
 ---
 
@@ -233,11 +235,31 @@ fa.diagram(EFA_model)
 class: inverse, center, middle
 name: multi
 
-# MULTIDIMENZIONALNA FA
+# MULTIDIMENZIONALNA (E)FA
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
 (U praksi uvijek ima više od jedne dimenzije)
+
+---
+
+# Procedura provedbe EFA
+<br>
+<br>
+- Provjeri faktorabilnost
+<br>
+<br>
+- Izvuci faktore
+<br>
+<br>
+- Izaberi odgovarajući broj faktora
+<br>
+<br>
+- Rotiraj faktore
+<br>
+<br>
+- Interpretiraj rezultate
+
 
 ---
 
@@ -290,6 +312,161 @@ knitr::include_graphics("../Foto/bfi_FA.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="450px"}
 knitr::include_graphics("../Foto/konstrukt_FA.png")
 ```
+
+---
+
+# Faktorabilnost
+<br>
+<br>
+.pull-left[
+- `Barlett sphericity` test (BS)
+
+```{r, warning=FALSE, message=FALSE}
+bfi_hetcor <- polycor::hetcor(bfi[,1:25]) # korelacije
+bfi_c <- bfi_hetcor$correlations # kor- matrica
+bfi_faktorablinost <- cortest.bartlett(bfi_c) # Barlett test
+bfi_faktorablinost
+```
+
+]
+
+
+.pull-right[
+- `Keiser-Meyer-Olkin` test (MKO)
+```{r}
+KMO(bfi_c) # KMO test
+```
+
+
+]
+
+
+---
+
+# Ekstrakcija faktora
+
+- `minres` : minimum residual [default] (slightly modi,ed methods: ols , wls , gls )
+- `mle` : Maximum Likelihood Estimation (MLE)
+- `paf` : Principal Axes Factor (PAF) extraction
+- `minchi` : minimum sample size weighted chi square
+- `minrank` : minimum rank
+- `alpha` : alpha factoring
+
+---
+
+# `minres` metoda 
+
+```{r}
+# EFA sa 3 faktora
+f_bfi_minres <- fa(bfi_c,nfactors = 3,rotate = "none")
+# Sortiraj komunalnosti
+f_bfi_minres_common <- sort(f_bfi_minres$communality,decreasing = TRUE)
+# Pregled
+data.frame(f_bfi_minres_common)
+```
+---
+
+# `minres` metoda 
+
+```{r}
+# Sortiraj jedinstvenosti
+f_bfi_minres_unique <- sort(f_bfi_minres$uniqueness,decreasing = TRUE)
+# Pregled
+head(data.frame(f_bfi_minres_unique),10)
+```
+
+---
+
+# `MLE` metoda 
+
+
+```{r}
+# MLE ekstrakcija
+f_bfi_mle <- fa(bfi_c, nfactors = 3, fm ="ml")
+# Sortiraj komunalnost
+f_bfi_mle_common <- sort(f_bfi_mle$communality,decreasing = TRUE)
+# Pregled
+head(data.frame(f_bfi_mle_common),10)
+```
+
+---
+
+# Koliko faktora zadržati
+<br>
+- Kaiser-Guttman test
+- Scree test
+- Parallel analiza
+<br>
+```{r, fig.height=4}
+fa.parallel(bfi_c, n.obs = 200,fa = "fa", fm = "minres") # minres metoda 
+```
+
+---
+
+# Koliko faktora zadržati
+
+```{r, fig.height=4}
+fa.parallel(bfi_c, n.obs = 200,fa = "fa", fm = "mle") # MLE metoda
+```
+
+---
+
+# Rotacija faktora
+
+- Rotacija se radi zbog lakše interpretacije
+
+.pull_left[
+##### Ortogonalna
+- Quartimax
+- Equiumax
+- Varimax
+]
+
+.pull_right[
+##### Zaobljena
+- Direct Oblimin
+- Promax
+]
+
+---
+
+# Rotacija faktora
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="550px"}
+knitr::include_graphics("../Foto/roto_FA.png")
+```
+
+---
+
+# Varimax rotacija
+
+```{r, eval=TRUE}
+f_bfi_varimax <- fa(bfi_c,fm = "minres",nfactors = 5,rotate = "varimax")
+```
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
+knitr::include_graphics("../Foto/varimax_FA.png")
+```
+
+---
+
+# Interpretacija
+
+```{r, fig.height=4}
+fa.diagram(f_bfi_varimax)
+
+```
+---
+
+
+# Interpretacija
+
+.tiny[
+```{r}
+print(f_bfi_varimax$loadings, cut=0)
+```
+]
+
 
 ---
 
