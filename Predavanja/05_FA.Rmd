@@ -77,9 +77,9 @@ library(GPArotation)
 
 1. [Jednodimenzionalna faktorska analiza (FA)](#uni)
 
-2. [Multidimenzionalna FA](#multi)
+2. [Eksplorativna FA (EFA)](#multi)
 
-3. [Konfirmatorna FA](#conf)
+3. [Konfirmatorna FA (CFA)](#conf)
 
 
 ---
@@ -235,11 +235,11 @@ fa.diagram(EFA_model)
 class: inverse, center, middle
 name: multi
 
-# MULTIDIMENZIONALNA (E)FA
+# EKSPLORATIVNA (E)FA
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-(U praksi uvijek ima više od jedne dimenzije)
+(Bez teorije...)
 
 ---
 
@@ -265,7 +265,7 @@ name: multi
 
 # Podatci
 
-- koristimo podatke Synthetic Aperture Personality Assessment (SAPA)
+- koristimo podatke [Synthetic Aperture Personality Assessment](https://www.sapa-project.org/survey/start.php) (SAPA)
 - 2.800 osoba
 - 25 pitanja
 .tiny[
@@ -315,6 +315,14 @@ knitr::include_graphics("../Foto/konstrukt_FA.png")
 
 ---
 
+# ...bez teorije
+
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="550px"}
+knitr::include_graphics("../Foto/noTheory_FA.png")
+```
+---
+
 # Faktorabilnost
 <br>
 <br>
@@ -344,12 +352,18 @@ KMO(bfi_c) # KMO test
 ---
 
 # Ekstrakcija faktora
-
+<br>
+<br>
 - `minres` : minimum residual [default] (slightly modi,ed methods: ols , wls , gls )
+<br>
 - `mle` : Maximum Likelihood Estimation (MLE)
+<br>
 - `paf` : Principal Axes Factor (PAF) extraction
+<br>
 - `minchi` : minimum sample size weighted chi square
+<br>
 - `minrank` : minimum rank
+<br>
 - `alpha` : alpha factoring
 
 ---
@@ -362,7 +376,7 @@ f_bfi_minres <- fa(bfi_c,nfactors = 3,rotate = "none")
 # Sortiraj komunalnosti
 f_bfi_minres_common <- sort(f_bfi_minres$communality,decreasing = TRUE)
 # Pregled
-data.frame(f_bfi_minres_common)
+head(data.frame(f_bfi_minres_common),8)
 ```
 ---
 
@@ -391,28 +405,29 @@ head(data.frame(f_bfi_mle_common),10)
 
 ---
 
-# Koliko faktora zadržati
+# Koliko faktora zadržati?
 <br>
 - Kaiser-Guttman test
 - Scree test
 - Parallel analiza
 <br>
-```{r, fig.height=4}
+```{r, fig.height=3}
 fa.parallel(bfi_c, n.obs = 200,fa = "fa", fm = "minres") # minres metoda 
 ```
 
 ---
 
-# Koliko faktora zadržati
+# Koliko faktora zadržati?
 
-```{r, fig.height=4}
+```{r, fig.height=3}
 fa.parallel(bfi_c, n.obs = 200,fa = "fa", fm = "mle") # MLE metoda
 ```
 
 ---
 
 # Rotacija faktora
-
+<br>
+<br>
 - Rotacija se radi zbog lakše interpretacije
 
 .pull_left[
@@ -469,6 +484,15 @@ print(f_bfi_varimax$loadings, cut=0)
 
 
 ---
+class: inverse, center, middle
+
+# Procjena kvalitete modela
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Koliko je pouzdana procjena!?)
+
+---
 
 # Podijeli podatke
 <br>
@@ -492,14 +516,6 @@ head(bfi_EFA, 2)
 head(bfi_CFA, 2)
 ```
 
----
-
-# ...bez teorije
-
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="550px"}
-knitr::include_graphics("../Foto/noTheory_FA.png")
-```
 
 ---
 
@@ -794,7 +810,7 @@ class: inverse, center, middle
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-(Nastavak: Diskriminantna analiza)
+(Nastavak: Klaster analiza)
 
 
 
