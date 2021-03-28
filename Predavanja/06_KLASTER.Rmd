@@ -1,0 +1,528 @@
+---
+title: "MULTIVARIJATNE STATISTIČKE METODE"
+author: "dr.sc Luka Šikić"
+date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
+subtitle: "Predavanje 6: Klaster analiza"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=F#, echo=F, warning=F, message=F
+  )
+```
+
+```{css, echo = F, eval = T}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+```
+
+```{r paketi, warning=F, echo=F, message=F, eval=FALSE}
+
+library(FactoMineR)
+library(factoextra)
+library(FactoMineR)
+library(tidyverse)  # data manipulation and visualization
+library(gridExtra)  # plot arrangement
+library(patchwork)
+library(ggplot2)
+library(lavaan)
+library(sem)
+library(semPlot)
+library(tidyverse)
+library(dplyr)
+library(polycor)
+library(GPArotation)
+```
+
+# Pregled predavanja
+
+<br>
+<br>
+<br>
+
+
+1. [Karakteristike klaster analize](#kars)
+
+2. [Udaljenost između opservacija](#slic)
+
+2. [Hijerarhijski klastering](#hier)
+
+3. [K-means klastering](#kmen)
+
+
+---
+
+class: inverse, center, middle
+name: kars
+
+# KLASTER ANALIZA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Općenito)
+
+---
+
+# Što je klaster analiza?
+
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klast2.png")
+```
+
+--
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klast3.png")
+```
+
+
+--
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klast4.png")
+```
+
+--
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klast5.png")
+```
+
+---
+
+# Tijek klaster analize
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
+
+knitr::include_graphics("../Foto/klasterTok.png")
+```
+
+---
+
+class: inverse, center, middle
+name: slic
+
+# UDALJENOST IZMEĐU OPSEVACIJA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Podloga za klastering)
+
+---
+
+# Udaljenost vs. sličnost
+
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klastDist1.png")
+```
+
+---
+
+# Udaljenost vs. sličnost
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klastDist2.png")
+```
+
+---
+
+# Udaljenost vs. sličnost
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klastDist3.png")
+```
+
+---
+
+# Udaljenost vs. sličnost
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klastDist4.png")
+```
+
+---
+
+# Udaljenost vs. sličnost
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klastDist5.png")
+```
+
+---
+
+# Udaljenost vs. sličnost
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klastDist6.png")
+```
+
+---
+
+# Udaljenost vs. sličnost
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klastDist7.png")
+```
+
+---
+
+# Udaljenost vs. sličnost
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klastDist8.png")
+```
+
+---
+
+# Udaljenost vs. sličnost
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/klastDist9.png")
+```
+
+---
+
+# Više od dvije opservacije
+
+```{r}
+
+three_players <- data.frame(X = c(0,9,-2),
+                            Y = c(0,12,19),
+                            row.names = c("BLUE", "RED", "GREEN"))
+
+print(three_players)
+
+dist(three_players)
+```
+
+
+---
+
+# Udaljenost između opservacija
+
+
+```{r}
+visinaTezina <- data.frame(Visina = c(6,6,8),
+                           Tezina = c(200,202,200),
+                           row.names = c(1,2,3))
+
+kable(visinaTezina)
+```
+
+---
+
+# Udaljenost između opservacija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastVisina.png")
+```
+
+---
+
+# Udaljenost između opservacija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastVisina1.png")
+```
+
+---
+
+# Udaljenost između opservacija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastVisina3.png")
+```
+
+---
+
+# Udaljenost između opservacija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastVisina4.png")
+```
+
+---
+
+# Udaljenost između opservacija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastVisina5.png")
+```
+
+---
+
+# Udaljenost između opservacija
+<br>
+<br>
+<br>
+$$
+Visina(skalirano) = \frac{visna - (prosječna)Visina}{std(visina)}
+$$
+
+---
+
+# Udaljenost između opservacija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastDist10.png")
+```
+
+---
+
+# Udaljenost između opservacija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastDist11.png")
+```
+
+---
+
+# Skaliranje 
+
+```{r}
+print(visinaTezina)
+
+scale(visinaTezina)
+```
+
+---
+
+# Kategorički podatci
+
+```{r}
+zadovoljstvo <- data.frame(
+                      zadovoljstvo = c("Nisko","Nisko","Visoko","Nisko","Srednje"),
+                      sreća = c("Ne","Ne","Da","Ne","Ne"))
+kable(zadovoljstvo)
+```
+
+---
+
+# Jaccardova udaljenost u R
+
+```{r}
+print(zadovoljstvo)
+
+dist(zadovoljstvo, method = "binary") # Udaljenost za kategorije
+```
+
+---
+
+# Jaccardova udaljenost u R
+
+.pull-left[
+```{r}
+library(dummies)
+dummieZadovoljstvo <- dummy.data.frame(zadovoljstvo) # Pretvori u dummie
+print(dummieZadovoljstvo)
+```
+]
+
+.pull-right[
+```{r}
+print(zadovoljstvo)
+```
+]
+
+```{r}
+dist(dummieZadovoljstvo, method = "binary") # Udaljenost za kategorije
+```
+
+---
+
+class: inverse, center, middle
+name: kars
+
+# HIJERARHIJSKI KLASTERING
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(...)
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH1.png")
+```
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH2.png")
+```
+
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH3.png")
+```
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH4.png")
+```
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH5.png")
+```
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH6.png")
+```
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH7.png")
+```
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH8.png")
+```
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH9.png")
+```
+
+---
+
+# Grupiranje
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastH10.png")
+```
+
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ1.png")
+```
+
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ1.png")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
