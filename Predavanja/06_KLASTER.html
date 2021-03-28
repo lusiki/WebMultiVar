@@ -352,10 +352,6 @@ dist(zadovoljstvo, method = "binary") # Udaljenost za kategorije
 ```
 
 ```
-## Warning in dist(zadovoljstvo, method = "binary"): NAs introduced by coercion
-```
-
-```
 ##    1  2  3  4
 ## 2 NA         
 ## 3 NA NA      
@@ -371,25 +367,7 @@ dist(zadovoljstvo, method = "binary") # Udaljenost za kategorije
 
 ```r
 library(dummies)
-```
-
-```
-## dummies-1.5.6 provided by Decision Patterns
-```
-
-```r
 dummieZadovoljstvo &lt;- dummy.data.frame(zadovoljstvo) # Pretvori u dummie
-```
-
-```
-## Warning in model.matrix.default(~x - 1, model.frame(~x - 1), contrasts = FALSE):
-## non-list contrasts argument ignored
-
-## Warning in model.matrix.default(~x - 1, model.frame(~x - 1), contrasts = FALSE):
-## non-list contrasts argument ignored
-```
-
-```r
 print(dummieZadovoljstvo)
 ```
 
@@ -772,40 +750,6 @@ plot(hcIgraci)
 
 ```r
 library(dendextend)
-```
-
-```
-## Warning: package 'dendextend' was built under R version 4.0.4
-```
-
-```
-## 
-## ---------------------
-## Welcome to dendextend version 1.14.0
-## Type citation('dendextend') for how to cite the package.
-## 
-## Type browseVignettes(package = 'dendextend') for the package vignette.
-## The github page is: https://github.com/talgalili/dendextend/
-## 
-## Suggestions and bug-reports can be submitted at: https://github.com/talgalili/dendextend/issues
-## Or contact: &lt;tal.galili@gmail.com&gt;
-## 
-## 	To suppress this message use:  suppressPackageStartupMessages(library(dendextend))
-## ---------------------
-```
-
-```
-## 
-## Attaching package: 'dendextend'
-```
-
-```
-## The following object is masked from 'package:stats':
-## 
-##     cutree
-```
-
-```r
 dendIgraci &lt;- as.dendrogram(hcIgraci)
 dendBoje &lt;- color_branches(dendIgraci, h = 2)
 plot(dendBoje)
@@ -855,6 +799,238 @@ print(igraciKlaster)
 ## 5 -12  8       2
 ## 6 -15  0       2
 ```
+
+
+---
+
+class: inverse, center, middle
+name: kars
+
+# K MEANS KLASTERING
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Općenito)
+
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK1.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK2.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK3.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK4.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK5.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK6.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK7.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK8.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK9.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK10.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provedi kmeans()
+
+
+```r
+lineup &lt;- data.frame(X =c(-1,-2,8,7,-12,-15,-13,15,21,12,-25,26),
+           Y = c(1,-3,6,-8,8,0,-10,16,2,-15,1,0))
+head(print(lineup),6) 
+```
+
+```
+##      X   Y
+## 1   -1   1
+## 2   -2  -3
+## 3    8   6
+## 4    7  -8
+## 5  -12   8
+## 6  -15   0
+## 7  -13 -10
+## 8   15  16
+## 9   21   2
+## 10  12 -15
+## 11 -25   1
+## 12  26   0
+```
+
+```
+##     X  Y
+## 1  -1  1
+## 2  -2 -3
+## 3   8  6
+## 4   7 -8
+## 5 -12  8
+## 6 -15  0
+```
+
+```r
+model &lt;- kmeans(lineup, centers = 2)
+```
+
+
+---
+
+# Provedi kmeans()
+
+
+```r
+print(model$cluster)
+```
+
+```
+##  [1] 2 2 1 1 2 2 2 1 1 1 2 1
+```
+
+```r
+lineupKlasteri &lt;- mutate(lineup, cluster = model$cluster)
+head(print(lineupKlasteri),6)
+```
+
+```
+##      X   Y cluster
+## 1   -1   1       2
+## 2   -2  -3       2
+## 3    8   6       1
+## 4    7  -8       1
+## 5  -12   8       2
+## 6  -15   0       2
+## 7  -13 -10       2
+## 8   15  16       1
+## 9   21   2       1
+## 10  12 -15       1
+## 11 -25   1       2
+## 12  26   0       1
+```
+
+```
+##     X  Y cluster
+## 1  -1  1       2
+## 2  -2 -3       2
+## 3   8  6       1
+## 4   7 -8       1
+## 5 -12  8       2
+## 6 -15  0       2
+```
+
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK10.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK11.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK12.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK13.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK14.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK15.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+model &lt;- kmeans(x = lineup, centers = 2) # Provedi model sa dva klastera
+model$tot.withinss # Kvaliteta modela
+```
+
+```
+## [1] 1434.5
+```
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
