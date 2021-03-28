@@ -1,6 +1,6 @@
 ---
 title: "MULTIVARIJATNE STATISTIČKE METODE"
-author: "dr.sc Luka Šikić"
+author: "dr.sc. Luka Šikić"
 date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
 # subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
 subtitle: "Predavanje 6: Klaster analiza"
@@ -50,22 +50,13 @@ remark-slide-content {
 }
 ```
 
-```{r paketi, warning=F, echo=F, message=F, eval=FALSE}
+```{r paketi, warning=F, echo=F, message=F, eval=TRUE}
 
-library(FactoMineR)
-library(factoextra)
-library(FactoMineR)
 library(tidyverse)  # data manipulation and visualization
 library(gridExtra)  # plot arrangement
-library(patchwork)
 library(ggplot2)
-library(lavaan)
-library(sem)
-library(semPlot)
 library(tidyverse)
 library(dplyr)
-library(polycor)
-library(GPArotation)
 ```
 
 # Pregled predavanja
@@ -509,6 +500,136 @@ knitr::include_graphics("../Foto/klastIZ1.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastIZ1.png")
 ```
+
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ2.png")
+```
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ3.png")
+```
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ4.png")
+```
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ5.png")
+```
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ6.png")
+```
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ7.png")
+```
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ8.png")
+```
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ9.png")
+```
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ10.png")
+```
+---
+
+# Izgled klastera
+
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastIZ11.png")
+```
+
+
+---
+
+# Klastering procedura
+
+```{r}
+igraci <-  data.frame(X = c(-1,-2,8,7,-12,-15),
+                      Y = c(1,-3,6,-8,8,0))
+print(igraci)
+dist_igraci <- dist(igraci, method = "euclidean") # Izračunaj udaljenost
+hc_igraci <- hclust(dist_igraci, method = 'complete') # Provedi klastering
+```
+
+---
+
+# Klastering procedura
+
+```{r}
+klasteri <- cutree(hc_igraci, k = 2) # Odredi broj klastera
+print(klasteri)
+igraciKlasteri<- mutate(igraci, cluster = klasteri) # Prilagodba
+print(igraciKlasteri) # Podatci + klasteri
+```
+---
+
+# Klastering procedura
+
+```{r}
+ggplot(igraciKlasteri, aes(x = X, y = Y, color = factor(klasteri))) +
+  geom_point() +
+  ggtitle("Prikaz igrača i klastera u koordinatnom sustavu")
+  
+```
+
+
+
+
+
 
 
 
