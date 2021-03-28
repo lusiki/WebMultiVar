@@ -744,7 +744,7 @@ plot(dendBoje)
 
 # Broj klastera
 
-```{r , message= F, warning=F, fig.height=6}
+```{r , message= F, warning=F, fig.height=5}
 library(dendextend)
 dendIgraci <- as.dendrogram(hcIgraci)
 dendBoje <- color_branches(dendIgraci, k = 5)
@@ -755,7 +755,7 @@ plot(dendBoje)
 
 # Broj klastera
 
-```{r, message= F, warning=F, fig.height=6}
+```{r, message= F, warning=F, fig.height=5}
 clusterPripisano <- cutree(hcIgraci, h = 15)
 print(clusterPripisano)
 igraciKlaster <- mutate(igraci, cluster = clusterPripisano)
@@ -878,7 +878,7 @@ knitr::include_graphics("../Foto/klastK10.png")
 
 # Provedi kmeans()
 
-```{r}
+```{r, message= F, warning=F, fig.height=6}
 
 lineup <- data.frame(X =c(-1,-2,8,7,-12,-15,-13,15,21,12,-25,26),
            Y = c(1,-3,6,-8,8,0,-10,16,2,-15,1,0))
@@ -892,10 +892,10 @@ model <- kmeans(lineup, centers = 2)
 
 # Provedi kmeans()
 
-```{r}
+```{r, message= F, warning=F, fig.height=6}
 print(model$cluster)
 ```
-```{r}
+```{r, message= F, warning=F, fig.height=6}
 lineupKlasteri <- mutate(lineup, cluster = model$cluster)
 head(print(lineupKlasteri),6)
 ```
@@ -953,7 +953,7 @@ knitr::include_graphics("../Foto/klastK15.png")
 # Odredi broj klastera
 <br>
 <br>
-```{r}
+```{r, message= F, warning=F, fig.height=6}
 model <- kmeans(x = lineup, centers = 2) # Provedi model sa dva klastera
 model$tot.withinss # Kvaliteta modela
 ```
@@ -962,6 +962,181 @@ model$tot.withinss # Kvaliteta modela
 # Odredi broj klastera
 <br>
 <br>
+```{r, message= F, warning=F, fig.height=6}
+library(purrr)
+tot_withinss <- map_dbl(1:10, function(k){
+model <- kmeans(x = lineup, centers = k)
+model$tot.withinss
+})
+elbow_df <- data.frame(
+k = 1:10,
+tot_withinss = tot_withinss
+)
+head(print(elbow_df),5)
+```
+--- 
+
+# Odredi broj klastera
+<br>
+<br>
+```{r, message= F, warning=F, fig.height=4}
+ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
+geom_line() +
+scale_x_continuous(breaks = 1:10)
+```
+--- 
+
+# Silhouette analiza
+<br>
+<br>
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastS1.png")
+```
+
+--- 
+
+# Silhouette analiza
+<br>
+<br>
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastS2.png")
+```
+
+--- 
+
+# Silhouette analiza
+<br>
+<br>
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastS3.png")
+```
+--- 
+
+# Silhouette analiza
+<br>
+<br>
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastS4.png")
+```
+--- 
+
+# Silhouette analiza
+<br>
+<br>
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastS5.png")
+```
+
+--- 
+
+# Silhouette analiza
+<br>
+<br>
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastS6.png")
+```
+
+--- 
+
+# Silhouette analiza
+<br>
+<br>
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/klastS7.png")
+```
+--- 
+
+# Silhouette analiza
+
+```{r, message= F, warning=F, fig.height=5}
+library(cluster)
+pam_k3 <- pam(lineup, k = 3)
+pam_k3$silinfo$widths
+```
+--- 
+
+# Silhouette analiza
+
+```{r, message= F, warning=F, fig.height=4}
+sil_plot <- silhouette(pam_k3)
+plot(sil_plot)
+```
+--- 
+
+# Silhouette analiza
+
+```{r, message= F, warning=F, fig.height=5}
+pam_k3$silinfo$avg.width
+
+#  1: Dobro klastersko poklapanje
+#  0: Granično poklapanje između klastera
+# -1: Loše poklapanje
+```
+--- 
+
+# Silhouette analiza
+
+```{r, message= F, warning=F, fig.height=5}
+sil_width <- map_dbl(2:10, function(k){
+model <- pam(x = lineup, k = k)
+model$silinfo$avg.width
+})
+sil_df <- data.frame(
+k = 2:10,
+sil_width = sil_width
+)
+head(print(sil_df),5)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
