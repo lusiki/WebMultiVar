@@ -22,7 +22,7 @@ title: " "
 <br>
 <br>
 
-Dobrodošli na stranice kolegija <b>Multivarijatne metode</b> koji u ljetnom semestru, 2020/21 izvodi Luka Šikić na Fakultetu hrvatskih studija u Zagrebu. Kolegij je prvenstveno namijenjen studentima sociologije na diplomskoj razini, a može koristiti svim studentima društvenih i humanističkih smjerova koji su upoznati s osnovama statistike.
+Dobrodošli na stranice kolegija <b>Multivarijatne metode</b> koji u ljetnom semestru, 2020/21 izvodi Luka Šikić na Fakultetu hrvatskih studija u Zagrebu. Kolegij je prvenstveno namijenjen studentima sociologije na diplomskoj razini, a može koristiti svim studentima društvenih, humanističkih i interdisciplinarnih smjerova koji su upoznati s osnovama statistike.
 
 <br>
 <br>
@@ -32,8 +32,8 @@ Dobrodošli na stranice kolegija <b>Multivarijatne metode</b> koji u ljetnom sem
 
 
 [Luka Šikić](https://www.lukasikic.info/)</br>
-Hrvatski studiji, Katedra za sociologiju</br>
-<b>Konzultacije</b>&nbsp;&nbsp;&nbsp;Četvrtkom,&nbsp;17:30-18:30</br>
+Fakultet hrvatskih studija, Odsjek za sociologiju</br>
+<b>Konzultacije</b>&nbsp;&nbsp;&nbsp;Četvrtkom,&nbsp;od 17.30 do 18.30</br>
 mail: lsikic@hrstud.hr</br>
 mob:  + 385 98 162 30 52</br>
 

@@ -1114,6 +1114,15 @@ scale_x_continuous(breaks = 2:10)
 
 
 
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Nastavak: Višestruka linearna regresija)
 
 
 
