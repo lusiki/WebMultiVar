@@ -111,6 +111,20 @@ title: " "
 
 ### Predavanje 06: Klaster analiza
 
+- Karakteristike klaster analize
+
+- Udaljenost između opservacija
+
+- Hijerarhijski klastering
+
+- K-means klastering
+
+
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/06_KLASTER.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/06_KLASTER.Rmd) 
+<br>
+**Čitanje:** <a href="./Foto/Faktorska_analiza.pdf">Faktorska analiza (teorija)</a> + [Predavanje iz prošle godine](https://rpubs.com/shichich/595542)
+<br>
+<br>
 
 
 ### Predavanje 07: Diskriminantna analiza

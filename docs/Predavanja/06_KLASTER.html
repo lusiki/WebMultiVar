@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MULTIVARIJATNE STATISTIČKE METODE</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="dr.sc. Luka Šikić" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# MULTIVARIJATNE STATISTIČKE METODE
+## Predavanje 6: Klaster analiza
+### dr.sc. Luka Šikić
+### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
+
+---
+
+
+
+
+
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+&lt;/style&gt;
+
+
+
+# Pregled predavanja
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+
+1. [Karakteristike klaster analize](#kars)
+
+2. [Udaljenost između opservacija](#slic)
+
+2. [Hijerarhijski klastering](#hier)
+
+3. [K-means klastering](#kmen)
+
+
+---
+
+class: inverse, center, middle
+name: kars
+
+# KLASTER ANALIZA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Općenito)
+
+---
+
+# Što je klaster analiza?
+
+
+&lt;img src="../Foto/klast2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+--
+
+&lt;img src="../Foto/klast3.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+--
+
+&lt;img src="../Foto/klast4.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+--
+
+&lt;img src="../Foto/klast5.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Tijek klaster analize
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klasterTok.png" width="650px" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, center, middle
+name: slic
+
+# UDALJENOST IZMEĐU OPSEVACIJA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Podloga za klastering)
+
+---
+
+# Udaljenost vs. sličnost
+
+
+&lt;img src="../Foto/klastDist1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost vs. sličnost
+
+&lt;img src="../Foto/klastDist2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost vs. sličnost
+
+&lt;img src="../Foto/klastDist3.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost vs. sličnost
+
+&lt;img src="../Foto/klastDist4.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost vs. sličnost
+
+&lt;img src="../Foto/klastDist5.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost vs. sličnost
+
+&lt;img src="../Foto/klastDist6.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost vs. sličnost
+
+&lt;img src="../Foto/klastDist7.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost vs. sličnost
+
+&lt;img src="../Foto/klastDist8.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost vs. sličnost
+
+&lt;img src="../Foto/klastDist9.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Više od dvije opservacije
+
+
+```r
+three_players &lt;- data.frame(X = c(0,9,-2),
+                            Y = c(0,12,19),
+                            row.names = c("BLUE", "RED", "GREEN"))
+
+print(three_players)
+```
+
+```
+##        X  Y
+## BLUE   0  0
+## RED    9 12
+## GREEN -2 19
+```
+
+```r
+dist(three_players)
+```
+
+```
+##           BLUE      RED
+## RED   15.00000         
+## GREEN 19.10497 13.03840
+```
+
+
+---
+
+# Udaljenost između opservacija
+
+
+
+```r
+visinaTezina &lt;- data.frame(Visina = c(6,6,8),
+                           Tezina = c(200,202,200),
+                           row.names = c(1,2,3))
+
+kable(visinaTezina)
+```
+
+
+
+| Visina| Tezina|
+|------:|------:|
+|      6|    200|
+|      6|    202|
+|      8|    200|
+
+---
+
+# Udaljenost između opservacija
+
+&lt;img src="../Foto/klastVisina.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost između opservacija
+
+&lt;img src="../Foto/klastVisina1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost između opservacija
+
+&lt;img src="../Foto/klastVisina3.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost između opservacija
+
+&lt;img src="../Foto/klastVisina4.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost između opservacija
+
+&lt;img src="../Foto/klastVisina5.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost između opservacija
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+$$
+Visina(skalirano) = \frac{visna - (prosječna)Visina}{std(visina)}
+$$
+
+---
+
+# Udaljenost između opservacija
+
+&lt;img src="../Foto/klastDist10.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Udaljenost između opservacija
+
+&lt;img src="../Foto/klastDist11.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Skaliranje 
+
+
+```r
+print(visinaTezina)
+```
+
+```
+##   Visina Tezina
+## 1      6    200
+## 2      6    202
+## 3      8    200
+```
+
+```r
+scale(visinaTezina)
+```
+
+```
+##       Visina     Tezina
+## 1 -0.5773503 -0.5773503
+## 2 -0.5773503  1.1547005
+## 3  1.1547005 -0.5773503
+## attr(,"scaled:center")
+##     Visina     Tezina 
+##   6.666667 200.666667 
+## attr(,"scaled:scale")
+##   Visina   Tezina 
+## 1.154701 1.154701
+```
+
+---
+
+# Kategorički podatci
+
+
+```r
+zadovoljstvo &lt;- data.frame(
+                      zadovoljstvo = c("Nisko","Nisko","Visoko","Nisko","Srednje"),
+                      sreća = c("Ne","Ne","Da","Ne","Ne"))
+kable(zadovoljstvo)
+```
+
+
+
+|zadovoljstvo |sreća |
+|:------------|:-----|
+|Nisko        |Ne    |
+|Nisko        |Ne    |
+|Visoko       |Da    |
+|Nisko        |Ne    |
+|Srednje      |Ne    |
+
+---
+
+# Jaccardova udaljenost u R
+
+
+```r
+print(zadovoljstvo)
+```
+
+```
+##   zadovoljstvo sreća
+## 1        Nisko    Ne
+## 2        Nisko    Ne
+## 3       Visoko    Da
+## 4        Nisko    Ne
+## 5      Srednje    Ne
+```
+
+```r
+dist(zadovoljstvo, method = "binary") # Udaljenost za kategorije
+```
+
+```
+##    1  2  3  4
+## 2 NA         
+## 3 NA NA      
+## 4 NA NA NA   
+## 5 NA NA NA NA
+```
+
+---
+
+# Jaccardova udaljenost u R
+
+.pull-left[
+
+```r
+library(dummies)
+dummieZadovoljstvo &lt;- dummy.data.frame(zadovoljstvo) # Pretvori u dummie
+print(dummieZadovoljstvo)
+```
+
+```
+##   zadovoljstvoNisko zadovoljstvoSrednje zadovoljstvoVisoko srećaDa srećaNe
+## 1                 1                   0                  0       0       1
+## 2                 1                   0                  0       0       1
+## 3                 0                   0                  1       1       0
+## 4                 1                   0                  0       0       1
+## 5                 0                   1                  0       0       1
+```
+]
+
+.pull-right[
+
+```r
+print(zadovoljstvo)
+```
+
+```
+##   zadovoljstvo sreća
+## 1        Nisko    Ne
+## 2        Nisko    Ne
+## 3       Visoko    Da
+## 4        Nisko    Ne
+## 5      Srednje    Ne
+```
+]
+
+
+```r
+dist(dummieZadovoljstvo, method = "binary") # Udaljenost za kategorije
+```
+
+```
+##           1         2         3         4
+## 2 0.0000000                              
+## 3 1.0000000 1.0000000                    
+## 4 0.0000000 0.0000000 1.0000000          
+## 5 0.6666667 0.6666667 1.0000000 0.6666667
+```
+
+---
+
+class: inverse, center, middle
+name: kars
+
+# HIJERARHIJSKI KLASTERING
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(...)
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH3.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH4.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH5.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH6.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH7.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH8.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH9.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Grupiranje
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastH10.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ2.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ3.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ4.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ5.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ6.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ7.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ8.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ9.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ10.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Izgled klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastIZ11.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Klastering procedura
+
+
+```r
+igraci &lt;-  data.frame(X = c(-1,-2,8,7,-12,-15),
+                      Y = c(1,-3,6,-8,8,0))
+print(igraci)
+```
+
+```
+##     X  Y
+## 1  -1  1
+## 2  -2 -3
+## 3   8  6
+## 4   7 -8
+## 5 -12  8
+## 6 -15  0
+```
+
+```r
+distIgraci &lt;- dist(igraci, method = "euclidean") # Izračunaj udaljenost
+hcIgraci &lt;- hclust(distIgraci, method = 'complete') # Provedi klastering
+```
+
+---
+
+# Klastering procedura
+
+
+```r
+klasteri &lt;- cutree(hcIgraci, k = 2) # Odredi broj klastera
+print(klasteri)
+```
+
+```
+## [1] 1 1 1 1 2 2
+```
+
+```r
+igraciKlasteri&lt;- mutate(igraci, cluster = klasteri) # Prilagodba
+print(igraciKlasteri) # Podatci + klasteri
+```
+
+```
+##     X  Y cluster
+## 1  -1  1       1
+## 2  -2 -3       1
+## 3   8  6       1
+## 4   7 -8       1
+## 5 -12  8       2
+## 6 -15  0       2
+```
+---
+
+# Klastering procedura
+
+
+```r
+ggplot(igraciKlasteri, aes(x = X, y = Y, color = factor(klasteri))) +
+  geom_point() +
+  ggtitle("Prikaz igrača i klastera u koordinatnom sustavu")
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend3.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend4.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend5.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend6.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend7.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend8.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+
+```r
+plot(hcIgraci)
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-64-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Broj klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend9.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Broj klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend10.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Broj klastera
+
+
+```r
+library(dendextend)
+dendIgraci &lt;- as.dendrogram(hcIgraci)
+dendBoje &lt;- color_branches(dendIgraci, h = 2)
+plot(dendBoje)
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-67-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Broj klastera
+
+
+```r
+library(dendextend)
+dendIgraci &lt;- as.dendrogram(hcIgraci)
+dendBoje &lt;- color_branches(dendIgraci, k = 5)
+plot(dendBoje)
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Broj klastera
+
+
+```r
+clusterPripisano &lt;- cutree(hcIgraci, h = 15)
+print(clusterPripisano)
+```
+
+```
+## [1] 1 1 1 1 2 2
+```
+
+```r
+igraciKlaster &lt;- mutate(igraci, cluster = clusterPripisano)
+print(igraciKlaster)
+```
+
+```
+##     X  Y cluster
+## 1  -1  1       1
+## 2  -2 -3       1
+## 3   8  6       1
+## 4   7 -8       1
+## 5 -12  8       2
+## 6 -15  0       2
+```
+
+
+---
+
+class: inverse, center, middle
+name: kars
+
+# K MEANS KLASTERING
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Općenito)
+
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK1.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK2.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK3.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK4.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK5.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK6.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK7.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK8.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK9.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Intuicija
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK10.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provedi kmeans()
+
+
+```r
+lineup &lt;- data.frame(X =c(-1,-2,8,7,-12,-15,-13,15,21,12,-25,26),
+           Y = c(1,-3,6,-8,8,0,-10,16,2,-15,1,0))
+head(print(lineup),6) 
+```
+
+```
+##      X   Y
+## 1   -1   1
+## 2   -2  -3
+## 3    8   6
+## 4    7  -8
+## 5  -12   8
+## 6  -15   0
+## 7  -13 -10
+## 8   15  16
+## 9   21   2
+## 10  12 -15
+## 11 -25   1
+## 12  26   0
+```
+
+```
+##     X  Y
+## 1  -1  1
+## 2  -2 -3
+## 3   8  6
+## 4   7 -8
+## 5 -12  8
+## 6 -15  0
+```
+
+```r
+model &lt;- kmeans(lineup, centers = 2)
+```
+
+
+---
+
+# Provedi kmeans()
+
+
+```r
+print(model$cluster)
+```
+
+```
+##  [1] 2 2 1 1 2 2 2 1 1 1 2 1
+```
+
+```r
+lineupKlasteri &lt;- mutate(lineup, cluster = model$cluster)
+head(print(lineupKlasteri),6)
+```
+
+```
+##      X   Y cluster
+## 1   -1   1       2
+## 2   -2  -3       2
+## 3    8   6       1
+## 4    7  -8       1
+## 5  -12   8       2
+## 6  -15   0       2
+## 7  -13 -10       2
+## 8   15  16       1
+## 9   21   2       1
+## 10  12 -15       1
+## 11 -25   1       2
+## 12  26   0       1
+```
+
+```
+##     X  Y cluster
+## 1  -1  1       2
+## 2  -2 -3       2
+## 3   8  6       1
+## 4   7 -8       1
+## 5 -12  8       2
+## 6 -15  0       2
+```
+
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK10.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK11.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK12.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK13.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK14.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastK15.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+model &lt;- kmeans(x = lineup, centers = 2) # Provedi model sa dva klastera
+model$tot.withinss # Kvaliteta modela
+```
+
+```
+## [1] 1434.5
+```
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+library(purrr)
+tot_withinss &lt;- map_dbl(1:10, function(k){
+model &lt;- kmeans(x = lineup, centers = k)
+model$tot.withinss
+})
+elbow_df &lt;- data.frame(
+k = 1:10,
+tot_withinss = tot_withinss
+)
+head(print(elbow_df),5)
+```
+
+```
+##     k tot_withinss
+## 1   1    3489.9167
+## 2   2    1434.5000
+## 3   3     881.2500
+## 4   4     637.2500
+## 5   5     406.0000
+## 6   6     265.1667
+## 7   7     171.0000
+## 8   8     156.5000
+## 9   9      88.0000
+## 10 10      23.0000
+```
+
+```
+##   k tot_withinss
+## 1 1     3489.917
+## 2 2     1434.500
+## 3 3      881.250
+## 4 4      637.250
+## 5 5      406.000
+```
+--- 
+
+# Odredi broj klastera
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
+geom_line() +
+scale_x_continuous(breaks = 1:10)
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-92-1.png" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Silhouette analiza
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastS1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+--- 
+
+# Silhouette analiza
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastS2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+--- 
+
+# Silhouette analiza
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastS3.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Silhouette analiza
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastS4.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Silhouette analiza
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastS5.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+--- 
+
+# Silhouette analiza
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastS6.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+--- 
+
+# Silhouette analiza
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastS7.png" width="500px" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Silhouette analiza
+
+
+```r
+library(cluster)
+pam_k3 &lt;- pam(lineup, k = 3)
+pam_k3$silinfo$widths
+```
+
+```
+##    cluster neighbor    sil_width
+## 4        1        2  0.465320054
+## 2        1        3  0.321729341
+## 10       1        2  0.311385893
+## 1        1        3  0.271890169
+## 9        2        1  0.443606497
+## 8        2        1  0.398547473
+## 12       2        1  0.393982685
+## 3        2        1 -0.009151755
+## 11       3        1  0.546797052
+## 6        3        1  0.529967901
+## 5        3        1  0.359014657
+## 7        3        1  0.207878188
+```
+--- 
+
+# Silhouette analiza
+
+
+```r
+sil_plot &lt;- silhouette(pam_k3)
+plot(sil_plot)
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-101-1.png" style="display: block; margin: auto;" /&gt;
+--- 
+
+# Silhouette analiza
+
+
+```r
+pam_k3$silinfo$avg.width
+```
+
+```
+## [1] 0.353414
+```
+
+```r
+#  1: Dobro klastersko poklapanje
+#  0: Granično poklapanje između klastera
+# -1: Loše poklapanje
+```
+--- 
+
+# Silhouette analiza
+
+
+```r
+sil_width &lt;- map_dbl(2:10, function(k){
+model &lt;- pam(x = lineup, k = k)
+model$silinfo$avg.width
+})
+sil_df &lt;- data.frame(
+k = 2:10,
+sil_width = sil_width
+)
+head(print(sil_df),5)
+```
+
+```
+##    k sil_width
+## 1  2 0.4164141
+## 2  3 0.3534140
+## 3  4 0.3535534
+## 4  5 0.3724115
+## 5  6 0.3436130
+## 6  7 0.3236397
+## 7  8 0.3275222
+## 8  9 0.2547311
+## 9 10 0.2099424
+```
+
+```
+##   k sil_width
+## 1 2 0.4164141
+## 2 3 0.3534140
+## 3 4 0.3535534
+## 4 5 0.3724115
+## 5 6 0.3436130
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
