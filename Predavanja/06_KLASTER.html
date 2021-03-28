@@ -3,7 +3,7 @@
   <head>
     <title>MULTIVARIJATNE STATISTIČKE METODE</title>
     <meta charset="utf-8" />
-    <meta name="author" content="dr.sc Luka Šikić" />
+    <meta name="author" content="dr.sc. Luka Šikić" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # MULTIVARIJATNE STATISTIČKE METODE
 ## Predavanje 6: Klaster analiza
-### dr.sc Luka Šikić
+### dr.sc. Luka Šikić
 ### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
 
 ---
@@ -634,8 +634,8 @@ print(igraci)
 ```
 
 ```r
-dist_igraci &lt;- dist(igraci, method = "euclidean") # Izračunaj udaljenost
-hc_igraci &lt;- hclust(dist_igraci, method = 'complete') # Provedi klastering
+distIgraci &lt;- dist(igraci, method = "euclidean") # Izračunaj udaljenost
+hcIgraci &lt;- hclust(distIgraci, method = 'complete') # Provedi klastering
 ```
 
 ---
@@ -644,7 +644,7 @@ hc_igraci &lt;- hclust(dist_igraci, method = 'complete') # Provedi klastering
 
 
 ```r
-klasteri &lt;- cutree(hc_igraci, k = 2) # Odredi broj klastera
+klasteri &lt;- cutree(hcIgraci, k = 2) # Odredi broj klastera
 print(klasteri)
 ```
 
@@ -678,6 +678,183 @@ ggplot(igraciKlasteri, aes(x = X, y = Y, color = factor(klasteri))) +
 ```
 
 &lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend3.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend4.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend5.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend6.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend7.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Napravi dendogram
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend8.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Napravi dendogram
+
+
+```r
+plot(hcIgraci)
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-64-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Broj klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend9.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Broj klastera
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/klastDend10.png" width="500px" style="display: block; margin: auto;" /&gt;
+---
+
+# Broj klastera
+
+
+```r
+library(dendextend)
+```
+
+```
+## Warning: package 'dendextend' was built under R version 4.0.4
+```
+
+```
+## 
+## ---------------------
+## Welcome to dendextend version 1.14.0
+## Type citation('dendextend') for how to cite the package.
+## 
+## Type browseVignettes(package = 'dendextend') for the package vignette.
+## The github page is: https://github.com/talgalili/dendextend/
+## 
+## Suggestions and bug-reports can be submitted at: https://github.com/talgalili/dendextend/issues
+## Or contact: &lt;tal.galili@gmail.com&gt;
+## 
+## 	To suppress this message use:  suppressPackageStartupMessages(library(dendextend))
+## ---------------------
+```
+
+```
+## 
+## Attaching package: 'dendextend'
+```
+
+```
+## The following object is masked from 'package:stats':
+## 
+##     cutree
+```
+
+```r
+dendIgraci &lt;- as.dendrogram(hcIgraci)
+dendBoje &lt;- color_branches(dendIgraci, h = 2)
+plot(dendBoje)
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-67-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Broj klastera
+
+
+```r
+library(dendextend)
+dendIgraci &lt;- as.dendrogram(hcIgraci)
+dendBoje &lt;- color_branches(dendIgraci, k = 5)
+plot(dendBoje)
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Broj klastera
+
+
+```r
+clusterPripisano &lt;- cutree(hcIgraci, h = 15)
+print(clusterPripisano)
+```
+
+```
+## [1] 1 1 1 1 2 2
+```
+
+```r
+igraciKlaster &lt;- mutate(igraci, cluster = clusterPripisano)
+print(igraciKlaster)
+```
+
+```
+##     X  Y cluster
+## 1  -1  1       1
+## 2  -2 -3       1
+## 3   8  6       1
+## 4   7 -8       1
+## 5 -12  8       2
+## 6 -15  0       2
+```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
