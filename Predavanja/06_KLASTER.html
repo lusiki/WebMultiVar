@@ -933,7 +933,7 @@ name: kars
 lineup &lt;- data.frame(X =c(-1,-2,8,7,-12,-15,-13,15,21,12,-25,26),
            Y = c(1,-3,6,-8,8,0,-10,16,2,-15,1,0))
 # Pregledaj podatke
-head(print(lineup),6) 
+print(lineup)
 ```
 
 ```
@@ -952,27 +952,14 @@ head(print(lineup),6)
 ## 12  26   0
 ```
 
-```
-##     X  Y
-## 1  -1  1
-## 2  -2 -3
-## 3   8  6
-## 4   7 -8
-## 5 -12  8
-## 6 -15  0
-```
-
-```r
-# Provedi K-means
-model &lt;- kmeans(lineup, centers = 2)
-```
-
 ---
 
 # Provedi kmeans()
 
 
 ```r
+# Provedi K-means
+model &lt;- kmeans(lineup, centers = 2)
 print(model$cluster) # Prikaži klastere
 ```
 
@@ -983,7 +970,7 @@ print(model$cluster) # Prikaži klastere
 
 ```r
 lineupKlasteri &lt;- mutate(lineup, cluster = model$cluster) # Prilagodi podatke
-head(print(lineupKlasteri),6) # Prikaži klastere i podatke
+print(lineupKlasteri) # Prikaži klastere i podatke
 ```
 
 ```
@@ -1002,55 +989,64 @@ head(print(lineupKlasteri),6) # Prikaži klastere i podatke
 ## 12  26   0       1
 ```
 
-```
-##     X  Y cluster
-## 1  -1  1       2
-## 2  -2 -3       2
-## 3   8  6       1
-## 4   7 -8       1
-## 5 -12  8       2
-## 6 -15  0       2
-```
-
---- 
+---
 
 # Odredi broj klastera
+
 &lt;br&gt;
 &lt;br&gt;
-&lt;img src="../Foto/klastK10.png" width="500px" style="display: block; margin: auto;" /&gt;
---- 
+&lt;br&gt;
+&lt;img src="../Foto/klastK10.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+---
 
 # Odredi broj klastera
+
 &lt;br&gt;
 &lt;br&gt;
-&lt;img src="../Foto/klastK11.png" width="500px" style="display: block; margin: auto;" /&gt;
---- 
+&lt;br&gt;
+&lt;img src="../Foto/klastK11.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+---
 
 # Odredi broj klastera
+
 &lt;br&gt;
 &lt;br&gt;
-&lt;img src="../Foto/klastK12.png" width="500px" style="display: block; margin: auto;" /&gt;
---- 
+&lt;br&gt;
+&lt;img src="../Foto/klastK12.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+---
 
 # Odredi broj klastera
+
 &lt;br&gt;
 &lt;br&gt;
-&lt;img src="../Foto/klastK13.png" width="500px" style="display: block; margin: auto;" /&gt;
---- 
+&lt;br&gt;
+&lt;img src="../Foto/klastK13.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+---
 
 # Odredi broj klastera
+
 &lt;br&gt;
 &lt;br&gt;
-&lt;img src="../Foto/klastK14.png" width="500px" style="display: block; margin: auto;" /&gt;
---- 
+&lt;br&gt;
+&lt;img src="../Foto/klastK14.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+---
 
 # Odredi broj klastera
+
 &lt;br&gt;
 &lt;br&gt;
-&lt;img src="../Foto/klastK15.png" width="500px" style="display: block; margin: auto;" /&gt;
---- 
+&lt;br&gt;
+&lt;img src="../Foto/klastK15.png" width="600px" style="display: block; margin: auto;" /&gt;
+
+---
 
 # Odredi broj klastera
+
 &lt;br&gt;
 &lt;br&gt;
 
@@ -1062,9 +1058,11 @@ model$tot.withinss # Kvaliteta modela
 ```
 ## [1] 1434.5
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 &lt;br&gt;
 &lt;br&gt;
 
@@ -1086,13 +1084,13 @@ head(print(elbow_df),5)
 ## 1   1    3489.9167
 ## 2   2    1434.5000
 ## 3   3     881.2500
-## 4   4     696.8333
-## 5   5     481.6667
+## 4   4     740.4167
+## 5   5     406.0000
 ## 6   6     291.1667
-## 7   7     171.0000
-## 8   8     213.6667
+## 7   7     351.0000
+## 8   8     134.0000
 ## 9   9      60.0000
-## 10 10     130.6667
+## 10 10      51.5000
 ```
 
 ```
@@ -1100,12 +1098,14 @@ head(print(elbow_df),5)
 ## 1 1    3489.9167
 ## 2 2    1434.5000
 ## 3 3     881.2500
-## 4 4     696.8333
-## 5 5     481.6667
+## 4 4     740.4167
+## 5 5     406.0000
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 &lt;br&gt;
 &lt;br&gt;
 
@@ -1116,67 +1116,78 @@ scale_x_continuous(breaks = 1:10)
 ```
 
 &lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-91-1.png" style="display: block; margin: auto;" /&gt;
---- 
+
+---
 
 # Silhouette analiza
+
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/klastS1.png" width="500px" style="display: block; margin: auto;" /&gt;
 
---- 
+---
 
 # Silhouette analiza
+
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/klastS2.png" width="500px" style="display: block; margin: auto;" /&gt;
 
---- 
+---
 
 # Silhouette analiza
+
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/klastS3.png" width="500px" style="display: block; margin: auto;" /&gt;
---- 
+
+---
 
 # Silhouette analiza
+
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/klastS4.png" width="500px" style="display: block; margin: auto;" /&gt;
---- 
+
+---
 
 # Silhouette analiza
+
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/klastS5.png" width="500px" style="display: block; margin: auto;" /&gt;
 
---- 
+---
 
 # Silhouette analiza
+
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/klastS6.png" width="500px" style="display: block; margin: auto;" /&gt;
 
---- 
+---
 
 # Silhouette analiza
+
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/klastS7.png" width="500px" style="display: block; margin: auto;" /&gt;
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1202,7 +1213,8 @@ pam_k3$silinfo$widths
 ## 5        3        1  0.359014657
 ## 7        3        1  0.207878188
 ```
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1213,7 +1225,8 @@ plot(sil_plot)
 ```
 
 &lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-100-1.png" style="display: block; margin: auto;" /&gt;
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1231,7 +1244,8 @@ pam_k3$silinfo$avg.width
 #  0: Granično poklapanje između klastera
 # -1: Loše poklapanje
 ```
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1270,7 +1284,7 @@ head(print(sil_df),5)
 ## 5 6 0.3436130
 ```
 
---- 
+---
 
 # Silhouette analiza
 
@@ -1282,8 +1296,6 @@ scale_x_continuous(breaks = 2:10)
 ```
 
 &lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-103-1.png" style="display: block; margin: auto;" /&gt;
-
-
 
 ---
 

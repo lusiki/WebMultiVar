@@ -783,7 +783,7 @@ plot(dendBoje) # Prikaži dendogram
 
 # Broj klastera
 
-```{r , message= F, warning=F, fig.height=5}
+```{r , message= F, warning=F, fig.height=3}
 dendIgraci <- as.dendrogram(hcIgraci) # Napravi dendogram
 dendBoje <- color_branches(dendIgraci, k = 5) # Prilagodi dendogram
 plot(dendBoje) # Prikaži dendogram
@@ -912,9 +912,7 @@ knitr::include_graphics("../Foto/klastK9.png")
 lineup <- data.frame(X =c(-1,-2,8,7,-12,-15,-13,15,21,12,-25,26),
            Y = c(1,-3,6,-8,8,0,-10,16,2,-15,1,0))
 # Pregledaj podatke
-head(print(lineup),6) 
-# Provedi K-means
-model <- kmeans(lineup, centers = 2)
+print(lineup)
 ```
 
 ---
@@ -922,74 +920,97 @@ model <- kmeans(lineup, centers = 2)
 # Provedi kmeans()
 
 ```{r, message= F, warning=F, fig.height=6}
+# Provedi K-means
+model <- kmeans(lineup, centers = 2)
 print(model$cluster) # Prikaži klastere
 ```
 
 ```{r, message= F, warning=F, fig.height=6}
 lineupKlasteri <- mutate(lineup, cluster = model$cluster) # Prilagodi podatke
-head(print(lineupKlasteri),6) # Prikaži klastere i podatke
+print(lineupKlasteri) # Prikaži klastere i podatke
 ```
 
---- 
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK10.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK11.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK12.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK13.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK14.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK15.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
 ```{r, message= F, warning=F, fig.height=6}
 model <- kmeans(x = lineup, centers = 2) # Provedi model sa dva klastera
 model$tot.withinss # Kvaliteta modela
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
 ```{r, message= F, warning=F, fig.height=6}
@@ -1004,9 +1025,11 @@ tot_withinss = tot_withinss
 )
 head(print(elbow_df),5)
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
 ```{r, message= F, warning=F, fig.height=4}
@@ -1014,9 +1037,11 @@ ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
 geom_line() +
 scale_x_continuous(breaks = 1:10)
 ```
---- 
+
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1025,9 +1050,10 @@ scale_x_continuous(breaks = 1:10)
 knitr::include_graphics("../Foto/klastS1.png")
 ```
 
---- 
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1036,9 +1062,10 @@ knitr::include_graphics("../Foto/klastS1.png")
 knitr::include_graphics("../Foto/klastS2.png")
 ```
 
---- 
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1046,9 +1073,11 @@ knitr::include_graphics("../Foto/klastS2.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastS3.png")
 ```
---- 
+
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1056,9 +1085,11 @@ knitr::include_graphics("../Foto/klastS3.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastS4.png")
 ```
---- 
+
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1067,9 +1098,10 @@ knitr::include_graphics("../Foto/klastS4.png")
 knitr::include_graphics("../Foto/klastS5.png")
 ```
 
---- 
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1078,9 +1110,10 @@ knitr::include_graphics("../Foto/klastS5.png")
 knitr::include_graphics("../Foto/klastS6.png")
 ```
 
---- 
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1088,7 +1121,8 @@ knitr::include_graphics("../Foto/klastS6.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastS7.png")
 ```
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1097,7 +1131,8 @@ library(cluster)
 pam_k3 <- pam(lineup, k = 3)
 pam_k3$silinfo$widths
 ```
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1105,7 +1140,8 @@ pam_k3$silinfo$widths
 sil_plot <- silhouette(pam_k3)
 plot(sil_plot)
 ```
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1116,7 +1152,8 @@ pam_k3$silinfo$avg.width
 #  0: Granično poklapanje između klastera
 # -1: Loše poklapanje
 ```
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1132,7 +1169,7 @@ sil_width = sil_width
 head(print(sil_df),5)
 ```
 
---- 
+---
 
 # Silhouette analiza
 
@@ -1141,8 +1178,6 @@ ggplot(sil_df, aes(x = k, y = sil_width)) +
 geom_line() +
 scale_x_continuous(breaks = 2:10)
 ```
-
-
 
 ---
 
@@ -1153,7 +1188,6 @@ class: inverse, center, middle
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
 (Nastavak: Višestruka linearna regresija)
-
 
 
 
