@@ -369,9 +369,11 @@ scale(visinaTezina)
 # Kategorički podatci
 
 ```{r, message= F, warning=F, fig.height=6}
+# Napravi podatke
 zadovoljstvo <- data.frame(
                       zadovoljstvo = c("Nisko","Nisko","Visoko","Nisko","Srednje"),
                       sreća = c("Ne","Ne","Da","Ne","Ne"))
+# Prikaži podatke u tablici
 kable(zadovoljstvo)
 ```
 
@@ -380,31 +382,36 @@ kable(zadovoljstvo)
 # Jaccardova udaljenost u R
 
 ```{r, message= F, warning=F, fig.height=6}
+# Prikaži podatke
 print(zadovoljstvo)
-
-dist(zadovoljstvo, method = "binary") # Udaljenost za kategorije
+# Udaljenost za kategoričke podatke (NA)
+dist(zadovoljstvo, method = "binary") 
 ```
 
 ---
 
 # Jaccardova udaljenost u R
 
-.pull-left[
+
 ```{r, message= F, warning=F, fig.height=6}
 library(dummies)
 dummieZadovoljstvo <- dummy.data.frame(zadovoljstvo) # Pretvori u dummie
 print(dummieZadovoljstvo)
 ```
-]
 
-.pull-right[
+---
+
+# Jaccardova udaljenost u R
+
 ```{r, message= F, warning=F, fig.height=6}
+# Prikaži podatke
 print(zadovoljstvo)
 ```
-]
+
 
 ```{r, message= F, warning=F, fig.height=6}
-dist(dummieZadovoljstvo, method = "binary") # Udaljenost za kategorije
+ # Udaljenost za kategorije
+dist(dummieZadovoljstvo, method = "binary") 
 ```
 
 ---
@@ -415,8 +422,6 @@ name: kars
 # HIJERARHIJSKI KLASTERING
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
-
-(...)
 
 ---
 
@@ -620,27 +625,21 @@ knitr::include_graphics("../Foto/klastIZ9.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastIZ10.png")
 ```
----
-
-# Izgled klastera
-
-<br>
-<br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
-knitr::include_graphics("../Foto/klastIZ11.png")
-```
-
 
 ---
 
 # Klastering procedura
 
 ```{r, message= F, warning=F, fig.height=6}
+# Napravi podatke
 igraci <-  data.frame(X = c(-1,-2,8,7,-12,-15),
                       Y = c(1,-3,6,-8,8,0))
-print(igraci)
-distIgraci <- dist(igraci, method = "euclidean") # Izračunaj udaljenost
-hcIgraci <- hclust(distIgraci, method = 'complete') # Provedi klastering
+# Prikaži podatke
+print(igraci) 
+# Izračunaj udaljenost
+distIgraci <- dist(igraci, method = "euclidean") 
+# Provedi klastering
+hcIgraci <- hclust(distIgraci, method = 'complete') 
 ```
 
 ---
@@ -649,15 +648,17 @@ hcIgraci <- hclust(distIgraci, method = 'complete') # Provedi klastering
 
 ```{r, message= F, warning=F, fig.height=6}
 klasteri <- cutree(hcIgraci, k = 2) # Odredi broj klastera
-print(klasteri)
-igraciKlasteri<- mutate(igraci, cluster = klasteri) # Prilagodba
-print(igraciKlasteri) # Podatci + klasteri
+print(klasteri) # Prikaži podatke
+igraciKlasteri<- mutate(igraci, cluster = klasteri) # Prilagodba podataka
+# Podatci + klasteri
+print(igraciKlasteri) 
 ```
 ---
 
 # Klastering procedura
 
-```{r, message= F, warning=F, fig.height=5}
+```{r, message= F, warning=F, fig.height=3}
+# Prikaži podatke grafički
 ggplot(igraciKlasteri, aes(x = X, y = Y, color = factor(klasteri))) +
   geom_point() +
   ggtitle("Prikaz igrača i klastera u koordinatnom sustavu")
@@ -670,7 +671,7 @@ ggplot(igraciKlasteri, aes(x = X, y = Y, color = factor(klasteri))) +
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend1.png")
 ```
 
@@ -680,7 +681,7 @@ knitr::include_graphics("../Foto/klastDend1.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend2.png")
 ```
 
@@ -690,7 +691,7 @@ knitr::include_graphics("../Foto/klastDend2.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend3.png")
 ```
 
@@ -700,7 +701,7 @@ knitr::include_graphics("../Foto/klastDend3.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend4.png")
 ```
 ---
@@ -709,7 +710,7 @@ knitr::include_graphics("../Foto/klastDend4.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend5.png")
 ```
 ---
@@ -718,7 +719,7 @@ knitr::include_graphics("../Foto/klastDend5.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend6.png")
 ```
 
@@ -728,7 +729,7 @@ knitr::include_graphics("../Foto/klastDend6.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend7.png")
 ```
 ---
@@ -737,7 +738,7 @@ knitr::include_graphics("../Foto/klastDend7.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend8.png")
 ```
 
@@ -751,7 +752,7 @@ plot(hcIgraci)
 
 ---
 
-# Broj klastera
+# Odredi broj klastera
 
 <br>
 <br>
@@ -760,7 +761,7 @@ knitr::include_graphics("../Foto/klastDend9.png")
 ```
 ---
 
-# Broj klastera
+# Odredi broj klastera
 
 <br>
 <br>
@@ -769,13 +770,13 @@ knitr::include_graphics("../Foto/klastDend10.png")
 ```
 ---
 
-# Broj klastera
+# Odredi broj klastera
 
-```{r, message= F, warning=F, fig.height=6}
-library(dendextend)
-dendIgraci <- as.dendrogram(hcIgraci)
-dendBoje <- color_branches(dendIgraci, h = 2)
-plot(dendBoje)
+```{r, message= F, warning=F, fig.height=3}
+library(dendextend) # Učitaj paket
+dendIgraci <- as.dendrogram(hcIgraci) # Napravi dendogram
+dendBoje <- color_branches(dendIgraci, h = 2) # Prilagodi dendogram
+plot(dendBoje) # Prikaži dendogram
 ```
 
 ---
@@ -783,10 +784,9 @@ plot(dendBoje)
 # Broj klastera
 
 ```{r , message= F, warning=F, fig.height=5}
-library(dendextend)
-dendIgraci <- as.dendrogram(hcIgraci)
-dendBoje <- color_branches(dendIgraci, k = 5)
-plot(dendBoje)
+dendIgraci <- as.dendrogram(hcIgraci) # Napravi dendogram
+dendBoje <- color_branches(dendIgraci, k = 5) # Prilagodi dendogram
+plot(dendBoje) # Prikaži dendogram
 ```
 
 ---
@@ -794,10 +794,10 @@ plot(dendBoje)
 # Broj klastera
 
 ```{r, message= F, warning=F, fig.height=5}
-clusterPripisano <- cutree(hcIgraci, h = 15)
-print(clusterPripisano)
-igraciKlaster <- mutate(igraci, cluster = clusterPripisano)
-print(igraciKlaster)
+clusterPripisano <- cutree(hcIgraci, h = 15) # "Odreži"
+print(clusterPripisano) # Prikaz podataka
+igraciKlaster <- mutate(igraci, cluster = clusterPripisano) # Prilagodba podataka
+print(igraciKlaster) # Podatci + klasteri
 ```
 
 
@@ -810,7 +810,7 @@ name: kars
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-(Općenito)
+(Najćešća klastering metoda)
 
 ---
 
@@ -902,40 +902,32 @@ knitr::include_graphics("../Foto/klastK8.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastK9.png")
 ```
----
-
-# Intuicija
-
-<br>
-<br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
-knitr::include_graphics("../Foto/klastK10.png")
-```
 
 ---
 
 # Provedi kmeans()
 
 ```{r, message= F, warning=F, fig.height=6}
-
+# Napravi podatke
 lineup <- data.frame(X =c(-1,-2,8,7,-12,-15,-13,15,21,12,-25,26),
            Y = c(1,-3,6,-8,8,0,-10,16,2,-15,1,0))
+# Pregledaj podatke
 head(print(lineup),6) 
-
+# Provedi K-means
 model <- kmeans(lineup, centers = 2)
 ```
 
-
 ---
 
 # Provedi kmeans()
 
 ```{r, message= F, warning=F, fig.height=6}
-print(model$cluster)
+print(model$cluster) # Prikaži klastere
 ```
+
 ```{r, message= F, warning=F, fig.height=6}
-lineupKlasteri <- mutate(lineup, cluster = model$cluster)
-head(print(lineupKlasteri),6)
+lineupKlasteri <- mutate(lineup, cluster = model$cluster) # Prilagodi podatke
+head(print(lineupKlasteri),6) # Prikaži klastere i podatke
 ```
 
 --- 
