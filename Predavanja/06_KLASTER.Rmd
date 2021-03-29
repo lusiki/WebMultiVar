@@ -88,6 +88,17 @@ name: kars
 
 ---
 
+# Resursi
+
+- *klaster analiza* je općenito (i u R) dobro dokumentirana
+- sveobuhvatni vodič [Practical Guide To Cluster Analysis in R](https://xsliulab.github.io/Workshop/week10/r-cluster-book.pdf) 
+- dostupno je i mnoštvo tutorial-a na: [link 1](https://uc-r.github.io/kmeans_clustering) , [link 2](https://statsandr.com/blog/clustering-analysis-k-means-and-hierarchical-clustering-by-hand-and-in-r/), [link 3](https://towardsdatascience.com/how-to-use-and-visualize-k-means-clustering-in-r-19264374a53c), [link 4](https://www.datanovia.com/en/blog/cluster-analysis-in-r-practical-guide/)
+- postoji i [CRAN Task](https://cran.r-project.org/web/views/Cluster.html) na temu klasteringa
+- interaktivni tutorial na [DataCamp-u](https://www.datacamp.com/courses/cluster-analysis-in-r)
+
+
+---
+
 # Što je klaster analiza?
 
 
@@ -417,7 +428,7 @@ dist(dummieZadovoljstvo, method = "binary")
 ---
 
 class: inverse, center, middle
-name: kars
+name: hier
 
 # HIJERARHIJSKI KLASTERING
 
@@ -804,7 +815,7 @@ print(igraciKlaster) # Podatci + klasteri
 ---
 
 class: inverse, center, middle
-name: kars
+name: kmen
 
 # K MEANS KLASTERING
 
