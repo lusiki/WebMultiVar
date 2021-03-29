@@ -80,12 +80,20 @@ name: kars
 
 # Resursi
 
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 - *klaster analiza* je općenito (i u R) dobro dokumentirana
+&lt;br&gt;
 - sveobuhvatni vodič [Practical Guide To Cluster Analysis in R](https://xsliulab.github.io/Workshop/week10/r-cluster-book.pdf) 
+&lt;br&gt;
 - dostupno je i mnoštvo tutorial-a na: [link 1](https://uc-r.github.io/kmeans_clustering) , [link 2](https://statsandr.com/blog/clustering-analysis-k-means-and-hierarchical-clustering-by-hand-and-in-r/), [link 3](https://towardsdatascience.com/how-to-use-and-visualize-k-means-clustering-in-r-19264374a53c), [link 4](https://www.datanovia.com/en/blog/cluster-analysis-in-r-practical-guide/)
+&lt;br&gt;
 - postoji i [CRAN Task](https://cran.r-project.org/web/views/Cluster.html) na temu klasteringa
+&lt;br&gt;
 - interaktivni tutorial na [DataCamp-u](https://www.datacamp.com/courses/cluster-analysis-in-r)
-
+&lt;br&gt;
+- [ogledni](https://zir.nsk.hr/islandora/object/pmf%3A9063/datastream/PDF/view) primjer klaster analize na hrvatskim podatcima
 
 ---
 
@@ -975,7 +983,7 @@ print(model$cluster) # Prikaži klastere
 ```
 
 ```
-##  [1] 2 2 1 1 2 2 2 1 1 1 2 1
+##  [1] 1 1 2 2 1 1 1 2 2 2 1 2
 ```
 
 
@@ -986,18 +994,18 @@ print(lineupKlasteri) # Prikaži klastere i podatke
 
 ```
 ##      X   Y cluster
-## 1   -1   1       2
-## 2   -2  -3       2
-## 3    8   6       1
-## 4    7  -8       1
-## 5  -12   8       2
-## 6  -15   0       2
-## 7  -13 -10       2
-## 8   15  16       1
-## 9   21   2       1
-## 10  12 -15       1
-## 11 -25   1       2
-## 12  26   0       1
+## 1   -1   1       1
+## 2   -2  -3       1
+## 3    8   6       2
+## 4    7  -8       2
+## 5  -12   8       1
+## 6  -15   0       1
+## 7  -13 -10       1
+## 8   15  16       2
+## 9   21   2       2
+## 10  12 -15       2
+## 11 -25   1       1
+## 12  26   0       2
 ```
 
 ---
@@ -1089,14 +1097,14 @@ print(elbow_df)
 ##     k tot_withinss
 ## 1   1    3489.9167
 ## 2   2    1434.5000
-## 3   3     940.8333
+## 3   3     881.2500
 ## 4   4     622.5000
 ## 5   5     496.4167
-## 6   6     265.1667
-## 7   7     228.1667
+## 6   6     402.2500
+## 7   7     171.0000
 ## 8   8     156.5000
-## 9   9      82.0000
-## 10 10      73.5000
+## 9   9     167.6667
+## 10 10      45.0000
 ```
 
 ---
