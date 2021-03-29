@@ -78,6 +78,17 @@ name: kars
 
 ---
 
+# Resursi
+
+- *klaster analiza* je općenito (i u R) dobro dokumentirana
+- sveobuhvatni vodič [Practical Guide To Cluster Analysis in R](https://xsliulab.github.io/Workshop/week10/r-cluster-book.pdf) 
+- dostupno je i mnoštvo tutorial-a na: [link 1](https://uc-r.github.io/kmeans_clustering) , [link 2](https://statsandr.com/blog/clustering-analysis-k-means-and-hierarchical-clustering-by-hand-and-in-r/), [link 3](https://towardsdatascience.com/how-to-use-and-visualize-k-means-clustering-in-r-19264374a53c), [link 4](https://www.datanovia.com/en/blog/cluster-analysis-in-r-practical-guide/)
+- postoji i [CRAN Task](https://cran.r-project.org/web/views/Cluster.html) na temu klasteringa
+- interaktivni tutorial na [DataCamp-u](https://www.datacamp.com/courses/cluster-analysis-in-r)
+
+
+---
+
 # Što je klaster analiza?
 
 
@@ -458,7 +469,7 @@ dist(dummieZadovoljstvo, method = "binary")
 ---
 
 class: inverse, center, middle
-name: kars
+name: hier
 
 # HIJERARHIJSKI KLASTERING
 
@@ -844,7 +855,7 @@ print(igraciKlaster) # Podatci + klasteri
 ---
 
 class: inverse, center, middle
-name: kars
+name: kmen
 
 # K MEANS KLASTERING
 
@@ -1071,30 +1082,21 @@ tot_withinss &lt;- map_dbl(1:10, function(k){
 model &lt;- kmeans(x = lineup, centers = k)
 model$tot.withinss})
 elbow_df &lt;- data.frame(k = 1:10,tot_withinss = tot_withinss)
-head(print(elbow_df),5)
+print(elbow_df)
 ```
 
 ```
 ##     k tot_withinss
 ## 1   1    3489.9167
 ## 2   2    1434.5000
-## 3   3     881.2500
-## 4   4     637.2500
-## 5   5     481.6667
+## 3   3    1049.0833
+## 4   4     740.4167
+## 5   5     682.3333
 ## 6   6     265.1667
-## 7   7     171.0000
-## 8   8     156.5000
+## 7   7     250.6667
+## 8   8     134.0000
 ## 9   9      82.0000
-## 10 10      45.0000
-```
-
-```
-##   k tot_withinss
-## 1 1    3489.9167
-## 2 2    1434.5000
-## 3 3     881.2500
-## 4 4     637.2500
-## 5 5     481.6667
+## 10 10      73.5000
 ```
 
 ---

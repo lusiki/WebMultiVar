@@ -1029,7 +1029,7 @@ tot_withinss <- map_dbl(1:10, function(k){
 model <- kmeans(x = lineup, centers = k)
 model$tot.withinss})
 elbow_df <- data.frame(k = 1:10,tot_withinss = tot_withinss)
-head(print(elbow_df),5)
+print(elbow_df)
 ```
 
 ---
