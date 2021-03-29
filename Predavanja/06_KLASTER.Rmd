@@ -98,29 +98,36 @@ knitr::include_graphics("../Foto/klast2.png")
 
 ---
 
+# Što je klaster analiza?
+
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klast3.png")
 ```
-
-
+<br>
 ---
+
+# Što je klaster analiza?
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klast4.png")
 ```
-
+<br>
 ---
+
+# Što je klaster analiza?
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klast5.png")
 ```
-
+<br>
 ---
 
 # Tijek klaster analize
+<br>
+<br>
 <br>
 <br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
@@ -142,8 +149,9 @@ name: slic
 ---
 
 # Udaljenost vs. sličnost
-
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist1.png")
@@ -152,7 +160,9 @@ knitr::include_graphics("../Foto/klastDist1.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist2.png")
@@ -161,7 +171,9 @@ knitr::include_graphics("../Foto/klastDist2.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist3.png")
@@ -170,7 +182,9 @@ knitr::include_graphics("../Foto/klastDist3.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist4.png")
@@ -179,7 +193,9 @@ knitr::include_graphics("../Foto/klastDist4.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist5.png")
@@ -188,7 +204,9 @@ knitr::include_graphics("../Foto/klastDist5.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist6.png")
@@ -197,7 +215,9 @@ knitr::include_graphics("../Foto/klastDist6.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist7.png")
@@ -206,7 +226,9 @@ knitr::include_graphics("../Foto/klastDist7.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist8.png")
@@ -215,7 +237,9 @@ knitr::include_graphics("../Foto/klastDist8.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist9.png")
@@ -226,14 +250,14 @@ knitr::include_graphics("../Foto/klastDist9.png")
 # Više od dvije opservacije
 
 ```{r}
-
-three_players <- data.frame(X = c(0,9,-2),
+# Napravi podatke
+triIgraca <- data.frame(X = c(0,9,-2),
                             Y = c(0,12,19),
                             row.names = c("BLUE", "RED", "GREEN"))
 
-print(three_players)
+print(triIgraca) # Prikaži 
 
-dist(three_players)
+dist(triIgraca)  # Izračunaj udaljenosti
 ```
 
 
@@ -243,11 +267,13 @@ dist(three_players)
 
 
 ```{r}
+# Napravi podatke
 visinaTezina <- data.frame(Visina = c(6,6,8),
                            Tezina = c(200,202,200),
                            row.names = c(1,2,3))
 
-kable(visinaTezina)
+# Prikazi podatke 
+print(visinaTezina)
 ```
 
 ---
@@ -296,14 +322,16 @@ knitr::include_graphics("../Foto/klastVisina5.png")
 <br>
 <br>
 <br>
+<br>
 $$
-Visina(skalirano) = \frac{visna - (prosječna)Visina}{std(visina)}
+visina(skalirano) = \frac{visina - (prosječna)visina}{std(visina)}
 $$
 
 ---
 
 # Udaljenost između opservacija
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastDist10.png")
 ```
@@ -311,7 +339,8 @@ knitr::include_graphics("../Foto/klastDist10.png")
 ---
 
 # Udaljenost između opservacija
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastDist11.png")
 ```
@@ -319,13 +348,22 @@ knitr::include_graphics("../Foto/klastDist11.png")
 ---
 
 # Skaliranje 
+<br>
+<br>
 
+.pull-left[
 ```{r, message= F, warning=F, fig.height=6}
+# Prikaži podatke
 print(visinaTezina)
+```
+]
 
+.pull-right[
+```{r}
+# Skalirani podatci
 scale(visinaTezina)
 ```
-
+]
 ---
 
 # Kategorički podatci

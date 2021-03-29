@@ -85,20 +85,27 @@ name: kars
 
 ---
 
+# Što je klaster analiza?
+
 &lt;img src="../Foto/klast3.png" width="500px" style="display: block; margin: auto;" /&gt;
-
-
+&lt;br&gt;
 ---
+
+# Što je klaster analiza?
 
 &lt;img src="../Foto/klast4.png" width="500px" style="display: block; margin: auto;" /&gt;
-
+&lt;br&gt;
 ---
 
-&lt;img src="../Foto/klast5.png" width="500px" style="display: block; margin: auto;" /&gt;
+# Što je klaster analiza?
 
+&lt;img src="../Foto/klast5.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
 ---
 
 # Tijek klaster analize
+&lt;br&gt;
+&lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/klasterTok.png" width="650px" style="display: block; margin: auto;" /&gt;
@@ -117,56 +124,73 @@ name: slic
 ---
 
 # Udaljenost vs. sličnost
-
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist1.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Udaljenost vs. sličnost
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist2.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Udaljenost vs. sličnost
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist3.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Udaljenost vs. sličnost
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist4.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Udaljenost vs. sličnost
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist5.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Udaljenost vs. sličnost
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist6.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Udaljenost vs. sličnost
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist7.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Udaljenost vs. sličnost
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist8.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Udaljenost vs. sličnost
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist9.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
@@ -175,11 +199,12 @@ name: slic
 
 
 ```r
-three_players &lt;- data.frame(X = c(0,9,-2),
+# Napravi podatke
+triIgraca &lt;- data.frame(X = c(0,9,-2),
                             Y = c(0,12,19),
                             row.names = c("BLUE", "RED", "GREEN"))
 
-print(three_players)
+print(triIgraca) # Prikaži 
 ```
 
 ```
@@ -190,7 +215,7 @@ print(three_players)
 ```
 
 ```r
-dist(three_players)
+dist(triIgraca)  # Izračunaj udaljenosti
 ```
 
 ```
@@ -207,20 +232,21 @@ dist(three_players)
 
 
 ```r
+# Napravi podatke
 visinaTezina &lt;- data.frame(Visina = c(6,6,8),
                            Tezina = c(200,202,200),
                            row.names = c(1,2,3))
 
-kable(visinaTezina)
+# Prikazi podatke 
+print(visinaTezina)
 ```
 
-
-
-| Visina| Tezina|
-|------:|------:|
-|      6|    200|
-|      6|    202|
-|      8|    200|
+```
+##   Visina Tezina
+## 1      6    200
+## 2      6    202
+## 3      8    200
+```
 
 ---
 
@@ -258,28 +284,35 @@ kable(visinaTezina)
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
+&lt;br&gt;
 $$
-Visina(skalirano) = \frac{visna - (prosječna)Visina}{std(visina)}
+visina(skalirano) = \frac{visina - (prosječna)visina}{std(visina)}
 $$
 
 ---
 
 # Udaljenost između opservacija
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist10.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Udaljenost između opservacija
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/klastDist11.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Skaliranje 
+&lt;br&gt;
+&lt;br&gt;
 
+.pull-left[
 
 ```r
+# Prikaži podatke
 print(visinaTezina)
 ```
 
@@ -289,8 +322,12 @@ print(visinaTezina)
 ## 2      6    202
 ## 3      8    200
 ```
+]
+
+.pull-right[
 
 ```r
+# Skalirani podatci
 scale(visinaTezina)
 ```
 
@@ -306,7 +343,7 @@ scale(visinaTezina)
 ##   Visina   Tezina 
 ## 1.154701 1.154701
 ```
-
+]
 ---
 
 # Kategorički podatci
@@ -655,7 +692,7 @@ ggplot(igraciKlasteri, aes(x = X, y = Y, color = factor(klasteri))) +
   ggtitle("Prikaz igrača i klastera u koordinatnom sustavu")
 ```
 
-&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-56-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -727,7 +764,7 @@ ggplot(igraciKlasteri, aes(x = X, y = Y, color = factor(klasteri))) +
 plot(hcIgraci)
 ```
 
-&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-64-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-65-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -755,7 +792,7 @@ dendBoje &lt;- color_branches(dendIgraci, h = 2)
 plot(dendBoje)
 ```
 
-&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-67-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -769,7 +806,7 @@ dendBoje &lt;- color_branches(dendIgraci, k = 5)
 plot(dendBoje)
 ```
 
-&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-69-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -942,7 +979,7 @@ print(model$cluster)
 ```
 
 ```
-##  [1] 1 1 2 2 1 1 1 2 2 2 1 2
+##  [1] 2 2 1 1 2 2 2 1 1 1 2 1
 ```
 
 ```r
@@ -952,28 +989,28 @@ head(print(lineupKlasteri),6)
 
 ```
 ##      X   Y cluster
-## 1   -1   1       1
-## 2   -2  -3       1
-## 3    8   6       2
-## 4    7  -8       2
-## 5  -12   8       1
-## 6  -15   0       1
-## 7  -13 -10       1
-## 8   15  16       2
-## 9   21   2       2
-## 10  12 -15       2
-## 11 -25   1       1
-## 12  26   0       2
+## 1   -1   1       2
+## 2   -2  -3       2
+## 3    8   6       1
+## 4    7  -8       1
+## 5  -12   8       2
+## 6  -15   0       2
+## 7  -13 -10       2
+## 8   15  16       1
+## 9   21   2       1
+## 10  12 -15       1
+## 11 -25   1       2
+## 12  26   0       1
 ```
 
 ```
 ##     X  Y cluster
-## 1  -1  1       1
-## 2  -2 -3       1
-## 3   8  6       2
-## 4   7 -8       2
-## 5 -12  8       1
-## 6 -15  0       1
+## 1  -1  1       2
+## 2  -2 -3       2
+## 3   8  6       1
+## 4   7 -8       1
+## 5 -12  8       2
+## 6 -15  0       2
 ```
 
 --- 
@@ -1049,23 +1086,23 @@ head(print(elbow_df),5)
 ##     k tot_withinss
 ## 1   1    3489.9167
 ## 2   2    1434.5000
-## 3   3    1049.0833
-## 4   4     637.2500
+## 3   3     881.2500
+## 4   4     696.8333
 ## 5   5     406.0000
-## 6   6     369.0000
-## 7   7     190.6667
-## 8   8     176.1667
-## 9   9      88.0000
+## 6   6     265.1667
+## 7   7     350.5000
+## 8   8     280.0000
+## 9   9      59.5000
 ## 10 10      45.0000
 ```
 
 ```
 ##   k tot_withinss
-## 1 1     3489.917
-## 2 2     1434.500
-## 3 3     1049.083
-## 4 4      637.250
-## 5 5      406.000
+## 1 1    3489.9167
+## 2 2    1434.5000
+## 3 3     881.2500
+## 4 4     696.8333
+## 5 5     406.0000
 ```
 --- 
 
@@ -1079,7 +1116,7 @@ geom_line() +
 scale_x_continuous(breaks = 1:10)
 ```
 
-&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-92-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-93-1.png" style="display: block; margin: auto;" /&gt;
 --- 
 
 # Silhouette analiza
@@ -1176,7 +1213,7 @@ sil_plot &lt;- silhouette(pam_k3)
 plot(sil_plot)
 ```
 
-&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-101-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-102-1.png" style="display: block; margin: auto;" /&gt;
 --- 
 
 # Silhouette analiza
@@ -1245,7 +1282,7 @@ geom_line() +
 scale_x_continuous(breaks = 2:10)
 ```
 
-&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-104-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-105-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
