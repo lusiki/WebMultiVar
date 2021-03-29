@@ -83,16 +83,16 @@ name: kars
 
 &lt;img src="../Foto/klast2.png" width="500px" style="display: block; margin: auto;" /&gt;
 
---
+---
 
 &lt;img src="../Foto/klast3.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 
---
+---
 
 &lt;img src="../Foto/klast4.png" width="500px" style="display: block; margin: auto;" /&gt;
 
---
+---
 
 &lt;img src="../Foto/klast5.png" width="500px" style="display: block; margin: auto;" /&gt;
 
@@ -942,7 +942,7 @@ print(model$cluster)
 ```
 
 ```
-##  [1] 2 2 1 1 2 2 2 1 1 1 2 1
+##  [1] 1 1 2 2 1 1 1 2 2 2 1 2
 ```
 
 ```r
@@ -952,28 +952,28 @@ head(print(lineupKlasteri),6)
 
 ```
 ##      X   Y cluster
-## 1   -1   1       2
-## 2   -2  -3       2
-## 3    8   6       1
-## 4    7  -8       1
-## 5  -12   8       2
-## 6  -15   0       2
-## 7  -13 -10       2
-## 8   15  16       1
-## 9   21   2       1
-## 10  12 -15       1
-## 11 -25   1       2
-## 12  26   0       1
+## 1   -1   1       1
+## 2   -2  -3       1
+## 3    8   6       2
+## 4    7  -8       2
+## 5  -12   8       1
+## 6  -15   0       1
+## 7  -13 -10       1
+## 8   15  16       2
+## 9   21   2       2
+## 10  12 -15       2
+## 11 -25   1       1
+## 12  26   0       2
 ```
 
 ```
 ##     X  Y cluster
-## 1  -1  1       2
-## 2  -2 -3       2
-## 3   8  6       1
-## 4   7 -8       1
-## 5 -12  8       2
-## 6 -15  0       2
+## 1  -1  1       1
+## 2  -2 -3       1
+## 3   8  6       2
+## 4   7 -8       2
+## 5 -12  8       1
+## 6 -15  0       1
 ```
 
 --- 
@@ -1049,21 +1049,21 @@ head(print(elbow_df),5)
 ##     k tot_withinss
 ## 1   1    3489.9167
 ## 2   2    1434.5000
-## 3   3     881.2500
+## 3   3    1049.0833
 ## 4   4     637.2500
 ## 5   5     406.0000
-## 6   6     265.1667
-## 7   7     171.0000
-## 8   8     156.5000
+## 6   6     369.0000
+## 7   7     190.6667
+## 8   8     176.1667
 ## 9   9      88.0000
-## 10 10      23.0000
+## 10 10      45.0000
 ```
 
 ```
 ##   k tot_withinss
 ## 1 1     3489.917
 ## 2 2     1434.500
-## 3 3      881.250
+## 3 3     1049.083
 ## 4 4      637.250
 ## 5 5      406.000
 ```
@@ -1233,6 +1233,31 @@ head(print(sil_df),5)
 ## 4 5 0.3724115
 ## 5 6 0.3436130
 ```
+
+--- 
+
+# Silhouette analiza
+
+
+```r
+ggplot(sil_df, aes(x = k, y = sil_width)) +
+geom_line() +
+scale_x_continuous(breaks = 2:10)
+```
+
+&lt;img src="06_KLASTER_files/figure-html/unnamed-chunk-104-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Nastavak: Višestruka linearna regresija)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

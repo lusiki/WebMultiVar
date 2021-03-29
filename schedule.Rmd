@@ -122,7 +122,7 @@ title: " "
 
 **Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/06_KLASTER.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/06_KLASTER.Rmd) 
 <br>
-**Čitanje:** [Msc rad koji koristi Klaster analizu](https://zir.nsk.hr/islandora/object/pmf%3A9063/datastream/PDF/view) + [Predavanje iz prošle godine](https://rpubs.com/shichich/595542)
+**Čitanje:** [Msc rad koji koristi Klaster analizu](https://zir.nsk.hr/islandora/object/pmf%3A9063/datastream/PDF/view) + [Predavanje iz prošle godine](https://rpubs.com/shichich/595542) + [Knjiga iz klaster analize u R](https://xsliulab.github.io/Workshop/week10/r-cluster-book.pdf)
 <br>
 <br>
 

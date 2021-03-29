@@ -96,7 +96,7 @@ name: kars
 knitr::include_graphics("../Foto/klast2.png")
 ```
 
---
+---
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
@@ -104,14 +104,14 @@ knitr::include_graphics("../Foto/klast3.png")
 ```
 
 
---
+---
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klast4.png")
 ```
 
---
+---
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
