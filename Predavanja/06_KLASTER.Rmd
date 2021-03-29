@@ -1011,18 +1011,13 @@ model$tot.withinss # Kvaliteta modela
 
 # Odredi broj klastera
 
-<br>
-<br>
+
 ```{r, message= F, warning=F, fig.height=6}
 library(purrr)
 tot_withinss <- map_dbl(1:10, function(k){
 model <- kmeans(x = lineup, centers = k)
-model$tot.withinss
-})
-elbow_df <- data.frame(
-k = 1:10,
-tot_withinss = tot_withinss
-)
+model$tot.withinss})
+elbow_df <- data.frame(k = 1:10,tot_withinss = tot_withinss)
 head(print(elbow_df),5)
 ```
 
@@ -1030,9 +1025,7 @@ head(print(elbow_df),5)
 
 # Odredi broj klastera
 
-<br>
-<br>
-```{r, message= F, warning=F, fig.height=4}
+```{r, message= F, warning=F, fig.height=3}
 ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
 geom_line() +
 scale_x_continuous(breaks = 1:10)
@@ -1144,7 +1137,9 @@ plot(sil_plot)
 ---
 
 # Silhouette analiza
-
+<br>
+<br>
+<br>
 ```{r, message= F, warning=F, fig.height=5}
 pam_k3$silinfo$avg.width
 
@@ -1160,20 +1155,17 @@ pam_k3$silinfo$avg.width
 ```{r, message= F, warning=F, fig.height=5}
 sil_width <- map_dbl(2:10, function(k){
 model <- pam(x = lineup, k = k)
-model$silinfo$avg.width
-})
-sil_df <- data.frame(
-k = 2:10,
-sil_width = sil_width
-)
-head(print(sil_df),5)
+model$silinfo$avg.width})
+sil_df <- data.frame(k = 2:10,sil_width = sil_width)
+print(sil_df)
 ```
 
 ---
 
 # Silhouette analiza
 
-```{r, message= F, warning=F, fig.height=5}
+```{r, message= F, warning=F, fig.height=3}
+# Vizualizacija
 ggplot(sil_df, aes(x = k, y = sil_width)) +
 geom_line() +
 scale_x_continuous(breaks = 2:10)

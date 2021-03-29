@@ -1063,19 +1063,14 @@ model$tot.withinss # Kvaliteta modela
 
 # Odredi broj klastera
 
-&lt;br&gt;
-&lt;br&gt;
+
 
 ```r
 library(purrr)
 tot_withinss &lt;- map_dbl(1:10, function(k){
 model &lt;- kmeans(x = lineup, centers = k)
-model$tot.withinss
-})
-elbow_df &lt;- data.frame(
-k = 1:10,
-tot_withinss = tot_withinss
-)
+model$tot.withinss})
+elbow_df &lt;- data.frame(k = 1:10,tot_withinss = tot_withinss)
 head(print(elbow_df),5)
 ```
 
@@ -1084,13 +1079,13 @@ head(print(elbow_df),5)
 ## 1   1    3489.9167
 ## 2   2    1434.5000
 ## 3   3     881.2500
-## 4   4     740.4167
-## 5   5     406.0000
-## 6   6     291.1667
-## 7   7     351.0000
-## 8   8     134.0000
-## 9   9      60.0000
-## 10 10      51.5000
+## 4   4     637.2500
+## 5   5     481.6667
+## 6   6     265.1667
+## 7   7     171.0000
+## 8   8     156.5000
+## 9   9      82.0000
+## 10 10      45.0000
 ```
 
 ```
@@ -1098,16 +1093,14 @@ head(print(elbow_df),5)
 ## 1 1    3489.9167
 ## 2 2    1434.5000
 ## 3 3     881.2500
-## 4 4     740.4167
-## 5 5     406.0000
+## 4 4     637.2500
+## 5 5     481.6667
 ```
 
 ---
 
 # Odredi broj klastera
 
-&lt;br&gt;
-&lt;br&gt;
 
 ```r
 ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
@@ -1229,7 +1222,9 @@ plot(sil_plot)
 ---
 
 # Silhouette analiza
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 pam_k3$silinfo$avg.width
@@ -1253,13 +1248,9 @@ pam_k3$silinfo$avg.width
 ```r
 sil_width &lt;- map_dbl(2:10, function(k){
 model &lt;- pam(x = lineup, k = k)
-model$silinfo$avg.width
-})
-sil_df &lt;- data.frame(
-k = 2:10,
-sil_width = sil_width
-)
-head(print(sil_df),5)
+model$silinfo$avg.width})
+sil_df &lt;- data.frame(k = 2:10,sil_width = sil_width)
+print(sil_df)
 ```
 
 ```
@@ -1275,21 +1266,13 @@ head(print(sil_df),5)
 ## 9 10 0.2099424
 ```
 
-```
-##   k sil_width
-## 1 2 0.4164141
-## 2 3 0.3534140
-## 3 4 0.3535534
-## 4 5 0.3724115
-## 5 6 0.3436130
-```
-
 ---
 
 # Silhouette analiza
 
 
 ```r
+# Vizualizacija
 ggplot(sil_df, aes(x = k, y = sil_width)) +
 geom_line() +
 scale_x_continuous(breaks = 2:10)
