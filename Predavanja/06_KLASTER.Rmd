@@ -1080,7 +1080,7 @@ knitr::include_graphics("../Foto/klastS2.png")
 
 <br>
 <br>
-<br>
+###### Unutarklasterska udaljenost
 <br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastS3.png")
@@ -1116,7 +1116,7 @@ knitr::include_graphics("../Foto/klastS5.png")
 
 <br>
 <br>
-<br>
+###### Udaljenost do susjednog klastera
 <br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastS6.png")
@@ -1128,7 +1128,7 @@ knitr::include_graphics("../Foto/klastS6.png")
 
 <br>
 <br>
-<br>
+###### Udaljenost do susjednog klastera
 <br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastS7.png")
