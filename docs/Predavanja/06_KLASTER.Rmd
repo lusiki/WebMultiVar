@@ -88,6 +88,25 @@ name: kars
 
 ---
 
+# Resursi
+
+<br>
+<br>
+<br>
+- *klaster analiza* je općenito (i u R) dobro dokumentirana
+<br>
+- sveobuhvatni vodič [Practical Guide To Cluster Analysis in R](https://xsliulab.github.io/Workshop/week10/r-cluster-book.pdf) 
+<br>
+- dostupno je i mnoštvo tutorial-a na: [link 1](https://uc-r.github.io/kmeans_clustering) , [link 2](https://statsandr.com/blog/clustering-analysis-k-means-and-hierarchical-clustering-by-hand-and-in-r/), [link 3](https://towardsdatascience.com/how-to-use-and-visualize-k-means-clustering-in-r-19264374a53c), [link 4](https://www.datanovia.com/en/blog/cluster-analysis-in-r-practical-guide/)
+<br>
+- postoji i [CRAN Task](https://cran.r-project.org/web/views/Cluster.html) na temu klasteringa
+<br>
+- interaktivni tutorial na [DataCamp-u](https://www.datacamp.com/courses/cluster-analysis-in-r)
+<br>
+- [ogledni](https://zir.nsk.hr/islandora/object/pmf%3A9063/datastream/PDF/view) primjer klaster analize na hrvatskim podatcima
+
+---
+
 # Što je klaster analiza?
 
 
@@ -96,31 +115,38 @@ name: kars
 knitr::include_graphics("../Foto/klast2.png")
 ```
 
---
+---
+
+# Što je klaster analiza?
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klast3.png")
 ```
+<br>
+---
 
-
---
+# Što je klaster analiza?
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klast4.png")
 ```
+<br>
+---
 
---
+# Što je klaster analiza?
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klast5.png")
 ```
-
+<br>
 ---
 
 # Tijek klaster analize
+<br>
+<br>
 <br>
 <br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
@@ -142,8 +168,9 @@ name: slic
 ---
 
 # Udaljenost vs. sličnost
-
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist1.png")
@@ -152,7 +179,9 @@ knitr::include_graphics("../Foto/klastDist1.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist2.png")
@@ -161,7 +190,9 @@ knitr::include_graphics("../Foto/klastDist2.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist3.png")
@@ -170,7 +201,9 @@ knitr::include_graphics("../Foto/klastDist3.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist4.png")
@@ -179,7 +212,9 @@ knitr::include_graphics("../Foto/klastDist4.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist5.png")
@@ -188,7 +223,9 @@ knitr::include_graphics("../Foto/klastDist5.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist6.png")
@@ -197,7 +234,9 @@ knitr::include_graphics("../Foto/klastDist6.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist7.png")
@@ -206,7 +245,9 @@ knitr::include_graphics("../Foto/klastDist7.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist8.png")
@@ -215,7 +256,9 @@ knitr::include_graphics("../Foto/klastDist8.png")
 ---
 
 # Udaljenost vs. sličnost
-
+<br>
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 
 knitr::include_graphics("../Foto/klastDist9.png")
@@ -226,14 +269,14 @@ knitr::include_graphics("../Foto/klastDist9.png")
 # Više od dvije opservacije
 
 ```{r}
-
-three_players <- data.frame(X = c(0,9,-2),
+# Napravi podatke
+triIgraca <- data.frame(X = c(0,9,-2),
                             Y = c(0,12,19),
                             row.names = c("BLUE", "RED", "GREEN"))
 
-print(three_players)
+print(triIgraca) # Prikaži 
 
-dist(three_players)
+dist(triIgraca)  # Izračunaj udaljenosti
 ```
 
 
@@ -243,11 +286,13 @@ dist(three_players)
 
 
 ```{r}
+# Napravi podatke
 visinaTezina <- data.frame(Visina = c(6,6,8),
                            Tezina = c(200,202,200),
                            row.names = c(1,2,3))
 
-kable(visinaTezina)
+# Prikazi podatke 
+print(visinaTezina)
 ```
 
 ---
@@ -296,14 +341,16 @@ knitr::include_graphics("../Foto/klastVisina5.png")
 <br>
 <br>
 <br>
+<br>
 $$
-Visina(skalirano) = \frac{visna - (prosječna)Visina}{std(visina)}
+visina(skalirano) = \frac{visina - (prosječna)visina}{std(visina)}
 $$
 
 ---
 
 # Udaljenost između opservacija
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastDist10.png")
 ```
@@ -311,7 +358,8 @@ knitr::include_graphics("../Foto/klastDist10.png")
 ---
 
 # Udaljenost između opservacija
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastDist11.png")
 ```
@@ -319,21 +367,32 @@ knitr::include_graphics("../Foto/klastDist11.png")
 ---
 
 # Skaliranje 
+<br>
+<br>
 
+.pull-left[
 ```{r, message= F, warning=F, fig.height=6}
+# Prikaži podatke
 print(visinaTezina)
+```
+]
 
+.pull-right[
+```{r}
+# Skalirani podatci
 scale(visinaTezina)
 ```
-
+]
 ---
 
 # Kategorički podatci
 
 ```{r, message= F, warning=F, fig.height=6}
+# Napravi podatke
 zadovoljstvo <- data.frame(
                       zadovoljstvo = c("Nisko","Nisko","Visoko","Nisko","Srednje"),
                       sreća = c("Ne","Ne","Da","Ne","Ne"))
+# Prikaži podatke u tablici
 kable(zadovoljstvo)
 ```
 
@@ -342,43 +401,46 @@ kable(zadovoljstvo)
 # Jaccardova udaljenost u R
 
 ```{r, message= F, warning=F, fig.height=6}
+# Prikaži podatke
 print(zadovoljstvo)
-
-dist(zadovoljstvo, method = "binary") # Udaljenost za kategorije
+# Udaljenost za kategoričke podatke (NA)
+dist(zadovoljstvo, method = "binary") 
 ```
 
 ---
 
 # Jaccardova udaljenost u R
 
-.pull-left[
+
 ```{r, message= F, warning=F, fig.height=6}
 library(dummies)
 dummieZadovoljstvo <- dummy.data.frame(zadovoljstvo) # Pretvori u dummie
 print(dummieZadovoljstvo)
 ```
-]
 
-.pull-right[
+---
+
+# Jaccardova udaljenost u R
+
 ```{r, message= F, warning=F, fig.height=6}
+# Prikaži podatke
 print(zadovoljstvo)
 ```
-]
+
 
 ```{r, message= F, warning=F, fig.height=6}
-dist(dummieZadovoljstvo, method = "binary") # Udaljenost za kategorije
+ # Udaljenost za kategorije
+dist(dummieZadovoljstvo, method = "binary") 
 ```
 
 ---
 
 class: inverse, center, middle
-name: kars
+name: hier
 
 # HIJERARHIJSKI KLASTERING
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
-
-(...)
 
 ---
 
@@ -582,27 +644,21 @@ knitr::include_graphics("../Foto/klastIZ9.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastIZ10.png")
 ```
----
-
-# Izgled klastera
-
-<br>
-<br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
-knitr::include_graphics("../Foto/klastIZ11.png")
-```
-
 
 ---
 
 # Klastering procedura
 
 ```{r, message= F, warning=F, fig.height=6}
+# Napravi podatke
 igraci <-  data.frame(X = c(-1,-2,8,7,-12,-15),
                       Y = c(1,-3,6,-8,8,0))
-print(igraci)
-distIgraci <- dist(igraci, method = "euclidean") # Izračunaj udaljenost
-hcIgraci <- hclust(distIgraci, method = 'complete') # Provedi klastering
+# Prikaži podatke
+print(igraci) 
+# Izračunaj udaljenost
+distIgraci <- dist(igraci, method = "euclidean") 
+# Provedi klastering
+hcIgraci <- hclust(distIgraci, method = 'complete') 
 ```
 
 ---
@@ -611,15 +667,17 @@ hcIgraci <- hclust(distIgraci, method = 'complete') # Provedi klastering
 
 ```{r, message= F, warning=F, fig.height=6}
 klasteri <- cutree(hcIgraci, k = 2) # Odredi broj klastera
-print(klasteri)
-igraciKlasteri<- mutate(igraci, cluster = klasteri) # Prilagodba
-print(igraciKlasteri) # Podatci + klasteri
+print(klasteri) # Prikaži podatke
+igraciKlasteri<- mutate(igraci, cluster = klasteri) # Prilagodba podataka
+# Podatci + klasteri
+print(igraciKlasteri) 
 ```
 ---
 
 # Klastering procedura
 
-```{r, message= F, warning=F, fig.height=5}
+```{r, message= F, warning=F, fig.height=3}
+# Prikaži podatke grafički
 ggplot(igraciKlasteri, aes(x = X, y = Y, color = factor(klasteri))) +
   geom_point() +
   ggtitle("Prikaz igrača i klastera u koordinatnom sustavu")
@@ -632,7 +690,7 @@ ggplot(igraciKlasteri, aes(x = X, y = Y, color = factor(klasteri))) +
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend1.png")
 ```
 
@@ -642,7 +700,7 @@ knitr::include_graphics("../Foto/klastDend1.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend2.png")
 ```
 
@@ -652,7 +710,7 @@ knitr::include_graphics("../Foto/klastDend2.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend3.png")
 ```
 
@@ -662,7 +720,7 @@ knitr::include_graphics("../Foto/klastDend3.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend4.png")
 ```
 ---
@@ -671,7 +729,7 @@ knitr::include_graphics("../Foto/klastDend4.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend5.png")
 ```
 ---
@@ -680,7 +738,7 @@ knitr::include_graphics("../Foto/klastDend5.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend6.png")
 ```
 
@@ -690,7 +748,7 @@ knitr::include_graphics("../Foto/klastDend6.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend7.png")
 ```
 ---
@@ -699,7 +757,7 @@ knitr::include_graphics("../Foto/klastDend7.png")
 
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastDend8.png")
 ```
 
@@ -713,7 +771,7 @@ plot(hcIgraci)
 
 ---
 
-# Broj klastera
+# Odredi broj klastera
 
 <br>
 <br>
@@ -722,7 +780,7 @@ knitr::include_graphics("../Foto/klastDend9.png")
 ```
 ---
 
-# Broj klastera
+# Odredi broj klastera
 
 <br>
 <br>
@@ -731,24 +789,23 @@ knitr::include_graphics("../Foto/klastDend10.png")
 ```
 ---
 
-# Broj klastera
+# Odredi broj klastera
 
-```{r, message= F, warning=F, fig.height=6}
-library(dendextend)
-dendIgraci <- as.dendrogram(hcIgraci)
-dendBoje <- color_branches(dendIgraci, h = 2)
-plot(dendBoje)
+```{r, message= F, warning=F, fig.height=3}
+library(dendextend) # Učitaj paket
+dendIgraci <- as.dendrogram(hcIgraci) # Napravi dendogram
+dendBoje <- color_branches(dendIgraci, h = 2) # Prilagodi dendogram
+plot(dendBoje) # Prikaži dendogram
 ```
 
 ---
 
 # Broj klastera
 
-```{r , message= F, warning=F, fig.height=5}
-library(dendextend)
-dendIgraci <- as.dendrogram(hcIgraci)
-dendBoje <- color_branches(dendIgraci, k = 5)
-plot(dendBoje)
+```{r , message= F, warning=F, fig.height=3}
+dendIgraci <- as.dendrogram(hcIgraci) # Napravi dendogram
+dendBoje <- color_branches(dendIgraci, k = 5) # Prilagodi dendogram
+plot(dendBoje) # Prikaži dendogram
 ```
 
 ---
@@ -756,23 +813,23 @@ plot(dendBoje)
 # Broj klastera
 
 ```{r, message= F, warning=F, fig.height=5}
-clusterPripisano <- cutree(hcIgraci, h = 15)
-print(clusterPripisano)
-igraciKlaster <- mutate(igraci, cluster = clusterPripisano)
-print(igraciKlaster)
+clusterPripisano <- cutree(hcIgraci, h = 15) # "Odreži"
+print(clusterPripisano) # Prikaz podataka
+igraciKlaster <- mutate(igraci, cluster = clusterPripisano) # Prilagodba podataka
+print(igraciKlaster) # Podatci + klasteri
 ```
 
 
 ---
 
 class: inverse, center, middle
-name: kars
+name: kmen
 
 # K MEANS KLASTERING
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-(Općenito)
+(Najćešća klastering metoda)
 
 ---
 
@@ -864,129 +921,139 @@ knitr::include_graphics("../Foto/klastK8.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastK9.png")
 ```
----
-
-# Intuicija
-
-<br>
-<br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
-knitr::include_graphics("../Foto/klastK10.png")
-```
 
 ---
 
 # Provedi kmeans()
 
 ```{r, message= F, warning=F, fig.height=6}
-
+# Napravi podatke
 lineup <- data.frame(X =c(-1,-2,8,7,-12,-15,-13,15,21,12,-25,26),
            Y = c(1,-3,6,-8,8,0,-10,16,2,-15,1,0))
-head(print(lineup),6) 
-
-model <- kmeans(lineup, centers = 2)
+# Pregledaj podatke
+print(lineup)
 ```
-
 
 ---
 
 # Provedi kmeans()
 
 ```{r, message= F, warning=F, fig.height=6}
-print(model$cluster)
-```
-```{r, message= F, warning=F, fig.height=6}
-lineupKlasteri <- mutate(lineup, cluster = model$cluster)
-head(print(lineupKlasteri),6)
+# Provedi K-means
+model <- kmeans(lineup, centers = 2)
+print(model$cluster) # Prikaži klastere
 ```
 
---- 
+```{r, message= F, warning=F, fig.height=6}
+lineupKlasteri <- mutate(lineup, cluster = model$cluster) # Prilagodi podatke
+print(lineupKlasteri) # Prikaži klastere i podatke
+```
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK10.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK11.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK12.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK13.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK14.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/klastK15.png")
 ```
---- 
+
+---
 
 # Odredi broj klastera
+
 <br>
 <br>
 ```{r, message= F, warning=F, fig.height=6}
 model <- kmeans(x = lineup, centers = 2) # Provedi model sa dva klastera
 model$tot.withinss # Kvaliteta modela
 ```
---- 
+
+---
 
 # Odredi broj klastera
-<br>
-<br>
+
+
 ```{r, message= F, warning=F, fig.height=6}
 library(purrr)
 tot_withinss <- map_dbl(1:10, function(k){
 model <- kmeans(x = lineup, centers = k)
-model$tot.withinss
-})
-elbow_df <- data.frame(
-k = 1:10,
-tot_withinss = tot_withinss
-)
-head(print(elbow_df),5)
+model$tot.withinss})
+elbow_df <- data.frame(k = 1:10,tot_withinss = tot_withinss)
+print(elbow_df)
 ```
---- 
+
+---
 
 # Odredi broj klastera
-<br>
-<br>
-```{r, message= F, warning=F, fig.height=4}
+
+```{r, message= F, warning=F, fig.height=3}
 ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
 geom_line() +
 scale_x_continuous(breaks = 1:10)
 ```
---- 
+
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -995,9 +1062,10 @@ scale_x_continuous(breaks = 1:10)
 knitr::include_graphics("../Foto/klastS1.png")
 ```
 
---- 
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1006,9 +1074,10 @@ knitr::include_graphics("../Foto/klastS1.png")
 knitr::include_graphics("../Foto/klastS2.png")
 ```
 
---- 
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1016,9 +1085,11 @@ knitr::include_graphics("../Foto/klastS2.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastS3.png")
 ```
---- 
+
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1026,9 +1097,11 @@ knitr::include_graphics("../Foto/klastS3.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastS4.png")
 ```
---- 
+
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1037,9 +1110,10 @@ knitr::include_graphics("../Foto/klastS4.png")
 knitr::include_graphics("../Foto/klastS5.png")
 ```
 
---- 
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1048,9 +1122,10 @@ knitr::include_graphics("../Foto/klastS5.png")
 knitr::include_graphics("../Foto/klastS6.png")
 ```
 
---- 
+---
 
 # Silhouette analiza
+
 <br>
 <br>
 <br>
@@ -1058,7 +1133,8 @@ knitr::include_graphics("../Foto/klastS6.png")
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/klastS7.png")
 ```
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1067,7 +1143,8 @@ library(cluster)
 pam_k3 <- pam(lineup, k = 3)
 pam_k3$silinfo$widths
 ```
---- 
+
+---
 
 # Silhouette analiza
 
@@ -1075,10 +1152,13 @@ pam_k3$silinfo$widths
 sil_plot <- silhouette(pam_k3)
 plot(sil_plot)
 ```
---- 
+
+---
 
 # Silhouette analiza
-
+<br>
+<br>
+<br>
 ```{r, message= F, warning=F, fig.height=5}
 pam_k3$silinfo$avg.width
 
@@ -1086,33 +1166,29 @@ pam_k3$silinfo$avg.width
 #  0: Granično poklapanje između klastera
 # -1: Loše poklapanje
 ```
---- 
+
+---
 
 # Silhouette analiza
 
 ```{r, message= F, warning=F, fig.height=5}
 sil_width <- map_dbl(2:10, function(k){
 model <- pam(x = lineup, k = k)
-model$silinfo$avg.width
-})
-sil_df <- data.frame(
-k = 2:10,
-sil_width = sil_width
-)
-head(print(sil_df),5)
+model$silinfo$avg.width})
+sil_df <- data.frame(k = 2:10,sil_width = sil_width)
+print(sil_df)
 ```
 
---- 
+---
 
 # Silhouette analiza
 
-```{r, message= F, warning=F, fig.height=5}
+```{r, message= F, warning=F, fig.height=3}
+# Vizualizacija
 ggplot(sil_df, aes(x = k, y = sil_width)) +
 geom_line() +
 scale_x_continuous(breaks = 2:10)
 ```
-
-
 
 ---
 
@@ -1123,7 +1199,6 @@ class: inverse, center, middle
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
 (Nastavak: Višestruka linearna regresija)
-
 
 
 
