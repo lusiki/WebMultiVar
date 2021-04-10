@@ -625,29 +625,223 @@ class: inverse, center, middle
 
 # Regresijski koeficijenti
 
+```{r}
+tezina_vs_visina <- lm(mass_g ~ length_cm, data = bream)
+tezina_vs_visina
+```
+
+```{r}
+coefficients(tezina_vs_visina)
+```
+
+---
+
+# *fitted* vrijednosti
+
+- predstavljaju predviđanja na originalnim podatcima
+
+```{r}
+fitted(tezina_vs_visina)
+```
+
+```{r}
+# jednako kao
+explanatory_data <- bream %>% select(length_cm)
+predict(tezina_vs_visina, explanatory_data)
+```
+
+---
+
+# Rrezidualne vrijednosti
+
+- predstavljaju razliku između nezavisne varijable i predviđenih vrijednosti
+
+
+```{r}
+residuals(tezina_vs_visina)
+# ekvivalentno:
+bream$mass_g - fitted(tezina_vs_visina)
+```
+
+---
+
+# Puni pregled modela
+
+```{r}
+summary(tezina_vs_visina)
+```
+
+
+---
+
+# Dodatne vještine u R
+
+```{r}
+library(broom) # izvrstan paket;podgledaj dokumentaciju!
+tidy(tezina_vs_visina) # napravi tibble (dframe) procjene 
+```
+
+---
+
+# Dodatne vještine u R
+
+```{r}
+augment(tezina_vs_visina)
+```
+
+---
+
+# Dodatne vještine u R
+
+```{r}
+glance(tezina_vs_visina)
+```
+
+
+---
+
+---
+
+class: inverse, center, middle
+
+# Nelinearnosti
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Svijet nije linearan!)
+
+---
+
+# "Perch" vrsta ribe 
+
+```{r}
+perch <- fish %>%
+filter(species == "Perch")
+head(perch,8)
+```
+
+---
+
+# Nelinearnost
+
+```{r, fig.height=4}
+ggplot(perch, aes(length_cm, mass_g)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE)
+```
+
+
+---
+
+# Bream vs. perch vrsta
+
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/reg8.png")
+```
+
+---
+
+# Težina vs. duljina **na treću(^3)** 
+
+.left-code[
+```{r plot-label6, eval=FALSE}
+ggplot(perch, aes(length_cm ^ 3, mass_g)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE)
+```
+]
+
+.right-plot[
+```{r plot-label6-out, ref.label="plot-label6", echo=FALSE, fig.height=4}
+
+```
+]
+
+
+---
+
+# Regresijski model
+
+```{r}
+mdl_perch <- lm(mass_g ~ I(length_cm ^ 3), data = perch)
+mdl_perch
+```
+
+---
+
+# Predikcija
+
+```{r}
+explanatory_data <- tibble(length_cm = seq(10, 40, 5))
+prediction_data <- explanatory_data %>%
+mutate(mass_g = predict(mdl_perch, explanatory_data))
+head(prediction_data,8)
+```
+
+---
+
+# Vizualiziraj (^3)
+
+left-code[
+```{r plot-label7, eval=FALSE}
+ggplot(perch, aes(length_cm ^ 3, mass_g)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE) +
+geom_point(data = prediction_data, color = "blue")
+```
+]
+
+.right-plot[
+```{r plot-label7-out, ref.label="plot-label7", echo=FALSE, fig.height=4}
+
+```
+]
+
+---
+
+# Vizualiziraj 
+
+left-code[
+```{r plot-label8, eval=FALSE}
+ggplot(perch, aes(length_cm, mass_g)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE) +
+geom_point(data = prediction_data, color = "blue")
+```
+]
+
+.right-plot[
+```{r plot-label8-out, ref.label="plot-label8", echo=FALSE, fig.height=4}
+
+```
+]
 
 
 
+---
 
+class: inverse, center, middle
+name: exemplar
 
+# KVALITETA PROCJENE
 
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
+(Koliko je dobar model?)
 
+---
 
+# Bream vs perch model 
 
+```{r}
+gg1 <- ggplot(perch, aes(length_cm ^ 3, mass_g)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE) +
+geom_point(data = prediction_data, color = "blue")
 
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 
 
