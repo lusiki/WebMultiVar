@@ -45,6 +45,32 @@ remark-slide-content {
 .tiny .remark-code { /*Change made here*/
   font-size: 40% !important;
 }
+
+/* custom.css */
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
 &lt;/style&gt;
 
 
@@ -87,13 +113,6 @@ name: exemplar
 ```r
 # Koristimo "marketing" podatkovni skup iz "datarium" paketa
 library(datarium) # učitaj paket
-```
-
-```
-## Warning: package 'datarium' was built under R version 4.0.5
-```
-
-```r
 data("marketing") # učitaj podatke
 # Podatci se odnose na prodajni efekt ulaganja u promidžbu na youtube, facebook i novinske oglase
 head(marketing,10) # pogledaj podatke 
@@ -259,10 +278,153 @@ name: uni
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
 
-(Motivacija)
+(Osnovni model)
 
 
 ---
+
+# Podatci
+
+
+```r
+library(dplyr)
+# Učitaj podatke
+SMID &lt;- read.csv2("../Podatci/SLR.csv", header = TRUE) %&gt;% # podatci na GHubu
+  rename(n_claims = X, total_payment_sek = Y) # preimenuj varijable
+str(SMID) # struktura
+```
+
+```
+## 'data.frame':	63 obs. of  2 variables:
+##  $ n_claims         : int  108 19 13 124 40 57 23 14 45 10 ...
+##  $ total_payment_sek: num  392.5 46.2 15.7 422.2 119.4 ...
+```
+
+```r
+head(SMID, 5) # pogledaj podatke
+```
+
+```
+##   n_claims total_payment_sek
+## 1      108             392.5
+## 2       19              46.2
+## 3       13              15.7
+## 4      124             422.2
+## 5       40             119.4
+```
+
+---
+
+# Deskriptivna statistika
+
+.pull-left[
+
+```r
+library(dplyr)
+SMID %&gt;%
+summarize_all(mean)
+```
+
+```
+##   n_claims total_payment_sek
+## 1 22.90476           98.1873
+```
+]
+
+.pull-right[
+
+```r
+SMID %&gt;%
+summarize(correlation = cor(n_claims, total_payment_sek))
+```
+
+```
+##   correlation
+## 1   0.9128782
+```
+]
+
+
+---
+
+# Što je regresija?
+
+- statistički model koji objašnjava odnos između zavisne i nezavisne varijable
+- uz danu vrijednost nezavisne varijable, kolika je vrijednsot zavisne?
+
+
+```
+## # A tibble: 6 x 2
+##   n_claims total_payment_sel
+##   &lt;chr&gt;    &lt;chr&gt;            
+## 1 108      392.5            
+## 2 19       46.2             
+## 3 13       15.7             
+## 4 124      422.2            
+## 5 40       119.4            
+## 6 200      ???
+```
+
+---
+
+# Osnovna terminologija
+&lt;br&gt;
+&lt;br&gt;
+###### ŽARGON
+&lt;br&gt;
+&lt;br&gt;
+- *response* varijabla ili zavisna varijable je ona koju želimo predvidjeti
+- *eksplanatorna* varijabla ili nazavisna je ona koja objašnjava promjenu u zavisnoj
+
+###### DEFINICIJE
+&lt;br&gt;
+&lt;br&gt;
+- Linearna regresija: zavisna varijabla je numenrička
+- Logistička regresija: zavisna varijabla je logička (0,1)
+- Univarijatna regresija: samo jedna nezavisna varijabla
+- MUltivarijatna regresija: više zavisnih varijabli
+
+&lt;br&gt;
+&lt;br&gt;
+---
+
+# Vizualizacija
+&lt;br&gt;
+&lt;br&gt;
+.left-code[
+
+```r
+library(ggplot2)
+ggplot(SMID,
+aes(n_claims, total_payment_sek)) +
+geom_point()
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Dodaj regresijski pravac
+&lt;br&gt;
+&lt;br&gt;
+.left-code[
+
+```r
+library(ggplot2)
+ggplot(SMID,
+aes(n_claims, total_payment_sek)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE)  
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label2-out-1.png" style="display: block; margin: auto;" /&gt;
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
