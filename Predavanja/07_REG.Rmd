@@ -582,20 +582,48 @@ prediction_data
 
 # Vizualiziraj predikcije
 
+.left-code[
+```{r plot-label5, eval=FALSE}
+ggplot(bream, aes(length_cm, mass_g)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) + 
+  geom_point( data = prediction_data, color = "blue")
+```
+]
+
+.right-plot[
+```{r plot-label5-out, ref.label="plot-label5", echo=FALSE, fig.height=4}
+
+```
+]
+
+---
+
+# Ekstrapolacija
+<br>
+<br>
+- *Ekstrapolacija* označava predikciju izvan postojećih podataka
 
 ```{r}
-ggplot(bream, aes(length_cm, mass_g)) + geom_point() + geom_smooth(method =
-"lm"
-, se =
-FALSE
-) + geom_point( data = prediction_data, color =
-"blue"
-)
+mali_bream <- tibble(length_cm = 10)
+mali_bream %>%
+mutate(mass_g = predict(tezina_vs_visina, mali_bream))
 ```
 
+---
+
+class: inverse, center, middle
 
 
+# Elementi modela
 
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Što se sve nalazi u regresijskom objektu!?)
+
+---
+
+# Regresijski koeficijenti
 
 
 

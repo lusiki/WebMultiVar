@@ -665,17 +665,172 @@ name: pred
 # Podatkovni skup o ribama
 
 
+
+```r
+# Izaberi samo "Bream" vrstu
+bream &lt;- fish %&gt;%
+filter(str_detect(species,"Bream"))
+head(bream,10)
+```
+
+```
+##         species mass_g length_cm
+## 1  Common Bream    600      29.4
+## 2  Common Bream    700      30.4
+## 3  Common Bream    575      31.3
+## 4  Common Bream    725      31.8
+## 5  Common Bream   1000      33.5
+## 6  Common Bream    920      35.0
+## 7  Common Bream    925      36.2
+## 8  Common Bream    975      37.4
+## 9  Silver Bream     60      14.3
+## 10 Silver Bream     90      16.3
+```
+
+---
+
+# Vizualiziraj težinu vs. duljinu
+
 .left-code[
 
 ```r
-bream &lt;- fish %&gt;%
-filter(str_detect(species,"Bream"))
+ggplot(bream, aes(length_cm, mass_g)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE) 
 ```
 ]
 
 .right-plot[
-
+&lt;img src="07_REG_files/figure-html/plot-label4-out-1.png" style="display: block; margin: auto;" /&gt;
 ]
+
+---
+
+# Provedi regresijski model
+
+
+```r
+tezina_vs_visina &lt;- lm(mass_g ~ length_cm, data = bream)
+tezina_vs_visina
+```
+
+```
+## 
+## Call:
+## lm(formula = mass_g ~ length_cm, data = bream)
+## 
+## Coefficients:
+## (Intercept)    length_cm  
+##     -669.92        44.19
+```
+
+---
+
+# Predviđanje 
+
+&gt; Ako postavimo nezavisne varijable na vrijednost xy, koja će biti vrijednost zavisne varijable?
+
+
+```r
+nezavisne_vars &lt;- tibble(length_cm = 20:40)
+```
+
+
+```r
+predict(tezina_vs_visina, nezavisne_vars)
+```
+
+```
+##         1         2         3         4         5         6         7         8 
+##  213.8509  258.0393  302.2278  346.4162  390.6046  434.7931  478.9815  523.1700 
+##         9        10        11        12        13        14        15        16 
+##  567.3584  611.5468  655.7353  699.9237  744.1122  788.3006  832.4890  876.6775 
+##        17        18        19        20        21 
+##  920.8659  965.0544 1009.2428 1053.4312 1097.6197
+```
+
+---
+
+# Predviđanje u data.frame objektu
+
+
+```r
+prediction_data &lt;- nezavisne_vars %&gt;%
+mutate(mass_g = predict(tezina_vs_visina, nezavisne_vars))
+prediction_data
+```
+
+```
+## # A tibble: 21 x 2
+##    length_cm mass_g
+##        &lt;int&gt;  &lt;dbl&gt;
+##  1        20   214.
+##  2        21   258.
+##  3        22   302.
+##  4        23   346.
+##  5        24   391.
+##  6        25   435.
+##  7        26   479.
+##  8        27   523.
+##  9        28   567.
+## 10        29   612.
+## # ... with 11 more rows
+```
+
+
+---
+
+# Vizualiziraj predikcije
+
+.left-code[
+
+```r
+ggplot(bream, aes(length_cm, mass_g)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) + 
+  geom_point( data = prediction_data, color = "blue")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label5-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Ekstrapolacija
+&lt;br&gt;
+&lt;br&gt;
+- *Ekstrapolacija* označava predikciju izvan postojećih podataka
+
+
+```r
+mali_bream &lt;- tibble(length_cm = 10)
+mali_bream %&gt;%
+mutate(mass_g = predict(tezina_vs_visina, mali_bream))
+```
+
+```
+## # A tibble: 1 x 2
+##   length_cm mass_g
+##       &lt;dbl&gt;  &lt;dbl&gt;
+## 1        10  -228.
+```
+
+---
+
+class: inverse, center, middle
+
+
+# Elementi modela
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Što se sve nalazi u regresijskom objektu!?)
+
+---
+
+# Regresijski koeficijenti
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
