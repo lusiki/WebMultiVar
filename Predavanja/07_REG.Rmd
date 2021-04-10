@@ -1,0 +1,109 @@
+---
+title: "MULTIVARIJATNE STATISTIČKE METODE"
+author: "dr.sc. Luka Šikić"
+date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
+subtitle: "Predavanje 7: Multivarijatna regresijska analiza"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=F#, echo=F, warning=F, message=F
+  )
+```
+
+```{css, echo = F, eval = T}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+```
+
+```{r paketi, warning=F, echo=F, message=F, eval=TRUE}
+
+library(tidyverse)  # data manipulation and visualization
+library(gridExtra)  # plot arrangement
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+```
+
+# Pregled predavanja
+
+<br>
+<br>
+<br>
+
+
+1. [Praktični primjer](#exemplar)
+
+2. [Univarijatna regresijska analiza](#uni)
+
+2. [Predikcija i elementi modela](#pred)
+
+3. [Kvaliteta procjene](#qual)
+
+3. [Višestruka regresija](#multi)
+
+
+---
+
+class: inverse, center, middle
+name: exemplar
+
+# PRAKTIČNI PRIMJER
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Motivacija)
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
