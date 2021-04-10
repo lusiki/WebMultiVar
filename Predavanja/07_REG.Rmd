@@ -333,6 +333,288 @@ geom_smooth(method = "lm", se = FALSE)
 ```
 ]
 
+---
+
+# Regresijski pravac
+
+- odječak na osi y (*intercept*)
+
+- nagib pravca (*slope*) je iznos za koji se poveća y ako se x poveća za jednu jedinicu
+
+- jednadžba pravca: `y = odsječak + nagib*x`
+
+---
+
+# Procjena nagiba
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/reg1.png")
+```
+<br>
+
+---
+
+# Procjena nagiba
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/reg2.png")
+```
+<br>
+
+---
+
+# Procjena nagiba
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/reg3.png")
+```
+<br>
+
+
+---
+
+# Procjena nagiba
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/reg4.png")
+```
+<br>
+---
+
+# Procjena nagiba
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/reg5.png")
+```
+<br>
+
+---
+
+# Procjena nagiba
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+
+knitr::include_graphics("../Foto/reg6.png")
+```
+<br>
+
+---
+
+# Procijeni model
+
+```{r}
+lm(total_payment_sek ~ n_claims, data = SMID)
+```
+
+---
+
+# Interpretacija koeficijenata
+
+```{r}
+lm(total_payment_sek ~ n_claims, data = SMID)
+```
+
+##### Jednadžba
+
+`total_payment_sek = 19.994 + 3.414*n_claims`
+
+---
+
+class: inverse, center, middle
+name: uni
+
+# Kategorijska zavisna varijabla
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Predviđanje kategorija)
+
+
+---
+
+# Podatci
+
+```{r, echo=FALSE}
+fish <- read.table("http://www.amstat.org/publications/jse/datasets/fishcatch.dat.txt ")
+colnames(fish) <- c("obs","species","mass_g","length_cm","len2","len3"
+                    ,"height.pct","width.pct","sex")
+fish$species <- factor(fish$species, levels = c(1:7), 
+                       labels = c("Common Bream","Whitefish","Roach","Silver Bream"
+                                  ,"Smelt","Pike","Perch"))
+# Do not modify the following code:
+fish <- filter(fish, sex != "NA") %>% select(species,mass_g,length_cm) %>% slice(-1)
+```
+
+```{r}
+head(sample_n(fish,10),10) # pogledaj podatke (detaljan opis podataka u GH repo)
+```
+
+- svaki red se odnosi na jednu ribu
+- uzorak se sastoji od 71 ribe
+- u uzorak ulazi devet vrsta riba
+
+---
+
+# Vizualiziraj podatke
+
+.left-code[
+```{r plot-label3, eval=FALSE}
+ggplot(fish, aes(mass_g)) +
+geom_histogram(bins = 9) +
+facet_wrap(vars(species))  
+```
+]
+
+.right-plot[
+```{r plot-label3-out, ref.label="plot-label3", echo=FALSE, fig.height=4}
+
+```
+]
+
+---
+
+# Deskriptivna statistika
+
+```{r}
+fish %>%
+group_by(species) %>%
+summarize(mean_mass_g = round(mean(mass_g),2))
+```
+
+---
+
+# Regresijski model
+
+```{r}
+lm(mass_g ~ species, data = fish)
+```
+
+---
+
+# Regresijski model bez odsječka
+
+```{r}
+lm(mass_g ~ species + 0, data = fish)
+```
+
+
+---
+
+class: inverse, center, middle
+name: pred
+
+# PREDIKCIJA I ELEMENTI MODELA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Nakon procjene...)
+
+---
+
+# Podatkovni skup o ribama
+
+
+```{r, eval=TRUE}
+# Izaberi samo "Bream" vrstu
+bream <- fish %>%
+filter(str_detect(species,"Bream"))
+head(bream,10)
+```
+
+---
+
+# Vizualiziraj težinu vs. duljinu
+
+.left-code[
+```{r plot-label4, eval=FALSE}
+ggplot(bream, aes(length_cm, mass_g)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE) 
+```
+]
+
+.right-plot[
+```{r plot-label4-out, ref.label="plot-label4", echo=FALSE, fig.height=4}
+
+```
+]
+
+---
+
+# Provedi regresijski model
+
+```{r}
+tezina_vs_visina <- lm(mass_g ~ length_cm, data = bream)
+tezina_vs_visina
+```
+
+---
+
+# Predviđanje 
+
+> Ako postavimo nezavisne varijable na vrijednost xy, koja će biti vrijednost zavisne varijable?
+
+```{r}
+nezavisne_vars <- tibble(length_cm = 20:40)
+```
+
+```{r}
+predict(tezina_vs_visina, nezavisne_vars)
+```
+
+---
+
+# Predviđanje u data.frame objektu
+
+```{r}
+prediction_data <- nezavisne_vars %>%
+mutate(mass_g = predict(tezina_vs_visina, nezavisne_vars))
+prediction_data
+```
+
+
+---
+
+# Vizualiziraj predikcije
+
+
+```{r}
+ggplot(bream, aes(length_cm, mass_g)) + geom_point() + geom_smooth(method =
+"lm"
+, se =
+FALSE
+) + geom_point( data = prediction_data, color =
+"blue"
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

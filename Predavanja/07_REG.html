@@ -185,7 +185,7 @@ summary(model)
 
 
 ```r
-summary(model)$coefficent
+model$coefficent
 ```
 
 ```
@@ -258,7 +258,8 @@ sigma(model)/mean(marketing$sales)
 ---
 
 # Alternativna specifikacija
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Svi prediktori u jednom funkcijskom pozivu
@@ -368,8 +369,7 @@ summarize(correlation = cor(n_claims, total_payment_sek))
 ---
 
 # Osnovna terminologija
-&lt;br&gt;
-&lt;br&gt;
+
 ###### ŽARGON
 &lt;br&gt;
 &lt;br&gt;
@@ -424,6 +424,257 @@ geom_smooth(method = "lm", se = FALSE)
 
 .right-plot[
 &lt;img src="07_REG_files/figure-html/plot-label2-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Regresijski pravac
+
+- odječak na osi y (*intercept*)
+
+- nagib pravca (*slope*) je iznos za koji se poveća y ako se x poveća za jednu jedinicu
+
+- jednadžba pravca: `y = odsječak + nagib*x`
+
+---
+
+# Procjena nagiba
+
+&lt;img src="../Foto/reg1.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+
+---
+
+# Procjena nagiba
+
+&lt;img src="../Foto/reg2.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+
+---
+
+# Procjena nagiba
+
+&lt;img src="../Foto/reg3.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+
+
+---
+
+# Procjena nagiba
+
+&lt;img src="../Foto/reg4.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+---
+
+# Procjena nagiba
+
+&lt;img src="../Foto/reg5.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+
+---
+
+# Procjena nagiba
+
+&lt;img src="../Foto/reg6.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+
+---
+
+# Procijeni model
+
+
+```r
+lm(total_payment_sek ~ n_claims, data = SMID)
+```
+
+```
+## 
+## Call:
+## lm(formula = total_payment_sek ~ n_claims, data = SMID)
+## 
+## Coefficients:
+## (Intercept)     n_claims  
+##      19.994        3.414
+```
+
+---
+
+# Interpretacija koeficijenata
+
+
+```r
+lm(total_payment_sek ~ n_claims, data = SMID)
+```
+
+```
+## 
+## Call:
+## lm(formula = total_payment_sek ~ n_claims, data = SMID)
+## 
+## Coefficients:
+## (Intercept)     n_claims  
+##      19.994        3.414
+```
+
+##### Jednadžba
+
+`total_payment_sek = 19.994 + 3.414*n_claims`
+
+---
+
+class: inverse, center, middle
+name: uni
+
+# Kategorijska zavisna varijabla
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Predviđanje kategorija)
+
+
+---
+
+# Podatci
+
+
+
+
+```r
+head(sample_n(fish,10),10) # pogledaj podatke (detaljan opis podataka u GH repo)
+```
+
+```
+##         species mass_g length_cm
+## 1  Silver Bream     90      16.3
+## 2         Perch    690      34.6
+## 3         Perch   1000      39.8
+## 4         Roach    272      25.0
+## 5          Pike    567      43.2
+## 6         Perch   1000      41.1
+## 7  Common Bream    600      29.4
+## 8     Whitefish    800      33.7
+## 9         Perch    130      19.3
+## 10        Roach    145      20.5
+```
+
+- svaki red se odnosi na jednu ribu
+- uzorak se sastoji od 71 ribe
+- u uzorak ulazi devet vrsta riba
+
+---
+
+# Vizualiziraj podatke
+
+.left-code[
+
+```r
+ggplot(fish, aes(mass_g)) +
+geom_histogram(bins = 9) +
+facet_wrap(vars(species))  
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label3-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Deskriptivna statistika
+
+
+```r
+fish %&gt;%
+group_by(species) %&gt;%
+summarize(mean_mass_g = round(mean(mass_g),2))
+```
+
+```
+## # A tibble: 7 x 2
+##   species      mean_mass_g
+## * &lt;fct&gt;              &lt;dbl&gt;
+## 1 Common Bream       802. 
+## 2 Whitefish          800  
+## 3 Roach              165. 
+## 4 Silver Bream       165. 
+## 5 Smelt               11.2
+## 6 Pike               864. 
+## 7 Perch              581.
+```
+
+---
+
+# Regresijski model
+
+
+```r
+lm(mass_g ~ species, data = fish)
+```
+
+```
+## 
+## Call:
+## lm(formula = mass_g ~ species, data = fish)
+## 
+## Coefficients:
+##         (Intercept)     speciesWhitefish         speciesRoach  
+##              802.50                -2.50              -637.88  
+## speciesSilver Bream         speciesSmelt          speciesPike  
+##             -637.07              -791.32                61.17  
+##        speciesPerch  
+##             -221.94
+```
+
+---
+
+# Regresijski model bez odsječka
+
+
+```r
+lm(mass_g ~ species + 0, data = fish)
+```
+
+```
+## 
+## Call:
+## lm(formula = mass_g ~ species + 0, data = fish)
+## 
+## Coefficients:
+## speciesCommon Bream     speciesWhitefish         speciesRoach  
+##              802.50               800.00               164.62  
+## speciesSilver Bream         speciesSmelt          speciesPike  
+##              165.43                11.18               863.67  
+##        speciesPerch  
+##              580.56
+```
+
+
+---
+
+class: inverse, center, middle
+name: pred
+
+# PREDIKCIJA I ELEMENTI MODELA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Nakon procjene...)
+
+---
+
+# Podatkovni skup o ribama
+
+
+.left-code[
+
+```r
+bream &lt;- fish %&gt;%
+filter(str_detect(species,"Bream"))
+```
+]
+
+.right-plot[
+
 ]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
