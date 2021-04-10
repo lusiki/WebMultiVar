@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MULTIVARIJATNE STATISTIČKE METODE</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="dr.sc. Luka Šikić" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# MULTIVARIJATNE STATISTIČKE METODE
+## Predavanje 7: Multivarijatna regresijska analiza
+### dr.sc. Luka Šikić
+### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
+
+---
+
+
+
+
+
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+&lt;/style&gt;
+
+
+
+# Pregled predavanja
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+
+1. [Praktični primjer](#exemplar)
+
+2. [Univarijatna regresijska analiza](#uni)
+
+2. [Predikcija i elementi modela](#pred)
+
+3. [Kvaliteta procjene](#qual)
+
+3. [Višestruka regresija](#multi)
+
+
+---
+
+class: inverse, center, middle
+name: exemplar
+
+# PRAKTIČNI PRIMJER
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Motivacija)
+
+---
+
+
+# Podatci
+
+
+```r
+# Koristimo "marketing" podatkovni skup iz "datarium" paketa
+library(datarium) # učitaj paket
+```
+
+```
+## Warning: package 'datarium' was built under R version 4.0.5
+```
+
+```r
+data("marketing") # učitaj podatke
+# Podatci se odnose na prodajni efekt ulaganja u promidžbu na youtube, facebook i novinske oglase
+head(marketing,10) # pogledaj podatke 
+```
+
+```
+##    youtube facebook newspaper sales
+## 1   276.12    45.36     83.04 26.52
+## 2    53.40    47.16     54.12 12.48
+## 3    20.64    55.08     83.16 11.16
+## 4   181.80    49.56     70.20 22.20
+## 5   216.96    12.96     70.08 15.48
+## 6    10.44    58.68     90.00  8.64
+## 7    69.00    39.36     28.20 14.16
+## 8   144.24    23.52     13.92 15.84
+## 9    10.32     2.52      1.20  5.76
+## 10  239.76     3.12     25.44 12.72
+```
+
+---
+
+# Model
+&lt;br&gt;
+&lt;br&gt;
+- cilj je procijeniti utjecaj oglašavanja na youtube, fb i novinskih oglasa na prodaju
+&lt;br&gt;
+- procjenjujemo model `sales = b0 + b1*youtube + b2*facebook + b3*newspaper`
+&lt;br&gt;
+
+```r
+# Procijeni model u R
+model &lt;- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+```
+---
+
+# Model
+
+
+```r
+# Rezultati modela
+summary(model)
+```
+
+```
+## 
+## Call:
+## lm(formula = sales ~ youtube + facebook + newspaper, data = marketing)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -10.5932  -1.0690   0.2902   1.4272   3.3951 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.526667   0.374290   9.422   &lt;2e-16 ***
+## youtube      0.045765   0.001395  32.809   &lt;2e-16 ***
+## facebook     0.188530   0.008611  21.893   &lt;2e-16 ***
+## newspaper   -0.001037   0.005871  -0.177     0.86    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.023 on 196 degrees of freedom
+## Multiple R-squared:  0.8972,	Adjusted R-squared:  0.8956 
+## F-statistic: 570.3 on 3 and 196 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+# Interpretacija
+
+
+```r
+summary(model)$coefficent
+```
+
+```
+## NULL
+```
+
+---
+
+# Poboljšanje modela
+
+
+```r
+# izbaci nesignifikantnu varijablu
+model  &lt;- lm(sales ~ youtube + facebook, data = marketing)
+summary(model)
+```
+
+```
+## 
+## Call:
+## lm(formula = sales ~ youtube + facebook, data = marketing)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -10.5572  -1.0502   0.2906   1.4049   3.3994 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.50532    0.35339   9.919   &lt;2e-16 ***
+## youtube      0.04575    0.00139  32.909   &lt;2e-16 ***
+## facebook     0.18799    0.00804  23.382   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.018 on 197 degrees of freedom
+## Multiple R-squared:  0.8972,	Adjusted R-squared:  0.8962 
+## F-statistic: 859.6 on 2 and 197 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+# Kvaliteta modela
+
+
+```r
+confint(model)
+```
+
+```
+##                  2.5 %     97.5 %
+## (Intercept) 2.80841159 4.20222820
+## youtube     0.04301292 0.04849671
+## facebook    0.17213877 0.20384969
+```
+
+##### R-sq
+
+
+##### RSE
+
+
+```r
+sigma(model)/mean(marketing$sales)
+```
+
+```
+## [1] 0.1199045
+```
+
+---
+
+# Alternativna specifikacija
+
+
+```r
+# Svi prediktori u jednom funkcijskom pozivu
+model &lt;- lm(sales ~., data = marketing)
+# Selekcija prediktora; bez varijable newspaper
+model &lt;- lm(sales ~. -newspaper, data = marketing)
+# Također moguće i korištenje sintakse
+model1 &lt;- update(model,  ~. -newspaper)
+```
+
+---
+
+class: inverse, center, middle
+name: uni
+
+# UVIVARIJATNA REGRESIJA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Motivacija)
+
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

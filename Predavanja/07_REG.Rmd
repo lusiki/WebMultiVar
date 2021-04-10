@@ -91,19 +91,101 @@ name: exemplar
 ---
 
 
+# Podatci
+
+```{r}
+# Koristimo "marketing" podatkovni skup iz "datarium" paketa
+library(datarium) # učitaj paket
+data("marketing") # učitaj podatke
+# Podatci se odnose na prodajni efekt ulaganja u promidžbu na youtube, facebook i novinske oglase
+head(marketing,10) # pogledaj podatke 
+```
+
+---
+
+# Model
+<br>
+<br>
+- cilj je procijeniti utjecaj oglašavanja na youtube, fb i novinskih oglasa na prodaju
+<br>
+- procjenjujemo model `sales = b0 + b1*youtube + b2*facebook + b3*newspaper`
+<br>
+```{r}
+# Procijeni model u R
+model <- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+```
+---
+
+# Model
+
+```{r}
+# Rezultati modela
+summary(model)
+```
+
+---
+
+# Interpretacija
+
+```{r}
+summary(model)$coefficent
+```
+
+---
+
+# Poboljšanje modela
+
+```{r}
+# izbaci nesignifikantnu varijablu
+model  <- lm(sales ~ youtube + facebook, data = marketing)
+summary(model)
+```
+
+---
+
+# Kvaliteta modela
+
+```{r}
+confint(model)
+```
+
+##### R-sq
+```{r}
+
+```
+
+##### RSE
+
+```{r}
+sigma(model)/mean(marketing$sales)
+```
+
+---
+
+# Alternativna specifikacija
+
+```{r}
+# Svi prediktori u jednom funkcijskom pozivu
+model <- lm(sales ~., data = marketing)
+# Selekcija prediktora; bez varijable newspaper
+model <- lm(sales ~. -newspaper, data = marketing)
+# Također moguće i korištenje sintakse
+model1 <- update(model,  ~. -newspaper)
+```
+
+---
+
+class: inverse, center, middle
+name: uni
+
+# UVIVARIJATNA REGRESIJA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Motivacija)
 
 
-
-
-
-
-
-
-
-
-
-
-
+---
 
 
 
