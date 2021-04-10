@@ -1194,12 +1194,245 @@ name: exemplar
 
 # Bream vs perch model 
 
+&lt;img src="07_REG_files/figure-html/unnamed-chunk-48-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Koeficijent determinacije
+
+&gt; Označava proporciju varijance u zavisnoj varijabli koja se može objasniti sa nezavisnom varijablom.
+
+- `1` označava savršeni fit
+- `0` označava najgori mogući fit
+
+.tiny[
 
 ```r
-gg1 &lt;- ggplot(perch, aes(length_cm ^ 3, mass_g)) +
-geom_point() +
-geom_smooth(method = "lm", se = FALSE) +
-geom_point(data = prediction_data, color = "blue")
+mdl_bream &lt;- lm(mass_g ~ length_cm, data = bream)
+summary(mdl_bream) # Vidi R-squared
+```
+
+```
+## 
+## Call:
+## lm(formula = mass_g ~ length_cm, data = bream)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -138.180  -44.618   -4.704   33.118  189.605 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -669.918     77.182   -8.68 9.06e-07 ***
+## length_cm     44.188      2.791   15.83 7.08e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 81.96 on 13 degrees of freedom
+## Multiple R-squared:  0.9507,	Adjusted R-squared:  0.9469 
+## F-statistic: 250.6 on 1 and 13 DF,  p-value: 7.081e-10
+```
+]
+
+---
+
+# Alternativni način 
+
+
+```r
+# Pregledaj rezultate modela
+mdl_bream %&gt;%
+glance()
+```
+
+```
+## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.951         0.947  82.0      251. 7.08e-10     1  -86.3  179.  181.
+## # ... with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+
+
+```r
+# Izvuci koeficijent determinacije
+mdl_bream %&gt;%
+glance() %&gt;%
+pull(r.squared)
+```
+
+```
+## [1] 0.9506922
+```
+
+
+
+```r
+# Zapravo se radi o običnom kvadratu korelacijskog koeficijenta :-)
+bream %&gt;%
+summarize(coeff_determination = cor(length_cm, mass_g) ^ 2)
+```
+
+```
+##   coeff_determination
+## 1           0.9506922
+```
+
+
+---
+
+# Rezidualna standardna pogreška (RSE)
+
+&gt; Tipična razlika između predikcije i zavisne varijable.
+
+
+```r
+# Vidi residual standard error
+summary(mdl_bream)
+```
+
+```
+## 
+## Call:
+## lm(formula = mass_g ~ length_cm, data = bream)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -138.180  -44.618   -4.704   33.118  189.605 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -669.918     77.182   -8.68 9.06e-07 ***
+## length_cm     44.188      2.791   15.83 7.08e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 81.96 on 13 degrees of freedom
+## Multiple R-squared:  0.9507,	Adjusted R-squared:  0.9469 
+## F-statistic: 250.6 on 1 and 13 DF,  p-value: 7.081e-10
+```
+
+---
+
+# Rezidualna standardna pogreška (RSE)
+
+
+```r
+mdl_bream %&gt;%
+glance()
+```
+
+```
+## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.951         0.947  82.0      251. 7.08e-10     1  -86.3  179.  181.
+## # ... with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+
+
+```r
+# Izvuci RSE
+mdl_bream %&gt;%
+glance() %&gt;%
+pull(sigma)
+```
+
+```
+## [1] 81.95992
+```
+
+---
+
+# Izračunaj RSE: reziduali ^2
+
+
+```r
+bream %&gt;%
+mutate(residuals_sq = residuals(mdl_bream) ^ 2)
+```
+
+```
+##         species mass_g length_cm residuals_sq
+## 1  Common Bream    600      29.4 8.539381e+02
+## 2  Common Bream    700      30.4 7.069930e+02
+## 3  Common Bream    575      31.3 1.909378e+04
+## 4  Common Bream    725      31.8 1.055648e+02
+## 5  Common Bream   1000      33.5 3.595012e+04
+## 6  Common Bream    920      35.0 1.876841e+03
+## 7  Common Bream    925      36.2 2.212393e+01
+## 8  Common Bream    975      37.4 5.974881e+01
+## 9  Silver Bream     60      14.3 9.608551e+03
+## 10 Silver Bream     90      16.3 1.571832e+03
+## 11 Silver Bream    120      17.5 2.762314e+02
+## 12 Silver Bream    170      19.0 1.139402e-01
+## 13 Silver Bream    145      19.8 3.601584e+03
+## 14 Silver Bream    273      23.0 5.389940e+03
+## 15 Silver Bream    300      24.0 8.209202e+03
+```
+
+
+---
+
+# Izračunaj RSE: zbroji
+
+
+```r
+bream %&gt;%
+mutate(
+residuals_sq = residuals(mdl_bream) ^ 2) %&gt;%
+summarize(resid_sum_of_sq = sum(residuals_sq)
+          )
+```
+
+```
+##   resid_sum_of_sq
+## 1        87326.57
+```
+
+---
+
+# Izračunaj RSE: stupnjevi slobode
+
+&gt; Stupnjevi slobode su broj opservacija minus broj modelskih koeficijenata.
+
+
+```r
+bream %&gt;%
+mutate(
+residuals_sq = residuals(mdl_bream) ^ 2
+) %&gt;%
+summarize(
+resid_sum_of_sq = sum(residuals_sq),
+deg_freedom = n() - 2
+)
+```
+
+```
+##   resid_sum_of_sq deg_freedom
+## 1        87326.57          13
+```
+
+---
+
+# Izračunaj RSE: korijen omjera
+
+
+```r
+bream %&gt;%
+mutate(
+residuals_sq = residuals(mdl_bream) ^ 2
+) %&gt;%
+summarize(
+resid_sum_of_sq = sum(residuals_sq),
+deg_freedom = n() - 2,
+rse = sqrt(resid_sum_of_sq / deg_freedom)
+)
+```
+
+```
+##   resid_sum_of_sq deg_freedom      rse
+## 1        87326.57          13 81.95992
 ```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

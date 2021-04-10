@@ -835,13 +835,152 @@ name: exemplar
 
 # Bream vs perch model 
 
-```{r}
+```{r, echo=FALSE, fig.height=5}
 gg1 <- ggplot(perch, aes(length_cm ^ 3, mass_g)) +
 geom_point() +
 geom_smooth(method = "lm", se = FALSE) +
-geom_point(data = prediction_data, color = "blue")
+geom_point(data = prediction_data, color = "blue") +
+ggtitle("Perch")
+
+gg2 <- ggplot(perch, aes(length_cm, mass_g)) +
+geom_point() +
+geom_smooth(method = "lm", se = FALSE) +
+geom_point(data = prediction_data, color = "blue")+
+ggtitle("Bream")
+
+library(gridExtra)
+grid.arrange(gg1, gg2, ncol = 2)   
 
 ```
+
+---
+
+# Koeficijent determinacije
+
+> Označava proporciju varijance u zavisnoj varijabli koja se može objasniti sa nezavisnom varijablom.
+
+- `1` označava savršeni fit
+- `0` označava najgori mogući fit
+
+.tiny[
+```{r}
+mdl_bream <- lm(mass_g ~ length_cm, data = bream)
+summary(mdl_bream) # Vidi R-squared
+```
+]
+
+---
+
+# Alternativni način 
+
+```{r}
+# Pregledaj rezultate modela
+mdl_bream %>%
+glance()
+```
+
+```{r}
+# Izvuci koeficijent determinacije
+mdl_bream %>%
+glance() %>%
+pull(r.squared)
+```
+
+
+```{r}
+# Zapravo se radi o običnom kvadratu korelacijskog koeficijenta :-)
+bream %>%
+summarize(coeff_determination = cor(length_cm, mass_g) ^ 2)
+```
+
+
+---
+
+# Rezidualna standardna pogreška (RSE)
+
+> Tipična razlika između predikcije i zavisne varijable.
+
+```{r}
+# Vidi residual standard error
+summary(mdl_bream)
+```
+
+---
+
+# Rezidualna standardna pogreška (RSE)
+
+```{r}
+mdl_bream %>%
+glance()
+```
+
+```{r}
+# Izvuci RSE
+mdl_bream %>%
+glance() %>%
+pull(sigma)
+```
+
+---
+
+# Izračunaj RSE: reziduali ^2
+
+```{r}
+bream %>%
+mutate(residuals_sq = residuals(mdl_bream) ^ 2)
+```
+
+
+---
+
+# Izračunaj RSE: zbroji
+
+```{r}
+bream %>%
+mutate(
+residuals_sq = residuals(mdl_bream) ^ 2) %>%
+summarize(resid_sum_of_sq = sum(residuals_sq)
+          )
+```
+
+---
+
+# Izračunaj RSE: stupnjevi slobode
+
+> Stupnjevi slobode su broj opservacija minus broj modelskih koeficijenata.
+
+```{r}
+bream %>%
+mutate(
+residuals_sq = residuals(mdl_bream) ^ 2
+) %>%
+summarize(
+resid_sum_of_sq = sum(residuals_sq),
+deg_freedom = n() - 2
+)
+```
+
+---
+
+# Izračunaj RSE: korijen omjera
+
+```{r}
+bream %>%
+mutate(
+residuals_sq = residuals(mdl_bream) ^ 2
+) %>%
+summarize(
+resid_sum_of_sq = sum(residuals_sq),
+deg_freedom = n() - 2,
+rse = sqrt(resid_sum_of_sq / deg_freedom)
+)
+```
+
+
+
+
+
+
 
 
 
