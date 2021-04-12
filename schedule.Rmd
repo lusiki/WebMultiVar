@@ -127,11 +127,26 @@ title: " "
 <br>
 
 
-### Predavanje 07: Diskriminantna analiza
+### Predavanje 07: Multivarijatna regresijska analiza
+
+- Praktični primjer
+
+- Univarijatna regresijska analiza
+
+- Predikcija i elementi modela
+
+- Kvaliteta procjene
+
+- Višestruka regresija
 
 
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/07_REG.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/07_REG.Rmd) 
+<br>
+**Čitanje:** []() + [Predavanje iz Primjenjene statistike godine](https://raw.githack.com/lusiki/WebStatistika/main/Moduli/11_REG.html) + []()
+<br>
+<br>
 
-### Predavanje 08: Multivarijatna regresijska analiza
+### Predavanje 08: Diskriminantna analiza 
 
 
 

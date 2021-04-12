@@ -26,7 +26,7 @@ navbar:
         - text: "Klaster analiza"
           href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/06_KLASTER.html"
         - text: "Multivarijatna regresijska analiza"
-          href: ""
+          href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/07_REG.html"
         - text: "Diskriminantna analiza"
           href: ""
         - text: "Analiza panel podataka"
