@@ -1511,6 +1511,128 @@ ggtitle("Odnos duljine i težine")
 ```
 ]
 
+
+---
+
+# Više od dvije nezavisne varijable
+
+.left-code[
+```{r plot-label20, eval=FALSE}
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+facet_wrap(vars(species)) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+```{r plot-label20-out, ref.label="plot-label20", echo=FALSE, fig.height=5}
+```
+]
+
+---
+
+# Interakcijske mogućnosti
+
+###### Bez interakcija
+
+```{r, eval=FALSE}
+lm(mass_g ~ length_cm + height_cm + species + 0, data = fish)
+```
+
+###### Dvosmjerna interakcija
+
+```{r, eval=FALSE}
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + 0,
+data = fish)
+```
+
+###### Trosmjerna interakcija
+
+```{r, eval=FALSE}
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + length_cm:height_cm:species + 0,
+data = fish)
+```
+---
+
+# Interakcijske mogućnosti (*nastavak*)
+
+###### Sve interakcije
+
+```{r, eval=FALSE}
+# Jedna mogućnost
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + length_cm:height_cm:species + 0,
+data = fish)
+```
+
+```{r, eval=FALSE}
+# Druga mogućnost
+lm(mass_g ~ length_cm * height_cm * species + 0,
+data = fish)
+```
+
+---
+
+# Interakcijske mogućnosti (*nastavak*)
+
+###### Dvostruke interakcije
+
+```{r, eval=FALSE}
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + 0,
+data = fish)
+```
+
+```{r, eval=FALSE}
+lm(mass_g ~ (length_cm + height_cm + species) ^ 2 + 0,
+data = fish)
+```
+
+
+```{r, eval=FALSE}
+lm(mass_g ~ I(length_cm) ^ 2 + height_cm + species + 0,
+data = fish)
+```
+
+---
+
+# Predviđanje
+
+```{r}
+# Procijeni model
+mdl_mass_vs_all <- lm(mass_g ~ length_cm * height_cm * species * 0, data = fish)
+# Napravi podatke za predikciju
+explanatory_data <- expand_grid(length_cm = seq(5, 60, 6),
+height_cm = seq(2, 20, 2),
+species = unique(fish$species))
+# Provedi predikciju
+prediction_data <- explanatory_data %>%
+mutate(mass_g = predict(mdl_mass_vs_all, explanatory_data))
+```
+
+---
+
+# Vizualizacija predikcije
+
+.left-code[
+```{r plot-label21, eval=FALSE}
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+facet_wrap(vars(species)) +
+geom_point(
+data = prediction_data,
+size = 3, shape = 15) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+```{r plot-label21-out, ref.label="plot-label21", echo=FALSE, fig.height=5}
+```
+]
+
+
 ---
 
 class: inverse, center, middle

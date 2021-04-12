@@ -1908,6 +1908,380 @@ name: exemplar
 
 ---
 
+# Pregledaj podatke
+
+
+```r
+head(sample_n(fish,10),12)
+```
+
+```
+##         species mass_g length_cm height_cm
+## 1  Common Bream 1000.0      33.5      44.5
+## 2         Perch 1000.0      39.8      26.4
+## 3         Perch  300.0      25.2      29.0
+## 4  Common Bream  725.0      31.8      40.0
+## 5         Smelt    6.7       9.3      16.1
+## 6         Smelt   12.2      12.1      16.5
+## 7         Roach  110.0      19.1      26.7
+## 8         Perch  260.0      25.4      24.8
+## 9         Perch 1000.0      41.1      26.8
+## 10        Perch 1015.0      37.0      29.2
+```
+
+---
+
+# 3D vizualizacija 
+
+.left-code[
+
+```r
+library(plot3D)
+scatter3D(fish$length_cm, fish$height_cm, fish$mass_g)
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label15-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# 2D vizualizacija 
+
+.left-code[
+
+```r
+ggplot(fish,
+aes(length_cm, height_cm, color = mass_g)) +
+geom_point() + 
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label16-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# 2D vizualizacija (*poboljšano*)
+
+.left-code[
+
+```r
+ggplot(fish,
+aes(length_cm, height_cm, color = mass_g)) +
+geom_point() + 
+scale_color_viridis_c(option = "inferno") +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label17-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Regresijski model (*2 varijable*)
+
+
+```r
+mdl_mass_vs_both &lt;- lm(mass_g ~ length_cm + height_cm, data = fish)
+mdl_mass_vs_both
+```
+
+```
+## 
+## Call:
+## lm(formula = mass_g ~ length_cm + height_cm, data = fish)
+## 
+## Coefficients:
+## (Intercept)    length_cm    height_cm  
+##     -558.59        33.64         4.18
+```
+
+---
+
+# Predviđanje
+
+.pull-left[
+
+```r
+explanatory_data &lt;- expand_grid(
+length_cm = seq(5, 60, 5),
+height_cm = seq(2, 20, 2))
+
+head(explanatory_data,4)
+```
+
+```
+## # A tibble: 4 x 2
+##   length_cm height_cm
+##       &lt;dbl&gt;     &lt;dbl&gt;
+## 1         5         2
+## 2         5         4
+## 3         5         6
+## 4         5         8
+```
+]
+
+.pull-right[
+
+```r
+prediction_data &lt;- explanatory_data %&gt;%
+mutate(mass_g = predict(mdl_mass_vs_both, explanatory_data))
+
+head(prediction_data,4)
+```
+
+```
+## # A tibble: 4 x 3
+##   length_cm height_cm mass_g
+##       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+## 1         5         2  -382.
+## 2         5         4  -374.
+## 3         5         6  -365.
+## 4         5         8  -357.
+```
+]
+
+---
+
+# Vizaliziraj predikciju
+
+.left-code[
+
+```r
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+geom_point(data = prediction_data, shape = 15, size = 3) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label18-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Uključi interakciju varijabli
+
+
+```r
+mdl_mass_vs_both_inter &lt;- lm(mass_g ~ length_cm * height_cm, data = fish)
+mdl_mass_vs_both_inter
+```
+
+```
+## 
+## Call:
+## lm(formula = mass_g ~ length_cm * height_cm, data = fish)
+## 
+## Coefficients:
+##         (Intercept)            length_cm            height_cm  
+##            -54.0334              14.6141             -20.0871  
+## length_cm:height_cm  
+##              0.8967
+```
+
+---
+
+# Predviđanje 
+
+
+.pull-left[
+
+```r
+explanatory_data &lt;- expand_grid(
+length_cm = seq(5, 60, 5),
+height_cm = seq(2, 20, 2))
+
+head(explanatory_data,4)
+```
+
+```
+## # A tibble: 4 x 2
+##   length_cm height_cm
+##       &lt;dbl&gt;     &lt;dbl&gt;
+## 1         5         2
+## 2         5         4
+## 3         5         6
+## 4         5         8
+```
+]
+
+.pull-right[
+
+```r
+prediction_data &lt;- explanatory_data %&gt;%
+mutate(mass_g = predict(mdl_mass_vs_both_inter, explanatory_data))
+
+head(prediction_data,4)
+```
+
+```
+## # A tibble: 4 x 3
+##   length_cm height_cm mass_g
+##       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+## 1         5         2  -12.2
+## 2         5         4  -43.4
+## 3         5         6  -74.6
+## 4         5         8 -106.
+```
+]
+
+---
+
+# Vizaliziraj predikciju
+
+.left-code[
+
+```r
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+geom_point(data = prediction_data, shape = 15, size = 3) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label19-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Više od dvije nezavisne varijable
+
+.left-code[
+
+```r
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+facet_wrap(vars(species)) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label20-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Interakcijske mogućnosti
+
+###### Bez interakcija
+
+
+```r
+lm(mass_g ~ length_cm + height_cm + species + 0, data = fish)
+```
+
+###### Dvosmjerna interakcija
+
+
+```r
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + 0,
+data = fish)
+```
+
+###### Trosmjerna interakcija
+
+
+```r
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + length_cm:height_cm:species + 0,
+data = fish)
+```
+---
+
+# Interakcijske mogućnosti (*nastavak*)
+
+###### Sve interakcije
+
+
+```r
+# Jedna mogućnost
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + length_cm:height_cm:species + 0,
+data = fish)
+```
+
+
+```r
+# Druga mogućnost
+lm(mass_g ~ length_cm * height_cm * species + 0,
+data = fish)
+```
+
+---
+
+# Interakcijske mogućnosti (*nastavak*)
+
+###### Dvostruke interakcije
+
+
+```r
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + 0,
+data = fish)
+```
+
+
+```r
+lm(mass_g ~ (length_cm + height_cm + species) ^ 2 + 0,
+data = fish)
+```
+
+
+
+```r
+lm(mass_g ~ I(length_cm) ^ 2 + height_cm + species + 0,
+data = fish)
+```
+
+---
+
+# Predviđanje
+
+
+```r
+# Procijeni model
+mdl_mass_vs_all &lt;- lm(mass_g ~ length_cm * height_cm * species * 0, data = fish)
+# Napravi podatke za predikciju
+explanatory_data &lt;- expand_grid(length_cm = seq(5, 60, 6),
+height_cm = seq(2, 20, 2),
+species = unique(fish$species))
+# Provedi predikciju
+prediction_data &lt;- explanatory_data %&gt;%
+mutate(mass_g = predict(mdl_mass_vs_all, explanatory_data))
+```
+
+---
+
+# Vizualizacija predikcije
+
+.left-code[
+
+```r
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+facet_wrap(vars(species)) +
+geom_point(
+data = prediction_data,
+size = 3, shape = 15) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label21-out-1.png" style="display: block; margin: auto;" /&gt;
+]
 
 
 ---
