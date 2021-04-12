@@ -462,12 +462,12 @@ class: inverse, center, middle
 ```{r, echo=FALSE}
 fish <- read.table("http://www.amstat.org/publications/jse/datasets/fishcatch.dat.txt ")
 colnames(fish) <- c("obs","species","mass_g","length_cm","len2","len3"
-                    ,"height.pct","width.pct","sex")
+                    ,"height_cm","width.pct","sex")
 fish$species <- factor(fish$species, levels = c(1:7), 
                        labels = c("Common Bream","Whitefish","Roach","Silver Bream"
                                   ,"Smelt","Pike","Perch"))
 # Do not modify the following code:
-fish <- filter(fish, sex != "NA") %>% select(species,mass_g,length_cm) %>% slice(-1)
+fish <- filter(fish, sex != "NA") %>% select(species,mass_g,length_cm,height_cm) %>% slice(-1)
 ```
 
 ```{r}
@@ -1349,7 +1349,167 @@ name: exemplar
 
 ---
 
+# Pregledaj podatke
 
+```{r}
+head(sample_n(fish,10),12)
+```
+
+---
+
+# 3D vizualizacija 
+
+.left-code[
+```{r plot-label15, eval=FALSE}
+library(plot3D)
+scatter3D(fish$length_cm, fish$height_cm, fish$mass_g)
+```
+]
+
+.right-plot[
+```{r plot-label15-out, ref.label="plot-label15", echo=FALSE, fig.height=5}
+```
+]
+
+---
+
+# 2D vizualizacija 
+
+.left-code[
+```{r plot-label16, eval=FALSE}
+ggplot(fish,
+aes(length_cm, height_cm, color = mass_g)) +
+geom_point() + 
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+```{r plot-label16-out, ref.label="plot-label16", echo=FALSE, fig.height=5}
+```
+]
+
+---
+
+# 2D vizualizacija (*poboljšano*)
+
+.left-code[
+```{r plot-label17, eval=FALSE}
+ggplot(fish,
+aes(length_cm, height_cm, color = mass_g)) +
+geom_point() + 
+scale_color_viridis_c(option = "inferno") +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+```{r plot-label17-out, ref.label="plot-label17", echo=FALSE, fig.height=5}
+```
+]
+
+---
+
+# Regresijski model (*2 varijable*)
+
+```{r}
+mdl_mass_vs_both <- lm(mass_g ~ length_cm + height_cm, data = fish)
+mdl_mass_vs_both
+```
+
+---
+
+# Predviđanje
+
+.pull-left[
+```{r}
+explanatory_data <- expand_grid(
+length_cm = seq(5, 60, 5),
+height_cm = seq(2, 20, 2))
+
+head(explanatory_data,4)
+```
+]
+
+.pull-right[
+```{r}
+prediction_data <- explanatory_data %>%
+mutate(mass_g = predict(mdl_mass_vs_both, explanatory_data))
+
+head(prediction_data,4)
+```
+]
+
+---
+
+# Vizaliziraj predikciju
+
+.left-code[
+```{r plot-label18, eval=FALSE}
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+geom_point(data = prediction_data, shape = 15, size = 3) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+```{r plot-label18-out, ref.label="plot-label18", echo=FALSE, fig.height=5}
+```
+]
+
+---
+
+# Uključi interakciju varijabli
+
+```{r}
+mdl_mass_vs_both_inter <- lm(mass_g ~ length_cm * height_cm, data = fish)
+mdl_mass_vs_both_inter
+```
+
+---
+
+# Predviđanje 
+
+
+.pull-left[
+```{r}
+explanatory_data <- expand_grid(
+length_cm = seq(5, 60, 5),
+height_cm = seq(2, 20, 2))
+
+head(explanatory_data,4)
+```
+]
+
+.pull-right[
+```{r}
+prediction_data <- explanatory_data %>%
+mutate(mass_g = predict(mdl_mass_vs_both_inter, explanatory_data))
+
+head(prediction_data,4)
+```
+]
+
+---
+
+# Vizaliziraj predikciju
+
+.left-code[
+```{r plot-label19, eval=FALSE}
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+geom_point(data = prediction_data, shape = 15, size = 3) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+```{r plot-label19-out, ref.label="plot-label19", echo=FALSE, fig.height=5}
+```
+]
 
 ---
 
