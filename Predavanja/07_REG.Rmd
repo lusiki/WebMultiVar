@@ -268,8 +268,8 @@ summarize(correlation = cor(n_claims, total_payment_sek))
 # Što je regresija?
 <br>
 <br>
-> statistički model koji objašnjava odnos između zavisne i nezavisne varijable
-> uz danu vrijednost nezavisne varijable, kolika je vrijednsot zavisne?
+> Statistički model koji objašnjava odnos između zavisne i nezavisne varijable.
+> Uz danu vrijednost nezavisne varijable, kolika je vrijednost zavisne varijable?
 
 <br>
 <br>
@@ -293,9 +293,10 @@ tribble(~n_claims, ~total_payment_sel,
 - **eksplanatorna** varijabla ili nazavisna je ona koja objašnjava promjenu u zavisnoj
 <br>
 <br>
+
 ###### DEFINICIJE
 
-- Linearna regresija: zavisna varijabla je numenrička
+- Linearna regresija: zavisna varijabla je numerička
 - Logistička regresija: zavisna varijabla je logička (0,1)
 - Univarijatna regresija: samo jedna nezavisna varijabla
 - MUltivarijatna regresija: više zavisnih varijabli
