@@ -105,11 +105,11 @@ library(dplyr)
 
 2. [Univarijatna regresijska analiza](#uni)
 
-2. [Predikcija i elementi modela](#pred)
+3. [Predikcija i elementi modela](#pred)
 
-3. [Kvaliteta procjene](#qual)
+4. [Kvaliteta procjene](#qual)
 
-3. [Višestruka regresija](#multi)
+5. [Višestruka regresija](#multi)
 
 
 ---
