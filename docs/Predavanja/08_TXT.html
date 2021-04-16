@@ -101,16 +101,15 @@ name: mani
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
 
-(*Podrška* za analizu sadržaja)
+(*Podrška* za analizu teksta)
 
 ---
 
-
-# Software podrška (paketi)
+# Software podrška (*paketi*)
+&lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/txt1.png" width="500px" style="display: block; margin: auto;" /&gt;
-
 
 ---
 
@@ -175,6 +174,11 @@ summarize(stars_mean = mean(Stars))
 ## 2 iRobot Roomba 880 for Pets and Allergies       4.42
 ```
 
+---
+
+# Pregled podataka
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # nestrukturirani podatci
@@ -243,6 +247,7 @@ recenzije_Dta %&gt;%
 ## 2 iRobot Roomba 880 for Pets and Allergies        1200
 ```
 
+
 ```r
 # count()
 recenzije_Dta %&gt;%
@@ -256,7 +261,11 @@ count(Product)
 ## 1 iRobot Roomba 650 for Pets                 633
 ## 2 iRobot Roomba 880 for Pets and Allergies  1200
 ```
+---
 
+# Pregled podataka 
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 recenzije_Dta %&gt;%
@@ -277,7 +286,7 @@ recenzije_Dta %&gt;%
 # tidytext paket
 &lt;br&gt;
 &lt;br&gt;
-&lt;img src="../Foto/txt2.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;img src="../Foto/txt2.png" width="380px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -353,12 +362,12 @@ arrange(desc(n))
 # anti_join()
 &lt;br&gt;
 &lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/txt3.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # anti_join()
-&lt;br&gt;
 &lt;br&gt;
 
 
@@ -413,10 +422,9 @@ head(stop_words,12)
 ## 12 again       SMART
 ```
 
-
 ---
 
-# Pobroji riječi (drugi put)
+# Pobroji riječi (*ponovno*)
 
 
 ```r
@@ -441,6 +449,978 @@ arrange(desc(n))
 ## 10 floor      561
 ## # ... with 9,662 more rows
 ```
+
+---
+
+class: inverse, center, middle
+name: viz
+
+# VIZALIZACIJA TEKSTA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Pregled tekstualnih podataka)
+
+---
+
+# Uredi podatke za prikaz
+
+
+```r
+tidy_review &lt;- recenzije_Dta %&gt;%
+mutate(id = row_number()) %&gt;%
+unnest_tokens(word, Review) %&gt;%
+anti_join(stop_words)
+head(tidy_review,8)
+```
+
+```
+## # A tibble: 8 x 6
+##   Date     Product                    Stars Title               id word   
+##   &lt;chr&gt;    &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;  
+## 1 1/12/15  iRobot Roomba 650 for Pets     4 Four Stars           2 walk   
+## 2 1/12/15  iRobot Roomba 650 for Pets     4 Four Stars           2 rest   
+## 3 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 roomba 
+## 4 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 proof  
+## 5 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 house  
+## 6 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 awesome
+## 7 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 pet    
+## 8 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 cleans
+```
+
+---
+
+# Histogram
+
+
+```r
+word_counts &lt;- tidy_review %&gt;%
+count(word) %&gt;%
+arrange(desc(n)) %&gt;%
+filter(n&lt;2000)
+ggplot(word_counts, aes(x = word, y = n)) +
+geom_col()
+```
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Filtriraj
+
+
+```r
+word_counts2 &lt;- tidy_review %&gt;%
+count(word) %&gt;%
+filter(n &gt; 300) %&gt;%
+arrange(desc(n)) 
+head(word_counts2,8)
+```
+
+```
+## # A tibble: 8 x 2
+##   word         n
+##   &lt;chr&gt;    &lt;int&gt;
+## 1 roomba    2286
+## 2 clean     1204
+## 3 vacuum     989
+## 4 hair       900
+## 5 cleaning   809
+## 6 time       795
+## 7 house      745
+## 8 floors     657
+```
+
+---
+
+# Vizualizacija
+
+
+```r
+# zakreni osi pomoću coord_flip()
+ggplot(word_counts2, aes(x = word, y = n)) +
+geom_col() +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Stop riječi
+
+.pull-left[
+
+```r
+# default stop riječi
+head(stop_words,8)
+```
+
+```
+## # A tibble: 8 x 2
+##   word        lexicon
+##   &lt;chr&gt;       &lt;chr&gt;  
+## 1 a           SMART  
+## 2 a's         SMART  
+## 3 able        SMART  
+## 4 about       SMART  
+## 5 above       SMART  
+## 6 according   SMART  
+## 7 accordingly SMART  
+## 8 across      SMART
+```
+]
+
+.pull-right[
+
+```r
+# dodaj custom stop riječi
+tribble(
+~word, ~lexicon,
+"roomba", "CUSTOM",
+"2", "CUSTOM"
+)
+```
+
+```
+## # A tibble: 2 x 2
+##   word   lexicon
+##   &lt;chr&gt;  &lt;chr&gt;  
+## 1 roomba CUSTOM 
+## 2 2      CUSTOM
+```
+]
+
+---
+
+# Stop riječi
+
+
+```r
+custom_stop_words &lt;- tribble(
+~word, ~lexicon,
+"roomba", "CUSTOM",
+"2", "CUSTOM"
+)
+stop_words2 &lt;- stop_words %&gt;%
+bind_rows(custom_stop_words)
+```
+
+
+```r
+# Ukloni sve stop riječi
+tidy_review &lt;- recenzije_Dta %&gt;%
+mutate(id = row_number()) %&gt;%
+select(id, Date, Product, Stars, Review) %&gt;%
+unnest_tokens(word, Review) %&gt;%
+anti_join(stop_words2)
+tidy_review %&gt;%
+filter(word == "roomba")
+```
+
+```
+## # A tibble: 0 x 5
+## # ... with 5 variables: id &lt;int&gt;, Date &lt;chr&gt;, Product &lt;chr&gt;, Stars &lt;dbl&gt;,
+## #   word &lt;chr&gt;
+```
+
+---
+
+# Poboljšaj grafikon
+
+
+```r
+# prvo koristi fct_reorder funkcija
+word_counts &lt;- tidy_review %&gt;%
+count(word) %&gt;%
+filter(n &gt; 300) %&gt;%
+mutate(word2 = fct_reorder(word, n))
+head(word_counts,8)
+```
+
+```
+## # A tibble: 8 x 3
+##   word         n word2   
+##   &lt;chr&gt;    &lt;int&gt; &lt;fct&gt;   
+## 1 880        525 880     
+## 2 bin        428 bin     
+## 3 carpet     368 carpet  
+## 4 clean     1204 clean   
+## 5 cleaning   809 cleaning
+## 6 day        578 day     
+## 7 dirt       384 dirt    
+## 8 dog        407 dog
+```
+
+---
+
+# Poboljšaj grafikon
+
+
+```r
+ggplot(word_counts, aes(x = word2, y = n)) +
+geom_col() +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Facet grafikoni
+
+
+```r
+tidy_review %&gt;%
+count(word, Product) %&gt;%
+arrange(desc(n))
+```
+
+```
+## # A tibble: 12,719 x 3
+##    word     Product                                      n
+##    &lt;chr&gt;    &lt;chr&gt;                                    &lt;int&gt;
+##  1 clean    iRobot Roomba 880 for Pets and Allergies   815
+##  2 vacuum   iRobot Roomba 880 for Pets and Allergies   678
+##  3 hair     iRobot Roomba 880 for Pets and Allergies   595
+##  4 cleaning iRobot Roomba 880 for Pets and Allergies   560
+##  5 880      iRobot Roomba 880 for Pets and Allergies   518
+##  6 house    iRobot Roomba 880 for Pets and Allergies   494
+##  7 time     iRobot Roomba 880 for Pets and Allergies   494
+##  8 floors   iRobot Roomba 880 for Pets and Allergies   405
+##  9 love     iRobot Roomba 880 for Pets and Allergies   403
+## 10 dust     iRobot Roomba 880 for Pets and Allergies   399
+## # ... with 12,709 more rows
+```
+
+---
+
+# Priprema za facet grafikon
+
+
+```r
+tidy_review %&gt;%
+count(word, Product) %&gt;%
+group_by(Product) %&gt;%
+top_n(5, n)
+```
+
+```
+## # A tibble: 10 x 3
+## # Groups:   Product [2]
+##    word     Product                                      n
+##    &lt;chr&gt;    &lt;chr&gt;                                    &lt;int&gt;
+##  1 880      iRobot Roomba 880 for Pets and Allergies   518
+##  2 clean    iRobot Roomba 650 for Pets                 389
+##  3 clean    iRobot Roomba 880 for Pets and Allergies   815
+##  4 cleaning iRobot Roomba 880 for Pets and Allergies   560
+##  5 floors   iRobot Roomba 650 for Pets                 252
+##  6 hair     iRobot Roomba 650 for Pets                 305
+##  7 hair     iRobot Roomba 880 for Pets and Allergies   595
+##  8 time     iRobot Roomba 650 for Pets                 301
+##  9 vacuum   iRobot Roomba 650 for Pets                 311
+## 10 vacuum   iRobot Roomba 880 for Pets and Allergies   678
+```
+
+---
+
+# Priprema za facet grafikon
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+word_counts &lt;- tidy_review %&gt;%
+count(word, Product) %&gt;%
+group_by(Product) %&gt;%
+top_n(10, n) %&gt;%
+ungroup() %&gt;%
+mutate(word2 = fct_reorder(word, n))
+```
+
+
+```r
+gg &lt;- ggplot(word_counts, aes(x = word2, y = n, fill = Product)) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~Product, scales = "free_y") +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+---
+
+# Facet grafikon
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Oblak riječi (*WordCloud*)
+&lt;br&gt;
+&lt;br&gt;
+.left-code[
+
+```r
+library(wordcloud)
+word_counts &lt;- tidy_review %&gt;% count(word)
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 30)
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Oblak riječi (*WordCloud*)
+&lt;br&gt;
+&lt;br&gt;
+.left-code[
+
+```r
+# Više riječi
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 70
+)
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label1-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Oblak riječi (*WordCloud*)
+&lt;br&gt;
+&lt;br&gt;
+.left-code[
+
+```r
+# Boja
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 30,
+colors = "blue"
+)
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label2-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+class: inverse, center, middle
+name: sent
+
+# ANALIZA SENTIMENTA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Sve ovisi o riječnicima)
+
+---
+
+# Dohvati riječnike sentimenta
+
+
+```r
+get_sentiments("bing")
+```
+
+```
+## # A tibble: 6,786 x 2
+##    word        sentiment
+##    &lt;chr&gt;       &lt;chr&gt;    
+##  1 2-faces     negative 
+##  2 abnormal    negative 
+##  3 abolish     negative 
+##  4 abominable  negative 
+##  5 abominably  negative 
+##  6 abominate   negative 
+##  7 abomination negative 
+##  8 abort       negative 
+##  9 aborted     negative 
+## 10 aborts      negative 
+## # ... with 6,776 more rows
+```
+
+---
+
+# Pregledaj riječnik
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+get_sentiments("bing") %&gt;%
+  count(sentiment)
+```
+
+```
+## # A tibble: 2 x 2
+##   sentiment     n
+## * &lt;chr&gt;     &lt;int&gt;
+## 1 negative   4781
+## 2 positive   2005
+```
+---
+
+# Dohvati drugi riječnik
+
+
+```r
+library(textdata)
+get_sentiments("afinn")
+```
+
+```
+## # A tibble: 2,477 x 2
+##    word       value
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 abandon       -2
+##  2 abandoned     -2
+##  3 abandons      -2
+##  4 abducted      -2
+##  5 abduction     -2
+##  6 abductions    -2
+##  7 abhor         -3
+##  8 abhorred      -3
+##  9 abhorrent     -3
+## 10 abhors        -3
+## # ... with 2,467 more rows
+```
+
+---
+
+# Pregledaj riječnik
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+get_sentiments("afinn") %&gt;%
+  summarize( min = min(value), max = max(value) )
+```
+
+```
+## # A tibble: 1 x 2
+##     min   max
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1    -5     5
+```
+
+---
+
+# Dohvati treći riječnik
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+sentiment_counts &lt;- get_sentiments("loughran") %&gt;%
+count(sentiment) %&gt;%
+mutate(sentiment2 = fct_reorder(sentiment, n))
+gg2 &lt;- ggplot(sentiment_counts, aes(x = sentiment2, y = n)) +
+geom_col() +
+coord_flip() +
+labs(title = "Sentiment Counts in Loughran",
+         x = "Counts",
+         y = "Sentiment")
+```
+
+---
+
+# Vizualni pregled riječnika
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Spoji riječnik i podatke
+
+
+```r
+tidy_review %&gt;%
+inner_join(get_sentiments("loughran"))
+```
+
+```
+## # A tibble: 3,960 x 6
+##       id Date     Product                    Stars word      sentiment  
+##    &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;      
+##  1     5 12/22/15 iRobot Roomba 650 for Pets     5 slow      negative   
+##  2     5 12/22/15 iRobot Roomba 650 for Pets     5 easily    positive   
+##  3     5 12/22/15 iRobot Roomba 650 for Pets     5 random    uncertainty
+##  4     5 12/22/15 iRobot Roomba 650 for Pets     5 easy      positive   
+##  5     5 12/22/15 iRobot Roomba 650 for Pets     5 easy      positive   
+##  6     5 12/22/15 iRobot Roomba 650 for Pets     5 easy      positive   
+##  7     6 12/27/15 iRobot Roomba 650 for Pets     5 invention positive   
+##  8     7 8/17/15  iRobot Roomba 650 for Pets     1 damage    negative   
+##  9     7 8/17/15  iRobot Roomba 650 for Pets     1 damage    negative   
+## 10     7 8/17/15  iRobot Roomba 650 for Pets     1 justice   litigious  
+## # ... with 3,950 more rows
+```
+
+---
+
+# Pregled spojenih podataka
+&lt;br&gt;
+
+```r
+sentiment_review &lt;- tidy_review %&gt;%
+inner_join(get_sentiments("loughran"))
+sentiment_review %&gt;%
+count(sentiment)
+```
+
+```
+## # A tibble: 6 x 2
+##   sentiment        n
+## * &lt;chr&gt;        &lt;int&gt;
+## 1 constraining   170
+## 2 litigious       53
+## 3 negative      1795
+## 4 positive      1568
+## 5 superfluous      1
+## 6 uncertainty    373
+```
+
+---
+
+# Pregled spojenih podataka
+
+
+```r
+sentiment_review %&gt;% 
+  count(word, sentiment) %&gt;%
+  arrange(desc(n))
+```
+
+```
+## # A tibble: 598 x 3
+##    word      sentiment       n
+##    &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;
+##  1 easy      positive      297
+##  2 happy     positive      107
+##  3 easier    positive       97
+##  4 easily    positive       92
+##  5 perfect   positive       87
+##  6 random    uncertainty    81
+##  7 impressed positive       77
+##  8 excellent positive       58
+##  9 trouble   negative       58
+## 10 fantastic positive       56
+## # ... with 588 more rows
+```
+
+
+---
+
+# Vizualizacija sentimenta
+&lt;br&gt;
+
+```r
+sentiment_review2 &lt;- sentiment_review %&gt;%
+filter(sentiment %in% c("positive", "negative"))
+word_counts &lt;- sentiment_review2 %&gt;%
+count(word, sentiment) %&gt;%
+group_by(sentiment) %&gt;%
+top_n(10, n) %&gt;%
+ungroup() %&gt;%
+mutate(word2 = fct_reorder(word, n))
+```
+
+
+```r
+gg3 &lt;- ggplot(word_counts, aes(x = word2, y = n, fill = sentiment)) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ sentiment, scales = "free") +
+coord_flip() +
+labs(title = "Sentiment Word Counts",
+         x = "Words")
+```
+
+---
+
+# Vizualizacija sentimenta
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-46-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Izračunaj sentiment prema rangu
+
+
+```r
+tidy_review %&gt;%
+inner_join(get_sentiments("bing")) %&gt;%
+count(Stars, sentiment)
+```
+
+```
+## # A tibble: 10 x 3
+##    Stars sentiment     n
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;int&gt;
+##  1     1 negative    381
+##  2     1 positive    241
+##  3     2 negative    384
+##  4     2 positive    247
+##  5     3 negative    485
+##  6     3 positive    432
+##  7     4 negative    984
+##  8     4 positive    973
+##  9     5 negative   3705
+## 10     5 positive   5083
+```
+
+---
+
+# Široki format podataka
+
+
+```r
+tidy_review %&gt;%
+inner_join(get_sentiments("bing")) %&gt;%
+count(Stars, sentiment) %&gt;%
+spread(sentiment, n)
+```
+
+```
+## # A tibble: 5 x 3
+##   Stars negative positive
+##   &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;
+## 1     1      381      241
+## 2     2      384      247
+## 3     3      485      432
+## 4     4      984      973
+## 5     5     3705     5083
+```
+
+---
+
+# Izračunaj opći sentiment
+
+
+```r
+tidy_review %&gt;%
+inner_join(get_sentiments("bing")) %&gt;%
+count(Stars, sentiment) %&gt;%
+spread(sentiment, n) %&gt;%
+mutate(overall_sentiment = positive - negative)
+```
+
+```
+## # A tibble: 5 x 4
+##   Stars negative positive overall_sentiment
+##   &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;             &lt;int&gt;
+## 1     1      381      241              -140
+## 2     2      384      247              -137
+## 3     3      485      432               -53
+## 4     4      984      973               -11
+## 5     5     3705     5083              1378
+```
+
+---
+
+# Vizualiziraj
+
+
+```r
+sentiment_stars &lt;- tidy_review %&gt;%
+inner_join(get_sentiments("bing")) %&gt;%
+count(Stars, sentiment) %&gt;%
+spread(sentiment, n) %&gt;%
+mutate(overall_sentiment = positive - negative,
+                   stars = fct_reorder(as.factor(Stars), overall_sentiment))
+```
+
+
+```r
+gg4 &lt;- ggplot(sentiment_stars,
+aes(x = stars, y = overall_sentiment, fill = as.factor(Stars))) +
+geom_col(show.legend = FALSE) +
+coord_flip() +
+labs(title = "Overall Sentiment by Stars",
+  subtitle = "Reviews for Robotic Vacuums",
+        x = "Stars",
+        y = "Overall Sentiment")
+```
+
+---
+
+# Vizualiziraj
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-52-1.png" style="display: block; margin: auto;" /&gt;
+---
+
+class: inverse, center, middle
+name: topi
+
+# TEMATSKA ANALIZA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Algoritamska identifikacija tema)
+
+---
+
+# Terminologija
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+- Latent Dirichlet allocation (LDA) je najčešće korišten pristup za TA
+&lt;br&gt;
+- Skup dokumenata nazivamo korpus
+&lt;br&gt;
+- *Bag-of-words* pristup tretira svaku riječ u dokumentu zasebno
+&lt;br&gt;
+- TA identificira obrasce riječi koji se pojavljuju zajendo
+&lt;br&gt;
+- LDA je metoda nenadgledanog strojnog učenja
+
+---
+
+# Klastering vs. Tematska analiza
+&lt;br&gt;
+&lt;br&gt;
+- **Klasteri** se formiraju na osnovi mjere udaljenosti (*kontinuirana mjera*)
+- Svaki objekt je pripisan nekom klasteru
+&lt;br&gt;
+&lt;br&gt;
+- **TA** se zasniva na frekvencijama riječi (*diskretna mjera*)
+- Svaki dokument je mješavina svake teme
+
+---
+
+# Document-term matrica (DTM)
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+tidy_review %&gt;%
+count(word, id) %&gt;%
+cast_dtm(id, word, n)
+```
+
+```
+## &lt;&lt;DocumentTermMatrix (documents: 1791, terms: 9670)&gt;&gt;
+## Non-/sparse entries: 63116/17255854
+## Sparsity           : 100%
+## Maximal term length: NA
+## Weighting          : term frequency (tf)
+```
+
+---
+
+# Document term matrica (DTM)
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+dtm_review &lt;- tidy_review %&gt;%
+count(word, id) %&gt;%
+cast_dtm(id, word, n) %&gt;%
+as.matrix()
+dtm_review[1:4, 2000:2004]
+```
+
+```
+##       Terms
+## Docs   conscious consecutive consensus consequences considerable
+##   223          0           0         0            0            0
+##   1069         0           0         0            0            0
+##   425          0           0         0            0            0
+##   615          0           0         0            0            0
+```
+
+---
+
+# Provedi LDA analizu
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+library(topicmodels)
+lda_out &lt;- LDA(
+dtm_review,
+k = 2,
+method = "Gibbs",
+control = list(seed = 42))
+```
+
+
+```r
+lda_out
+```
+
+```
+## A LDA_Gibbs topic model with 2 topics.
+```
+
+---
+
+# Pregledaj objekt
+&lt;br&gt;
+&lt;br&gt;
+.tiny[
+
+```r
+glimpse(lda_out)
+```
+
+```
+## Formal class 'LDA_Gibbs' [package "topicmodels"] with 16 slots
+##   ..@ seedwords      : NULL
+##   ..@ z              : int [1:76175] 2 1 1 1 1 2 1 1 1 1 ...
+##   ..@ alpha          : num 25
+##   ..@ call           : language LDA(x = dtm_review, k = 2, method = "Gibbs", control = list(seed = 42))
+##   ..@ Dim            : int [1:2] 1791 9670
+##   ..@ control        :Formal class 'LDA_Gibbscontrol' [package "topicmodels"] with 14 slots
+##   ..@ k              : int 2
+##   ..@ terms          : chr [1:9670] "______________________________________________________________________first" "0.3" "0.5" "0_0" ...
+##   ..@ documents      : chr [1:1791] "223" "1069" "425" "615" ...
+##   ..@ beta           : num [1:2, 1:9670] -12.9 -10.4 -10.5 -12.8 -12.9 ...
+##   ..@ gamma          : num [1:1791, 1:2] 0.388 0.564 0.444 0.395 0.335 ...
+##   ..@ wordassignments:List of 5
+##   .. ..$ i   : int [1:63116] 1 1 1 1 1 1 1 1 1 1 ...
+##   .. ..$ j   : int [1:63116] 1 11 19 38 127 130 131 134 170 189 ...
+##   .. ..$ v   : num [1:63116] 2 1 1 1 2 1 1 1 1 1 ...
+##   .. ..$ nrow: int 1791
+##   .. ..$ ncol: int 9670
+##   .. ..- attr(*, "class")= chr "simple_triplet_matrix"
+##   ..@ loglikelihood  : num -549950
+##   ..@ iter           : int 2000
+##   ..@ logLiks        : num(0) 
+##   ..@ n              : int 76175
+```
+]
+
+---
+
+# Pregledaj objekt
+
+
+```r
+lda_topics &lt;- lda_out %&gt;%
+tidy(matrix = "beta")
+lda_topics %&gt;%
+arrange(desc(beta))
+```
+
+```
+## # A tibble: 19,340 x 3
+##    topic term       beta
+##    &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;
+##  1     2 hair     0.0238
+##  2     1 cleaning 0.0201
+##  3     2 house    0.0197
+##  4     1 clean    0.0192
+##  5     2 floors   0.0174
+##  6     2 day      0.0153
+##  7     2 vacuum   0.0152
+##  8     2 floor    0.0148
+##  9     2 job      0.0142
+## 10     2 love     0.0141
+## # ... with 19,330 more rows
+```
+
+---
+
+# Interpretacija tema  
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+# Model sa dvije teme
+lda_topics &lt;- LDA(
+dtm_review,
+k = 2,
+method = "Gibbs",
+control = list(seed = 42)) %&gt;%
+tidy(matrix = "beta")
+word_probs &lt;- lda_topics %&gt;%
+group_by(topic) %&gt;%
+top_n(15, beta) %&gt;%
+ungroup() %&gt;%
+mutate(term2 = fct_reorder(term, beta))
+```
+
+---
+
+# Interpretacija tema  
+&lt;br&gt;
+&lt;br&gt;
+.left-code[
+
+```r
+ggplot( word_probs, aes( term2, beta, fill = as.factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label5-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+---
+
+# Interpretacija tema  
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+# Model sa tri teme
+lda_topics2 &lt;- LDA(
+dtm_review,
+k = 3,
+method = "Gibbs",
+control = list(seed = 42)) %&gt;%
+tidy(matrix = "beta")
+word_probs2 &lt;- lda_topics2 %&gt;%
+group_by(topic) %&gt;%
+top_n(15, beta) %&gt;%
+ungroup() %&gt;%
+mutate(term2 = fct_reorder(term, beta))
+```
+
+---
+
+# Interpretacija tema  
+&lt;br&gt;
+&lt;br&gt;
+.left-code[
+
+```r
+ggplot( word_probs2, aes( term2, beta, fill = as.factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label4-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Sljedeće predavanje: Survival analiza)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

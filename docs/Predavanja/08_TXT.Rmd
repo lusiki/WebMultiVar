@@ -122,18 +122,17 @@ name: mani
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-(*Podrška* za analizu sadržaja)
+(*Podrška* za analizu teksta)
 
 ---
 
-
-# Software podrška (paketi)
+# Software podrška (*paketi*)
+<br>
 <br>
 <br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/txt1.png")
 ```
-
 
 ---
 
@@ -171,6 +170,11 @@ group_by(Product) %>%
 summarize(stars_mean = mean(Stars))
 ```
 
+---
+
+# Pregled podataka
+<br>
+<br>
 ```{r}
 # nestrukturirani podatci
 recenzije_Dta %>%
@@ -201,12 +205,17 @@ recenzije_Dta %>%
   group_by(Product) %>%
   summarize(number_rows = n())
 ```
+
 ```{r}
 # count()
 recenzije_Dta %>%
 count(Product)
 ```
+---
 
+# Pregled podataka 
+<br>
+<br>
 ```{r}
 recenzije_Dta %>%
   count(Product) %>%
@@ -218,7 +227,7 @@ recenzije_Dta %>%
 # tidytext paket
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="380px"}
 knitr::include_graphics("../Foto/txt2.png")
 ```
 
@@ -241,7 +250,7 @@ knitr::include_graphics("../Foto/txt2.png")
 
 # Tokenizacija teksta
 
-```{r}
+```{r, message=FALSE}
 # unnest_tokens() funkcija
 library(tidytext)
 tidy_review <- recenzije_Dta %>%
@@ -263,6 +272,7 @@ arrange(desc(n))
 # anti_join()
 <br>
 <br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/txt3.png")
 ```
@@ -270,7 +280,6 @@ knitr::include_graphics("../Foto/txt3.png")
 ---
 
 # anti_join()
-<br>
 <br>
 
 ```{r}
@@ -288,10 +297,9 @@ tidy_review2
 head(stop_words,12)
 ```
 
-
 ---
 
-# Pobroji riječi (drugi put)
+# Pobroji riječi (*ponovno*)
 
 ```{r}
 tidy_review2 %>%
@@ -299,19 +307,641 @@ count(word) %>%
 arrange(desc(n))
 ```
 
+---
+
+class: inverse, center, middle
+name: viz
+
+# VIZALIZACIJA TEKSTA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Pregled tekstualnih podataka)
+
+---
+
+# Uredi podatke za prikaz
+
+```{r}
+tidy_review <- recenzije_Dta %>%
+mutate(id = row_number()) %>%
+unnest_tokens(word, Review) %>%
+anti_join(stop_words)
+head(tidy_review,8)
+```
+
+---
+
+# Histogram
+
+```{r, fig.height=2}
+word_counts <- tidy_review %>%
+count(word) %>%
+arrange(desc(n)) %>%
+filter(n<2000)
+ggplot(word_counts, aes(x = word, y = n)) +
+geom_col()
+```
+
+---
+
+# Filtriraj
+
+```{r, fig.height=4}
+word_counts2 <- tidy_review %>%
+count(word) %>%
+filter(n > 300) %>%
+arrange(desc(n)) 
+head(word_counts2,8)
+```
+
+---
+
+# Vizualizacija
+
+```{r, fig.height=3}
+# zakreni osi pomoću coord_flip()
+ggplot(word_counts2, aes(x = word, y = n)) +
+geom_col() +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+---
+
+# Stop riječi
+
+.pull-left[
+```{r}
+# default stop riječi
+head(stop_words,8)
+```
+]
+
+.pull-right[
+```{r}
+# dodaj custom stop riječi
+tribble(
+~word, ~lexicon,
+"roomba", "CUSTOM",
+"2", "CUSTOM"
+)
+```
+]
+
+---
+
+# Stop riječi
+
+```{r}
+custom_stop_words <- tribble(
+~word, ~lexicon,
+"roomba", "CUSTOM",
+"2", "CUSTOM"
+)
+stop_words2 <- stop_words %>%
+bind_rows(custom_stop_words)
+```
+
+```{r}
+# Ukloni sve stop riječi
+tidy_review <- recenzije_Dta %>%
+mutate(id = row_number()) %>%
+select(id, Date, Product, Stars, Review) %>%
+unnest_tokens(word, Review) %>%
+anti_join(stop_words2)
+tidy_review %>%
+filter(word == "roomba")
+```
+
+---
+
+# Poboljšaj grafikon
+
+```{r}
+# prvo koristi fct_reorder funkcija
+word_counts <- tidy_review %>%
+count(word) %>%
+filter(n > 300) %>%
+mutate(word2 = fct_reorder(word, n))
+head(word_counts,8)
+```
+
+---
+
+# Poboljšaj grafikon
+
+```{r, fig.height=3}
+ggplot(word_counts, aes(x = word2, y = n)) +
+geom_col() +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+---
+
+# Facet grafikoni
+
+```{r}
+tidy_review %>%
+count(word, Product) %>%
+arrange(desc(n))
+```
+
+---
+
+# Priprema za facet grafikon
+
+```{r}
+tidy_review %>%
+count(word, Product) %>%
+group_by(Product) %>%
+top_n(5, n)
+```
+
+---
+
+# Priprema za facet grafikon
+<br>
+<br>
+```{r}
+word_counts <- tidy_review %>%
+count(word, Product) %>%
+group_by(Product) %>%
+top_n(10, n) %>%
+ungroup() %>%
+mutate(word2 = fct_reorder(word, n))
+```
+
+```{r}
+gg <- ggplot(word_counts, aes(x = word2, y = n, fill = Product)) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~Product, scales = "free_y") +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+---
+
+# Facet grafikon
+
+```{r,echo=FALSE, fig.height=3}
+gg
+```
+
+---
+
+# Oblak riječi (*WordCloud*)
+<br>
+<br>
+.left-code[
+```{r plot-label, eval=FALSE}
+library(wordcloud)
+word_counts <- tidy_review %>% count(word)
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 30)
+```
+]
+
+.right-plot[
+```{r plot-label-out, ref.label="plot-label", echo=FALSE, fig.height=4}
+```
+]
+
+---
+
+# Oblak riječi (*WordCloud*)
+<br>
+<br>
+.left-code[
+```{r plot-label1, eval=FALSE}
+# Više riječi
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 70
+)
+```
+]
+
+.right-plot[
+```{r plot-label1-out, ref.label="plot-label1", echo=FALSE, fig.height=4}
+```
+]
+
+---
+
+# Oblak riječi (*WordCloud*)
+<br>
+<br>
+.left-code[
+```{r plot-label2, eval=FALSE}
+# Boja
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 30,
+colors = "blue"
+)
+```
+]
+
+.right-plot[
+```{r plot-label2-out, ref.label="plot-label2", echo=FALSE, fig.height=4}
+```
+]
+
+---
+
+class: inverse, center, middle
+name: sent
+
+# ANALIZA SENTIMENTA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Sve ovisi o riječnicima)
+
+---
+
+# Dohvati riječnike sentimenta
+
+```{r}
+get_sentiments("bing")
+```
+
+---
+
+# Pregledaj riječnik
+<br>
+<br>
+```{r}
+get_sentiments("bing") %>%
+  count(sentiment)
+```
+---
+
+# Dohvati drugi riječnik
+
+```{r, message=FALSE, warning=FALSE}
+library(textdata)
+get_sentiments("afinn")
+```
+
+---
+
+# Pregledaj riječnik
+<br>
+<br>
+```{r}
+get_sentiments("afinn") %>%
+  summarize( min = min(value), max = max(value) )
+```
+
+---
+
+# Dohvati treći riječnik
+<br>
+<br>
+```{r}
+sentiment_counts <- get_sentiments("loughran") %>%
+count(sentiment) %>%
+mutate(sentiment2 = fct_reorder(sentiment, n))
+gg2 <- ggplot(sentiment_counts, aes(x = sentiment2, y = n)) +
+geom_col() +
+coord_flip() +
+labs(title = "Sentiment Counts in Loughran",
+         x = "Counts",
+         y = "Sentiment")
+```
+
+---
+
+# Vizualni pregled riječnika
+
+```{r, echo=FALSE, fig.height=3}
+gg2 
+```
+
+---
+
+# Spoji riječnik i podatke
+
+```{r}
+tidy_review %>%
+inner_join(get_sentiments("loughran"))
+```
+
+---
+
+# Pregled spojenih podataka
+<br>
+```{r}
+sentiment_review <- tidy_review %>%
+inner_join(get_sentiments("loughran"))
+sentiment_review %>%
+count(sentiment)
+```
+
+---
+
+# Pregled spojenih podataka
+
+```{r}
+sentiment_review %>% 
+  count(word, sentiment) %>%
+  arrange(desc(n))
+```
 
 
+---
+
+# Vizualizacija sentimenta
+<br>
+```{r}
+sentiment_review2 <- sentiment_review %>%
+filter(sentiment %in% c("positive", "negative"))
+word_counts <- sentiment_review2 %>%
+count(word, sentiment) %>%
+group_by(sentiment) %>%
+top_n(10, n) %>%
+ungroup() %>%
+mutate(word2 = fct_reorder(word, n))
+```
+
+```{r}
+gg3 <- ggplot(word_counts, aes(x = word2, y = n, fill = sentiment)) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ sentiment, scales = "free") +
+coord_flip() +
+labs(title = "Sentiment Word Counts",
+         x = "Words")
+```
+
+---
+
+# Vizualizacija sentimenta
+
+```{r, echo=FALSE, fig.height=3}
+gg3
+```
+
+---
+
+# Izračunaj sentiment prema rangu
+
+```{r}
+tidy_review %>%
+inner_join(get_sentiments("bing")) %>%
+count(Stars, sentiment)
+```
+
+---
+
+# Široki format podataka
+
+```{r}
+tidy_review %>%
+inner_join(get_sentiments("bing")) %>%
+count(Stars, sentiment) %>%
+spread(sentiment, n)
+```
+
+---
+
+# Izračunaj opći sentiment
+
+```{r}
+tidy_review %>%
+inner_join(get_sentiments("bing")) %>%
+count(Stars, sentiment) %>%
+spread(sentiment, n) %>%
+mutate(overall_sentiment = positive - negative)
+```
+
+---
+
+# Vizualiziraj
+
+```{r}
+sentiment_stars <- tidy_review %>%
+inner_join(get_sentiments("bing")) %>%
+count(Stars, sentiment) %>%
+spread(sentiment, n) %>%
+mutate(overall_sentiment = positive - negative,
+                   stars = fct_reorder(as.factor(Stars), overall_sentiment))
+```
+
+```{r}
+gg4 <- ggplot(sentiment_stars,
+aes(x = stars, y = overall_sentiment, fill = as.factor(Stars))) +
+geom_col(show.legend = FALSE) +
+coord_flip() +
+labs(title = "Overall Sentiment by Stars",
+  subtitle = "Reviews for Robotic Vacuums",
+        x = "Stars",
+        y = "Overall Sentiment")
+```
+
+---
+
+# Vizualiziraj
+
+```{r, echo=FALSE, fig.height=3}
+gg4
+```
+---
+
+class: inverse, center, middle
+name: topi
+
+# TEMATSKA ANALIZA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Algoritamska identifikacija tema)
+
+---
+
+# Terminologija
+<br>
+<br>
+<br>
+- Latent Dirichlet allocation (LDA) je najčešće korišten pristup za TA
+<br>
+- Skup dokumenata nazivamo korpus
+<br>
+- *Bag-of-words* pristup tretira svaku riječ u dokumentu zasebno
+<br>
+- TA identificira obrasce riječi koji se pojavljuju zajendo
+<br>
+- LDA je metoda nenadgledanog strojnog učenja
+
+---
+
+# Klastering vs. Tematska analiza
+<br>
+<br>
+- **Klasteri** se formiraju na osnovi mjere udaljenosti (*kontinuirana mjera*)
+- Svaki objekt je pripisan nekom klasteru
+<br>
+<br>
+- **TA** se zasniva na frekvencijama riječi (*diskretna mjera*)
+- Svaki dokument je mješavina svake teme
+
+---
+
+# Document-term matrica (DTM)
+<br>
+<br>
+```{r}
+tidy_review %>%
+count(word, id) %>%
+cast_dtm(id, word, n)
+```
+
+---
+
+# Document term matrica (DTM)
+<br>
+<br>
+```{r}
+dtm_review <- tidy_review %>%
+count(word, id) %>%
+cast_dtm(id, word, n) %>%
+as.matrix()
+dtm_review[1:4, 2000:2004]
+```
+
+---
+
+# Provedi LDA analizu
+<br>
+<br>
+```{r}
+library(topicmodels)
+lda_out <- LDA(
+dtm_review,
+k = 2,
+method = "Gibbs",
+control = list(seed = 42))
+```
+
+```{r}
+lda_out
+```
+
+---
+
+# Pregledaj objekt
+<br>
+<br>
+.tiny[
+```{r}
+glimpse(lda_out)
+```
+]
+
+---
+
+# Pregledaj objekt
+
+```{r}
+lda_topics <- lda_out %>%
+tidy(matrix = "beta")
+lda_topics %>%
+arrange(desc(beta))
+```
+
+---
+
+# Interpretacija tema  
+<br>
+<br>
+```{r}
+# Model sa dvije teme
+lda_topics <- LDA(
+dtm_review,
+k = 2,
+method = "Gibbs",
+control = list(seed = 42)) %>%
+tidy(matrix = "beta")
+word_probs <- lda_topics %>%
+group_by(topic) %>%
+top_n(15, beta) %>%
+ungroup() %>%
+mutate(term2 = fct_reorder(term, beta))
+```
+
+---
+
+# Interpretacija tema  
+<br>
+<br>
+.left-code[
+```{r plot-label5, eval=FALSE}
+ggplot( word_probs, aes( term2, beta, fill = as.factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+]
+
+.right-plot[
+```{r plot-label5-out, ref.label="plot-label5", echo=FALSE, fig.height=3}
+```
+]
+---
+
+# Interpretacija tema  
+<br>
+<br>
+```{r}
+# Model sa tri teme
+lda_topics2 <- LDA(
+dtm_review,
+k = 3,
+method = "Gibbs",
+control = list(seed = 42)) %>%
+tidy(matrix = "beta")
+word_probs2 <- lda_topics2 %>%
+group_by(topic) %>%
+top_n(15, beta) %>%
+ungroup() %>%
+mutate(term2 = fct_reorder(term, beta))
+```
+
+---
+
+# Interpretacija tema  
+<br>
+<br>
+.left-code[
+```{r plot-label4, eval=FALSE}
+ggplot( word_probs2, aes( term2, beta, fill = as.factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+]
+
+.right-plot[
+```{r plot-label4-out, ref.label="plot-label4", echo=FALSE, fig.height=3}
+```
+]
 
 
+---
 
+class: inverse, center, middle
 
+# Hvala na pažnji
 
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-
-
-
-
-
+(Sljedeće predavanje: Survival analiza)
 
 
 

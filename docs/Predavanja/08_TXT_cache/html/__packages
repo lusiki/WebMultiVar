@@ -11,3 +11,7 @@ stringr
 forcats
 gridExtra
 tidytext
+RColorBrewer
+wordcloud
+textdata
+topicmodels
