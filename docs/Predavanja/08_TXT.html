@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MULTIVARIJATNE STATISTIČKE METODE</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="dr.sc. Luka Šikić" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# MULTIVARIJATNE STATISTIČKE METODE
+## Predavanje 8: Analiza sadržaja
+### dr.sc. Luka Šikić
+### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
+
+---
+
+
+
+
+
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+
+/* custom.css */
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+&lt;/style&gt;
+
+
+
+# Pregled predavanja
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+
+1. [Manipulacija tekstualnih podataka](#mani)
+
+2. [Vizualizacija teksta](#viz)
+
+3. [Analiza sentimenta](#sent)
+
+4. [Tematska analiza](#topi)
+
+
+
+---
+
+class: inverse, center, middle
+name: mani
+
+# MANIPULACIJA TEKSTUALNIH PODATAKA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(*Podrška* za analizu sadržaja)
+
+---
+
+
+# Software podrška (paketi)
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/txt1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Podatci
+
+
+
+
+```r
+recenzije_Dta &lt;- read_csv("../Podatci/Roomba Reviews.csv")
+head(recenzije_Dta,10)
+```
+
+```
+## # A tibble: 10 x 5
+##    Date    Product        Stars Title              Review                       
+##    &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;              &lt;chr&gt;                        
+##  1 2/28/15 iRobot Roomba~     5 Five Stars         "You would not believe how w~
+##  2 1/12/15 iRobot Roomba~     4 Four Stars         "You just walk away and it d~
+##  3 12/26/~ iRobot Roomba~     5 Awesome love it.   "You have to Roomba proof yo~
+##  4 8/4/13  iRobot Roomba~     3 Love-hate this va~ "Yes, it's a fascinating, al~
+##  5 12/22/~ iRobot Roomba~     5 This vacuum is fa~ "Years ago I bought one of t~
+##  6 12/27/~ iRobot Roomba~     5 Wow!               "Wow.Wow.  I never knew my f~
+##  7 8/17/15 iRobot Roomba~     1 Terrible Product ~ "Wow.. I don't know what to ~
+##  8 12/28/~ iRobot Roomba~     5 Super-impressed b~ "Wow, wow, WOW!  I wanted to~
+##  9 1/19/14 iRobot Roomba~     5 LOVE THIS          "Wow, the Roomba is the best~
+## 10 7/2/15  iRobot Roomba~     5 Stress is bad; Ro~ "Wow, it changes your life. ~
+```
+
+---
+
+# Pregled podataka
+
+
+```r
+# filter() + summarize()
+recenzije_Dta %&gt;%
+filter(Product == "iRobot Roomba 650 for Pets") %&gt;%
+summarize(stars_mean = mean(Stars))
+```
+
+```
+## # A tibble: 1 x 1
+##   stars_mean
+##        &lt;dbl&gt;
+## 1       4.49
+```
+
+
+```r
+# group_by() + summarize()
+recenzije_Dta %&gt;%
+group_by(Product) %&gt;%
+summarize(stars_mean = mean(Stars))
+```
+
+```
+## # A tibble: 2 x 2
+##   Product                                  stars_mean
+## * &lt;chr&gt;                                         &lt;dbl&gt;
+## 1 iRobot Roomba 650 for Pets                     4.49
+## 2 iRobot Roomba 880 for Pets and Allergies       4.42
+```
+
+
+```r
+# nestrukturirani podatci
+recenzije_Dta %&gt;%
+group_by(Product) %&gt;%
+summarize(review_mean = mean(Review))
+```
+
+```
+## # A tibble: 2 x 2
+##   Product                                  review_mean
+## * &lt;chr&gt;                                          &lt;dbl&gt;
+## 1 iRobot Roomba 650 for Pets                        NA
+## 2 iRobot Roomba 880 for Pets and Allergies          NA
+```
+
+---
+
+# Pregled podataka
+
+
+```r
+glimpse(recenzije_Dta)
+```
+
+```
+## Rows: 1,833
+## Columns: 5
+## $ Date    &lt;chr&gt; "2/28/15", "1/12/15", "12/26/13", "8/4/13", "12/22/15", "12/27~
+## $ Product &lt;chr&gt; "iRobot Roomba 650 for Pets", "iRobot Roomba 650 for Pets", "i~
+## $ Stars   &lt;dbl&gt; 5, 4, 5, 3, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 4, 4, 2, 5,~
+## $ Title   &lt;chr&gt; "Five Stars", "Four Stars", "Awesome love it.", "Love-hate thi~
+## $ Review  &lt;chr&gt; "You would not believe how well this works", "You just walk aw~
+```
+
+
+```r
+recenzije_Dta %&gt;%
+summarize(number_rows = n())
+```
+
+```
+## # A tibble: 1 x 1
+##   number_rows
+##         &lt;int&gt;
+## 1        1833
+```
+
+---
+
+# Pregled podataka 
+
+
+```r
+# summarize() + n()
+recenzije_Dta %&gt;%
+  group_by(Product) %&gt;%
+  summarize(number_rows = n())
+```
+
+```
+## # A tibble: 2 x 2
+##   Product                                  number_rows
+## * &lt;chr&gt;                                          &lt;int&gt;
+## 1 iRobot Roomba 650 for Pets                       633
+## 2 iRobot Roomba 880 for Pets and Allergies        1200
+```
+
+```r
+# count()
+recenzije_Dta %&gt;%
+count(Product)
+```
+
+```
+## # A tibble: 2 x 2
+##   Product                                      n
+## * &lt;chr&gt;                                    &lt;int&gt;
+## 1 iRobot Roomba 650 for Pets                 633
+## 2 iRobot Roomba 880 for Pets and Allergies  1200
+```
+
+
+```r
+recenzije_Dta %&gt;%
+  count(Product) %&gt;%
+  arrange(desc(n))
+```
+
+```
+## # A tibble: 2 x 2
+##   Product                                      n
+##   &lt;chr&gt;                                    &lt;int&gt;
+## 1 iRobot Roomba 880 for Pets and Allergies  1200
+## 2 iRobot Roomba 650 for Pets                 633
+```
+
+---
+
+# tidytext paket
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/txt2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Tokenizacija teksta
+&lt;br&gt;
+&lt;br&gt;
+- Bag of words: riječi u dokumentu su nezavisne
+&lt;br&gt;
+- svaki element tesksta je dokument
+&lt;br&gt;
+- svaka jedinstvena riječ je element (*term*)
+&lt;br&gt;
+- svaka pojava elementa je token
+&lt;br&gt;
+- stvaranje *bag of words* je tokenizacija
+
+---
+
+# Tokenizacija teksta
+
+
+```r
+# unnest_tokens() funkcija
+library(tidytext)
+tidy_review &lt;- recenzije_Dta %&gt;%
+unnest_tokens(word, Review)
+head(tidy_review,8)
+```
+
+```
+## # A tibble: 8 x 5
+##   Date    Product                    Stars Title      word   
+##   &lt;chr&gt;   &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  
+## 1 2/28/15 iRobot Roomba 650 for Pets     5 Five Stars you    
+## 2 2/28/15 iRobot Roomba 650 for Pets     5 Five Stars would  
+## 3 2/28/15 iRobot Roomba 650 for Pets     5 Five Stars not    
+## 4 2/28/15 iRobot Roomba 650 for Pets     5 Five Stars believe
+## 5 2/28/15 iRobot Roomba 650 for Pets     5 Five Stars how    
+## 6 2/28/15 iRobot Roomba 650 for Pets     5 Five Stars well   
+## 7 2/28/15 iRobot Roomba 650 for Pets     5 Five Stars this   
+## 8 2/28/15 iRobot Roomba 650 for Pets     5 Five Stars works
+```
+---
+
+# Pobroji riječi
+
+
+```r
+tidy_review %&gt;%
+count(word) %&gt;%
+arrange(desc(n))
+```
+
+```
+## # A tibble: 10,310 x 2
+##    word      n
+##    &lt;chr&gt; &lt;int&gt;
+##  1 the   11785
+##  2 it     7905
+##  3 and    6794
+##  4 to     6440
+##  5 i      6034
+##  6 a      5884
+##  7 is     3347
+##  8 of     3229
+##  9 have   2470
+## 10 that   2410
+## # ... with 10,300 more rows
+```
+
+---
+
+# anti_join()
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/txt3.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# anti_join()
+&lt;br&gt;
+&lt;br&gt;
+
+
+```r
+tidy_review2 &lt;- recenzije_Dta %&gt;%
+  unnest_tokens(word, Review) %&gt;%
+  anti_join(stop_words)
+tidy_review2
+```
+
+```
+## # A tibble: 78,868 x 5
+##    Date     Product                    Stars Title                  word       
+##    &lt;chr&gt;    &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;                  &lt;chr&gt;      
+##  1 1/12/15  iRobot Roomba 650 for Pets     4 Four Stars             walk       
+##  2 1/12/15  iRobot Roomba 650 for Pets     4 Four Stars             rest       
+##  3 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.       roomba     
+##  4 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.       proof      
+##  5 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.       house      
+##  6 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.       awesome    
+##  7 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.       pet        
+##  8 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.       cleans     
+##  9 8/4/13   iRobot Roomba 650 for Pets     3 Love-hate this vaccuum fascinating
+## 10 8/4/13   iRobot Roomba 650 for Pets     3 Love-hate this vaccuum albeit     
+## # ... with 78,858 more rows
+```
+
+---
+
+# Stop riječi
+
+
+```r
+head(stop_words,12)
+```
+
+```
+## # A tibble: 12 x 2
+##    word        lexicon
+##    &lt;chr&gt;       &lt;chr&gt;  
+##  1 a           SMART  
+##  2 a's         SMART  
+##  3 able        SMART  
+##  4 about       SMART  
+##  5 above       SMART  
+##  6 according   SMART  
+##  7 accordingly SMART  
+##  8 across      SMART  
+##  9 actually    SMART  
+## 10 after       SMART  
+## 11 afterwards  SMART  
+## 12 again       SMART
+```
+
+
+---
+
+# Pobroji riječi (drugi put)
+
+
+```r
+tidy_review2 %&gt;%
+count(word) %&gt;%
+arrange(desc(n))
+```
+
+```
+## # A tibble: 9,672 x 2
+##    word         n
+##    &lt;chr&gt;    &lt;int&gt;
+##  1 roomba    2286
+##  2 clean     1204
+##  3 vacuum     989
+##  4 hair       900
+##  5 cleaning   809
+##  6 time       795
+##  7 house      745
+##  8 floors     657
+##  9 day        578
+## 10 floor      561
+## # ... with 9,662 more rows
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

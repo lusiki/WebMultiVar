@@ -86,11 +86,11 @@ remark-slide-content {
 
 2. [Univarijatna regresijska analiza](#uni)
 
-2. [Predikcija i elementi modela](#pred)
+3. [Predikcija i elementi modela](#pred)
 
-3. [Kvaliteta procjene](#qual)
+4. [Kvaliteta procjene](#qual)
 
-3. [Višestruka regresija](#multi)
+5. [Višestruka regresija](#multi)
 
 
 ---
@@ -139,13 +139,31 @@ head(marketing,10) # pogledaj podatke
 &lt;br&gt;
 - cilj je procijeniti utjecaj oglašavanja na youtube, fb i novinskih oglasa na prodaju
 &lt;br&gt;
-- procjenjujemo model `sales = b0 + b1*youtube + b2*facebook + b3*newspaper`
+- procjenjujemo model: `sales = b0 + b1*youtube + b2*facebook + b3*newspaper`
+&lt;br&gt;
 &lt;br&gt;
 
 ```r
 # Procijeni model u R
 model &lt;- lm(sales ~ youtube + facebook + newspaper, data = marketing)
 ```
+---
+
+# Interpretacija
+
+
+```r
+summary(model)$coefficients
+```
+
+```
+##                 Estimate  Std. Error    t value     Pr(&gt;|t|)
+## (Intercept)  3.526667243 0.374289884  9.4222884 1.267295e-17
+## youtube      0.045764645 0.001394897 32.8086244 1.509960e-81
+## facebook     0.188530017 0.008611234 21.8934961 1.505339e-54
+## newspaper   -0.001037493 0.005871010 -0.1767146 8.599151e-01
+```
+
 ---
 
 # Model
@@ -177,19 +195,6 @@ summary(model)
 ## Residual standard error: 2.023 on 196 degrees of freedom
 ## Multiple R-squared:  0.8972,	Adjusted R-squared:  0.8956 
 ## F-statistic: 570.3 on 3 and 196 DF,  p-value: &lt; 2.2e-16
-```
-
----
-
-# Interpretacija
-
-
-```r
-model$coefficent
-```
-
-```
-## NULL
 ```
 
 ---
@@ -229,6 +234,8 @@ summary(model)
 
 # Kvaliteta modela
 
+##### Intervali pouzdanosti
+
 
 ```r
 confint(model)
@@ -243,6 +250,14 @@ confint(model)
 
 ##### R-sq
 
+
+```r
+summary(model)$r.squared
+```
+
+```
+## [1] 0.8971943
+```
 
 ##### RSE
 
@@ -264,8 +279,16 @@ sigma(model)/mean(marketing$sales)
 ```r
 # Svi prediktori u jednom funkcijskom pozivu
 model &lt;- lm(sales ~., data = marketing)
+```
+&lt;br&gt;
+
+```r
 # Selekcija prediktora; bez varijable newspaper
 model &lt;- lm(sales ~. -newspaper, data = marketing)
+```
+&lt;br&gt;
+
+```r
 # Također moguće i korištenje sintakse
 model1 &lt;- update(model,  ~. -newspaper)
 ```
@@ -280,7 +303,6 @@ name: uni
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
 
 (Osnovni model)
-
 
 ---
 
@@ -317,7 +339,8 @@ head(SMID, 5) # pogledaj podatke
 ---
 
 # Deskriptivna statistika
-
+&lt;br&gt;
+&lt;br&gt;
 .pull-left[
 
 ```r
@@ -345,14 +368,16 @@ summarize(correlation = cor(n_claims, total_payment_sek))
 ```
 ]
 
-
 ---
 
 # Što je regresija?
+&lt;br&gt;
+&lt;br&gt;
+&gt; Statistički model koji objašnjava odnos između zavisne i nezavisne varijable.
+&gt; Uz danu vrijednost nezavisne varijable, kolika je vrijednost zavisne varijable?
 
-- statistički model koji objašnjava odnos između zavisne i nezavisne varijable
-- uz danu vrijednost nezavisne varijable, kolika je vrijednsot zavisne?
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```
 ## # A tibble: 6 x 2
@@ -371,15 +396,15 @@ summarize(correlation = cor(n_claims, total_payment_sek))
 # Osnovna terminologija
 
 ###### ŽARGON
+
+- **response** varijabla ili zavisna varijable je ona koju želimo predvidjeti
+- **eksplanatorna** varijabla ili nazavisna je ona koja objašnjava promjenu u zavisnoj
 &lt;br&gt;
 &lt;br&gt;
-- *response* varijabla ili zavisna varijable je ona koju želimo predvidjeti
-- *eksplanatorna* varijabla ili nazavisna je ona koja objašnjava promjenu u zavisnoj
 
 ###### DEFINICIJE
-&lt;br&gt;
-&lt;br&gt;
-- Linearna regresija: zavisna varijabla je numenrička
+
+- Linearna regresija: zavisna varijabla je numerička
 - Logistička regresija: zavisna varijabla je logička (0,1)
 - Univarijatna regresija: samo jedna nezavisna varijabla
 - MUltivarijatna regresija: više zavisnih varijabli
@@ -388,7 +413,7 @@ summarize(correlation = cor(n_claims, total_payment_sek))
 &lt;br&gt;
 ---
 
-# Vizualizacija
+# Vizualizacija odnosa
 &lt;br&gt;
 &lt;br&gt;
 .left-code[
@@ -397,7 +422,8 @@ summarize(correlation = cor(n_claims, total_payment_sek))
 library(ggplot2)
 ggplot(SMID,
 aes(n_claims, total_payment_sek)) +
-geom_point()
+geom_point() +
+ggtitle("Odnos isplata i zahtijeva")
 ```
 ]
 
@@ -418,7 +444,8 @@ library(ggplot2)
 ggplot(SMID,
 aes(n_claims, total_payment_sek)) +
 geom_point() +
-geom_smooth(method = "lm", se = FALSE)  
+geom_smooth(method = "lm", se = FALSE) +
+ggtitle("Odnos isplata i zahtijeva")  
 ```
 ]
 
@@ -429,7 +456,9 @@ geom_smooth(method = "lm", se = FALSE)
 ---
 
 # Regresijski pravac
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 - odječak na osi y (*intercept*)
 
 - nagib pravca (*slope*) je iznos za koji se poveća y ako se x poveća za jednu jedinicu
@@ -439,21 +468,24 @@ geom_smooth(method = "lm", se = FALSE)
 ---
 
 # Procjena nagiba
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/reg1.png" width="500px" style="display: block; margin: auto;" /&gt;
 &lt;br&gt;
 
 ---
 
 # Procjena nagiba
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/reg2.png" width="500px" style="display: block; margin: auto;" /&gt;
 &lt;br&gt;
 
 ---
 
 # Procjena nagiba
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/reg3.png" width="500px" style="display: block; margin: auto;" /&gt;
 &lt;br&gt;
 
@@ -461,27 +493,31 @@ geom_smooth(method = "lm", se = FALSE)
 ---
 
 # Procjena nagiba
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/reg4.png" width="500px" style="display: block; margin: auto;" /&gt;
 &lt;br&gt;
 ---
 
 # Procjena nagiba
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/reg5.png" width="500px" style="display: block; margin: auto;" /&gt;
 &lt;br&gt;
 
 ---
 
 # Procjena nagiba
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/reg6.png" width="500px" style="display: block; margin: auto;" /&gt;
 &lt;br&gt;
 
 ---
 
 # Procijeni model
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 lm(total_payment_sek ~ n_claims, data = SMID)
@@ -500,7 +536,9 @@ lm(total_payment_sek ~ n_claims, data = SMID)
 ---
 
 # Interpretacija koeficijenata
-
+&lt;br&gt;
+&lt;br&gt;
+##### Model
 
 ```r
 lm(total_payment_sek ~ n_claims, data = SMID)
@@ -523,7 +561,6 @@ lm(total_payment_sek ~ n_claims, data = SMID)
 ---
 
 class: inverse, center, middle
-name: uni
 
 # Kategorijska zavisna varijabla
 
@@ -540,23 +577,24 @@ name: uni
 
 
 ```r
-head(sample_n(fish,10),10) # pogledaj podatke (detaljan opis podataka u GH repo)
+head(sample_n(fish,10),10) # pogledaj podatke (detaljan opis podataka u GH repo-u)
 ```
 
 ```
 ##         species mass_g length_cm
-## 1  Silver Bream     90      16.3
-## 2         Perch    690      34.6
-## 3         Perch   1000      39.8
-## 4         Roach    272      25.0
-## 5          Pike    567      43.2
-## 6         Perch   1000      41.1
-## 7  Common Bream    600      29.4
-## 8     Whitefish    800      33.7
-## 9         Perch    130      19.3
-## 10        Roach    145      20.5
+## 1         Perch 1000.0      39.8
+## 2  Common Bream 1000.0      33.5
+## 3         Smelt   19.7      13.2
+## 4         Smelt   10.0      11.3
+## 5  Common Bream  975.0      37.4
+## 6          Pike  567.0      43.2
+## 7         Smelt    6.7       9.3
+## 8  Silver Bream  300.0      24.0
+## 9         Roach  150.0      20.4
+## 10 Silver Bream   60.0      14.3
 ```
-
+&lt;br&gt;
+&lt;br&gt;
 - svaki red se odnosi na jednu ribu
 - uzorak se sastoji od 71 ribe
 - u uzorak ulazi devet vrsta riba
@@ -570,7 +608,8 @@ head(sample_n(fish,10),10) # pogledaj podatke (detaljan opis podataka u GH repo)
 ```r
 ggplot(fish, aes(mass_g)) +
 geom_histogram(bins = 9) +
-facet_wrap(vars(species))  
+facet_wrap(vars(species)) +
+ggtitle("Histogram prema vrstama riba")
 ```
 ]
 
@@ -581,7 +620,8 @@ facet_wrap(vars(species))
 ---
 
 # Deskriptivna statistika
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 fish %&gt;%
@@ -605,7 +645,7 @@ summarize(mean_mass_g = round(mean(mass_g),2))
 ---
 
 # Regresijski model
-
+&lt;br&gt;
 
 ```r
 lm(mass_g ~ species, data = fish)
@@ -628,7 +668,7 @@ lm(mass_g ~ species, data = fish)
 ---
 
 # Regresijski model bez odsječka
-
+&lt;br&gt;
 
 ```r
 lm(mass_g ~ species + 0, data = fish)
@@ -648,7 +688,6 @@ lm(mass_g ~ species + 0, data = fish)
 ##              580.56
 ```
 
-
 ---
 
 class: inverse, center, middle
@@ -663,14 +702,13 @@ name: pred
 ---
 
 # Podatkovni skup o ribama
-
-
+&lt;br&gt;
 
 ```r
 # Izaberi samo "Bream" vrstu
 bream &lt;- fish %&gt;%
 filter(str_detect(species,"Bream"))
-head(bream,10)
+head(bream,12)
 ```
 
 ```
@@ -685,18 +723,22 @@ head(bream,10)
 ## 8  Common Bream    975      37.4
 ## 9  Silver Bream     60      14.3
 ## 10 Silver Bream     90      16.3
+## 11 Silver Bream    120      17.5
+## 12 Silver Bream    170      19.0
 ```
 
 ---
 
 # Vizualiziraj težinu vs. duljinu
-
+&lt;br&gt;
+&lt;br&gt;
 .left-code[
 
 ```r
 ggplot(bream, aes(length_cm, mass_g)) +
 geom_point() +
-geom_smooth(method = "lm", se = FALSE) 
+geom_smooth(method = "lm", se = FALSE) +
+ggtitle("Odnos duljine i težine")
 ```
 ]
 
@@ -707,7 +749,8 @@ geom_smooth(method = "lm", se = FALSE)
 ---
 
 # Provedi regresijski model
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 tezina_vs_visina &lt;- lm(mass_g ~ length_cm, data = bream)
@@ -727,7 +770,7 @@ tezina_vs_visina
 ---
 
 # Predviđanje 
-
+&lt;br&gt;
 &gt; Ako postavimo nezavisne varijable na vrijednost xy, koja će biti vrijednost zavisne varijable?
 
 
@@ -751,8 +794,8 @@ predict(tezina_vs_visina, nezavisne_vars)
 
 ---
 
-# Predviđanje u data.frame objektu
-
+# Predviđanje u `data.frame` objektu
+&lt;br&gt;
 
 ```r
 prediction_data &lt;- nezavisne_vars %&gt;%
@@ -777,18 +820,19 @@ prediction_data
 ## # ... with 11 more rows
 ```
 
-
 ---
 
 # Vizualiziraj predikcije
-
+&lt;br&gt;
+&lt;br&gt;
 .left-code[
 
 ```r
 ggplot(bream, aes(length_cm, mass_g)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) + 
-  geom_point( data = prediction_data, color = "blue")
+  geom_point( data = prediction_data, color = "blue") +
+  ggtitle(" Odnos duljine i težine")
 ```
 ]
 
@@ -800,9 +844,8 @@ ggplot(bream, aes(length_cm, mass_g)) +
 
 # Ekstrapolacija
 &lt;br&gt;
-&lt;br&gt;
 - *Ekstrapolacija* označava predikciju izvan postojećih podataka
-
+&lt;br&gt;
 
 ```r
 mali_bream &lt;- tibble(length_cm = 10)
@@ -821,17 +864,17 @@ mutate(mass_g = predict(tezina_vs_visina, mali_bream))
 
 class: inverse, center, middle
 
-
 # Elementi modela
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
 
-(Što se sve nalazi u regresijskom objektu!?)
+(Što se sve nalazi u regresijskom objektu?)
 
 ---
 
 # Regresijski koeficijenti
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 tezina_vs_visina &lt;- lm(mass_g ~ length_cm, data = bream)
@@ -878,7 +921,7 @@ fitted(tezina_vs_visina)
 
 
 ```r
-# jednako kao
+# jednako kao:
 explanatory_data &lt;- bream %&gt;% select(length_cm)
 predict(tezina_vs_visina, explanatory_data)
 ```
@@ -959,10 +1002,11 @@ summary(tezina_vs_visina)
 ---
 
 # Dodatne vještine u R
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
-library(broom) # izvrstan paket;podgledaj dokumentaciju!
+library(broom) # podgledaj dokumentaciju na https://opr.princeton.edu/workshops/Downloads/2016Jan_BroomRobinson.pdf
 tidy(tezina_vs_visina) # napravi tibble (dframe) procjene 
 ```
 
@@ -1007,7 +1051,8 @@ augment(tezina_vs_visina)
 ---
 
 # Dodatne vještine u R
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 glance(tezina_vs_visina)
@@ -1020,10 +1065,6 @@ glance(tezina_vs_visina)
 ## 1     0.951         0.947  82.0      251. 7.08e-10     1  -86.3  179.  181.
 ## # ... with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
-
-
----
-
 ---
 
 class: inverse, center, middle
@@ -1036,25 +1077,29 @@ class: inverse, center, middle
 
 ---
 
-# "Perch" vrsta ribe 
+# *Perch* vrsta ribe 
 
 
 ```r
 perch &lt;- fish %&gt;%
 filter(species == "Perch")
-head(perch,8)
+head(perch,12)
 ```
 
 ```
-##   species mass_g length_cm
-## 1   Perch    125      19.0
-## 2   Perch    130      19.3
-## 3   Perch    120      20.0
-## 4   Perch    110      20.0
-## 5   Perch    130      20.5
-## 6   Perch    150      20.5
-## 7   Perch    180      23.0
-## 8   Perch    300      25.2
+##    species mass_g length_cm
+## 1    Perch    125      19.0
+## 2    Perch    130      19.3
+## 3    Perch    120      20.0
+## 4    Perch    110      20.0
+## 5    Perch    130      20.5
+## 6    Perch    150      20.5
+## 7    Perch    180      23.0
+## 8    Perch    300      25.2
+## 9    Perch    260      25.4
+## 10   Perch    250      25.4
+## 11   Perch    300      26.9
+## 12   Perch    320      27.8
 ```
 
 ---
@@ -1065,29 +1110,30 @@ head(perch,8)
 ```r
 ggplot(perch, aes(length_cm, mass_g)) +
 geom_point() +
-geom_smooth(method = "lm", se = FALSE)
+geom_smooth(method = "lm", se = FALSE) +
+ggtitle("Odnos duljine i težine")
 ```
 
-&lt;img src="07_REG_files/figure-html/unnamed-chunk-44-1.png" style="display: block; margin: auto;" /&gt;
-
+&lt;img src="07_REG_files/figure-html/unnamed-chunk-46-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Bream vs. perch vrsta
-
-
-&lt;img src="../Foto/reg8.png" width="500px" style="display: block; margin: auto;" /&gt;
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/reg8.png" width="600px" style="display: block; margin: auto;" /&gt;
 ---
 
 # Težina vs. duljina **na treću(^3)** 
-
+&lt;br&gt;
+&lt;br&gt;
 .left-code[
 
 ```r
 ggplot(perch, aes(length_cm ^ 3, mass_g)) +
 geom_point() +
-geom_smooth(method = "lm", se = FALSE)
+geom_smooth(method = "lm", se = FALSE) +
+ggtitle("Odnos duljine i težine")  
 ```
 ]
 
@@ -1095,11 +1141,11 @@ geom_smooth(method = "lm", se = FALSE)
 &lt;img src="07_REG_files/figure-html/plot-label6-out-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
-
 ---
 
 # Regresijski model
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 mdl_perch &lt;- lm(mass_g ~ I(length_cm ^ 3), data = perch)
@@ -1119,17 +1165,18 @@ mdl_perch
 ---
 
 # Predikcija
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 explanatory_data &lt;- tibble(length_cm = seq(10, 40, 5))
 prediction_data &lt;- explanatory_data %&gt;%
 mutate(mass_g = predict(mdl_perch, explanatory_data))
-head(prediction_data,8)
+head(prediction_data)
 ```
 
 ```
-## # A tibble: 7 x 2
+## # A tibble: 6 x 2
 ##   length_cm mass_g
 ##       &lt;dbl&gt;  &lt;dbl&gt;
 ## 1        10   27.6
@@ -1137,21 +1184,21 @@ head(prediction_data,8)
 ## 3        20  145. 
 ## 4        25  273. 
 ## 5        30  464. 
-## 6        35  730. 
-## 7        40 1084.
+## 6        35  730.
 ```
 
 ---
 
 # Vizualiziraj (^3)
 
-left-code[
+.left-code[
 
 ```r
 ggplot(perch, aes(length_cm ^ 3, mass_g)) +
 geom_point() +
 geom_smooth(method = "lm", se = FALSE) +
-geom_point(data = prediction_data, color = "blue")
+geom_point(data = prediction_data, color = "blue") +
+ggtitle("Odnos duljine i težine")
 ```
 ]
 
@@ -1163,21 +1210,20 @@ geom_point(data = prediction_data, color = "blue")
 
 # Vizualiziraj 
 
-left-code[
+.left-code[
 
 ```r
 ggplot(perch, aes(length_cm, mass_g)) +
 geom_point() +
 geom_smooth(method = "lm", se = FALSE) +
-geom_point(data = prediction_data, color = "blue")
+geom_point(data = prediction_data, color = "blue") +
+ggtitle("Odnos duljine i težine")
 ```
 ]
 
 .right-plot[
 &lt;img src="07_REG_files/figure-html/plot-label8-out-1.png" style="display: block; margin: auto;" /&gt;
 ]
-
-
 
 ---
 
@@ -1194,12 +1240,12 @@ name: exemplar
 
 # Bream vs perch model 
 
-&lt;img src="07_REG_files/figure-html/unnamed-chunk-48-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="07_REG_files/figure-html/unnamed-chunk-50-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Koeficijent determinacije
-
+&lt;br&gt;
 &gt; Označava proporciju varijance u zavisnoj varijabli koja se može objasniti sa nezavisnom varijablom.
 
 - `1` označava savršeni fit
@@ -1241,8 +1287,7 @@ summary(mdl_bream) # Vidi R-squared
 
 ```r
 # Pregledaj rezultate modela
-mdl_bream %&gt;%
-glance()
+mdl_bream %&gt;% glance()
 ```
 
 ```
@@ -1256,9 +1301,7 @@ glance()
 
 ```r
 # Izvuci koeficijent determinacije
-mdl_bream %&gt;%
-glance() %&gt;%
-pull(r.squared)
+mdl_bream %&gt;% glance() %&gt;% pull(r.squared)
 ```
 
 ```
@@ -1266,18 +1309,15 @@ pull(r.squared)
 ```
 
 
-
 ```r
 # Zapravo se radi o običnom kvadratu korelacijskog koeficijenta :-)
-bream %&gt;%
-summarize(coeff_determination = cor(length_cm, mass_g) ^ 2)
+bream %&gt;% summarize(coeff_determination = cor(length_cm, mass_g) ^ 2)
 ```
 
 ```
 ##   coeff_determination
 ## 1           0.9506922
 ```
-
 
 ---
 
@@ -1315,7 +1355,8 @@ summary(mdl_bream)
 ---
 
 # Rezidualna standardna pogreška (RSE)
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 mdl_bream %&gt;%
@@ -1371,11 +1412,11 @@ mutate(residuals_sq = residuals(mdl_bream) ^ 2)
 ## 15 Silver Bream    300      24.0 8.209202e+03
 ```
 
-
 ---
 
 # Izračunaj RSE: zbroji
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 bream %&gt;%
@@ -1391,7 +1432,8 @@ summarize(resid_sum_of_sq = sum(residuals_sq))
 ---
 
 # Izračunaj RSE: stupnjevi slobode
-
+&lt;br&gt;
+&lt;br&gt;
 &gt; Stupnjevi slobode su broj opservacija minus broj modelskih koeficijenata.
 
 
@@ -1432,6 +1474,7 @@ rse = sqrt(resid_sum_of_sq / deg_freedom))
 
 &lt;br&gt;
 &lt;br&gt;
+&lt;br&gt;
 - `mdl_bream` ima RSE `74`
 &lt;br&gt;
 &gt; Taj pokazatelj se može interpretirati na način da je razlika predviđene mase bream vrste i prave (podatci) mase te vrste otprilike 74g.
@@ -1440,6 +1483,7 @@ rse = sqrt(resid_sum_of_sq / deg_freedom))
 ---
 
 # RMSE
+&lt;br&gt;
 
 ###### Rezidualna stde
 
@@ -1458,7 +1502,6 @@ rse = sqrt(resid_sum_of_sq / deg_freedom))
 ## 1        87326.57          13 81.95992
 ```
 ]
-
 
 ###### Korijen prosjecne stde (RMSE)
 
@@ -1487,6 +1530,7 @@ rmse = sqrt(resid_sum_of_sq / n_obs))
 &lt;br&gt;
 - Normalna disribucija
 &lt;br&gt;
+&lt;br&gt;
 - Prosjek reziduala je 0
 
 ---
@@ -1498,7 +1542,7 @@ rmse = sqrt(resid_sum_of_sq / n_obs))
 mdl_bream &lt;- lm(mass_g ~ length_cm, data = bream)
 ```
 
-&lt;img src="07_REG_files/figure-html/unnamed-chunk-63-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="07_REG_files/figure-html/unnamed-chunk-65-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1509,31 +1553,14 @@ mdl_bream &lt;- lm(mass_g ~ length_cm, data = bream)
 mdl_perch &lt;- lm(mass_g ~ length_cm, data = perch)
 ```
 
-&lt;img src="07_REG_files/figure-html/unnamed-chunk-65-1.png" style="display: block; margin: auto;" /&gt;
-
+&lt;img src="07_REG_files/figure-html/unnamed-chunk-67-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Reziduali vs. fitted vrijednosti
 
 ###### Bream
-
-.pull-left[ 
-&lt;img src="07_REG_files/figure-html/unnamed-chunk-66-1.png" style="display: block; margin: auto;" /&gt;
-]
-
-###### Perch
-
-.pull-right[ 
-&lt;img src="07_REG_files/figure-html/unnamed-chunk-67-1.png" style="display: block; margin: auto;" /&gt;
-]
-
----
-
-# QQ
-
-###### Bream
-
+&lt;br&gt;
 .pull-left[ 
 &lt;img src="07_REG_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
 ]
@@ -1546,7 +1573,7 @@ mdl_perch &lt;- lm(mass_g ~ length_cm, data = perch)
 
 ---
 
-# Scale-location
+# QQ
 
 ###### Bream
 
@@ -1562,9 +1589,25 @@ mdl_perch &lt;- lm(mass_g ~ length_cm, data = perch)
 
 ---
 
+# Scale-location
+
+###### Bream
+
+.pull-left[ 
+&lt;img src="07_REG_files/figure-html/unnamed-chunk-72-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+###### Perch
+
+.pull-right[ 
+&lt;img src="07_REG_files/figure-html/unnamed-chunk-73-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
 # autoplot() funkcija
 
-left-code[
+.left-code[
 
 ```r
 autoplot(
@@ -1593,7 +1636,8 @@ class: inverse, center, middle
 ---
 
 # Roach vrsta
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 roach &lt;- fish %&gt;%
@@ -1616,14 +1660,15 @@ roach %&gt;% head(8)
 ---
 
 # Ekstremne vrijednosti
-
-
-left-code[
+&lt;br&gt;
+&lt;br&gt;
+.left-code[
 
 ```r
 ggplot(roach, aes(length_cm, mass_g)) +
 geom_point() +
-geom_smooth(method = "lm", se = FALSE)
+geom_smooth(method = "lm", se = FALSE) + 
+ggtitle("Odnos duljine i težine")
 ```
 ]
 
@@ -1631,20 +1676,20 @@ geom_smooth(method = "lm", se = FALSE)
 &lt;img src="07_REG_files/figure-html/plot-label10-out-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
-
 ---
 
-# Ekstremne vrijednosti(*nezavisne varijable*)
-
-
-left-code[
+# Ekstremne vrijednosti 
+&lt;br&gt;
+&lt;br&gt;
+.left-code[
 
 ```r
 roach %&gt;%
 mutate(has_extreme_length = length_cm &lt; 15 | length_cm &gt; 26) %&gt;%
 ggplot(aes(length_cm, mass_g)) +
 geom_point(aes(color = has_extreme_length)) +
-geom_smooth(method = "lm", se = FALSE)
+geom_smooth(method = "lm", se = FALSE) + 
+ggtitle("Odnos duljine i težine")
 ```
 ]
 
@@ -1652,11 +1697,11 @@ geom_smooth(method = "lm", se = FALSE)
 &lt;img src="07_REG_files/figure-html/plot-label11-out-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
-
 ---
 
-# Ekstremne vrijednosti(*zavsna varijabla*)
-
+# Ekstremne vrijednosti
+&lt;br&gt;
+&lt;br&gt;
 .left-code[
 
 ```r
@@ -1664,7 +1709,8 @@ roach %&gt;%
 mutate(has_extreme_length = length_cm &lt; 15 | length_cm &gt; 26,has_extreme_mass = mass_g &lt; 1) %&gt;%
 ggplot(aes(length_cm, mass_g)) +
 geom_point(aes(color = has_extreme_length,shape = has_extreme_mass)) +
-geom_smooth(method = "lm", se = FALSE)
+geom_smooth(method = "lm", se = FALSE) + 
+ggtitle("Odnos duljine i težine")
 ```
 ]
 
@@ -1675,7 +1721,8 @@ geom_smooth(method = "lm", se = FALSE)
 ---
 
 # Poluga (*leverge*)
-
+&lt;br&gt;
+&lt;br&gt;
 &gt; "Poluga" pokazuje koliko su ekstremne nezavisne varijable.
 
 
@@ -1692,7 +1739,7 @@ hatvalues(mdl_roach)
 ---
 
 # .hat kolona
-
+&lt;br&gt;
 
 ```r
 augment(mdl_roach)
@@ -1715,7 +1762,7 @@ augment(mdl_roach)
 ---
 
 # Visoka poluga (*Roach vrsta*) 
-
+&lt;br&gt;
 
 ```r
 mdl_roach %&gt;%
@@ -1737,11 +1784,11 @@ head()
 ## 6    145      20.5    0.136
 ```
 
-
 ---
 
 # Utjecaj (*Influence*)
-
+&lt;br&gt;
+&lt;br&gt;
 &gt; "Utjecaj" pokazuje koliko će se model promijeniti ako se opservacija isključi iz uzorka.
 
 
@@ -1759,7 +1806,8 @@ cooks.distance(mdl_roach)
 ---
 
 # .cooksd kolona
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 augment(mdl_roach)
@@ -1804,16 +1852,15 @@ head()
 ## 6    110      19.1     0.0375
 ```
 
-
 ---
 
-# Izbacivanje opservacija sa visokom "polugom"
+# Izbacivanje opservacija
 
 ```r
+# Makni opservacije sa visokom "polugom"
 roach_not_short &lt;- roach %&gt;%
 filter(length_cm != 12.9)
 ```
-
 
 .left-code[
 
@@ -1821,7 +1868,8 @@ filter(length_cm != 12.9)
 ggplot(roach, aes(length_cm, mass_g)) +
 geom_point() +
 geom_smooth(method = "lm", se = FALSE) +
-geom_smooth(method = "lm", se = FALSE,data = roach_not_short, color = "red")
+geom_smooth(method = "lm", se = FALSE,data = roach_not_short, color = "red") + 
+ggtitle("Odnos duljine i težine")
 ```
 ]
 
@@ -1847,6 +1895,405 @@ ncol = 1)
 .right-plot[
 &lt;img src="07_REG_files/figure-html/plot-label14-out-1.png" style="display: block; margin: auto;" /&gt;
 ]
+
+---
+
+class: inverse, center, middle
+name: exemplar
+
+# VIŠESTRUKA LINEARNA REGRESIJA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Više od jedne nezavisne )
+
+---
+
+# Pregledaj podatke
+
+
+```r
+head(sample_n(fish,10),12)
+```
+
+```
+##         species mass_g length_cm height_cm
+## 1  Common Bream 1000.0      33.5      44.5
+## 2         Perch 1000.0      39.8      26.4
+## 3         Perch  300.0      25.2      29.0
+## 4  Common Bream  725.0      31.8      40.0
+## 5         Smelt    6.7       9.3      16.1
+## 6         Smelt   12.2      12.1      16.5
+## 7         Roach  110.0      19.1      26.7
+## 8         Perch  260.0      25.4      24.8
+## 9         Perch 1000.0      41.1      26.8
+## 10        Perch 1015.0      37.0      29.2
+```
+
+---
+
+# 3D vizualizacija 
+
+.left-code[
+
+```r
+library(plot3D)
+scatter3D(fish$length_cm, fish$height_cm, fish$mass_g)
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label15-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# 2D vizualizacija 
+
+.left-code[
+
+```r
+ggplot(fish,
+aes(length_cm, height_cm, color = mass_g)) +
+geom_point() + 
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label16-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# 2D vizualizacija (*poboljšano*)
+
+.left-code[
+
+```r
+ggplot(fish,
+aes(length_cm, height_cm, color = mass_g)) +
+geom_point() + 
+scale_color_viridis_c(option = "inferno") +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label17-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Regresijski model (*2 varijable*)
+
+
+```r
+mdl_mass_vs_both &lt;- lm(mass_g ~ length_cm + height_cm, data = fish)
+mdl_mass_vs_both
+```
+
+```
+## 
+## Call:
+## lm(formula = mass_g ~ length_cm + height_cm, data = fish)
+## 
+## Coefficients:
+## (Intercept)    length_cm    height_cm  
+##     -558.59        33.64         4.18
+```
+
+---
+
+# Predviđanje
+
+.pull-left[
+
+```r
+explanatory_data &lt;- expand_grid(
+length_cm = seq(5, 60, 5),
+height_cm = seq(2, 20, 2))
+
+head(explanatory_data,4)
+```
+
+```
+## # A tibble: 4 x 2
+##   length_cm height_cm
+##       &lt;dbl&gt;     &lt;dbl&gt;
+## 1         5         2
+## 2         5         4
+## 3         5         6
+## 4         5         8
+```
+]
+
+.pull-right[
+
+```r
+prediction_data &lt;- explanatory_data %&gt;%
+mutate(mass_g = predict(mdl_mass_vs_both, explanatory_data))
+
+head(prediction_data,4)
+```
+
+```
+## # A tibble: 4 x 3
+##   length_cm height_cm mass_g
+##       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+## 1         5         2  -382.
+## 2         5         4  -374.
+## 3         5         6  -365.
+## 4         5         8  -357.
+```
+]
+
+---
+
+# Vizaliziraj predikciju
+
+.left-code[
+
+```r
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+geom_point(data = prediction_data, shape = 15, size = 3) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label18-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Uključi interakciju varijabli
+
+
+```r
+mdl_mass_vs_both_inter &lt;- lm(mass_g ~ length_cm * height_cm, data = fish)
+mdl_mass_vs_both_inter
+```
+
+```
+## 
+## Call:
+## lm(formula = mass_g ~ length_cm * height_cm, data = fish)
+## 
+## Coefficients:
+##         (Intercept)            length_cm            height_cm  
+##            -54.0334              14.6141             -20.0871  
+## length_cm:height_cm  
+##              0.8967
+```
+
+---
+
+# Predviđanje 
+
+
+.pull-left[
+
+```r
+explanatory_data &lt;- expand_grid(
+length_cm = seq(5, 60, 5),
+height_cm = seq(2, 20, 2))
+
+head(explanatory_data,4)
+```
+
+```
+## # A tibble: 4 x 2
+##   length_cm height_cm
+##       &lt;dbl&gt;     &lt;dbl&gt;
+## 1         5         2
+## 2         5         4
+## 3         5         6
+## 4         5         8
+```
+]
+
+.pull-right[
+
+```r
+prediction_data &lt;- explanatory_data %&gt;%
+mutate(mass_g = predict(mdl_mass_vs_both_inter, explanatory_data))
+
+head(prediction_data,4)
+```
+
+```
+## # A tibble: 4 x 3
+##   length_cm height_cm mass_g
+##       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+## 1         5         2  -12.2
+## 2         5         4  -43.4
+## 3         5         6  -74.6
+## 4         5         8 -106.
+```
+]
+
+---
+
+# Vizaliziraj predikciju
+
+.left-code[
+
+```r
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+geom_point(data = prediction_data, shape = 15, size = 3) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label19-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Više od dvije nezavisne varijable
+
+.left-code[
+
+```r
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+facet_wrap(vars(species)) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label20-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Interakcijske mogućnosti
+
+###### Bez interakcija
+
+
+```r
+lm(mass_g ~ length_cm + height_cm + species + 0, data = fish)
+```
+
+###### Dvosmjerna interakcija
+
+
+```r
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + 0,
+data = fish)
+```
+
+###### Trosmjerna interakcija
+
+
+```r
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + length_cm:height_cm:species + 0,
+data = fish)
+```
+---
+
+# Interakcijske mogućnosti (*nastavak*)
+
+###### Sve interakcije
+
+
+```r
+# Jedna mogućnost
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + length_cm:height_cm:species + 0,
+data = fish)
+```
+
+
+```r
+# Druga mogućnost
+lm(mass_g ~ length_cm * height_cm * species + 0,
+data = fish)
+```
+
+---
+
+# Interakcijske mogućnosti (*nastavak*)
+
+###### Dvostruke interakcije
+
+
+```r
+lm(mass_g ~ length_cm + height_cm + species + length_cm:height_cm + length_cm:species + height_cm:species + 0,
+data = fish)
+```
+
+
+```r
+lm(mass_g ~ (length_cm + height_cm + species) ^ 2 + 0,
+data = fish)
+```
+
+
+
+```r
+lm(mass_g ~ I(length_cm) ^ 2 + height_cm + species + 0,
+data = fish)
+```
+
+---
+
+# Predviđanje
+
+
+```r
+# Procijeni model
+mdl_mass_vs_all &lt;- lm(mass_g ~ length_cm * height_cm * species * 0, data = fish)
+# Napravi podatke za predikciju
+explanatory_data &lt;- expand_grid(length_cm = seq(5, 60, 6),
+height_cm = seq(2, 20, 2),
+species = unique(fish$species))
+# Provedi predikciju
+prediction_data &lt;- explanatory_data %&gt;%
+mutate(mass_g = predict(mdl_mass_vs_all, explanatory_data))
+```
+
+---
+
+# Vizualizacija predikcije
+
+.left-code[
+
+```r
+ggplot(fish,aes(length_cm, height_cm, color = mass_g)) +
+geom_point() +
+scale_color_viridis_c(option = "inferno") +
+facet_wrap(vars(species)) +
+geom_point(
+data = prediction_data,
+size = 3, shape = 15) +
+ggtitle("Odnos duljine i težine")
+```
+]
+
+.right-plot[
+&lt;img src="07_REG_files/figure-html/plot-label21-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Sljedeće predavanje: Survival analiza)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

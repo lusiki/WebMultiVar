@@ -146,9 +146,24 @@ title: " "
 <br>
 <br>
 
-### Predavanje 08: Diskriminantna analiza 
+### Predavanje 08: Analiza sadržaja 
+
+- Praktični primjer
+
+- Univarijatna regresijska analiza
+
+- Predikcija i elementi modela
+
+- Kvaliteta procjene
+
+- Višestruka regresija
 
 
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/08_TXT.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/08_TXT.Rmd) 
+<br>
+**Čitanje:** [Prošlogodišnje predavanje](https://rpubs.com/shichich/605152) + [Text Mining with R](https://www.tidytextmining.com/) + [Tidytext tutorial na learnr platformi](https://juliasilge.com/blog/learn-tidytext-learnr/)
+<br>
+<br>
 
 ### Predavanje 09: Analiza panel podataka
 

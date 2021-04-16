@@ -441,6 +441,400 @@ arrange(desc(n))
 ## 10 floor      561
 ## # ... with 9,662 more rows
 ```
+
+
+---
+
+class: inverse, center, middle
+name: mani
+
+# VIZALIZACIJA TEKSTA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Pregled tekstualnih podataka)
+
+---
+
+# Uredi podatke za prikaz
+
+
+```r
+tidy_review &lt;- recenzije_Dta %&gt;%
+mutate(id = row_number()) %&gt;%
+unnest_tokens(word, Review) %&gt;%
+anti_join(stop_words)
+head(tidy_review,8)
+```
+
+```
+## # A tibble: 8 x 6
+##   Date     Product                    Stars Title               id word   
+##   &lt;chr&gt;    &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;  
+## 1 1/12/15  iRobot Roomba 650 for Pets     4 Four Stars           2 walk   
+## 2 1/12/15  iRobot Roomba 650 for Pets     4 Four Stars           2 rest   
+## 3 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 roomba 
+## 4 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 proof  
+## 5 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 house  
+## 6 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 awesome
+## 7 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 pet    
+## 8 12/26/13 iRobot Roomba 650 for Pets     5 Awesome love it.     3 cleans
+```
+
+---
+
+# Histogram
+
+
+```r
+word_counts &lt;- tidy_review %&gt;%
+count(word) %&gt;%
+arrange(desc(n)) %&gt;%
+filter(n&lt;2000)
+ggplot(word_counts, aes(x = word, y = n)) +
+geom_col()
+```
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Filtriraj
+
+
+```r
+word_counts2 &lt;- tidy_review %&gt;%
+count(word) %&gt;%
+filter(n &gt; 300) %&gt;%
+arrange(desc(n)) 
+head(word_counts2,8)
+```
+
+```
+## # A tibble: 8 x 2
+##   word         n
+##   &lt;chr&gt;    &lt;int&gt;
+## 1 roomba    2286
+## 2 clean     1204
+## 3 vacuum     989
+## 4 hair       900
+## 5 cleaning   809
+## 6 time       795
+## 7 house      745
+## 8 floors     657
+```
+
+---
+
+# Vizualizacija
+
+
+```r
+# zakreni osi pomoću coord_flip()
+ggplot(word_counts2, aes(x = word, y = n)) +
+geom_col() +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Stop riječi
+
+.pull_left[
+
+```r
+# default stop riječi
+head(stop_words,8)
+```
+
+```
+## # A tibble: 8 x 2
+##   word        lexicon
+##   &lt;chr&gt;       &lt;chr&gt;  
+## 1 a           SMART  
+## 2 a's         SMART  
+## 3 able        SMART  
+## 4 about       SMART  
+## 5 above       SMART  
+## 6 according   SMART  
+## 7 accordingly SMART  
+## 8 across      SMART
+```
+]
+
+.pull-right[
+
+```r
+# dodaj custom stop riječi
+tribble(
+~word, ~lexicon,
+"roomba", "CUSTOM",
+"2", "CUSTOM"
+)
+```
+
+```
+## # A tibble: 2 x 2
+##   word   lexicon
+##   &lt;chr&gt;  &lt;chr&gt;  
+## 1 roomba CUSTOM 
+## 2 2      CUSTOM
+```
+]
+
+---
+
+# Stop riječi
+
+
+```r
+custom_stop_words &lt;- tribble(
+~word, ~lexicon,
+"roomba", "CUSTOM",
+"2", "CUSTOM"
+)
+stop_words2 &lt;- stop_words %&gt;%
+bind_rows(custom_stop_words)
+```
+
+
+```r
+# Ukloni sve stop riječi
+tidy_review &lt;- recenzije_Dta %&gt;%
+mutate(id = row_number()) %&gt;%
+select(id, Date, Product, Stars, Review) %&gt;%
+unnest_tokens(word, Review) %&gt;%
+anti_join(stop_words2)
+tidy_review %&gt;%
+filter(word == "roomba")
+```
+
+```
+## # A tibble: 0 x 5
+## # ... with 5 variables: id &lt;int&gt;, Date &lt;chr&gt;, Product &lt;chr&gt;, Stars &lt;dbl&gt;,
+## #   word &lt;chr&gt;
+```
+
+---
+
+# Poboljšaj grafikon
+
+
+```r
+# prvo koristi fct_reorder funkcija
+word_counts &lt;- tidy_review %&gt;%
+count(word) %&gt;%
+filter(n &gt; 300) %&gt;%
+mutate(word2 = fct_reorder(word, n))
+head(word_counts,8)
+```
+
+```
+## # A tibble: 8 x 3
+##   word         n word2   
+##   &lt;chr&gt;    &lt;int&gt; &lt;fct&gt;   
+## 1 880        525 880     
+## 2 bin        428 bin     
+## 3 carpet     368 carpet  
+## 4 clean     1204 clean   
+## 5 cleaning   809 cleaning
+## 6 day        578 day     
+## 7 dirt       384 dirt    
+## 8 dog        407 dog
+```
+
+---
+
+# Poboljšaj grafikon
+
+
+```r
+ggplot(word_counts, aes(x = word2, y = n)) +
+geom_col() +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+&lt;img src="08_TXT_files/figure-html/geom-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Facet grafikoni
+
+
+```r
+tidy_review %&gt;%
+count(word, Product) %&gt;%
+arrange(desc(n))
+```
+
+```
+## # A tibble: 12,719 x 3
+##    word     Product                                      n
+##    &lt;chr&gt;    &lt;chr&gt;                                    &lt;int&gt;
+##  1 clean    iRobot Roomba 880 for Pets and Allergies   815
+##  2 vacuum   iRobot Roomba 880 for Pets and Allergies   678
+##  3 hair     iRobot Roomba 880 for Pets and Allergies   595
+##  4 cleaning iRobot Roomba 880 for Pets and Allergies   560
+##  5 880      iRobot Roomba 880 for Pets and Allergies   518
+##  6 house    iRobot Roomba 880 for Pets and Allergies   494
+##  7 time     iRobot Roomba 880 for Pets and Allergies   494
+##  8 floors   iRobot Roomba 880 for Pets and Allergies   405
+##  9 love     iRobot Roomba 880 for Pets and Allergies   403
+## 10 dust     iRobot Roomba 880 for Pets and Allergies   399
+## # ... with 12,709 more rows
+```
+
+---
+
+# Priprema za facet grafikon
+
+
+```r
+tidy_review %&gt;%
+count(word, Product) %&gt;%
+group_by(Product) %&gt;%
+top_n(10, n)
+```
+
+```
+## # A tibble: 20 x 3
+## # Groups:   Product [2]
+##    word     Product                                      n
+##    &lt;chr&gt;    &lt;chr&gt;                                    &lt;int&gt;
+##  1 880      iRobot Roomba 880 for Pets and Allergies   518
+##  2 clean    iRobot Roomba 650 for Pets                 389
+##  3 clean    iRobot Roomba 880 for Pets and Allergies   815
+##  4 cleaning iRobot Roomba 650 for Pets                 249
+##  5 cleaning iRobot Roomba 880 for Pets and Allergies   560
+##  6 day      iRobot Roomba 650 for Pets                 209
+##  7 dust     iRobot Roomba 880 for Pets and Allergies   399
+##  8 floor    iRobot Roomba 650 for Pets                 207
+##  9 floors   iRobot Roomba 650 for Pets                 252
+## 10 floors   iRobot Roomba 880 for Pets and Allergies   405
+## 11 hair     iRobot Roomba 650 for Pets                 305
+## 12 hair     iRobot Roomba 880 for Pets and Allergies   595
+## 13 house    iRobot Roomba 650 for Pets                 251
+## 14 house    iRobot Roomba 880 for Pets and Allergies   494
+## 15 love     iRobot Roomba 880 for Pets and Allergies   403
+## 16 run      iRobot Roomba 650 for Pets                 180
+## 17 time     iRobot Roomba 650 for Pets                 301
+## 18 time     iRobot Roomba 880 for Pets and Allergies   494
+## 19 vacuum   iRobot Roomba 650 for Pets                 311
+## 20 vacuum   iRobot Roomba 880 for Pets and Allergies   678
+```
+
+---
+
+# Priprema za facet grafikon
+
+
+```r
+word_counts &lt;- tidy_review %&gt;%
+count(word, Product) %&gt;%
+group_by(Product) %&gt;%
+top_n(10, n) %&gt;%
+ungroup() %&gt;%
+mutate(word2 = fct_reorder(word, n))
+```
+
+
+```r
+gg &lt;- ggplot(word_counts, aes(x = word2, y = n, fill = Product)) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~Product, scales = "free_y") +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+---
+
+# Facet grafikon
+
+
+```r
+gg
+```
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Oblak riječi (*WordCloud*)
+
+.left-code[
+
+```r
+library(wordcloud)
+word_counts &lt;- tidy_review %&gt;% count(word)
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 30)
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Oblak riječi (*WordCloud*)
+
+.left-code[
+
+```r
+# Više riječi
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 70
+)
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label1-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Oblak riječi (*WordCloud*)
+
+.left-code[
+
+```r
+# Boja
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 30,
+colors = "blue"
+)
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label2-out-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Sljedeće predavanje: Survival analiza)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

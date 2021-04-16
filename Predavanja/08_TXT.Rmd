@@ -300,18 +300,261 @@ arrange(desc(n))
 ```
 
 
+---
+
+class: inverse, center, middle
+name: mani
+
+# VIZALIZACIJA TEKSTA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Pregled tekstualnih podataka)
+
+---
+
+# Uredi podatke za prikaz
+
+```{r}
+tidy_review <- recenzije_Dta %>%
+mutate(id = row_number()) %>%
+unnest_tokens(word, Review) %>%
+anti_join(stop_words)
+head(tidy_review,8)
+```
+
+---
+
+# Histogram
+
+```{r, fig.height=4}
+word_counts <- tidy_review %>%
+count(word) %>%
+arrange(desc(n)) %>%
+filter(n<2000)
+ggplot(word_counts, aes(x = word, y = n)) +
+geom_col()
+```
+
+---
+
+# Filtriraj
+
+```{r, fig.height=4}
+word_counts2 <- tidy_review %>%
+count(word) %>%
+filter(n > 300) %>%
+arrange(desc(n)) 
+head(word_counts2,8)
+```
+
+---
+
+# Vizualizacija
+
+```{r, fig.height=4}
+# zakreni osi pomoću coord_flip()
+ggplot(word_counts2, aes(x = word, y = n)) +
+geom_col() +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+---
+
+# Stop riječi
+
+.pull_left[
+```{r}
+# default stop riječi
+head(stop_words,8)
+```
+]
+
+.pull-right[
+```{r}
+# dodaj custom stop riječi
+tribble(
+~word, ~lexicon,
+"roomba", "CUSTOM",
+"2", "CUSTOM"
+)
+```
+]
+
+---
+
+# Stop riječi
+
+```{r}
+custom_stop_words <- tribble(
+~word, ~lexicon,
+"roomba", "CUSTOM",
+"2", "CUSTOM"
+)
+stop_words2 <- stop_words %>%
+bind_rows(custom_stop_words)
+```
+
+```{r}
+# Ukloni sve stop riječi
+tidy_review <- recenzije_Dta %>%
+mutate(id = row_number()) %>%
+select(id, Date, Product, Stars, Review) %>%
+unnest_tokens(word, Review) %>%
+anti_join(stop_words2)
+tidy_review %>%
+filter(word == "roomba")
+```
+
+---
+
+# Poboljšaj grafikon
+
+```{r}
+# prvo koristi fct_reorder funkcija
+word_counts <- tidy_review %>%
+count(word) %>%
+filter(n > 300) %>%
+mutate(word2 = fct_reorder(word, n))
+head(word_counts,8)
+```
+
+---
+
+# Poboljšaj grafikon
+
+```{r, geom}
+ggplot(word_counts, aes(x = word2, y = n)) +
+geom_col() +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+---
+
+# Facet grafikoni
+
+```{r}
+tidy_review %>%
+count(word, Product) %>%
+arrange(desc(n))
+```
+
+---
+
+# Priprema za facet grafikon
+
+```{r}
+tidy_review %>%
+count(word, Product) %>%
+group_by(Product) %>%
+top_n(10, n)
+```
+
+---
+
+# Priprema za facet grafikon
+
+```{r}
+word_counts <- tidy_review %>%
+count(word, Product) %>%
+group_by(Product) %>%
+top_n(10, n) %>%
+ungroup() %>%
+mutate(word2 = fct_reorder(word, n))
+```
+
+```{r}
+gg <- ggplot(word_counts, aes(x = word2, y = n, fill = Product)) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~Product, scales = "free_y") +
+coord_flip() +
+ggtitle("Review Word Counts")
+```
+
+---
+
+# Facet grafikon
+
+```{r, fig.height=5}
+gg
+```
 
 
+---
+
+# Oblak riječi (*WordCloud*)
+
+.left-code[
+```{r plot-label, eval=FALSE}
+library(wordcloud)
+word_counts <- tidy_review %>% count(word)
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 30)
+```
+]
+
+.right-plot[
+```{r plot-label-out, ref.label="plot-label", echo=FALSE, fig.height=4}
+```
+]
+
+---
+
+# Oblak riječi (*WordCloud*)
+
+.left-code[
+```{r plot-label1, eval=FALSE}
+# Više riječi
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 70
+)
+```
+]
+
+.right-plot[
+```{r plot-label1-out, ref.label="plot-label1", echo=FALSE, fig.height=4}
+```
+]
+
+---
+
+# Oblak riječi (*WordCloud*)
+
+.left-code[
+```{r plot-label2, eval=FALSE}
+# Boja
+wordcloud(
+words = word_counts$word,
+freq = word_counts$n,
+max.words = 30,
+colors = "blue"
+)
+```
+]
+
+.right-plot[
+```{r plot-label2-out, ref.label="plot-label2", echo=FALSE, fig.height=4}
+```
+]
 
 
+---
 
+---
 
+class: inverse, center, middle
 
+# Hvala na pažnji
 
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-
-
-
+(Sljedeće predavanje: Survival analiza)
 
 
 
