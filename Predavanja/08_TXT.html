@@ -105,12 +105,10 @@ name: mani
 
 ---
 
-
 # Software podrška (paketi)
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/txt1.png" width="500px" style="display: block; margin: auto;" /&gt;
-
 
 ---
 
@@ -413,7 +411,6 @@ head(stop_words,12)
 ## 12 again       SMART
 ```
 
-
 ---
 
 # Pobroji riječi (drugi put)
@@ -441,7 +438,6 @@ arrange(desc(n))
 ## 10 floor      561
 ## # ... with 9,662 more rows
 ```
-
 
 ---
 
@@ -761,7 +757,6 @@ gg
 
 &lt;img src="08_TXT_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
 
-
 ---
 
 # Oblak riječi (*WordCloud*)
@@ -826,7 +821,7 @@ colors = "blue"
 ---
 
 class: inverse, center, middle
-name: mani
+name: sent
 
 # ANALIZA SENTIMENTA
 
@@ -910,7 +905,6 @@ get_sentiments("afinn")
 # Pregledaj riječnik
 
 
-
 ```r
 get_sentiments("afinn") %&gt;%
   summarize( min = min(value), max = max(value) )
@@ -939,6 +933,7 @@ labs(title = "Sentiment Counts in Loughran",
          x = "Counts",
          y = "Sentiment")
 ```
+
 ---
 
 # Vizualni pregled riječnika
@@ -953,7 +948,6 @@ gg2
 ---
 
 # Spoji riječnik i podatke
-
 
 
 ```r
@@ -977,7 +971,6 @@ inner_join(get_sentiments("loughran"))
 ## 10     7 8/17/15  iRobot Roomba 650 for Pets     1 justice   litigious  
 ## # ... with 3,950 more rows
 ```
-
 
 ---
 
@@ -1071,31 +1064,355 @@ gg3
 
 ---
 
-Izračunaj sentiment prema rangu
+# Izračunaj sentiment prema rangu
 
 
+```r
+tidy_review %&gt;%
+inner_join(get_sentiments("bing")) %&gt;%
+count(Stars, sentiment)
+```
+
+```
+## # A tibble: 10 x 3
+##    Stars sentiment     n
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;int&gt;
+##  1     1 negative    381
+##  2     1 positive    241
+##  3     2 negative    384
+##  4     2 positive    247
+##  5     3 negative    485
+##  6     3 positive    432
+##  7     4 negative    984
+##  8     4 positive    973
+##  9     5 negative   3705
+## 10     5 positive   5083
+```
+
+---
+
+# Široki format podataka
 
 
+```r
+tidy_review %&gt;%
+inner_join(get_sentiments("bing")) %&gt;%
+count(Stars, sentiment) %&gt;%
+spread(sentiment, n)
+```
+
+```
+## # A tibble: 5 x 3
+##   Stars negative positive
+##   &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;
+## 1     1      381      241
+## 2     2      384      247
+## 3     3      485      432
+## 4     4      984      973
+## 5     5     3705     5083
+```
+
+---
+
+# Izračunaj opći sentiment
 
 
+```r
+tidy_review %&gt;%
+inner_join(get_sentiments("bing")) %&gt;%
+count(Stars, sentiment) %&gt;%
+spread(sentiment, n) %&gt;%
+mutate(overall_sentiment = positive - negative)
+```
+
+```
+## # A tibble: 5 x 4
+##   Stars negative positive overall_sentiment
+##   &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;             &lt;int&gt;
+## 1     1      381      241              -140
+## 2     2      384      247              -137
+## 3     3      485      432               -53
+## 4     4      984      973               -11
+## 5     5     3705     5083              1378
+```
+
+---
+
+# Vizualiziraj
 
 
+```r
+sentiment_stars &lt;- tidy_review %&gt;%
+inner_join(get_sentiments("bing")) %&gt;%
+count(Stars, sentiment) %&gt;%
+spread(sentiment, n) %&gt;%
+mutate(overall_sentiment = positive - negative,
+                   stars = fct_reorder(as.factor(Stars), overall_sentiment))
+```
 
 
+```r
+gg4 &lt;- ggplot(sentiment_stars,
+aes(x = stars, y = overall_sentiment, fill = as.factor(Stars))) +
+geom_col(show.legend = FALSE) +
+coord_flip() +
+labs(title = "Overall Sentiment by Stars",
+  subtitle = "Reviews for Robotic Vacuums",
+        x = "Stars",
+        y = "Overall Sentiment")
+```
+
+---
+
+Vizualiziraj
 
 
+```r
+gg4
+```
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-51-1.png" style="display: block; margin: auto;" /&gt;
+---
+
+class: inverse, center, middle
+name: topi
+
+# TEMATSKA ANALIZA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Algoritamska identifikacija tema)
+
+---
+
+# Terminologija
+
+- Latent Dirichlet allocation (LDA) je najčešće korišten pristup za TA
+&lt;br&gt;
+- Skup dokumenata nazivamo korpus
+&lt;br&gt;
+- *Bag-of-words* pristup tretira svaku riječ u dokumentu zasebno
+&lt;br&gt;
+- TA identificira obrasce riječi koji se pojavljuju zajendo
+&lt;br&gt;
+- LDA je metoda nenadgledanog strojnog učenja
+
+---
+
+# Klastering vs. Tematska analiza
+&lt;br&gt;
+&lt;br&gt;
+- Klasteri se formiraju na osnovi mjere udaljenosti (*kontinuirana mjera*)
+- Svaki objekt je pripisan nekom klasteru
+&lt;br&gt;
+&lt;br&gt;
+- TA se zasniva na frekvencijama riječi (*diskretna mjera*)
+- Svaki dokument je mješavina svake teme
+
+---
+
+# Document term matrica
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+tidy_review %&gt;%
+count(word, id) %&gt;%
+cast_dtm(id, word, n)
+```
+
+```
+## &lt;&lt;DocumentTermMatrix (documents: 1791, terms: 9670)&gt;&gt;
+## Non-/sparse entries: 63116/17255854
+## Sparsity           : 100%
+## Maximal term length: NA
+## Weighting          : term frequency (tf)
+```
+
+---
+
+# Document term matrica
 
 
+```r
+dtm_review &lt;- tidy_review %&gt;%
+count(word, id) %&gt;%
+cast_dtm(id, word, n) %&gt;%
+as.matrix()
+dtm_review[1:4, 2000:2004]
+```
+
+```
+##       Terms
+## Docs   conscious consecutive consensus consequences considerable
+##   223          0           0         0            0            0
+##   1069         0           0         0            0            0
+##   425          0           0         0            0            0
+##   615          0           0         0            0            0
+```
+
+---
+
+# Provedi LDA analizu
 
 
+```r
+library(topicmodels)
+lda_out &lt;- LDA(
+dtm_review,
+k = 2,
+method = "Gibbs",
+control = list(seed = 42))
+```
 
 
+```r
+lda_out
+```
+
+```
+## A LDA_Gibbs topic model with 2 topics.
+```
+
+---
+
+# Pregledaj objekt
+
+.tiny[
+
+```r
+glimpse(lda_out)
+```
+
+```
+## Formal class 'LDA_Gibbs' [package "topicmodels"] with 16 slots
+##   ..@ seedwords      : NULL
+##   ..@ z              : int [1:76175] 2 1 1 1 1 2 1 1 1 1 ...
+##   ..@ alpha          : num 25
+##   ..@ call           : language LDA(x = dtm_review, k = 2, method = "Gibbs", control = list(seed = 42))
+##   ..@ Dim            : int [1:2] 1791 9670
+##   ..@ control        :Formal class 'LDA_Gibbscontrol' [package "topicmodels"] with 14 slots
+##   ..@ k              : int 2
+##   ..@ terms          : chr [1:9670] "______________________________________________________________________first" "0.3" "0.5" "0_0" ...
+##   ..@ documents      : chr [1:1791] "223" "1069" "425" "615" ...
+##   ..@ beta           : num [1:2, 1:9670] -12.9 -10.4 -10.5 -12.8 -12.9 ...
+##   ..@ gamma          : num [1:1791, 1:2] 0.388 0.564 0.444 0.395 0.335 ...
+##   ..@ wordassignments:List of 5
+##   .. ..$ i   : int [1:63116] 1 1 1 1 1 1 1 1 1 1 ...
+##   .. ..$ j   : int [1:63116] 1 11 19 38 127 130 131 134 170 189 ...
+##   .. ..$ v   : num [1:63116] 2 1 1 1 2 1 1 1 1 1 ...
+##   .. ..$ nrow: int 1791
+##   .. ..$ ncol: int 9670
+##   .. ..- attr(*, "class")= chr "simple_triplet_matrix"
+##   ..@ loglikelihood  : num -549950
+##   ..@ iter           : int 2000
+##   ..@ logLiks        : num(0) 
+##   ..@ n              : int 76175
+```
+]
+
+---
+
+# Pregledaj objekt
 
 
+```r
+lda_topics &lt;- lda_out %&gt;%
+tidy(matrix = "beta")
+lda_topics %&gt;%
+arrange(desc(beta))
+```
+
+```
+## # A tibble: 19,340 x 3
+##    topic term       beta
+##    &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;
+##  1     2 hair     0.0238
+##  2     1 cleaning 0.0201
+##  3     2 house    0.0197
+##  4     1 clean    0.0192
+##  5     2 floors   0.0174
+##  6     2 day      0.0153
+##  7     2 vacuum   0.0152
+##  8     2 floor    0.0148
+##  9     2 job      0.0142
+## 10     2 love     0.0141
+## # ... with 19,330 more rows
+```
+
+---
+
+# Interpretacija tema  
 
 
+```r
+# Model sa dvije teme
+lda_topics &lt;- LDA(
+dtm_review,
+k = 2,
+method = "Gibbs",
+control = list(seed = 42)) %&gt;%
+tidy(matrix = "beta")
+word_probs &lt;- lda_topics %&gt;%
+group_by(topic) %&gt;%
+top_n(15, beta) %&gt;%
+ungroup() %&gt;%
+mutate(term2 = fct_reorder(term, beta))
+```
+
+---
+
+# Interpretacija tema  
+
+.left-code[
+
+```r
+ggplot( word_probs, aes( term2, beta, fill = as.factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label5-out-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Interpretacija tema  
 
 
+```r
+# Model sa tri teme
+lda_topics2 &lt;- LDA(
+dtm_review,
+k = 3,
+method = "Gibbs",
+control = list(seed = 42)) %&gt;%
+tidy(matrix = "beta")
+word_probs2 &lt;- lda_topics2 %&gt;%
+group_by(topic) %&gt;%
+top_n(15, beta) %&gt;%
+ungroup() %&gt;%
+mutate(term2 = fct_reorder(term, beta))
+```
+
+---
+
+# Interpretacija tema  
+
+.left-code[
+
+```r
+ggplot( word_probs2, aes( term2, beta, fill = as.factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+]
+
+.right-plot[
+&lt;img src="08_TXT_files/figure-html/plot-label4-out-1.png" style="display: block; margin: auto;" /&gt;
 
 
 

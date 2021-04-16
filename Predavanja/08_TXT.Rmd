@@ -126,14 +126,12 @@ name: mani
 
 ---
 
-
 # Software podrška (paketi)
 <br>
 <br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/txt1.png")
 ```
-
 
 ---
 
@@ -288,7 +286,6 @@ tidy_review2
 head(stop_words,12)
 ```
 
-
 ---
 
 # Pobroji riječi (drugi put)
@@ -298,7 +295,6 @@ tidy_review2 %>%
 count(word) %>%
 arrange(desc(n))
 ```
-
 
 ---
 
@@ -481,7 +477,6 @@ ggtitle("Review Word Counts")
 gg
 ```
 
-
 ---
 
 # Oblak riječi (*WordCloud*)
@@ -546,7 +541,7 @@ colors = "blue"
 ---
 
 class: inverse, center, middle
-name: mani
+name: sent
 
 # ANALIZA SENTIMENTA
 
@@ -584,7 +579,6 @@ get_sentiments("afinn")
 
 # Pregledaj riječnik
 
-
 ```{r}
 get_sentiments("afinn") %>%
   summarize( min = min(value), max = max(value) )
@@ -605,6 +599,7 @@ labs(title = "Sentiment Counts in Loughran",
          x = "Counts",
          y = "Sentiment")
 ```
+
 ---
 
 # Vizualni pregled riječnika
@@ -617,12 +612,10 @@ gg2
 
 # Spoji riječnik i podatke
 
-
 ```{r}
 tidy_review %>%
 inner_join(get_sentiments("loughran"))
 ```
-
 
 ---
 
@@ -680,31 +673,237 @@ gg3
 
 ---
 
-Izračunaj sentiment prema rangu
+# Izračunaj sentiment prema rangu
 
+```{r}
+tidy_review %>%
+inner_join(get_sentiments("bing")) %>%
+count(Stars, sentiment)
+```
 
+---
 
+# Široki format podataka
 
+```{r}
+tidy_review %>%
+inner_join(get_sentiments("bing")) %>%
+count(Stars, sentiment) %>%
+spread(sentiment, n)
+```
 
+---
 
+# Izračunaj opći sentiment
 
+```{r}
+tidy_review %>%
+inner_join(get_sentiments("bing")) %>%
+count(Stars, sentiment) %>%
+spread(sentiment, n) %>%
+mutate(overall_sentiment = positive - negative)
+```
 
+---
 
+# Vizualiziraj
 
+```{r}
+sentiment_stars <- tidy_review %>%
+inner_join(get_sentiments("bing")) %>%
+count(Stars, sentiment) %>%
+spread(sentiment, n) %>%
+mutate(overall_sentiment = positive - negative,
+                   stars = fct_reorder(as.factor(Stars), overall_sentiment))
+```
 
+```{r}
+gg4 <- ggplot(sentiment_stars,
+aes(x = stars, y = overall_sentiment, fill = as.factor(Stars))) +
+geom_col(show.legend = FALSE) +
+coord_flip() +
+labs(title = "Overall Sentiment by Stars",
+  subtitle = "Reviews for Robotic Vacuums",
+        x = "Stars",
+        y = "Overall Sentiment")
+```
 
+---
 
+Vizualiziraj
 
+```{r, fig.height=4}
+gg4
+```
+---
 
+class: inverse, center, middle
+name: topi
 
+# TEMATSKA ANALIZA
 
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
+(Algoritamska identifikacija tema)
 
+---
 
+# Terminologija
 
+- Latent Dirichlet allocation (LDA) je najčešće korišten pristup za TA
+<br>
+- Skup dokumenata nazivamo korpus
+<br>
+- *Bag-of-words* pristup tretira svaku riječ u dokumentu zasebno
+<br>
+- TA identificira obrasce riječi koji se pojavljuju zajendo
+<br>
+- LDA je metoda nenadgledanog strojnog učenja
 
+---
 
+# Klastering vs. Tematska analiza
+<br>
+<br>
+- Klasteri se formiraju na osnovi mjere udaljenosti (*kontinuirana mjera*)
+- Svaki objekt je pripisan nekom klasteru
+<br>
+<br>
+- TA se zasniva na frekvencijama riječi (*diskretna mjera*)
+- Svaki dokument je mješavina svake teme
 
+---
+
+# Document term matrica
+<br>
+<br>
+```{r}
+tidy_review %>%
+count(word, id) %>%
+cast_dtm(id, word, n)
+```
+
+---
+
+# Document term matrica
+
+```{r}
+dtm_review <- tidy_review %>%
+count(word, id) %>%
+cast_dtm(id, word, n) %>%
+as.matrix()
+dtm_review[1:4, 2000:2004]
+```
+
+---
+
+# Provedi LDA analizu
+
+```{r}
+library(topicmodels)
+lda_out <- LDA(
+dtm_review,
+k = 2,
+method = "Gibbs",
+control = list(seed = 42))
+```
+
+```{r}
+lda_out
+```
+
+---
+
+# Pregledaj objekt
+
+.tiny[
+```{r}
+glimpse(lda_out)
+```
+]
+
+---
+
+# Pregledaj objekt
+
+```{r}
+lda_topics <- lda_out %>%
+tidy(matrix = "beta")
+lda_topics %>%
+arrange(desc(beta))
+```
+
+---
+
+# Interpretacija tema  
+
+```{r}
+# Model sa dvije teme
+lda_topics <- LDA(
+dtm_review,
+k = 2,
+method = "Gibbs",
+control = list(seed = 42)) %>%
+tidy(matrix = "beta")
+word_probs <- lda_topics %>%
+group_by(topic) %>%
+top_n(15, beta) %>%
+ungroup() %>%
+mutate(term2 = fct_reorder(term, beta))
+```
+
+---
+
+# Interpretacija tema  
+
+.left-code[
+```{r plot-label5, eval=FALSE}
+ggplot( word_probs, aes( term2, beta, fill = as.factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+]
+
+.right-plot[
+```{r plot-label5-out, ref.label="plot-label5", echo=FALSE, fig.height=4}
+```
+
+---
+
+# Interpretacija tema  
+
+```{r}
+# Model sa tri teme
+lda_topics2 <- LDA(
+dtm_review,
+k = 3,
+method = "Gibbs",
+control = list(seed = 42)) %>%
+tidy(matrix = "beta")
+word_probs2 <- lda_topics2 %>%
+group_by(topic) %>%
+top_n(15, beta) %>%
+ungroup() %>%
+mutate(term2 = fct_reorder(term, beta))
+```
+
+---
+
+# Interpretacija tema  
+
+.left-code[
+```{r plot-label4, eval=FALSE}
+ggplot( word_probs2, aes( term2, beta, fill = as.factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+]
+
+.right-plot[
+```{r plot-label4-out, ref.label="plot-label4", echo=FALSE, fig.height=3}
+```
 
 
 
