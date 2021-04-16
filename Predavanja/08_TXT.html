@@ -101,11 +101,12 @@ name: mani
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
 
-(*Podrška* za analizu sadržaja)
+(*Podrška* za analizu teksta)
 
 ---
 
-# Software podrška (paketi)
+# Software podrška (*paketi*)
+&lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 &lt;img src="../Foto/txt1.png" width="500px" style="display: block; margin: auto;" /&gt;
@@ -173,6 +174,11 @@ summarize(stars_mean = mean(Stars))
 ## 2 iRobot Roomba 880 for Pets and Allergies       4.42
 ```
 
+---
+
+# Pregled podataka
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # nestrukturirani podatci
@@ -241,6 +247,7 @@ recenzije_Dta %&gt;%
 ## 2 iRobot Roomba 880 for Pets and Allergies        1200
 ```
 
+
 ```r
 # count()
 recenzije_Dta %&gt;%
@@ -254,7 +261,11 @@ count(Product)
 ## 1 iRobot Roomba 650 for Pets                 633
 ## 2 iRobot Roomba 880 for Pets and Allergies  1200
 ```
+---
 
+# Pregled podataka 
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 recenzije_Dta %&gt;%
@@ -275,7 +286,7 @@ recenzije_Dta %&gt;%
 # tidytext paket
 &lt;br&gt;
 &lt;br&gt;
-&lt;img src="../Foto/txt2.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;img src="../Foto/txt2.png" width="380px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -351,12 +362,12 @@ arrange(desc(n))
 # anti_join()
 &lt;br&gt;
 &lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/txt3.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # anti_join()
-&lt;br&gt;
 &lt;br&gt;
 
 
@@ -413,7 +424,7 @@ head(stop_words,12)
 
 ---
 
-# Pobroji riječi (drugi put)
+# Pobroji riječi (*ponovno*)
 
 
 ```r
@@ -442,7 +453,7 @@ arrange(desc(n))
 ---
 
 class: inverse, center, middle
-name: mani
+name: viz
 
 # VIZALIZACIJA TEKSTA
 
@@ -539,7 +550,7 @@ ggtitle("Review Word Counts")
 
 # Stop riječi
 
-.pull_left[
+.pull-left[
 
 ```r
 # default stop riječi
@@ -654,7 +665,7 @@ coord_flip() +
 ggtitle("Review Word Counts")
 ```
 
-&lt;img src="08_TXT_files/figure-html/geom-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -693,40 +704,31 @@ arrange(desc(n))
 tidy_review %&gt;%
 count(word, Product) %&gt;%
 group_by(Product) %&gt;%
-top_n(10, n)
+top_n(5, n)
 ```
 
 ```
-## # A tibble: 20 x 3
+## # A tibble: 10 x 3
 ## # Groups:   Product [2]
 ##    word     Product                                      n
 ##    &lt;chr&gt;    &lt;chr&gt;                                    &lt;int&gt;
 ##  1 880      iRobot Roomba 880 for Pets and Allergies   518
 ##  2 clean    iRobot Roomba 650 for Pets                 389
 ##  3 clean    iRobot Roomba 880 for Pets and Allergies   815
-##  4 cleaning iRobot Roomba 650 for Pets                 249
-##  5 cleaning iRobot Roomba 880 for Pets and Allergies   560
-##  6 day      iRobot Roomba 650 for Pets                 209
-##  7 dust     iRobot Roomba 880 for Pets and Allergies   399
-##  8 floor    iRobot Roomba 650 for Pets                 207
-##  9 floors   iRobot Roomba 650 for Pets                 252
-## 10 floors   iRobot Roomba 880 for Pets and Allergies   405
-## 11 hair     iRobot Roomba 650 for Pets                 305
-## 12 hair     iRobot Roomba 880 for Pets and Allergies   595
-## 13 house    iRobot Roomba 650 for Pets                 251
-## 14 house    iRobot Roomba 880 for Pets and Allergies   494
-## 15 love     iRobot Roomba 880 for Pets and Allergies   403
-## 16 run      iRobot Roomba 650 for Pets                 180
-## 17 time     iRobot Roomba 650 for Pets                 301
-## 18 time     iRobot Roomba 880 for Pets and Allergies   494
-## 19 vacuum   iRobot Roomba 650 for Pets                 311
-## 20 vacuum   iRobot Roomba 880 for Pets and Allergies   678
+##  4 cleaning iRobot Roomba 880 for Pets and Allergies   560
+##  5 floors   iRobot Roomba 650 for Pets                 252
+##  6 hair     iRobot Roomba 650 for Pets                 305
+##  7 hair     iRobot Roomba 880 for Pets and Allergies   595
+##  8 time     iRobot Roomba 650 for Pets                 301
+##  9 vacuum   iRobot Roomba 650 for Pets                 311
+## 10 vacuum   iRobot Roomba 880 for Pets and Allergies   678
 ```
 
 ---
 
 # Priprema za facet grafikon
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 word_counts &lt;- tidy_review %&gt;%
@@ -750,17 +752,13 @@ ggtitle("Review Word Counts")
 
 # Facet grafikon
 
-
-```r
-gg
-```
-
-&lt;img src="08_TXT_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Oblak riječi (*WordCloud*)
-
+&lt;br&gt;
+&lt;br&gt;
 .left-code[
 
 ```r
@@ -780,7 +778,8 @@ max.words = 30)
 ---
 
 # Oblak riječi (*WordCloud*)
-
+&lt;br&gt;
+&lt;br&gt;
 .left-code[
 
 ```r
@@ -800,7 +799,8 @@ max.words = 70
 ---
 
 # Oblak riječi (*WordCloud*)
-
+&lt;br&gt;
+&lt;br&gt;
 .left-code[
 
 ```r
@@ -903,7 +903,8 @@ get_sentiments("afinn")
 ---
 
 # Pregledaj riječnik
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 get_sentiments("afinn") %&gt;%
@@ -920,7 +921,8 @@ get_sentiments("afinn") %&gt;%
 ---
 
 # Dohvati treći riječnik
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 sentiment_counts &lt;- get_sentiments("loughran") %&gt;%
@@ -938,12 +940,7 @@ labs(title = "Sentiment Counts in Loughran",
 
 # Vizualni pregled riječnika
 
-
-```r
-gg2 
-```
-
-&lt;img src="08_TXT_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -975,7 +972,7 @@ inner_join(get_sentiments("loughran"))
 ---
 
 # Pregled spojenih podataka
-
+&lt;br&gt;
 
 ```r
 sentiment_review &lt;- tidy_review %&gt;%
@@ -1028,7 +1025,7 @@ sentiment_review %&gt;%
 ---
 
 # Vizualizacija sentimenta
-
+&lt;br&gt;
 
 ```r
 sentiment_review2 &lt;- sentiment_review %&gt;%
@@ -1055,12 +1052,7 @@ labs(title = "Sentiment Word Counts",
 
 # Vizualizacija sentimenta
 
-
-```r
-gg3
-```
-
-&lt;img src="08_TXT_files/figure-html/unnamed-chunk-45-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-46-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1164,14 +1156,9 @@ labs(title = "Overall Sentiment by Stars",
 
 ---
 
-Vizualiziraj
+# Vizualiziraj
 
-
-```r
-gg4
-```
-
-&lt;img src="08_TXT_files/figure-html/unnamed-chunk-51-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-52-1.png" style="display: block; margin: auto;" /&gt;
 ---
 
 class: inverse, center, middle
@@ -1186,7 +1173,9 @@ name: topi
 ---
 
 # Terminologija
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 - Latent Dirichlet allocation (LDA) je najčešće korišten pristup za TA
 &lt;br&gt;
 - Skup dokumenata nazivamo korpus
@@ -1202,16 +1191,16 @@ name: topi
 # Klastering vs. Tematska analiza
 &lt;br&gt;
 &lt;br&gt;
-- Klasteri se formiraju na osnovi mjere udaljenosti (*kontinuirana mjera*)
+- **Klasteri** se formiraju na osnovi mjere udaljenosti (*kontinuirana mjera*)
 - Svaki objekt je pripisan nekom klasteru
 &lt;br&gt;
 &lt;br&gt;
-- TA se zasniva na frekvencijama riječi (*diskretna mjera*)
+- **TA** se zasniva na frekvencijama riječi (*diskretna mjera*)
 - Svaki dokument je mješavina svake teme
 
 ---
 
-# Document term matrica
+# Document-term matrica (DTM)
 &lt;br&gt;
 &lt;br&gt;
 
@@ -1231,8 +1220,9 @@ cast_dtm(id, word, n)
 
 ---
 
-# Document term matrica
-
+# Document term matrica (DTM)
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 dtm_review &lt;- tidy_review %&gt;%
@@ -1254,7 +1244,8 @@ dtm_review[1:4, 2000:2004]
 ---
 
 # Provedi LDA analizu
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 library(topicmodels)
@@ -1277,7 +1268,8 @@ lda_out
 ---
 
 # Pregledaj objekt
-
+&lt;br&gt;
+&lt;br&gt;
 .tiny[
 
 ```r
@@ -1343,7 +1335,8 @@ arrange(desc(beta))
 ---
 
 # Interpretacija tema  
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Model sa dvije teme
@@ -1376,11 +1369,12 @@ ggplot( word_probs, aes( term2, beta, fill = as.factor(topic))) +
 
 .right-plot[
 &lt;img src="08_TXT_files/figure-html/plot-label5-out-1.png" style="display: block; margin: auto;" /&gt;
-
+]
 ---
 
 # Interpretacija tema  
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Model sa tri teme
@@ -1413,7 +1407,7 @@ ggplot( word_probs2, aes( term2, beta, fill = as.factor(topic))) +
 
 .right-plot[
 &lt;img src="08_TXT_files/figure-html/plot-label4-out-1.png" style="display: block; margin: auto;" /&gt;
-
+]
 
 
 

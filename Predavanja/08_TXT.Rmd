@@ -122,11 +122,12 @@ name: mani
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-(*Podrška* za analizu sadržaja)
+(*Podrška* za analizu teksta)
 
 ---
 
-# Software podrška (paketi)
+# Software podrška (*paketi*)
+<br>
 <br>
 <br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
@@ -169,6 +170,11 @@ group_by(Product) %>%
 summarize(stars_mean = mean(Stars))
 ```
 
+---
+
+# Pregled podataka
+<br>
+<br>
 ```{r}
 # nestrukturirani podatci
 recenzije_Dta %>%
@@ -199,12 +205,17 @@ recenzije_Dta %>%
   group_by(Product) %>%
   summarize(number_rows = n())
 ```
+
 ```{r}
 # count()
 recenzije_Dta %>%
 count(Product)
 ```
+---
 
+# Pregled podataka 
+<br>
+<br>
 ```{r}
 recenzije_Dta %>%
   count(Product) %>%
@@ -216,7 +227,7 @@ recenzije_Dta %>%
 # tidytext paket
 <br>
 <br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="380px"}
 knitr::include_graphics("../Foto/txt2.png")
 ```
 
@@ -261,6 +272,7 @@ arrange(desc(n))
 # anti_join()
 <br>
 <br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/txt3.png")
 ```
@@ -268,7 +280,6 @@ knitr::include_graphics("../Foto/txt3.png")
 ---
 
 # anti_join()
-<br>
 <br>
 
 ```{r}
@@ -288,7 +299,7 @@ head(stop_words,12)
 
 ---
 
-# Pobroji riječi (drugi put)
+# Pobroji riječi (*ponovno*)
 
 ```{r}
 tidy_review2 %>%
@@ -299,7 +310,7 @@ arrange(desc(n))
 ---
 
 class: inverse, center, middle
-name: mani
+name: viz
 
 # VIZALIZACIJA TEKSTA
 
@@ -323,7 +334,7 @@ head(tidy_review,8)
 
 # Histogram
 
-```{r, fig.height=4}
+```{r, fig.height=2}
 word_counts <- tidy_review %>%
 count(word) %>%
 arrange(desc(n)) %>%
@@ -348,7 +359,7 @@ head(word_counts2,8)
 
 # Vizualizacija
 
-```{r, fig.height=4}
+```{r, fig.height=3}
 # zakreni osi pomoću coord_flip()
 ggplot(word_counts2, aes(x = word, y = n)) +
 geom_col() +
@@ -360,7 +371,7 @@ ggtitle("Review Word Counts")
 
 # Stop riječi
 
-.pull_left[
+.pull-left[
 ```{r}
 # default stop riječi
 head(stop_words,8)
@@ -420,7 +431,7 @@ head(word_counts,8)
 
 # Poboljšaj grafikon
 
-```{r, geom}
+```{r, fig.height=3}
 ggplot(word_counts, aes(x = word2, y = n)) +
 geom_col() +
 coord_flip() +
@@ -445,13 +456,14 @@ arrange(desc(n))
 tidy_review %>%
 count(word, Product) %>%
 group_by(Product) %>%
-top_n(10, n)
+top_n(5, n)
 ```
 
 ---
 
 # Priprema za facet grafikon
-
+<br>
+<br>
 ```{r}
 word_counts <- tidy_review %>%
 count(word, Product) %>%
@@ -473,14 +485,15 @@ ggtitle("Review Word Counts")
 
 # Facet grafikon
 
-```{r, fig.height=5}
+```{r,echo=FALSE, fig.height=3}
 gg
 ```
 
 ---
 
 # Oblak riječi (*WordCloud*)
-
+<br>
+<br>
 .left-code[
 ```{r plot-label, eval=FALSE}
 library(wordcloud)
@@ -500,7 +513,8 @@ max.words = 30)
 ---
 
 # Oblak riječi (*WordCloud*)
-
+<br>
+<br>
 .left-code[
 ```{r plot-label1, eval=FALSE}
 # Više riječi
@@ -520,7 +534,8 @@ max.words = 70
 ---
 
 # Oblak riječi (*WordCloud*)
-
+<br>
+<br>
 .left-code[
 ```{r plot-label2, eval=FALSE}
 # Boja
@@ -578,7 +593,8 @@ get_sentiments("afinn")
 ---
 
 # Pregledaj riječnik
-
+<br>
+<br>
 ```{r}
 get_sentiments("afinn") %>%
   summarize( min = min(value), max = max(value) )
@@ -587,7 +603,8 @@ get_sentiments("afinn") %>%
 ---
 
 # Dohvati treći riječnik
-
+<br>
+<br>
 ```{r}
 sentiment_counts <- get_sentiments("loughran") %>%
 count(sentiment) %>%
@@ -604,7 +621,7 @@ labs(title = "Sentiment Counts in Loughran",
 
 # Vizualni pregled riječnika
 
-```{r}
+```{r, echo=FALSE, fig.height=3}
 gg2 
 ```
 
@@ -620,7 +637,7 @@ inner_join(get_sentiments("loughran"))
 ---
 
 # Pregled spojenih podataka
-
+<br>
 ```{r}
 sentiment_review <- tidy_review %>%
 inner_join(get_sentiments("loughran"))
@@ -642,7 +659,7 @@ sentiment_review %>%
 ---
 
 # Vizualizacija sentimenta
-
+<br>
 ```{r}
 sentiment_review2 <- sentiment_review %>%
 filter(sentiment %in% c("positive", "negative"))
@@ -667,7 +684,7 @@ labs(title = "Sentiment Word Counts",
 
 # Vizualizacija sentimenta
 
-```{r}
+```{r, echo=FALSE, fig.height=3}
 gg3
 ```
 
@@ -730,9 +747,9 @@ labs(title = "Overall Sentiment by Stars",
 
 ---
 
-Vizualiziraj
+# Vizualiziraj
 
-```{r, fig.height=4}
+```{r, echo=FALSE, fig.height=3}
 gg4
 ```
 ---
@@ -749,7 +766,9 @@ name: topi
 ---
 
 # Terminologija
-
+<br>
+<br>
+<br>
 - Latent Dirichlet allocation (LDA) je najčešće korišten pristup za TA
 <br>
 - Skup dokumenata nazivamo korpus
@@ -765,16 +784,16 @@ name: topi
 # Klastering vs. Tematska analiza
 <br>
 <br>
-- Klasteri se formiraju na osnovi mjere udaljenosti (*kontinuirana mjera*)
+- **Klasteri** se formiraju na osnovi mjere udaljenosti (*kontinuirana mjera*)
 - Svaki objekt je pripisan nekom klasteru
 <br>
 <br>
-- TA se zasniva na frekvencijama riječi (*diskretna mjera*)
+- **TA** se zasniva na frekvencijama riječi (*diskretna mjera*)
 - Svaki dokument je mješavina svake teme
 
 ---
 
-# Document term matrica
+# Document-term matrica (DTM)
 <br>
 <br>
 ```{r}
@@ -785,8 +804,9 @@ cast_dtm(id, word, n)
 
 ---
 
-# Document term matrica
-
+# Document term matrica (DTM)
+<br>
+<br>
 ```{r}
 dtm_review <- tidy_review %>%
 count(word, id) %>%
@@ -798,7 +818,8 @@ dtm_review[1:4, 2000:2004]
 ---
 
 # Provedi LDA analizu
-
+<br>
+<br>
 ```{r}
 library(topicmodels)
 lda_out <- LDA(
@@ -815,7 +836,8 @@ lda_out
 ---
 
 # Pregledaj objekt
-
+<br>
+<br>
 .tiny[
 ```{r}
 glimpse(lda_out)
@@ -836,7 +858,8 @@ arrange(desc(beta))
 ---
 
 # Interpretacija tema  
-
+<br>
+<br>
 ```{r}
 # Model sa dvije teme
 lda_topics <- LDA(
@@ -866,13 +889,14 @@ ggplot( word_probs, aes( term2, beta, fill = as.factor(topic))) +
 ]
 
 .right-plot[
-```{r plot-label5-out, ref.label="plot-label5", echo=FALSE, fig.height=4}
+```{r plot-label5-out, ref.label="plot-label5", echo=FALSE, fig.height=3}
 ```
-
+]
 ---
 
 # Interpretacija tema  
-
+<br>
+<br>
 ```{r}
 # Model sa tri teme
 lda_topics2 <- LDA(
@@ -904,13 +928,7 @@ ggplot( word_probs2, aes( term2, beta, fill = as.factor(topic))) +
 .right-plot[
 ```{r plot-label4-out, ref.label="plot-label4", echo=FALSE, fig.height=3}
 ```
-
-
-
-
-
-
-
+]
 
 
 ---
