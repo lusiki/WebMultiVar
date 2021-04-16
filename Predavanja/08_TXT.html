@@ -823,8 +823,287 @@ colors = "blue"
 &lt;img src="08_TXT_files/figure-html/plot-label2-out-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
+---
+
+class: inverse, center, middle
+name: mani
+
+# ANALIZA SENTIMENTA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Sve ovisi o riječnicima)
 
 ---
+
+# Dohvati riječnike sentimenta
+
+
+```r
+get_sentiments("bing")
+```
+
+```
+## # A tibble: 6,786 x 2
+##    word        sentiment
+##    &lt;chr&gt;       &lt;chr&gt;    
+##  1 2-faces     negative 
+##  2 abnormal    negative 
+##  3 abolish     negative 
+##  4 abominable  negative 
+##  5 abominably  negative 
+##  6 abominate   negative 
+##  7 abomination negative 
+##  8 abort       negative 
+##  9 aborted     negative 
+## 10 aborts      negative 
+## # ... with 6,776 more rows
+```
+
+---
+
+# Pregledaj riječnik
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+get_sentiments("bing") %&gt;%
+  count(sentiment)
+```
+
+```
+## # A tibble: 2 x 2
+##   sentiment     n
+## * &lt;chr&gt;     &lt;int&gt;
+## 1 negative   4781
+## 2 positive   2005
+```
+---
+
+# Dohvati drugi riječnik
+
+
+```r
+library(textdata)
+get_sentiments("afinn")
+```
+
+```
+## # A tibble: 2,477 x 2
+##    word       value
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 abandon       -2
+##  2 abandoned     -2
+##  3 abandons      -2
+##  4 abducted      -2
+##  5 abduction     -2
+##  6 abductions    -2
+##  7 abhor         -3
+##  8 abhorred      -3
+##  9 abhorrent     -3
+## 10 abhors        -3
+## # ... with 2,467 more rows
+```
+
+---
+
+# Pregledaj riječnik
+
+
+
+```r
+get_sentiments("afinn") %&gt;%
+  summarize( min = min(value), max = max(value) )
+```
+
+```
+## # A tibble: 1 x 2
+##     min   max
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1    -5     5
+```
+
+---
+
+# Dohvati treći riječnik
+
+
+```r
+sentiment_counts &lt;- get_sentiments("loughran") %&gt;%
+count(sentiment) %&gt;%
+mutate(sentiment2 = fct_reorder(sentiment, n))
+gg2 &lt;- ggplot(sentiment_counts, aes(x = sentiment2, y = n)) +
+geom_col() +
+coord_flip() +
+labs(title = "Sentiment Counts in Loughran",
+         x = "Counts",
+         y = "Sentiment")
+```
+---
+
+# Vizualni pregled riječnika
+
+
+```r
+gg2 
+```
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Spoji riječnik i podatke
+
+
+
+```r
+tidy_review %&gt;%
+inner_join(get_sentiments("loughran"))
+```
+
+```
+## # A tibble: 3,960 x 6
+##       id Date     Product                    Stars word      sentiment  
+##    &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;      
+##  1     5 12/22/15 iRobot Roomba 650 for Pets     5 slow      negative   
+##  2     5 12/22/15 iRobot Roomba 650 for Pets     5 easily    positive   
+##  3     5 12/22/15 iRobot Roomba 650 for Pets     5 random    uncertainty
+##  4     5 12/22/15 iRobot Roomba 650 for Pets     5 easy      positive   
+##  5     5 12/22/15 iRobot Roomba 650 for Pets     5 easy      positive   
+##  6     5 12/22/15 iRobot Roomba 650 for Pets     5 easy      positive   
+##  7     6 12/27/15 iRobot Roomba 650 for Pets     5 invention positive   
+##  8     7 8/17/15  iRobot Roomba 650 for Pets     1 damage    negative   
+##  9     7 8/17/15  iRobot Roomba 650 for Pets     1 damage    negative   
+## 10     7 8/17/15  iRobot Roomba 650 for Pets     1 justice   litigious  
+## # ... with 3,950 more rows
+```
+
+
+---
+
+# Pregled spojenih podataka
+
+
+```r
+sentiment_review &lt;- tidy_review %&gt;%
+inner_join(get_sentiments("loughran"))
+sentiment_review %&gt;%
+count(sentiment)
+```
+
+```
+## # A tibble: 6 x 2
+##   sentiment        n
+## * &lt;chr&gt;        &lt;int&gt;
+## 1 constraining   170
+## 2 litigious       53
+## 3 negative      1795
+## 4 positive      1568
+## 5 superfluous      1
+## 6 uncertainty    373
+```
+
+---
+
+# Pregled spojenih podataka
+
+
+```r
+sentiment_review %&gt;% 
+  count(word, sentiment) %&gt;%
+  arrange(desc(n))
+```
+
+```
+## # A tibble: 598 x 3
+##    word      sentiment       n
+##    &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;
+##  1 easy      positive      297
+##  2 happy     positive      107
+##  3 easier    positive       97
+##  4 easily    positive       92
+##  5 perfect   positive       87
+##  6 random    uncertainty    81
+##  7 impressed positive       77
+##  8 excellent positive       58
+##  9 trouble   negative       58
+## 10 fantastic positive       56
+## # ... with 588 more rows
+```
+
+
+---
+
+# Vizualizacija sentimenta
+
+
+```r
+sentiment_review2 &lt;- sentiment_review %&gt;%
+filter(sentiment %in% c("positive", "negative"))
+word_counts &lt;- sentiment_review2 %&gt;%
+count(word, sentiment) %&gt;%
+group_by(sentiment) %&gt;%
+top_n(10, n) %&gt;%
+ungroup() %&gt;%
+mutate(word2 = fct_reorder(word, n))
+```
+
+
+```r
+gg3 &lt;- ggplot(word_counts, aes(x = word2, y = n, fill = sentiment)) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ sentiment, scales = "free") +
+coord_flip() +
+labs(title = "Sentiment Word Counts",
+         x = "Words")
+```
+
+---
+
+# Vizualizacija sentimenta
+
+
+```r
+gg3
+```
+
+&lt;img src="08_TXT_files/figure-html/unnamed-chunk-45-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+Izračunaj sentiment prema rangu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 

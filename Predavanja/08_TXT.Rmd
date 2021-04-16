@@ -241,7 +241,7 @@ knitr::include_graphics("../Foto/txt2.png")
 
 # Tokenizacija teksta
 
-```{r}
+```{r, message=FALSE}
 # unnest_tokens() funkcija
 library(tidytext)
 tidy_review <- recenzije_Dta %>%
@@ -543,8 +543,176 @@ colors = "blue"
 ```
 ]
 
+---
+
+class: inverse, center, middle
+name: mani
+
+# ANALIZA SENTIMENTA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Sve ovisi o riječnicima)
 
 ---
+
+# Dohvati riječnike sentimenta
+
+```{r}
+get_sentiments("bing")
+```
+
+---
+
+# Pregledaj riječnik
+<br>
+<br>
+```{r}
+get_sentiments("bing") %>%
+  count(sentiment)
+```
+---
+
+# Dohvati drugi riječnik
+
+```{r, message=FALSE, warning=FALSE}
+library(textdata)
+get_sentiments("afinn")
+```
+
+---
+
+# Pregledaj riječnik
+
+
+```{r}
+get_sentiments("afinn") %>%
+  summarize( min = min(value), max = max(value) )
+```
+
+---
+
+# Dohvati treći riječnik
+
+```{r}
+sentiment_counts <- get_sentiments("loughran") %>%
+count(sentiment) %>%
+mutate(sentiment2 = fct_reorder(sentiment, n))
+gg2 <- ggplot(sentiment_counts, aes(x = sentiment2, y = n)) +
+geom_col() +
+coord_flip() +
+labs(title = "Sentiment Counts in Loughran",
+         x = "Counts",
+         y = "Sentiment")
+```
+---
+
+# Vizualni pregled riječnika
+
+```{r}
+gg2 
+```
+
+---
+
+# Spoji riječnik i podatke
+
+
+```{r}
+tidy_review %>%
+inner_join(get_sentiments("loughran"))
+```
+
+
+---
+
+# Pregled spojenih podataka
+
+```{r}
+sentiment_review <- tidy_review %>%
+inner_join(get_sentiments("loughran"))
+sentiment_review %>%
+count(sentiment)
+```
+
+---
+
+# Pregled spojenih podataka
+
+```{r}
+sentiment_review %>% 
+  count(word, sentiment) %>%
+  arrange(desc(n))
+```
+
+
+---
+
+# Vizualizacija sentimenta
+
+```{r}
+sentiment_review2 <- sentiment_review %>%
+filter(sentiment %in% c("positive", "negative"))
+word_counts <- sentiment_review2 %>%
+count(word, sentiment) %>%
+group_by(sentiment) %>%
+top_n(10, n) %>%
+ungroup() %>%
+mutate(word2 = fct_reorder(word, n))
+```
+
+```{r}
+gg3 <- ggplot(word_counts, aes(x = word2, y = n, fill = sentiment)) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ sentiment, scales = "free") +
+coord_flip() +
+labs(title = "Sentiment Word Counts",
+         x = "Words")
+```
+
+---
+
+# Vizualizacija sentimenta
+
+```{r}
+gg3
+```
+
+---
+
+Izračunaj sentiment prema rangu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 
