@@ -505,10 +505,103 @@ data = GBSG2,
 dist = "lognormal")
 ```
 
+---
+
+class: inverse, center, middle
+name: cox
+
+# Cox MODEL
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Semiprametrijski model sa manje strogim pretpostavkama)
+
+---
+
+# Zašto Cox model
+
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv17.png")
+```
+
+
+---
+
+# Provedi Cox model
+
+```{r}
+# Cox model
+cxmod <- coxph(Surv(time, cens) ~ horTh,
+data = GBSG2)
+coef(cxmod)
+# Weibull model
+wbmod <- survreg(Surv(time, cens) ~ horTh,
+data = GBSG2)
+coef(wbmod)
+```
+
+
+---
+
+# Vizualizacija Cox modela
+
+```{r}
+# Korak 1
+cxmod <- coxph(Surv(time, cens) ~ horTh + tsize, data = GBSG2) # Provedi model
+# Odredi kombinacije regresora
+newdat <- expand.grid(
+horTh = levels(GBSG2$horTh),
+tsize = quantile(GBSG2$tsize, probs = c(0.25, 0.5, 0.75)) )
+rownames(newdat) <- letters[1:6]
+newdat
+```
+
+---
+
+# Vizualizacija Cox modela
+
+```{r}
+# Korak 2
+# Izračunaj survival krivulje
+cxsf <- survfit(cxmod, data = GBSG2, newdata = newdat, conf.type = "none")
+str(cxsf)
+```
+
+---
+
+# Vizualizacija Cox modela
+
+
+```{r}
+# Korak 3 
+surv_cxmod0 <- surv_summary(cxsf)
+head(surv_cxmod0)
+## Napravi data.frame
+surv_cxmod <- cbind(surv_cxmod0,
+newdat[as.character(surv_cxmod0$strata), ])
+```
+
+---
+
+# Vizualizacija Cox modela
+
+```{r}
+ggsurvplot_df(surv_cxmod, linetype = "horTh", color = "tsize",
+legend.title = NULL, censor = FALSE)
+```
 
 
 
+---
 
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Sljedeće predavanje: Network analiza)
 
 
 

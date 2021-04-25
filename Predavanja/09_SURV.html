@@ -533,6 +533,163 @@ survreg(Surv(time, cens) ~ horTh,
 data = GBSG2,
 dist = "lognormal")
 ```
+
+---
+
+class: inverse, center, middle
+name: cox
+
+# Cox MODEL
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Semiprametrijski model sa manje strogim pretpostavkama)
+
+---
+
+# Zašto Cox model
+
+
+&lt;img src="../Foto/surv17.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Provedi Cox model
+
+
+```r
+# Cox model
+cxmod &lt;- coxph(Surv(time, cens) ~ horTh,
+data = GBSG2)
+coef(cxmod)
+```
+
+```
+##   horThyes 
+## -0.3640099
+```
+
+```r
+# Weibull model
+wbmod &lt;- survreg(Surv(time, cens) ~ horTh,
+data = GBSG2)
+coef(wbmod)
+```
+
+```
+## (Intercept)    horThyes 
+##   7.6084486   0.3059506
+```
+
+
+---
+
+# Vizualizacija Cox modela
+
+
+```r
+# Korak 1
+cxmod &lt;- coxph(Surv(time, cens) ~ horTh + tsize, data = GBSG2) # Provedi model
+# Odredi kombinacije regresora
+newdat &lt;- expand.grid(
+horTh = levels(GBSG2$horTh),
+tsize = quantile(GBSG2$tsize, probs = c(0.25, 0.5, 0.75)) )
+rownames(newdat) &lt;- letters[1:6]
+newdat
+```
+
+```
+##   horTh tsize
+## a    no    20
+## b   yes    20
+## c    no    25
+## d   yes    25
+## e    no    35
+## f   yes    35
+```
+
+---
+
+# Vizualizacija Cox modela
+
+
+```r
+# Korak 2
+# Izračunaj survival krivulje
+cxsf &lt;- survfit(cxmod, data = GBSG2, newdata = newdat, conf.type = "none")
+str(cxsf)
+```
+
+```
+## List of 10
+##  $ n       : int 686
+##  $ time    : num [1:574] 8 15 16 17 18 29 42 46 57 63 ...
+##  $ n.risk  : num [1:574] 686 685 684 683 681 680 679 678 677 676 ...
+##  $ n.event : num [1:574] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ n.censor: num [1:574] 1 1 1 2 1 1 1 1 1 1 ...
+##  $ surv    : num [1:574, 1:6] 1 1 1 1 1 1 1 1 1 1 ...
+##   ..- attr(*, "dimnames")=List of 2
+##   .. ..$ : NULL
+##   .. ..$ : chr [1:6] "a" "b" "c" "d" ...
+##  $ cumhaz  : num [1:574, 1:6] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ std.err : num [1:574, 1:6] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ logse   : logi TRUE
+##  $ call    : language survfit(formula = cxmod, newdata = newdat, conf.type = "none", data = GBSG2)
+##  - attr(*, "class")= chr [1:2] "survfitcox" "survfit"
+```
+
+---
+
+# Vizualizacija Cox modela
+
+
+
+```r
+# Korak 3 
+surv_cxmod0 &lt;- surv_summary(cxsf)
+head(surv_cxmod0)
+```
+
+```
+##   time n.risk n.event n.censor surv std.err upper lower strata
+## 1    8    686       0        1    1       0    NA    NA      a
+## 2   15    685       0        1    1       0    NA    NA      a
+## 3   16    684       0        1    1       0    NA    NA      a
+## 4   17    683       0        2    1       0    NA    NA      a
+## 5   18    681       0        1    1       0    NA    NA      a
+## 6   29    680       0        1    1       0    NA    NA      a
+```
+
+```r
+## Napravi data.frame
+surv_cxmod &lt;- cbind(surv_cxmod0,
+newdat[as.character(surv_cxmod0$strata), ])
+```
+
+---
+
+# Vizualizacija Cox modela
+
+
+```r
+ggsurvplot_df(surv_cxmod, linetype = "horTh", color = "tsize",
+legend.title = NULL, censor = FALSE)
+```
+
+&lt;img src="09_SURV_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Sljedeće predavanje: Network analiza)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
