@@ -1,0 +1,412 @@
+---
+title: "MULTIVARIJATNE STATISTIČKE METODE"
+author: "dr.sc. Luka Šikić"
+date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
+subtitle: "Predavanje 9: Survival analiza"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=T, echo=T, warning=F, message=F
+  )
+knitr::opts_hooks$set(fig.callout = function(options) {
+  if (options$fig.callout) {
+    options$echo <- FALSE
+    options$out.height <- "99%"
+    options$fig.width <- 16
+    options$fig.height <- 8
+  }
+  options
+})
+```
+
+```{css, echo = F, eval = T}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+
+/* custom.css */
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+```
+
+```{r paketi, warning=F, echo=F, message=F, eval=TRUE}
+
+library(tidyverse)  # data manipulation and visualization
+library(gridExtra)  # plot arrangement
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+library(TH.data)
+library(Ecdat)
+library(survminer)
+```
+
+# Pregled predavanja
+
+<br>
+<br>
+<br>
+
+
+1. [Karakteristike survival analize](#kar)
+
+2. [Procjena survival krivulja](#proc)
+
+3. [Weibull model](#wei)
+
+4. [Cox model](#cox)
+
+
+
+---
+
+class: inverse, center, middle
+name: kar
+
+# KARAKTERISTIKE SURVIVAL ANALIZE
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(O čemu se tu radi!?)
+
+---
+
+
+# Koncept
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv_1.png")
+```
+
+
+---
+
+# Primjer 1
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv2.png")
+```
+
+---
+
+# Primjer 2
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv3.png")
+```
+
+
+---
+
+# Primjer 3
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv4.png")
+```
+
+
+
+---
+
+# Podatci
+
+
+```{r}
+#install.packages("TH.data")
+#install.packages("Ecdat")
+data(GBSG2, package = "TH.data")
+data(UnempDur, package = "Ecdat")
+```
+
+
+---
+
+# Zašto posebna vrsta analize?
+
+- Periodi (vrijeme) je uvijek **pozitivno**
+
+- Različite **mjere** nas zanimaju
+
+- **Cenzori** predstavljaju problem
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="350px"}
+knitr::include_graphics("../Foto/surv5.png")
+```
+
+
+---
+
+# Napravi **Surv** objekt
+
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="400px"}
+knitr::include_graphics("../Foto/surv6.png")
+```
+
+
+```{r, message=FALSE,warning=FALSE}
+time <- c(5, 6, 2, 4, 4)
+event <- c(1, 0, 0, 1, 1)
+
+library(survival)
+Surv(time, event)
+```
+
+---
+
+# Paketi
+
+```{r}
+# Za analizu 
+#install.packages("survival")
+#install.packages("survminer")
+# Za vizualizacije 
+#library("survminer")
+```
+
+.footnote[Postoji i CRAN Task View za Survival analizu](https://cran.r-project.org/web/views/Survival.html)]]
+
+---
+
+# Pitanja na koja odgovara survival analiza
+
+- Koja je vjerojatnost da će pacijent preživjeti više od XY godina?
+
+- Koje je tipično vrijeme čekanja taksija?
+
+- Od 100 nezaposlenih, koji broj možemo čekivati da će ponovno naći posao nakon 2 mjeseca?
+
+---
+
+# Survival funkcija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="400px"}
+knitr::include_graphics("../Foto/surv7.png")
+```
+
+- Vjerojatnost da je trajanje dulje od *t*.
+- npr. vjerojatnost preživljavanja nakon *t*
+- npr. vjerojatnost da će taksi trebati više od *t* minuta do dolaska
+
+---
+
+# Survival funkcija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="400px"}
+knitr::include_graphics("../Foto/surv8.png")
+```
+
+- Medijansko vrijeme je *t*.
+- npr. medijansko vrijeme preživljavanja je 3.7 godina
+- npr. medijansko vrijeme do dolaska taksija je 3.7 minuta
+---
+
+# Survival funkcija
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="400px"}
+knitr::include_graphics("../Foto/surv9.png")
+```
+
+- 100*S(t) posto duracija je dulje od vremena t
+- 37% svih pacijenata preživi dulje od 4 godine, a 63% umre unutar prve 4 godine
+- 37 od 100 taksija treba više od 4 minute do dolaska
+
+
+---
+
+class: inverse, center, middle
+name: proc
+
+# PROCJENA SURVIVAL KRIVULJA
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Načini procjene)
+
+---
+
+# Survival krivulja
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv10.png")
+```
+
+---
+
+# Procjena survival krivulje
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv11.png")
+```
+
+---
+
+# Izračun *korak po korak*
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv12.png")
+```
+
+---
+
+# Izračun pomoću funkcije
+
+```{r, eval= FALSE}
+# Kaplan-Meier
+km <- survfit(Surv(time, event) ~ 1)
+ggsurvplot(km, conf.int = FALSE,
+risk.table = "nrisk_cumevents",
+legend = "none")
+```
+
+---
+
+# Vizualizacija
+```{r,eval=FALSE}
+ggsurvplot(
+fit = km,
+palette = "blue",
+linetype = 1,
+surv.median.line = "hv",
+risk.table = TRUE,
+cumevents = TRUE,
+cumcensor = TRUE,
+tables.height = 0.1
+)
+```
+
+
+
+
+---
+
+class: inverse, center, middle
+name: wei
+
+# WEIBULL MODEL
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+---
+
+# Zašto koristimo Weibull model
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv13.png")
+```
+
+---
+
+# Primjeni Weibull model u R
+
+```{r, eval=FALSE}
+# Webull model
+wb <- survreg(Surv(time, event)~1,data)
+# Kaplan-Meier procjena
+km <- survfit(Surv(time, event)~1,data)
+```
+
+---
+
+# Izračun
+
+```{r}
+wb <- survreg(Surv(time, cens) ~ 1, data = GBSG2)
+```
+
+
+```{r}
+# Predviđanje
+## 90% pacijenata prežive dulje od:
+predict(wb, type = "quantile", p = 1 - 0.9, newdata = data.frame(1))
+```
+```{r}
+surv <- seq(.99, .01, by = -.01)
+t <- predict(wb, type = "quantile", p = 1 - surv, newdata = data.frame(1))
+head(data.frame(time = t, surv = surv))
+```
+
+---
+
+# Vizualiziraj Weibull model
+
+```{r, eval=FALSE}
+# Weibull
+wb <- survreg(Surv(time, cens) ~ 1)
+# Survival krivulja
+surv <- seq(.99, .01, by = -.01)
+t <- predict(wb, type = "quantile", p = 1 - surv, newdata = data.frame(1))
+surv_wb <- data.frame(time = t, surv = surv,
+upper = NA, lower = NA, std.err = NA)
+# Prikaz
+ggsurvplot_df(fit = surv_wb, surv.geom = geom_line)
+```
+
+---
+
+# Vizualiziraj Weibull model
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv14.png")
+```
+
+
+
+
+

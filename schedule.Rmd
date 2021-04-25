@@ -165,10 +165,21 @@ title: " "
 <br>
 <br>
 
-### Predavanje 09: Analiza panel podataka
+### Predavanje 09: Survival analiza
 
+- Karakteristike survival analize
 
+- Procjena survival krivulja
 
+- Weibull model
+
+- Cox model
+
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/09_SURV.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/09_SURV.Rmd) 
+<br>
+**Čitanje:** [Prošlogodišnje predavanje](https://rpubs.com/shichich/610311) + []() + []()
+<br>
+<br>
 ### Predavanje 10: Analiza vremenskih serija
 
 
