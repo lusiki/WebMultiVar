@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MULTIVARIJATNE STATISTIČKE METODE</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="dr.sc. Luka Šikić" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# MULTIVARIJATNE STATISTIČKE METODE
+## Predavanje 9: Survival analiza
+### dr.sc. Luka Šikić
+### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
+
+---
+
+
+
+
+
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+
+/* custom.css */
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+&lt;/style&gt;
+
+
+
+# Pregled predavanja
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+
+1. [Karakteristike survival analize](#kar)
+
+2. [Procjena survival krivulja](#proc)
+
+3. [Weibull model](#wei)
+
+4. [Cox model](#cox)
+
+
+
+---
+
+class: inverse, center, middle
+name: kar
+
+# KARAKTERISTIKE SURVIVAL ANALIZE
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(O čemu se tu radi!?)
+
+---
+
+
+# Koncept
+
+&lt;img src="../Foto/surv_1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Primjer 1
+
+&lt;img src="../Foto/surv2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Primjer 2
+
+&lt;img src="../Foto/surv3.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Primjer 3
+
+&lt;img src="../Foto/surv4.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# Podatci
+
+
+
+```r
+#install.packages("TH.data")
+#install.packages("Ecdat")
+data(GBSG2, package = "TH.data")
+data(UnempDur, package = "Ecdat")
+```
+
+
+---
+
+# Zašto posebna vrsta analize?
+
+- Periodi (vrijeme) je uvijek **pozitivno**
+
+- Različite **mjere** nas zanimaju
+
+- **Cenzori** predstavljaju problem
+
+&lt;img src="../Foto/surv5.png" width="350px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Napravi **Surv** objekt
+
+
+&lt;img src="../Foto/surv6.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+
+
+```r
+time &lt;- c(5, 6, 2, 4, 4)
+event &lt;- c(1, 0, 0, 1, 1)
+
+library(survival)
+Surv(time, event)
+```
+
+```
+## [1] 5  6+ 2+ 4  4
+```
+
+---
+
+# Paketi
+
+
+```r
+# Za analizu 
+#install.packages("survival")
+#install.packages("survminer")
+# Za vizualizacije 
+#library("survminer")
+```
+
+.footnote[Postoji i CRAN Task View za Survival analizu](https://cran.r-project.org/web/views/Survival.html)]]
+
+---
+
+# Pitanja na koja odgovara survival analiza
+
+- Koja je vjerojatnost da će pacijent preživjeti više od XY godina?
+
+- Koje je tipično vrijeme čekanja taksija?
+
+- Od 100 nezaposlenih, koji broj možemo čekivati da će ponovno naći posao nakon 2 mjeseca?
+
+---
+
+# Survival funkcija
+
+&lt;img src="../Foto/surv7.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+- Vjerojatnost da je trajanje dulje od *t*.
+- npr. vjerojatnost preživljavanja nakon *t*
+- npr. vjerojatnost da će taksi trebati više od *t* minuta do dolaska
+
+---
+
+# Survival funkcija
+
+&lt;img src="../Foto/surv8.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+- Medijansko vrijeme je *t*.
+- npr. medijansko vrijeme preživljavanja je 3.7 godina
+- npr. medijansko vrijeme do dolaska taksija je 3.7 minuta
+---
+
+# Survival funkcija
+
+&lt;img src="../Foto/surv9.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+- 100*S(t) posto duracija je dulje od vremena t
+- 37% svih pacijenata preživi dulje od 4 godine, a 63% umre unutar prve 4 godine
+- 37 od 100 taksija treba više od 4 minute do dolaska
+
+
+---
+
+class: inverse, center, middle
+name: proc
+
+# PROCJENA SURVIVAL KRIVULJA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Načini procjene)
+
+---
+
+# Survival krivulja
+
+&lt;img src="../Foto/surv10.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Procjena survival krivulje
+
+&lt;img src="../Foto/surv11.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Izračun *korak po korak*
+
+&lt;img src="../Foto/surv12.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Izračun pomoću funkcije
+
+
+```r
+# Kaplan-Meier
+km &lt;- survfit(Surv(time, event) ~ 1)
+ggsurvplot(km, conf.int = FALSE,
+risk.table = "nrisk_cumevents",
+legend = "none")
+```
+
+---
+
+# Vizualizacija
+
+```r
+ggsurvplot(
+fit = km,
+palette = "blue",
+linetype = 1,
+surv.median.line = "hv",
+risk.table = TRUE,
+cumevents = TRUE,
+cumcensor = TRUE,
+tables.height = 0.1
+)
+```
+
+
+
+
+---
+
+class: inverse, center, middle
+name: wei
+
+# WEIBULL MODEL
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+---
+
+# Zašto koristimo Weibull model
+
+&lt;img src="../Foto/surv13.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Primjeni Weibull model u R
+
+
+```r
+# Webull model
+wb &lt;- survreg(Surv(time, event)~1,data)
+# Kaplan-Meier procjena
+km &lt;- survfit(Surv(time, event)~1,data)
+```
+
+---
+
+# Izračun
+
+
+```r
+wb &lt;- survreg(Surv(time, cens) ~ 1, data = GBSG2)
+```
+
+
+
+```r
+# Predviđanje
+## 90% pacijenata prežive dulje od:
+predict(wb, type = "quantile", p = 1 - 0.9, newdata = data.frame(1))
+```
+
+```
+##        1 
+## 384.9947
+```
+
+```r
+surv &lt;- seq(.99, .01, by = -.01)
+t &lt;- predict(wb, type = "quantile", p = 1 - surv, newdata = data.frame(1))
+head(data.frame(time = t, surv = surv))
+```
+
+```
+##       time surv
+## 1  60.6560 0.99
+## 2 105.0392 0.98
+## 3 145.0723 0.97
+## 4 182.6430 0.96
+## 5 218.5715 0.95
+## 6 253.3125 0.94
+```
+
+---
+
+# Vizualiziraj Weibull model
+
+
+```r
+# Weibull
+wb &lt;- survreg(Surv(time, cens) ~ 1)
+# Survival krivulja
+surv &lt;- seq(.99, .01, by = -.01)
+t &lt;- predict(wb, type = "quantile", p = 1 - surv, newdata = data.frame(1))
+surv_wb &lt;- data.frame(time = t, surv = surv,
+upper = NA, lower = NA, std.err = NA)
+# Prikaz
+ggsurvplot_df(fit = surv_wb, surv.geom = geom_line)
+```
+
+---
+
+# Vizualiziraj Weibull model
+
+&lt;img src="../Foto/surv14.png" width="500px" style="display: block; margin: auto;" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
