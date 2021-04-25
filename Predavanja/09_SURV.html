@@ -384,6 +384,155 @@ ggsurvplot_df(fit = surv_wb, surv.geom = geom_line)
 # Vizualiziraj Weibull model
 
 &lt;img src="../Foto/surv14.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Dodatne kontrolne varijable
+
+
+&lt;img src="../Foto/surv15.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Provedi model
+
+
+```r
+wbmod &lt;- survreg(Surv(time, cens) ~ horTh + tsize, data = GBSG2)
+coef(wbmod)
+```
+
+```
+## (Intercept)    horThyes       tsize 
+##  7.96069769  0.31175602 -0.01218073
+```
+---
+
+# Procedura za vizualizaciju
+
+
+```r
+# Korak 1
+wbmod &lt;- survreg(Surv(time, cens) ~ horTh + tsize, data = GBSG2) # Provedi model
+## Odredi kombinacije kontrolnih varijabli
+newdat &lt;- expand.grid(
+horTh = levels(GBSG2$horTh),
+tsize = quantile(GBSG2$tsize, probs = c(0.25, 0.5, 0.75)) )
+newdat
+```
+
+```
+##   horTh tsize
+## 1    no    20
+## 2   yes    20
+## 3    no    25
+## 4   yes    25
+## 5    no    35
+## 6   yes    35
+```
+
+---
+
+# Procedura za vizualizaciju
+
+
+```r
+# Korak 2
+## Izračunaj survival krivulje
+surv &lt;- seq(.99, .01, by = -.01)
+t &lt;- predict(wbmod, type = "quantile", p = 1 - surv, newdata = newdat)
+dim(t)
+```
+
+```
+## [1]  6 99
+```
+
+```r
+t[, 1:7]
+```
+
+```
+##          [,1]      [,2]     [,3]     [,4]     [,5]     [,6]     [,7]
+## [1,] 65.86524 112.54061 154.2116 193.0603 230.0268 265.6298 300.1952
+## [2,] 89.96016 153.71037 210.6256 263.6858 314.1755 362.8029 410.0131
+## [3,] 61.97352 105.89102 145.0999 181.6531 216.4354 249.9348 282.4579
+## [4,] 84.64477 144.62823 198.1805 248.1057 295.6121 341.3663 385.7870
+## [5,] 54.86634  93.74733 128.4597 160.8209 191.6144 221.2720 250.0653
+## [6,] 74.93762 128.04211 175.4530 219.6526 261.7110 302.2180 341.5445
+```
+
+---
+
+# Procedura za vizualizaciju
+
+
+```r
+# Korak 3
+## Napravi data.frame sa survival krivuljom
+surv_wbmod_wide &lt;- cbind(newdat, t)
+# Promijeni oblik
+library("reshape2")
+surv_wbmod &lt;- melt(surv_wbmod_wide, id.vars = c("horTh", "tsize"),
+variable.name = "surv_id", value.name = "time")
+surv_wbmod$surv &lt;- surv[as.numeric(surv_wbmod$surv_id)]
+surv_wbmod[, c("upper", "lower", "std.err", "strata")] &lt;- NA
+```
+
+---
+
+
+```r
+# Korak 3
+str(surv_wbmod)
+```
+
+```
+## 'data.frame':	594 obs. of  9 variables:
+##  $ horTh  : Factor w/ 2 levels "no","yes": 1 2 1 2 1 2 1 2 1 2 ...
+##  $ tsize  : num  20 20 25 25 35 35 20 20 25 25 ...
+##  $ surv_id: Factor w/ 99 levels "1","2","3","4",..: 1 1 1 1 1 1 2 2 2 2 ...
+##  $ time   : num  65.9 90 62 84.6 54.9 ...
+##  $ surv   : num  0.99 0.99 0.99 0.99 0.99 0.99 0.98 0.98 0.98 0.98 ...
+##  $ upper  : logi  NA NA NA NA NA NA ...
+##  $ lower  : logi  NA NA NA NA NA NA ...
+##  $ std.err: logi  NA NA NA NA NA NA ...
+##  $ strata : logi  NA NA NA NA NA NA ...
+```
+
+---
+
+
+```r
+# Korak 4
+## Prikaži grafički
+ggsurvplot_df(surv_wbmod, surv.geom = geom_line,
+linetype = "horTh", color = "tsize", legend.title = NULL)
+```
+
+&lt;img src="09_SURV_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Postoje i druge distribucije
+
+&lt;img src="../Foto/surv16.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Postoje i druge distribucije
+
+```r
+survreg(Surv(time, cens) ~ horTh,
+data = GBSG2)
+survreg(Surv(time, cens) ~ horTh,
+data = GBSG2,
+dist = "exponential")
+survreg(Surv(time, cens) ~ horTh,
+data = GBSG2,
+dist = "lognormal")
+```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

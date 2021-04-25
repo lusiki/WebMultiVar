@@ -406,6 +406,115 @@ ggsurvplot_df(fit = surv_wb, surv.geom = geom_line)
 knitr::include_graphics("../Foto/surv14.png")
 ```
 
+---
+
+# Dodatne kontrolne varijable
+
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv15.png")
+```
+
+---
+
+# Provedi model
+
+```{r}
+wbmod <- survreg(Surv(time, cens) ~ horTh + tsize, data = GBSG2)
+coef(wbmod)
+```
+---
+
+# Procedura za vizualizaciju
+
+```{r}
+# Korak 1
+wbmod <- survreg(Surv(time, cens) ~ horTh + tsize, data = GBSG2) # Provedi model
+## Odredi kombinacije kontrolnih varijabli
+newdat <- expand.grid(
+horTh = levels(GBSG2$horTh),
+tsize = quantile(GBSG2$tsize, probs = c(0.25, 0.5, 0.75)) )
+newdat
+```
+
+---
+
+# Procedura za vizualizaciju
+
+```{r}
+# Korak 2
+## Izračunaj survival krivulje
+surv <- seq(.99, .01, by = -.01)
+t <- predict(wbmod, type = "quantile", p = 1 - surv, newdata = newdat)
+dim(t)
+t[, 1:7]
+```
+
+---
+
+# Procedura za vizualizaciju
+
+```{r}
+# Korak 3
+## Napravi data.frame sa survival krivuljom
+surv_wbmod_wide <- cbind(newdat, t)
+# Promijeni oblik
+library("reshape2")
+surv_wbmod <- melt(surv_wbmod_wide, id.vars = c("horTh", "tsize"),
+variable.name = "surv_id", value.name = "time")
+surv_wbmod$surv <- surv[as.numeric(surv_wbmod$surv_id)]
+surv_wbmod[, c("upper", "lower", "std.err", "strata")] <- NA
+```
+
+---
+
+```{r}
+# Korak 3
+str(surv_wbmod)
+```
+
+---
+
+```{r, fig.height=3}
+# Korak 4
+## Prikaži grafički
+ggsurvplot_df(surv_wbmod, surv.geom = geom_line,
+linetype = "horTh", color = "tsize", legend.title = NULL)
+```
+
+
+---
+
+# Postoje i druge distribucije
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv16.png")
+```
+
+---
+
+# Postoje i druge distribucije
+```{r, eval=FALSE}
+survreg(Surv(time, cens) ~ horTh,
+data = GBSG2)
+survreg(Surv(time, cens) ~ horTh,
+data = GBSG2,
+dist = "exponential")
+survreg(Surv(time, cens) ~ horTh,
+data = GBSG2,
+dist = "lognormal")
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
