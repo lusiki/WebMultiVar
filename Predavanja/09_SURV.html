@@ -107,35 +107,38 @@ name: kar
 
 
 # Koncept
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/surv_1.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Primjer 1
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/surv2.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Primjer 2
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/surv3.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Primjer 3
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/surv4.png" width="500px" style="display: block; margin: auto;" /&gt;
-
-
 
 ---
 
 # Podatci
-
+&lt;br&gt;
+&lt;br&gt;
 
 
 ```r
@@ -183,7 +186,8 @@ Surv(time, event)
 ---
 
 # Paketi
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Za analizu 
@@ -197,8 +201,9 @@ Surv(time, event)
 
 ---
 
-# Pitanja na koja odgovara survival analiza
-
+# Pitanja za survival analizu
+&lt;br&gt;
+&lt;br&gt;
 - Koja je vjerojatnost da će pacijent preživjeti više od XY godina?
 
 - Koje je tipično vrijeme čekanja taksija?
@@ -249,25 +254,29 @@ name: proc
 ---
 
 # Survival krivulja
-
-&lt;img src="../Foto/surv10.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/surv10.png" width="600px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Procjena survival krivulje
-
-&lt;img src="../Foto/surv11.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/surv11.png" width="600px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Izračun *korak po korak*
-
-&lt;img src="../Foto/surv12.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/surv12.png" width="600px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Izračun pomoću funkcije
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Kaplan-Meier
@@ -275,11 +284,14 @@ km &lt;- survfit(Surv(time, event) ~ 1)
 ggsurvplot(km, conf.int = FALSE,
 risk.table = "nrisk_cumevents",
 legend = "none")
+# [1] 5  6+ 2+ 4  4 
 ```
 
 ---
 
 # Vizualizacija
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 ggsurvplot(
@@ -294,9 +306,6 @@ tables.height = 0.1
 )
 ```
 
-
-
-
 ---
 
 class: inverse, center, middle
@@ -309,13 +318,16 @@ name: wei
 ---
 
 # Zašto koristimo Weibull model
-
-&lt;img src="../Foto/surv13.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/surv13.png" width="600px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Primjeni Weibull model u R
-
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Webull model
@@ -365,7 +377,8 @@ head(data.frame(time = t, surv = surv))
 ---
 
 # Vizualiziraj Weibull model
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Weibull
@@ -382,20 +395,22 @@ ggsurvplot_df(fit = surv_wb, surv.geom = geom_line)
 ---
 
 # Vizualiziraj Weibull model
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/surv14.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Dodatne kontrolne varijable
-
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/surv15.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Provedi model
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 wbmod &lt;- survreg(Surv(time, cens) ~ horTh + tsize, data = GBSG2)
@@ -465,7 +480,8 @@ t[, 1:7]
 ---
 
 # Procedura za vizualizaciju
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Korak 3
@@ -478,8 +494,9 @@ variable.name = "surv_id", value.name = "time")
 surv_wbmod$surv &lt;- surv[as.numeric(surv_wbmod$surv_id)]
 surv_wbmod[, c("upper", "lower", "std.err", "strata")] &lt;- NA
 ```
-
 ---
+
+# Procedura za vizualizaciju
 
 
 ```r
@@ -502,6 +519,8 @@ str(surv_wbmod)
 
 ---
 
+# Procedura za vizualizaciju
+
 
 ```r
 # Korak 4
@@ -516,12 +535,15 @@ linetype = "horTh", color = "tsize", legend.title = NULL)
 ---
 
 # Postoje i druge distribucije
-
-&lt;img src="../Foto/surv16.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/surv16.png" width="600px" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Postoje i druge distribucije
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 survreg(Surv(time, cens) ~ horTh,
@@ -548,9 +570,9 @@ name: cox
 ---
 
 # Zašto Cox model
-
-
-&lt;img src="../Foto/surv17.png" width="500px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/surv17.png" width="600px" style="display: block; margin: auto;" /&gt;
 
 
 ---
