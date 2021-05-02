@@ -103,11 +103,11 @@ library(janitor)
 
 1. [Opcenito o network analizi](#opc)
 
-2. [Stvori network podatke](#netdta)
+2. [Network podatci](#netdta)
 
-3. [Stvori network objekt](#netob)
+3. [Network objekt](#netob)
 
-4. [](#cox)
+4. [Statistička analiza](#stat)
 
 ---
 
@@ -180,7 +180,7 @@ node_list
 class: inverse, center, middle
 name: netdta
 
-# STVORI NETWORK PODATKE
+# NETWORK PODATCI
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
@@ -294,7 +294,7 @@ edges
 class: inverse, center, middle
 name: netob
 
-# STVORI NETWORK OBJEKT
+# NETWORK OBJEKT
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
@@ -302,24 +302,178 @@ name: netob
 
 ---
 
+# network
+
+```{r}
+library(network)
+routes_network <- network(edges,
+                          vertex.attr = nodes,
+                          matrix.type = "edgelist",
+                          ignore.eval = FALSE)
+class(routes_network)
+routes_network
+```
+
+
+---
+
+# Vizualiziraj mrežu
+
+```{r}
+plot(routes_network, vertex.cex = 3)
+```
+
+---
+
+# Vizualiziraj mrežu
+
+```{r}
+plot(routes_network, vertex.cex = 3, mode = "circle")
+```
+
+---
+
+# igraph
+
+```{r}
+
+detach(package:network) # ukloni paket
+rm(routes_network) # Ukloni iz radnog prostora
+library(igraph)
+# Napravi mrežni objekt
+routes_igraph <- graph_from_data_frame(d = edges,
+                                       vertices = nodes,
+                                       directed = TRUE)
+routes_igraph # Pogledaj objekt
+```
+
+---
+
+# Vizualziraj mrežu
+
+```{r}
+plot(routes_igraph, edge.arrow.size = 0.2)
+```
+
+---
+
+# Vizualiziraj mrežu
+
+```{r}
+plot(routes_igraph, layout = layout_with_graphopt, edge.arrow.size = 0.2)
+```
+
+
+---
+
+# tidygraph + gggraph
+
+```{r}
+library(tidygraph)
+library(ggraph)
+# 1. način
+routes_tidy <- tbl_graph(nodes = nodes, edges = edges, directed = TRUE)
+# 2.način
+routes_igraph_tidy <- as_tbl_graph(routes_igraph)
+# Pregledaj objekte
+class(routes_tidy)
+class(routes_igraph_tidy)
+class(routes_igraph)
+```
+
+---
+
+# Pregledaj objekt
+
+```{r}
+routes_tidy
+```
+
+---
+
+# Manipulacija sa objektom
+
+```{r}
+routes_tidy %>% 
+  activate(edges) %>% 
+  arrange(desc(weight))
+```
+
+---
+
+# Vizualiziraj objekt
+
+```{r, fig.height=4}
+# Osnovna vizualizacija
+ggraph(routes_tidy) + geom_edge_link() + geom_node_point() + theme_graph()
+```
+
+---
+
+# Vizualiziraj objekt
+
+```{r, fig.height=4}
+# Pobolljšana vizualizacija
+ggraph(routes_tidy, layout = "graphopt") + 
+  geom_node_point() +
+  geom_edge_link(aes(width = weight), alpha = 0.8) + 
+  scale_edge_width(range = c(0.2, 2)) +
+  geom_node_text(aes(label = label), repel = TRUE) +
+  labs(edge_width = "Letters") +
+  theme_graph()
+
+```
+
+---
+
+# Vizualiziraj objekt
+
+```{r}
+# Cirkularna vizualizacija
+ggraph(routes_igraph, layout = "linear") + 
+  geom_edge_arc(aes(width = weight), alpha = 0.8) + 
+  scale_edge_width(range = c(0.2, 2)) +
+  geom_node_text(aes(label = label)) +
+  labs(edge_width = "Letters") +
+  theme_graph()
+
+```
+
+---
+
+# Interaktivne vizualizacije 
+
+```{r}
+library(visNetwork)
+visNetwork(nodes, edges)
+```
+
+---
+
+# Interaktivne vizualizacije 
+
+```{r}
+edges <- mutate(edges, width = weight/5 + 1)
+visNetwork(nodes, edges) %>% 
+  visIgraphLayout(layout = "layout_with_fr") %>% 
+  visEdges(arrows = "middle")
+
+```
+
+---
+
+# Interaktivne vizualizacije 
 
 
 
+```{r}
+nodes_d3 <- mutate(nodes, id = id - 1)
+edges_d3 <- mutate(edges, from = from - 1, to = to - 1)
+forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
+             NodeID = "label", Group = "id", Value = "weight", 
+             opacity = 1, fontSize = 16, zoom = TRUE)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 
 
