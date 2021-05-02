@@ -14,3 +14,8 @@ xml2
 rvest
 janitor
 network
+igraph
+tidygraph
+ggraph
+visNetwork
+networkD3

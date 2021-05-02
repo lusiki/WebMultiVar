@@ -93,6 +93,7 @@ library(tidyverse)
 library(dplyr)
 library(rvest)
 library(janitor)
+
 ```
 
 # Pregled predavanja
@@ -101,13 +102,13 @@ library(janitor)
 <br>
 <br>
 
-1. [Opcenito o network analizi](#opc)
+1. [Općenito o network analizi](#opc)
 
 2. [Network podatci](#netdta)
 
 3. [Network objekt](#netob)
 
-4. [Statistička analiza](#stat)
+4. [Statistička network analiza](#stat)
 
 ---
 
@@ -124,49 +125,75 @@ name: opc
 
 # Koncept
 <br>
-
+<br>
+<br>
 - modeliranje kompleksnosti i međupovezanosti
-- centralna metodologija za društvene i humanističke znaosti
+<br>
+- centralna metodologija za (digitalne) društvene i humanističke znaosti
+<br>
 - vizualna analiza - *uvodno*
+<br>
 - statistička analiza - *napredno*
 
 ---
 
 # Software podrška
-
+<br>
+<br>
+<br>
 - [statnet](http://statnet.org/)
+<br>
 - [igraph](https://igraph.org/)
+<br>
 - [tidygraph](https://github.com/thomasp85/tidygraph)
+<br>
 - [gggraph](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/)
 
 ---
 
 # Terminologija i struktura
-
+<br>
+<br>
+<br>
 - nodes i vertices vs. edges i links
+<br>
 - adjecancy matrice vs. data.frame
+<br>
 - od edge-list objekta do tidyverse workflow-a
+<br>
 - edge-list ima minimalno dvije kolone: kolona izvora čvorova (nodes) i kolona smjernica čvorova
+<br>
 - mreže mogu biti usmjerene(directed) i neusmjerene (unidirected)
-- edge-list objekt može sadržacavati i dodatne atribute (varijable)
+<br>
+- edge-list objekt može sadržavati i dodatne atribute (varijable)
+<br>
 - node-list objekt ima jednu varijablu (kolonu) i sadržava ID oznaku za pripadajući edge
 
 ---
 
 # Stvori demo network objekt
-
+<br>
+<br>
 ```{r}
 edge_list <- tibble(from = c(1, 2, 2, 3, 4), to = c(2, 3, 4, 2, 1))
-node_list <- tibble(id = 1:4)
 edge_list
+```
+---
+
+# Stvori demo network objekt
+<br>
+<br>
+
+```{r}
+node_list <- tibble(id = 1:4)
 node_list
 ```
 
 ---
 
-# Usporedi sa adjacency matricom
-
-
+# Adjacency matrica
+<br>
+<br>
 ```{r}
 #>   1 2 3 4
 #> 1 0 1 0 0
@@ -189,6 +216,7 @@ name: netdta
 ---
 
 # Preuzmi podatke 
+<br>
 
 ```{r}
 url <- "https://github.com/jessesadler/intro-to-r/blob/master/data/correspondence-data-1585.csv"
@@ -203,15 +231,16 @@ glimpse(epistole)
 ---
 
 # Pregledaj podatke
+<br>
 
 ```{r}
-epistole
+head(epistole,15)
 ```
 
 ---
 
 # Stvori node listu
-
+<br>
 ```{r}
 sources <- epistole %>%
   distinct(source) %>%
@@ -223,7 +252,7 @@ sources
 ---
 
 # Stvori node listu
-
+<br>
 ```{r}
 destinations <- epistole %>%
   distinct(destination) %>%
@@ -235,7 +264,7 @@ destinations
 ---
 
 # Stvori node listu
-
+<br>
 ```{r}
 # poveži u jedan objekt
 nodes <- full_join(sources, destinations, by = "label")
@@ -262,7 +291,7 @@ per_route <- epistole %>%
   summarise(weight = n()) %>% 
   ungroup()
 
-per_route
+head(per_route,13)
 ```
 
 ---
@@ -302,8 +331,9 @@ name: netob
 
 ---
 
-# network
+# network 
 
+.tiny[
 ```{r}
 library(network)
 routes_network <- network(edges,
@@ -313,13 +343,13 @@ routes_network <- network(edges,
 class(routes_network)
 routes_network
 ```
-
+]
 
 ---
 
 # Vizualiziraj mrežu
 
-```{r}
+```{r, fig.height=4}
 plot(routes_network, vertex.cex = 3)
 ```
 
@@ -327,7 +357,7 @@ plot(routes_network, vertex.cex = 3)
 
 # Vizualiziraj mrežu
 
-```{r}
+```{r, fig.height=4}
 plot(routes_network, vertex.cex = 3, mode = "circle")
 ```
 
@@ -336,22 +366,23 @@ plot(routes_network, vertex.cex = 3, mode = "circle")
 # igraph
 
 ```{r}
-
 detach(package:network) # ukloni paket
 rm(routes_network) # Ukloni iz radnog prostora
 library(igraph)
+# uredi (names mora biti na prvom mjestu)
+nodes %>% rename(names=label) %>% select(names,id) -> nod
 # Napravi mrežni objekt
 routes_igraph <- graph_from_data_frame(d = edges,
-                                       vertices = nodes,
+                                       vertices = nod,
                                        directed = TRUE)
 routes_igraph # Pogledaj objekt
 ```
 
 ---
 
-# Vizualziraj mrežu
+# Vizualiziraj mrežu
 
-```{r}
+```{r, fig.height=4}
 plot(routes_igraph, edge.arrow.size = 0.2)
 ```
 
@@ -359,14 +390,14 @@ plot(routes_igraph, edge.arrow.size = 0.2)
 
 # Vizualiziraj mrežu
 
-```{r}
+```{r, fig.height=4}
 plot(routes_igraph, layout = layout_with_graphopt, edge.arrow.size = 0.2)
 ```
 
 
 ---
 
-# tidygraph + gggraph
+# tidygraph + ggraph
 
 ```{r}
 library(tidygraph)
@@ -384,21 +415,22 @@ class(routes_igraph)
 ---
 
 # Pregledaj objekt
-
+.tiny[
 ```{r}
 routes_tidy
 ```
-
+]
 ---
 
 # Manipulacija sa objektom
 
+.tiny[
 ```{r}
 routes_tidy %>% 
   activate(edges) %>% 
   arrange(desc(weight))
 ```
-
+]
 ---
 
 # Vizualiziraj objekt
@@ -412,8 +444,8 @@ ggraph(routes_tidy) + geom_edge_link() + geom_node_point() + theme_graph()
 
 # Vizualiziraj objekt
 
-```{r, fig.height=4}
-# Pobolljšana vizualizacija
+```{r, fig.height=3}
+# Poboljšana vizualizacija
 ggraph(routes_tidy, layout = "graphopt") + 
   geom_node_point() +
   geom_edge_link(aes(width = weight), alpha = 0.8) + 
@@ -424,11 +456,9 @@ ggraph(routes_tidy, layout = "graphopt") +
 
 ```
 
----
 
-# Vizualiziraj objekt
 
-```{r}
+```{r, eval=F, echo=FALSE}
 # Cirkularna vizualizacija
 ggraph(routes_igraph, layout = "linear") + 
   geom_edge_arc(aes(width = weight), alpha = 0.8) + 
@@ -479,7 +509,7 @@ forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to",
 # Interaktivne vizualizacije
 
 ```{r}
-ankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
+sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
               NodeID = "label", Value = "weight", fontSize = 16, unit = "Letter(s)")
 ```
 
