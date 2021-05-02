@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MULTIVARIJATNE STATISTIČKE METODE</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="dr.sc. Luka Šikić" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# MULTIVARIJATNE STATISTIČKE METODE
+## Predavanje 9: Network analiza
+### dr.sc. Luka Šikić
+### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
+
+---
+
+
+
+
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+
+/* custom.css */
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+&lt;/style&gt;
+
+
+
+# Pregled predavanja
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+1. [Opcenito o network analizi](#opc)
+
+2. [Stvori network podatke](#netdta)
+
+3. [Stvori network objekt](#netob)
+
+4. [](#cox)
+
+---
+
+class: inverse, center, middle
+name: opc
+
+# OPĆENITO O NETWORK ANALIZI
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Osnova za korištenje)
+
+---
+
+# Koncept
+&lt;br&gt;
+
+- modeliranje kompleksnosti i međupovezanosti
+- centralna metodologija za društvene i humanističke znaosti
+- vizualna analiza - *uvodno*
+- statistička analiza - *napredno*
+
+---
+
+# Software podrška
+
+- [statnet](http://statnet.org/)
+- [igraph](https://igraph.org/)
+- [tidygraph](https://github.com/thomasp85/tidygraph)
+- [gggraph](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/)
+
+---
+
+# Terminologija i struktura
+
+- nodes i vertices vs. edges i links
+- adjecancy matrice vs. data.frame
+- od edge-list objekta do tidyverse workflow-a
+- edge-list ima minimalno dvije kolone: kolona izvora čvorova (nodes) i kolona smjernica čvorova
+- mreže mogu biti usmjerene(directed) i neusmjerene (unidirected)
+- edge-list objekt može sadržacavati i dodatne atribute (varijable)
+- node-list objekt ima jednu varijablu (kolonu) i sadržava ID oznaku za pripadajući edge
+
+---
+
+# Stvori demo network objekt
+
+
+```r
+edge_list &lt;- tibble(from = c(1, 2, 2, 3, 4), to = c(2, 3, 4, 2, 1))
+node_list &lt;- tibble(id = 1:4)
+edge_list
+```
+
+```
+## # A tibble: 5 x 2
+##    from    to
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1     1     2
+## 2     2     3
+## 3     2     4
+## 4     3     2
+## 5     4     1
+```
+
+```r
+node_list
+```
+
+```
+## # A tibble: 4 x 1
+##      id
+##   &lt;int&gt;
+## 1     1
+## 2     2
+## 3     3
+## 4     4
+```
+
+---
+
+# Usporedi sa adjacency matricom
+
+
+
+```r
+#&gt;   1 2 3 4
+#&gt; 1 0 1 0 0
+#&gt; 2 0 0 1 1
+#&gt; 3 0 1 0 0
+#&gt; 4 1 0 0 0
+```
+
+---
+
+class: inverse, center, middle
+name: netdta
+
+# STVORI NETWORK PODATKE
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Uradi sam!)
+
+---
+
+# Preuzmi podatke 
+
+
+```r
+url &lt;- "https://github.com/jessesadler/intro-to-r/blob/master/data/correspondence-data-1585.csv"
+epistole &lt;- read_html(url) %&gt;%
+  html_table(fill = TRUE) %&gt;%
+  as.data.frame() %&gt;%
+  select(-1) %&gt;%
+  row_to_names(1)
+glimpse(epistole)
+```
+
+```
+## Rows: 114
+## Columns: 4
+## $ writer      &lt;chr&gt; "Meulen, Andries van der", "Meulen, Andries van der", "Meu~
+## $ source      &lt;chr&gt; "Antwerp", "Antwerp", "Antwerp", "Antwerp", "Antwerp", "An~
+## $ destination &lt;chr&gt; "Delft", "Haarlem", "Haarlem", "Delft", "Haarlem", "Delft"~
+## $ date        &lt;chr&gt; "1585-01-03", "1585-01-09", "1585-01-11", "1585-01-12", "1~
+```
+
+---
+
+# Pregledaj podatke
+
+
+```r
+epistole
+```
+
+```
+##                             writer    source destination       date
+## 2          Meulen, Andries van der   Antwerp       Delft 1585-01-03
+## 3          Meulen, Andries van der   Antwerp     Haarlem 1585-01-09
+## 4          Meulen, Andries van der   Antwerp     Haarlem 1585-01-11
+## 5          Meulen, Andries van der   Antwerp       Delft 1585-01-12
+## 6          Meulen, Andries van der   Antwerp     Haarlem 1585-01-12
+## 7          Meulen, Andries van der   Antwerp       Delft 1585-01-17
+## 8          Meulen, Andries van der   Antwerp       Delft 1585-01-22
+## 9          Meulen, Andries van der   Antwerp       Delft 1585-01-23
+## 10            Della Faille, Marten   Antwerp     Haarlem 1585-01-24
+## 11         Meulen, Andries van der   Antwerp       Delft 1585-01-28
+## 12         Meulen, Andries van der   Antwerp       Delft 1585-01-30
+## 13         Meulen, Andries van der   Antwerp       Delft 1585-02-05
+## 14         Meulen, Andries van der   Antwerp       Delft 1585-02-07
+## 15           Della Faille, Jacques   Haarlem       Delft 1585-02-10
+## 16         Meulen, Andries van der   Antwerp       Delft 1585-02-11
+## 17         Meulen, Andries van der   Antwerp       Delft 1585-02-16
+## 18           Della Faille, Jacques   Haarlem   The Hague 1585-02-20
+## 19         Meulen, Andries van der   Antwerp       Delft 1585-02-20
+## 20           Della Faille, Jacques   Haarlem       Delft 1585-02-21
+## 21         Meulen, Andries van der   Antwerp       Delft 1585-02-22
+## 22         Meulen, Andries van der   Antwerp       Delft 1585-02-25
+## 23              Staten van Brabant   Antwerp       Delft 1585-02-25
+## 24         Meulen, Andries van der   Antwerp       Delft 1585-02-26
+## 25              Staten van Brabant   Antwerp       Delft 1585-02-26
+## 26         Meulen, Andries van der   Antwerp       Delft 1585-02-27
+## 27         Meulen, Andries van der   Antwerp       Delft 1585-03-02
+## 28         Meulen, Andries van der   Antwerp       Delft 1585-03-05
+## 29         Meulen, Andries van der   Antwerp       Delft 1585-03-09
+## 30         Meulen, Andries van der   Antwerp       Delft 1585-03-11
+## 31           Della Faille, Jacques   Haarlem       Delft 1585-03-12
+## 32         Meulen, Andries van der   Antwerp       Delft 1585-03-13
+## 33           Della Faille, Jacques   Haarlem       Delft 1585-03-14
+## 34         Meulen, Andries van der   Antwerp       Delft 1585-03-14
+## 35              Staten van Brabant   Antwerp       Delft 1585-03-14
+## 36         Meulen, Andries van der   Antwerp       Delft 1585-03-15
+## 37         Meulen, Andries van der   Antwerp       Delft 1585-03-19
+## 38           Della Faille, Jacques   Haarlem       Delft 1585-03-25
+## 39             Della Faille, Joris Dordrecht     Haarlem 1585-03-25
+## 40         Meulen, Andries van der   Antwerp       Delft 1585-03-25
+## 41            Della Faille, Marten   Antwerp     Haarlem 1585-03-28
+## 42         Meulen, Andries van der   Antwerp       Delft 1585-03-28
+## 43         Meulen, Andries van der   Antwerp       Delft 1585-03-30
+## 44         Meulen, Andries van der   Antwerp       Delft 1585-03-31
+## 45         Meulen, Andries van der   Antwerp       Delft 1585-04-06
+## 46         Meulen, Andries van der   Antwerp       Delft 1585-04-10
+## 47            Eeckeren, Robert van   Haarlem       Delft 1585-04-11
+## 48         Meulen, Andries van der   Antwerp       Delft 1585-04-11
+## 49         Meulen, Andries van der   Antwerp       Delft 1585-04-19
+## 50         Meulen, Andries van der   Antwerp       Delft 1585-04-24
+## 51                  Anraet, Thomas   Antwerp       Delft 1585-04-27
+## 52         Meulen, Andries van der   Antwerp       Delft 1585-04-28
+## 53         Meulen, Andries van der   Antwerp       Delft 1585-04-30
+## 54           Della Faille, Jacques   Haarlem       Delft 1585-05-01
+## 55         Meulen, Andries van der   Antwerp  Middelburg 1585-05-04
+## 56           Della Faille, Jacques   Haarlem       Delft 1585-05-08
+## 57            Della Faille, Marten   Antwerp       Delft 1585-05-09
+## 58         Meulen, Andries van der   Antwerp       Delft 1585-05-09
+## 59         Meulen, Andries van der   Antwerp       Delft 1585-05-11
+## 60           Della Faille, Jacques   Haarlem       Delft 1585-05-12
+## 61         Meulen, Andries van der   Antwerp       Delft 1585-05-17
+## 62           Della Faille, Jacques   Haarlem       Delft 1585-05-20
+## 63            Della Faille, Marten   Antwerp       Delft 1585-05-28
+## 64           Della Faille, Jacques   Haarlem       Delft 1585-05-28
+## 65         Meulen, Andries van der   Antwerp       Delft 1585-05-28
+## 66         Meulen, Andries van der   Antwerp       Delft 1585-05-28
+## 67         Meulen, Andries van der   Antwerp       Delft 1585-05-30
+## 68         Meulen, Andries van der   Antwerp       Delft 1585-06-01
+## 69         Meulen, Andries van der   Antwerp       Delft 1585-06-04
+## 70           Della Faille, Jacques   Haarlem  Middelburg 1585-06-11
+## 71              Staten van Brabant   Antwerp   The Hague 1585-06-13
+## 72         Meulen, Andries van der   Antwerp       Delft 1585-06-14
+## 73        Burgemeesters of Antwerp   Antwerp   The Hague 1585-06-19
+## 74         Meulen, Andries van der   Antwerp       Delft 1585-06-20
+## 75                    Wale, Jan de    Venice     Haarlem 1585-06-23
+## 76         Meulen, Andries van der   Antwerp       Delft 1585-06-29
+## 77         Meulen, Andries van der   Antwerp       Delft 1585-07-05
+## 78         Meulen, Andries van der   Antwerp       Delft 1585-07-09
+## 79         Meulen, Andries van der   Antwerp       Delft 1585-07-12
+## 80         Meulen, Andries van der   Antwerp       Delft 1585-07-13
+## 81         Meulen, Andries van der   Antwerp       Delft 1585-07-19
+## 82         Meulen, Andries van der   Antwerp       Delft 1585-07-25
+## 83         Meulen, Andries van der   Antwerp       Delft 1585-07-27
+## 84           Della Faille, Jacques     Lisse       Delft 1585-07-29
+## 85         Meulen, Andries van der   Antwerp       Delft 1585-07-31
+## 86         Meulen, Andries van der   Antwerp       Delft 1585-08-01
+## 87           Della Faille, Jacques   Haarlem       Delft 1585-08-02
+## 88           Della Faille, Jacques   Haarlem       Delft 1585-08-06
+## 89                Calvart, Jacques   Haarlem       Delft 1585-08-06
+## 90           Della Faille, Jacques   Haarlem       Delft 1585-08-07
+## 91         Meulen, Andries van der   Antwerp       Delft 1585-08-08
+## 92           Della Faille, Jacques   Haarlem       Delft 1585-08-09
+## 93           Della Faille, Jacques   Haarlem       Delft 1585-08-12
+## 94         Meulen, Andries van der   Antwerp       Delft 1585-08-12
+## 95         Meulen, Andries van der   Antwerp       Delft 1585-08-16
+## 96           Della Faille, Jacques   Haarlem       Delft 1585-08-18
+## 97           Della Faille, Jacques   Haarlem       Delft 1585-08-22
+## 98         Meulen, Andries van der   Antwerp       Delft 1585-08-22
+## 99                    Wale, Jan de    Venice     Haarlem 1585-08-30
+## 100          Della Faille, Jacques   Haarlem       Delft 1585-09-02
+## 101          Della Faille, Jacques   Haarlem       Delft 1585-09-03
+## 102 Janssen van der Meulen, Peeter   Antwerp       Delft 1585-09-04
+## 103          Della Faille, Jacques   Haarlem       Delft 1585-09-06
+## 104          Della Faille, Jacques   Haarlem       Delft 1585-09-07
+## 105          Della Faille, Jacques   Haarlem       Delft 1585-09-08
+## 106          Della Faille, Jacques   Haarlem       Delft 1585-09-10
+## 107          Della Faille, Jacques   Haarlem       Delft 1585-09-14
+## 108           Della Faille, Marten   Antwerp       Delft 1585-09-16
+## 109           Della Faille, Marten   Antwerp       Delft 1585-09-17
+## 110          Della Faille, Jacques  Het Vlie      Bremen 1585-10-21
+## 111          Della Faille, Jacques   Hamburg      Bremen 1585-10-30
+## 112          Della Faille, Jacques     Emden      Bremen 1585-11-30
+## 113                Noirot, Jacques   Haarlem      Bremen 1585-12-16
+## 114                Noirot, Jacques Amsterdam      Bremen 1585-12-20
+## 115          Della Faille, Jacques   Haarlem      Bremen 1585-12-27
+```
+
+---
+
+# Stvori node listu
+
+
+```r
+sources &lt;- epistole %&gt;%
+  distinct(source) %&gt;%
+  rename(label = source)
+
+sources
+```
+
+```
+##       label
+## 1   Antwerp
+## 2   Haarlem
+## 3 Dordrecht
+## 4    Venice
+## 5     Lisse
+## 6  Het Vlie
+## 7   Hamburg
+## 8     Emden
+## 9 Amsterdam
+```
+
+---
+
+# Stvori node listu
+
+
+```r
+destinations &lt;- epistole %&gt;%
+  distinct(destination) %&gt;%
+  rename(label = destination)
+
+destinations
+```
+
+```
+##        label
+## 1      Delft
+## 2    Haarlem
+## 3  The Hague
+## 4 Middelburg
+## 5     Bremen
+```
+
+---
+
+# Stvori node listu
+
+
+```r
+# poveži u jedan objekt
+nodes &lt;- full_join(sources, destinations, by = "label")
+nodes
+```
+
+```
+##         label
+## 1     Antwerp
+## 2     Haarlem
+## 3   Dordrecht
+## 4      Venice
+## 5       Lisse
+## 6    Het Vlie
+## 7     Hamburg
+## 8       Emden
+## 9   Amsterdam
+## 10      Delft
+## 11  The Hague
+## 12 Middelburg
+## 13     Bremen
+```
+
+---
+
+# Stvori node listu
+
+
+```r
+# dodaj ID
+nodes &lt;- nodes %&gt;% rowid_to_column("id")
+nodes
+```
+
+```
+##    id      label
+## 1   1    Antwerp
+## 2   2    Haarlem
+## 3   3  Dordrecht
+## 4   4     Venice
+## 5   5      Lisse
+## 6   6   Het Vlie
+## 7   7    Hamburg
+## 8   8      Emden
+## 9   9  Amsterdam
+## 10 10      Delft
+## 11 11  The Hague
+## 12 12 Middelburg
+## 13 13     Bremen
+```
+
+---
+
+# Napravi edge listu
+
+
+```r
+per_route &lt;- epistole %&gt;%  
+  group_by(source, destination) %&gt;%
+  summarise(weight = n()) %&gt;% 
+  ungroup()
+
+per_route
+```
+
+```
+## # A tibble: 15 x 3
+##    source    destination weight
+##    &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt;
+##  1 Amsterdam Bremen           1
+##  2 Antwerp   Delft           68
+##  3 Antwerp   Haarlem          5
+##  4 Antwerp   Middelburg       1
+##  5 Antwerp   The Hague        2
+##  6 Dordrecht Haarlem          1
+##  7 Emden     Bremen           1
+##  8 Haarlem   Bremen           2
+##  9 Haarlem   Delft           26
+## 10 Haarlem   Middelburg       1
+## 11 Haarlem   The Hague        1
+## 12 Hamburg   Bremen           1
+## 13 Het Vlie  Bremen           1
+## 14 Lisse     Delft            1
+## 15 Venice    Haarlem          2
+```
+
+---
+
+# Napravi edge listu
+
+
+```r
+edges &lt;- per_route %&gt;% 
+  left_join(nodes, by = c("source" = "label")) %&gt;% 
+  rename(from = id)
+edges
+```
+
+```
+## # A tibble: 15 x 4
+##    source    destination weight  from
+##    &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt; &lt;int&gt;
+##  1 Amsterdam Bremen           1     9
+##  2 Antwerp   Delft           68     1
+##  3 Antwerp   Haarlem          5     1
+##  4 Antwerp   Middelburg       1     1
+##  5 Antwerp   The Hague        2     1
+##  6 Dordrecht Haarlem          1     3
+##  7 Emden     Bremen           1     8
+##  8 Haarlem   Bremen           2     2
+##  9 Haarlem   Delft           26     2
+## 10 Haarlem   Middelburg       1     2
+## 11 Haarlem   The Hague        1     2
+## 12 Hamburg   Bremen           1     7
+## 13 Het Vlie  Bremen           1     6
+## 14 Lisse     Delft            1     5
+## 15 Venice    Haarlem          2     4
+```
+
+
+---
+
+# Napravi edge listu
+
+
+```r
+edges &lt;- edges %&gt;% 
+  left_join(nodes, by = c("destination" = "label")) %&gt;% 
+  rename(to = id)
+edges
+```
+
+```
+## # A tibble: 15 x 5
+##    source    destination weight  from    to
+##    &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1 Amsterdam Bremen           1     9    13
+##  2 Antwerp   Delft           68     1    10
+##  3 Antwerp   Haarlem          5     1     2
+##  4 Antwerp   Middelburg       1     1    12
+##  5 Antwerp   The Hague        2     1    11
+##  6 Dordrecht Haarlem          1     3     2
+##  7 Emden     Bremen           1     8    13
+##  8 Haarlem   Bremen           2     2    13
+##  9 Haarlem   Delft           26     2    10
+## 10 Haarlem   Middelburg       1     2    12
+## 11 Haarlem   The Hague        1     2    11
+## 12 Hamburg   Bremen           1     7    13
+## 13 Het Vlie  Bremen           1     6    13
+## 14 Lisse     Delft            1     5    10
+## 15 Venice    Haarlem          2     4     2
+```
+
+
+---
+
+class: inverse, center, middle
+name: netob
+
+# STVORI NETWORK OBJEKT
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Osnova za analizu)
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
