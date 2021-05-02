@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MULTIVARIJATNE STATISTIČKE METODE</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="dr.sc. Luka Šikić" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/vis/vis.css" rel="stylesheet" />
+    <script src="libs/vis/vis.min.js"></script>
+    <script src="libs/visNetwork-binding/visNetwork.js"></script>
+    <script src="libs/d3/d3.min.js"></script>
+    <script src="libs/forceNetwork-binding/forceNetwork.js"></script>
+    <script src="libs/sankey/sankey.js"></script>
+    <script src="libs/sankeyNetwork-binding/sankeyNetwork.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# MULTIVARIJATNE STATISTIČKE METODE
+## Predavanje 9: Network analiza
+### dr.sc. Luka Šikić
+### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
+
+---
+
+
+
+
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+
+/* custom.css */
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+&lt;/style&gt;
+
+
+
+# Pregled predavanja
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+1. [Općenito o network analizi](#opc)
+
+2. [Network podatci](#netdta)
+
+3. [Network objekt](#netob)
+
+4. [Statistička network analiza](#stat)
+
+---
+
+class: inverse, center, middle
+name: opc
+
+# OPĆENITO O NETWORK ANALIZI
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Osnova za korištenje)
+
+---
+
+# Koncept
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+- modeliranje kompleksnosti i međupovezanosti
+&lt;br&gt;
+- centralna metodologija za (digitalne) društvene i humanističke znaosti
+&lt;br&gt;
+- vizualna analiza - *uvodno*
+&lt;br&gt;
+- statistička analiza - *napredno*
+
+---
+
+# Software podrška
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+- [statnet](http://statnet.org/)
+&lt;br&gt;
+- [igraph](https://igraph.org/)
+&lt;br&gt;
+- [tidygraph](https://github.com/thomasp85/tidygraph)
+&lt;br&gt;
+- [gggraph](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/)
+
+---
+
+# Terminologija i struktura
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+- nodes i vertices vs. edges i links
+&lt;br&gt;
+- adjecancy matrice vs. data.frame
+&lt;br&gt;
+- od edge-list objekta do tidyverse workflow-a
+&lt;br&gt;
+- edge-list ima minimalno dvije kolone: kolona izvora čvorova (nodes) i kolona smjernica čvorova
+&lt;br&gt;
+- mreže mogu biti usmjerene(directed) i neusmjerene (unidirected)
+&lt;br&gt;
+- edge-list objekt može sadržavati i dodatne atribute (varijable)
+&lt;br&gt;
+- node-list objekt ima jednu varijablu (kolonu) i sadržava ID oznaku za pripadajući edge
+
+---
+
+# Stvori demo network objekt
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+edge_list &lt;- tibble(from = c(1, 2, 2, 3, 4), to = c(2, 3, 4, 2, 1))
+edge_list
+```
+
+```
+## # A tibble: 5 x 2
+##    from    to
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1     1     2
+## 2     2     3
+## 3     2     4
+## 4     3     2
+## 5     4     1
+```
+---
+
+# Stvori demo network objekt
+&lt;br&gt;
+&lt;br&gt;
+
+
+```r
+node_list &lt;- tibble(id = 1:4)
+node_list
+```
+
+```
+## # A tibble: 4 x 1
+##      id
+##   &lt;int&gt;
+## 1     1
+## 2     2
+## 3     3
+## 4     4
+```
+
+---
+
+# Adjacency matrica
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+#&gt;   1 2 3 4
+#&gt; 1 0 1 0 0
+#&gt; 2 0 0 1 1
+#&gt; 3 0 1 0 0
+#&gt; 4 1 0 0 0
+```
+
+---
+
+class: inverse, center, middle
+name: netdta
+
+# NETWORK PODATCI
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Uradi sam!)
+
+---
+
+# Preuzmi podatke 
+&lt;br&gt;
+
+
+```r
+url &lt;- "https://github.com/jessesadler/intro-to-r/blob/master/data/correspondence-data-1585.csv"
+epistole &lt;- read_html(url) %&gt;%
+  html_table(fill = TRUE) %&gt;%
+  as.data.frame() %&gt;%
+  select(-1) %&gt;%
+  row_to_names(1)
+glimpse(epistole)
+```
+
+```
+## Rows: 114
+## Columns: 4
+## $ writer      &lt;chr&gt; "Meulen, Andries van der", "Meulen, Andries van der", "Meu~
+## $ source      &lt;chr&gt; "Antwerp", "Antwerp", "Antwerp", "Antwerp", "Antwerp", "An~
+## $ destination &lt;chr&gt; "Delft", "Haarlem", "Haarlem", "Delft", "Haarlem", "Delft"~
+## $ date        &lt;chr&gt; "1585-01-03", "1585-01-09", "1585-01-11", "1585-01-12", "1~
+```
+
+---
+
+# Pregledaj podatke
+&lt;br&gt;
+
+
+```r
+head(epistole,15)
+```
+
+```
+##                     writer  source destination       date
+## 2  Meulen, Andries van der Antwerp       Delft 1585-01-03
+## 3  Meulen, Andries van der Antwerp     Haarlem 1585-01-09
+## 4  Meulen, Andries van der Antwerp     Haarlem 1585-01-11
+## 5  Meulen, Andries van der Antwerp       Delft 1585-01-12
+## 6  Meulen, Andries van der Antwerp     Haarlem 1585-01-12
+## 7  Meulen, Andries van der Antwerp       Delft 1585-01-17
+## 8  Meulen, Andries van der Antwerp       Delft 1585-01-22
+## 9  Meulen, Andries van der Antwerp       Delft 1585-01-23
+## 10    Della Faille, Marten Antwerp     Haarlem 1585-01-24
+## 11 Meulen, Andries van der Antwerp       Delft 1585-01-28
+## 12 Meulen, Andries van der Antwerp       Delft 1585-01-30
+## 13 Meulen, Andries van der Antwerp       Delft 1585-02-05
+## 14 Meulen, Andries van der Antwerp       Delft 1585-02-07
+## 15   Della Faille, Jacques Haarlem       Delft 1585-02-10
+## 16 Meulen, Andries van der Antwerp       Delft 1585-02-11
+```
+
+---
+
+# Stvori node listu
+&lt;br&gt;
+
+```r
+sources &lt;- epistole %&gt;%
+  distinct(source) %&gt;%
+  rename(label = source)
+
+sources
+```
+
+```
+##       label
+## 1   Antwerp
+## 2   Haarlem
+## 3 Dordrecht
+## 4    Venice
+## 5     Lisse
+## 6  Het Vlie
+## 7   Hamburg
+## 8     Emden
+## 9 Amsterdam
+```
+
+---
+
+# Stvori node listu
+&lt;br&gt;
+
+```r
+destinations &lt;- epistole %&gt;%
+  distinct(destination) %&gt;%
+  rename(label = destination)
+
+destinations
+```
+
+```
+##        label
+## 1      Delft
+## 2    Haarlem
+## 3  The Hague
+## 4 Middelburg
+## 5     Bremen
+```
+
+---
+
+# Stvori node listu
+&lt;br&gt;
+
+```r
+# poveži u jedan objekt
+nodes &lt;- full_join(sources, destinations, by = "label")
+nodes
+```
+
+```
+##         label
+## 1     Antwerp
+## 2     Haarlem
+## 3   Dordrecht
+## 4      Venice
+## 5       Lisse
+## 6    Het Vlie
+## 7     Hamburg
+## 8       Emden
+## 9   Amsterdam
+## 10      Delft
+## 11  The Hague
+## 12 Middelburg
+## 13     Bremen
+```
+
+---
+
+# Stvori node listu
+
+
+```r
+# dodaj ID
+nodes &lt;- nodes %&gt;% rowid_to_column("id")
+nodes
+```
+
+```
+##    id      label
+## 1   1    Antwerp
+## 2   2    Haarlem
+## 3   3  Dordrecht
+## 4   4     Venice
+## 5   5      Lisse
+## 6   6   Het Vlie
+## 7   7    Hamburg
+## 8   8      Emden
+## 9   9  Amsterdam
+## 10 10      Delft
+## 11 11  The Hague
+## 12 12 Middelburg
+## 13 13     Bremen
+```
+
+---
+
+# Napravi edge listu
+
+
+```r
+per_route &lt;- epistole %&gt;%  
+  group_by(source, destination) %&gt;%
+  summarise(weight = n()) %&gt;% 
+  ungroup()
+
+head(per_route,13)
+```
+
+```
+## # A tibble: 13 x 3
+##    source    destination weight
+##    &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt;
+##  1 Amsterdam Bremen           1
+##  2 Antwerp   Delft           68
+##  3 Antwerp   Haarlem          5
+##  4 Antwerp   Middelburg       1
+##  5 Antwerp   The Hague        2
+##  6 Dordrecht Haarlem          1
+##  7 Emden     Bremen           1
+##  8 Haarlem   Bremen           2
+##  9 Haarlem   Delft           26
+## 10 Haarlem   Middelburg       1
+## 11 Haarlem   The Hague        1
+## 12 Hamburg   Bremen           1
+## 13 Het Vlie  Bremen           1
+```
+
+---
+
+# Napravi edge listu
+
+
+```r
+edges &lt;- per_route %&gt;% 
+  left_join(nodes, by = c("source" = "label")) %&gt;% 
+  rename(from = id)
+edges
+```
+
+```
+## # A tibble: 15 x 4
+##    source    destination weight  from
+##    &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt; &lt;int&gt;
+##  1 Amsterdam Bremen           1     9
+##  2 Antwerp   Delft           68     1
+##  3 Antwerp   Haarlem          5     1
+##  4 Antwerp   Middelburg       1     1
+##  5 Antwerp   The Hague        2     1
+##  6 Dordrecht Haarlem          1     3
+##  7 Emden     Bremen           1     8
+##  8 Haarlem   Bremen           2     2
+##  9 Haarlem   Delft           26     2
+## 10 Haarlem   Middelburg       1     2
+## 11 Haarlem   The Hague        1     2
+## 12 Hamburg   Bremen           1     7
+## 13 Het Vlie  Bremen           1     6
+## 14 Lisse     Delft            1     5
+## 15 Venice    Haarlem          2     4
+```
+
+
+---
+
+# Napravi edge listu
+
+
+```r
+edges &lt;- edges %&gt;% 
+  left_join(nodes, by = c("destination" = "label")) %&gt;% 
+  rename(to = id)
+edges
+```
+
+```
+## # A tibble: 15 x 5
+##    source    destination weight  from    to
+##    &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1 Amsterdam Bremen           1     9    13
+##  2 Antwerp   Delft           68     1    10
+##  3 Antwerp   Haarlem          5     1     2
+##  4 Antwerp   Middelburg       1     1    12
+##  5 Antwerp   The Hague        2     1    11
+##  6 Dordrecht Haarlem          1     3     2
+##  7 Emden     Bremen           1     8    13
+##  8 Haarlem   Bremen           2     2    13
+##  9 Haarlem   Delft           26     2    10
+## 10 Haarlem   Middelburg       1     2    12
+## 11 Haarlem   The Hague        1     2    11
+## 12 Hamburg   Bremen           1     7    13
+## 13 Het Vlie  Bremen           1     6    13
+## 14 Lisse     Delft            1     5    10
+## 15 Venice    Haarlem          2     4     2
+```
+
+
+---
+
+class: inverse, center, middle
+name: netob
+
+# NETWORK OBJEKT
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Osnova za analizu)
+
+---
+
+# network 
+
+.tiny[
+
+```r
+library(network)
+routes_network &lt;- network(edges,
+                          vertex.attr = nodes,
+                          matrix.type = "edgelist",
+                          ignore.eval = FALSE)
+class(routes_network)
+```
+
+```
+## [1] "network"
+```
+
+```r
+routes_network
+```
+
+```
+##  Network attributes:
+##   vertices = 13 
+##   directed = TRUE 
+##   hyper = FALSE 
+##   loops = FALSE 
+##   multiple = FALSE 
+##   bipartite = FALSE 
+##   total edges= 15 
+##     missing edges= 0 
+##     non-missing edges= 15 
+## 
+##  Vertex attribute names: 
+##     id label vertex.names 
+## 
+##  Edge attribute names: 
+##     from to weight
+```
+]
+
+---
+
+# Vizualiziraj mrežu
+
+
+```r
+plot(routes_network, vertex.cex = 3)
+```
+
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Vizualiziraj mrežu
+
+
+```r
+plot(routes_network, vertex.cex = 3, mode = "circle")
+```
+
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# igraph
+
+
+```r
+detach(package:network) # ukloni paket
+rm(routes_network) # Ukloni iz radnog prostora
+library(igraph)
+# uredi (names mora biti na prvom mjestu)
+nodes %&gt;% rename(names=label) %&gt;% select(names,id) -&gt; nod
+# Napravi mrežni objekt
+routes_igraph &lt;- graph_from_data_frame(d = edges,
+                                       vertices = nod,
+                                       directed = TRUE)
+routes_igraph # Pogledaj objekt
+```
+
+```
+## IGRAPH 0e8fad2 DNW- 13 15 -- 
+## + attr: name (v/c), id (v/n), weight (e/n), from (e/n), to (e/n)
+## + edges from 0e8fad2 (vertex names):
+##  [1] Amsterdam-&gt;Bremen     Antwerp  -&gt;Delft      Antwerp  -&gt;Haarlem   
+##  [4] Antwerp  -&gt;Middelburg Antwerp  -&gt;The Hague  Dordrecht-&gt;Haarlem   
+##  [7] Emden    -&gt;Bremen     Haarlem  -&gt;Bremen     Haarlem  -&gt;Delft     
+## [10] Haarlem  -&gt;Middelburg Haarlem  -&gt;The Hague  Hamburg  -&gt;Bremen    
+## [13] Het Vlie -&gt;Bremen     Lisse    -&gt;Delft      Venice   -&gt;Haarlem
+```
+
+---
+
+# Vizualiziraj mrežu
+
+
+```r
+plot(routes_igraph, edge.arrow.size = 0.2)
+```
+
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Vizualiziraj mrežu
+
+
+```r
+plot(routes_igraph, layout = layout_with_graphopt, edge.arrow.size = 0.2)
+```
+
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# tidygraph + ggraph
+
+
+```r
+library(tidygraph)
+library(ggraph)
+# 1. način
+routes_tidy &lt;- tbl_graph(nodes = nodes, edges = edges, directed = TRUE)
+# 2.način
+routes_igraph_tidy &lt;- as_tbl_graph(routes_igraph)
+# Pregledaj objekte
+class(routes_tidy)
+```
+
+```
+## [1] "tbl_graph" "igraph"
+```
+
+```r
+class(routes_igraph_tidy)
+```
+
+```
+## [1] "tbl_graph" "igraph"
+```
+
+```r
+class(routes_igraph)
+```
+
+```
+## [1] "igraph"
+```
+
+---
+
+# Pregledaj objekt
+.tiny[
+
+```r
+routes_tidy
+```
+
+```
+## # A tbl_graph: 13 nodes and 15 edges
+## #
+## # A directed acyclic simple graph with 1 component
+## #
+## # Node Data: 13 x 2 (active)
+##      id label    
+##   &lt;int&gt; &lt;chr&gt;    
+## 1     1 Antwerp  
+## 2     2 Haarlem  
+## 3     3 Dordrecht
+## 4     4 Venice   
+## 5     5 Lisse    
+## 6     6 Het Vlie 
+## # ... with 7 more rows
+## #
+## # Edge Data: 15 x 5
+##    from    to source    destination weight
+##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt;
+## 1     9    13 Amsterdam Bremen           1
+## 2     1    10 Antwerp   Delft           68
+## 3     1     2 Antwerp   Haarlem          5
+## # ... with 12 more rows
+```
+]
+---
+
+# Manipulacija sa objektom
+
+.tiny[
+
+```r
+routes_tidy %&gt;% 
+  activate(edges) %&gt;% 
+  arrange(desc(weight))
+```
+
+```
+## # A tbl_graph: 13 nodes and 15 edges
+## #
+## # A directed acyclic simple graph with 1 component
+## #
+## # Edge Data: 15 x 5 (active)
+##    from    to source  destination weight
+##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;        &lt;int&gt;
+## 1     1    10 Antwerp Delft           68
+## 2     2    10 Haarlem Delft           26
+## 3     1     2 Antwerp Haarlem          5
+## 4     1    11 Antwerp The Hague        2
+## 5     2    13 Haarlem Bremen           2
+## 6     4     2 Venice  Haarlem          2
+## # ... with 9 more rows
+## #
+## # Node Data: 13 x 2
+##      id label    
+##   &lt;int&gt; &lt;chr&gt;    
+## 1     1 Antwerp  
+## 2     2 Haarlem  
+## 3     3 Dordrecht
+## # ... with 10 more rows
+```
+]
+---
+
+# Vizualiziraj objekt
+
+
+```r
+# Osnovna vizualizacija
+ggraph(routes_tidy) + geom_edge_link() + geom_node_point() + theme_graph()
+```
+
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Vizualiziraj objekt
+
+
+```r
+# Poboljšana vizualizacija
+ggraph(routes_tidy, layout = "graphopt") + 
+  geom_node_point() +
+  geom_edge_link(aes(width = weight), alpha = 0.8) + 
+  scale_edge_width(range = c(0.2, 2)) +
+  geom_node_text(aes(label = label), repel = TRUE) +
+  labs(edge_width = "Letters") +
+  theme_graph()
+```
+
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+---
+
+# Interaktivne vizualizacije 
+
+
+```r
+library(visNetwork)
+visNetwork(nodes, edges)
+```
+
+```{=html}
+&lt;div id="htmlwidget-6c898f473012dadef256" style="width:2100px;height:2100px;" class="visNetwork html-widget"&gt;&lt;/div&gt;
+&lt;script type="application/json" data-for="htmlwidget-6c898f473012dadef256"&gt;{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}&lt;/script&gt;
+```
+
+---
+
+# Interaktivne vizualizacije 
+
+
+```r
+edges &lt;- mutate(edges, width = weight/5 + 1)
+visNetwork(nodes, edges) %&gt;% 
+  visIgraphLayout(layout = "layout_with_fr") %&gt;% 
+  visEdges(arrows = "middle")
+```
+
+```{=html}
+&lt;div id="htmlwidget-067fe06f1a75e0c70422" style="width:2100px;height:2100px;" class="visNetwork html-widget"&gt;&lt;/div&gt;
+&lt;script type="application/json" data-for="htmlwidget-067fe06f1a75e0c70422"&gt;{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"x":[-0.441622948555099,-0.257210402749321,-0.653132655512514,-0.299424923829171,-1,1,0.86940809260105,0.83188558251244,0.535900127353698,-0.671821039024649,-0.140885853813565,-0.650891908978778,0.500993406819139],"y":[-0.345612124857841,0.0633454818914216,0.45835727168961,0.617724688552671,-1,0.428901559283227,0.828452562590152,0.0314810240322929,1,-0.555192677943159,-0.424601639855461,-0.0562317960380766,0.424940057027404]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2],"width":[1.2,14.6,2,1.2,1.4,1.2,1.2,1.4,6.2,1.2,1.2,1.2,1.2,1.2,1.4]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":false,"arrows":"middle"},"physics":{"stabilization":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"}},"evals":[],"jsHooks":[]}&lt;/script&gt;
+```
+
+---
+
+# Interaktivne vizualizacije 
+
+
+```r
+library(networkD3)
+nodes_d3 &lt;- mutate(nodes, id = id - 1)
+edges_d3 &lt;- mutate(edges, from = from - 1, to = to - 1)
+forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
+             NodeID = "label", Group = "id", Value = "weight", 
+             opacity = 1, fontSize = 16, zoom = TRUE)
+```
+
+```{=html}
+&lt;div id="htmlwidget-ab3b0068360fb3a5612b" style="width:2100px;height:2100px;" class="forceNetwork html-widget"&gt;&lt;/div&gt;
+&lt;script type="application/json" data-for="htmlwidget-ab3b0068360fb3a5612b"&gt;{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":[0,1,2,3,4,5,6,7,8,9,10,11,12]},"options":{"NodeID":"label","Group":"id","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":"serif","clickTextSize":40,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":1,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}&lt;/script&gt;
+```
+
+
+---
+
+# Interaktivne vizualizacije
+
+
+```r
+sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
+              NodeID = "label", Value = "weight", fontSize = 16, unit = "Letter(s)")
+```
+
+```{=html}
+&lt;div id="htmlwidget-cb2b386208e6f7f2a401" style="width:2100px;height:2100px;" class="sankeyNetwork html-widget"&gt;&lt;/div&gt;
+&lt;script type="application/json" data-for="htmlwidget-cb2b386208e6f7f2a401"&gt;{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"options":{"NodeID":"label","NodeGroup":"label","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"Letter(s)","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}&lt;/script&gt;
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

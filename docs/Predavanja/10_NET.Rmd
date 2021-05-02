@@ -1,0 +1,523 @@
+---
+title: "MULTIVARIJATNE STATISTIČKE METODE"
+author: "dr.sc. Luka Šikić"
+date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
+subtitle: "Predavanje 9: Network analiza"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=T, echo=T, warning=F, message=F
+  )
+knitr::opts_hooks$set(fig.callout = function(options) {
+  if (options$fig.callout) {
+    options$echo <- FALSE
+    options$out.height <- "99%"
+    options$fig.width <- 16
+    options$fig.height <- 8
+  }
+  options
+})
+```
+
+```{css, echo = F, eval = T}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+
+/* custom.css */
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+```
+
+```{r paketi, warning=F, echo=F, message=F, eval=TRUE}
+
+library(tidyverse)  # data manipulation and visualization
+library(gridExtra)  # plot arrangement
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+library(rvest)
+library(janitor)
+
+```
+
+# Pregled predavanja
+
+<br>
+<br>
+<br>
+
+1. [Općenito o network analizi](#opc)
+
+2. [Network podatci](#netdta)
+
+3. [Network objekt](#netob)
+
+4. [Statistička network analiza](#stat)
+
+---
+
+class: inverse, center, middle
+name: opc
+
+# OPĆENITO O NETWORK ANALIZI
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Osnova za korištenje)
+
+---
+
+# Koncept
+<br>
+<br>
+<br>
+- modeliranje kompleksnosti i međupovezanosti
+<br>
+- centralna metodologija za (digitalne) društvene i humanističke znaosti
+<br>
+- vizualna analiza - *uvodno*
+<br>
+- statistička analiza - *napredno*
+
+---
+
+# Software podrška
+<br>
+<br>
+<br>
+- [statnet](http://statnet.org/)
+<br>
+- [igraph](https://igraph.org/)
+<br>
+- [tidygraph](https://github.com/thomasp85/tidygraph)
+<br>
+- [gggraph](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/)
+
+---
+
+# Terminologija i struktura
+<br>
+<br>
+<br>
+- nodes i vertices vs. edges i links
+<br>
+- adjecancy matrice vs. data.frame
+<br>
+- od edge-list objekta do tidyverse workflow-a
+<br>
+- edge-list ima minimalno dvije kolone: kolona izvora čvorova (nodes) i kolona smjernica čvorova
+<br>
+- mreže mogu biti usmjerene(directed) i neusmjerene (unidirected)
+<br>
+- edge-list objekt može sadržavati i dodatne atribute (varijable)
+<br>
+- node-list objekt ima jednu varijablu (kolonu) i sadržava ID oznaku za pripadajući edge
+
+---
+
+# Stvori demo network objekt
+<br>
+<br>
+```{r}
+edge_list <- tibble(from = c(1, 2, 2, 3, 4), to = c(2, 3, 4, 2, 1))
+edge_list
+```
+---
+
+# Stvori demo network objekt
+<br>
+<br>
+
+```{r}
+node_list <- tibble(id = 1:4)
+node_list
+```
+
+---
+
+# Adjacency matrica
+<br>
+<br>
+```{r}
+#>   1 2 3 4
+#> 1 0 1 0 0
+#> 2 0 0 1 1
+#> 3 0 1 0 0
+#> 4 1 0 0 0
+```
+
+---
+
+class: inverse, center, middle
+name: netdta
+
+# NETWORK PODATCI
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Uradi sam!)
+
+---
+
+# Preuzmi podatke 
+<br>
+
+```{r}
+url <- "https://github.com/jessesadler/intro-to-r/blob/master/data/correspondence-data-1585.csv"
+epistole <- read_html(url) %>%
+  html_table(fill = TRUE) %>%
+  as.data.frame() %>%
+  select(-1) %>%
+  row_to_names(1)
+glimpse(epistole)
+```
+
+---
+
+# Pregledaj podatke
+<br>
+
+```{r}
+head(epistole,15)
+```
+
+---
+
+# Stvori node listu
+<br>
+```{r}
+sources <- epistole %>%
+  distinct(source) %>%
+  rename(label = source)
+
+sources
+```
+
+---
+
+# Stvori node listu
+<br>
+```{r}
+destinations <- epistole %>%
+  distinct(destination) %>%
+  rename(label = destination)
+
+destinations
+```
+
+---
+
+# Stvori node listu
+<br>
+```{r}
+# poveži u jedan objekt
+nodes <- full_join(sources, destinations, by = "label")
+nodes
+```
+
+---
+
+# Stvori node listu
+
+```{r}
+# dodaj ID
+nodes <- nodes %>% rowid_to_column("id")
+nodes
+```
+
+---
+
+# Napravi edge listu
+
+```{r}
+per_route <- epistole %>%  
+  group_by(source, destination) %>%
+  summarise(weight = n()) %>% 
+  ungroup()
+
+head(per_route,13)
+```
+
+---
+
+# Napravi edge listu
+
+```{r}
+edges <- per_route %>% 
+  left_join(nodes, by = c("source" = "label")) %>% 
+  rename(from = id)
+edges
+```
+
+
+---
+
+# Napravi edge listu
+
+```{r}
+edges <- edges %>% 
+  left_join(nodes, by = c("destination" = "label")) %>% 
+  rename(to = id)
+edges
+```
+
+
+---
+
+class: inverse, center, middle
+name: netob
+
+# NETWORK OBJEKT
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Osnova za analizu)
+
+---
+
+# network 
+
+.tiny[
+```{r}
+library(network)
+routes_network <- network(edges,
+                          vertex.attr = nodes,
+                          matrix.type = "edgelist",
+                          ignore.eval = FALSE)
+class(routes_network)
+routes_network
+```
+]
+
+---
+
+# Vizualiziraj mrežu
+
+```{r, fig.height=4}
+plot(routes_network, vertex.cex = 3)
+```
+
+---
+
+# Vizualiziraj mrežu
+
+```{r, fig.height=4}
+plot(routes_network, vertex.cex = 3, mode = "circle")
+```
+
+---
+
+# igraph
+
+```{r}
+detach(package:network) # ukloni paket
+rm(routes_network) # Ukloni iz radnog prostora
+library(igraph)
+# uredi (names mora biti na prvom mjestu)
+nodes %>% rename(names=label) %>% select(names,id) -> nod
+# Napravi mrežni objekt
+routes_igraph <- graph_from_data_frame(d = edges,
+                                       vertices = nod,
+                                       directed = TRUE)
+routes_igraph # Pogledaj objekt
+```
+
+---
+
+# Vizualiziraj mrežu
+
+```{r, fig.height=4}
+plot(routes_igraph, edge.arrow.size = 0.2)
+```
+
+---
+
+# Vizualiziraj mrežu
+
+```{r, fig.height=4}
+plot(routes_igraph, layout = layout_with_graphopt, edge.arrow.size = 0.2)
+```
+
+
+---
+
+# tidygraph + ggraph
+
+```{r}
+library(tidygraph)
+library(ggraph)
+# 1. način
+routes_tidy <- tbl_graph(nodes = nodes, edges = edges, directed = TRUE)
+# 2.način
+routes_igraph_tidy <- as_tbl_graph(routes_igraph)
+# Pregledaj objekte
+class(routes_tidy)
+class(routes_igraph_tidy)
+class(routes_igraph)
+```
+
+---
+
+# Pregledaj objekt
+.tiny[
+```{r}
+routes_tidy
+```
+]
+---
+
+# Manipulacija sa objektom
+
+.tiny[
+```{r}
+routes_tidy %>% 
+  activate(edges) %>% 
+  arrange(desc(weight))
+```
+]
+---
+
+# Vizualiziraj objekt
+
+```{r, fig.height=4}
+# Osnovna vizualizacija
+ggraph(routes_tidy) + geom_edge_link() + geom_node_point() + theme_graph()
+```
+
+---
+
+# Vizualiziraj objekt
+
+```{r, fig.height=3}
+# Poboljšana vizualizacija
+ggraph(routes_tidy, layout = "graphopt") + 
+  geom_node_point() +
+  geom_edge_link(aes(width = weight), alpha = 0.8) + 
+  scale_edge_width(range = c(0.2, 2)) +
+  geom_node_text(aes(label = label), repel = TRUE) +
+  labs(edge_width = "Letters") +
+  theme_graph()
+
+```
+
+
+
+```{r, eval=F, echo=FALSE}
+# Cirkularna vizualizacija
+ggraph(routes_igraph, layout = "linear") + 
+  geom_edge_arc(aes(width = weight), alpha = 0.8) + 
+  scale_edge_width(range = c(0.2, 2)) +
+  geom_node_text(aes(label = label)) +
+  labs(edge_width = "Letters") +
+  theme_graph()
+```
+
+---
+
+# Interaktivne vizualizacije 
+
+```{r}
+library(visNetwork)
+visNetwork(nodes, edges)
+```
+
+---
+
+# Interaktivne vizualizacije 
+
+```{r}
+edges <- mutate(edges, width = weight/5 + 1)
+visNetwork(nodes, edges) %>% 
+  visIgraphLayout(layout = "layout_with_fr") %>% 
+  visEdges(arrows = "middle")
+
+```
+
+---
+
+# Interaktivne vizualizacije 
+
+```{r}
+library(networkD3)
+nodes_d3 <- mutate(nodes, id = id - 1)
+edges_d3 <- mutate(edges, from = from - 1, to = to - 1)
+forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
+             NodeID = "label", Group = "id", Value = "weight", 
+             opacity = 1, fontSize = 16, zoom = TRUE)
+
+```
+
+
+---
+
+# Interaktivne vizualizacije
+
+```{r}
+sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
+              NodeID = "label", Value = "weight", fontSize = 16, unit = "Letter(s)")
+```
+
+
+
+
+
+
+
+
+

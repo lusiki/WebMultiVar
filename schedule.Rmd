@@ -180,18 +180,29 @@ title: " "
 **Čitanje:** [Prošlogodišnje predavanje](https://rpubs.com/shichich/610311) + []() + []()
 <br>
 <br>
-### Predavanje 10: Analiza vremenskih serija
 
+### Predavanje 10: Network analiza
+
+- Karakteristike network analize
+
+- Network podatci
+
+- Netwok objekt
+
+- Statistička network analiza
+
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/10_NET.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/10_NET.Rmd) 
+<br>
+**Čitanje:** [Prošlogodišnje predavanje](https://rpubs.com/shichich/619367) + []() + []()
+<br>
+<br>
 
 
 ### Predavanje 11: Strojno učenje
 
 
 
-### Predavanje 12: Analiza teksta
 
 
-
-### Predavanje 13: Network analiza
 
 

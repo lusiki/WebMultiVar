@@ -129,7 +129,8 @@ name: kar
 
 
 # Koncept
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/surv_1.png")
 ```
@@ -138,7 +139,8 @@ knitr::include_graphics("../Foto/surv_1.png")
 ---
 
 # Primjer 1
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/surv2.png")
 ```
@@ -146,7 +148,8 @@ knitr::include_graphics("../Foto/surv2.png")
 ---
 
 # Primjer 2
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/surv3.png")
 ```
@@ -155,17 +158,17 @@ knitr::include_graphics("../Foto/surv3.png")
 ---
 
 # Primjer 3
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/surv4.png")
 ```
 
-
-
 ---
 
 # Podatci
-
+<br>
+<br>
 
 ```{r}
 #install.packages("TH.data")
@@ -211,7 +214,8 @@ Surv(time, event)
 ---
 
 # Paketi
-
+<br>
+<br>
 ```{r}
 # Za analizu 
 #install.packages("survival")
@@ -224,8 +228,9 @@ Surv(time, event)
 
 ---
 
-# Pitanja na koja odgovara survival analiza
-
+# Pitanja za survival analizu
+<br>
+<br>
 - Koja je vjerojatnost da će pacijent preživjeti više od XY godina?
 
 - Koje je tipično vrijeme čekanja taksija?
@@ -282,42 +287,50 @@ name: proc
 ---
 
 # Survival krivulja
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/surv10.png")
 ```
 
 ---
 
 # Procjena survival krivulje
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/surv11.png")
 ```
 
 ---
 
 # Izračun *korak po korak*
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/surv12.png")
 ```
 
 ---
 
 # Izračun pomoću funkcije
-
+<br>
+<br>
 ```{r, eval= FALSE}
 # Kaplan-Meier
 km <- survfit(Surv(time, event) ~ 1)
 ggsurvplot(km, conf.int = FALSE,
 risk.table = "nrisk_cumevents",
 legend = "none")
+# [1] 5  6+ 2+ 4  4 
+
 ```
 
 ---
 
 # Vizualizacija
+<br>
+<br>
 ```{r,eval=FALSE}
 ggsurvplot(
 fit = km,
@@ -331,9 +344,6 @@ tables.height = 0.1
 )
 ```
 
-
-
-
 ---
 
 class: inverse, center, middle
@@ -346,15 +356,18 @@ name: wei
 ---
 
 # Zašto koristimo Weibull model
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
 knitr::include_graphics("../Foto/surv13.png")
 ```
 
 ---
 
 # Primjeni Weibull model u R
-
+<br>
+<br>
+<br>
 ```{r, eval=FALSE}
 # Webull model
 wb <- survreg(Surv(time, event)~1,data)
@@ -385,7 +398,8 @@ head(data.frame(time = t, surv = surv))
 ---
 
 # Vizualiziraj Weibull model
-
+<br>
+<br>
 ```{r, eval=FALSE}
 # Weibull
 wb <- survreg(Surv(time, cens) ~ 1)
@@ -401,10 +415,221 @@ ggsurvplot_df(fit = surv_wb, surv.geom = geom_line)
 ---
 
 # Vizualiziraj Weibull model
-
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/surv14.png")
 ```
+
+---
+
+# Dodatne kontrolne varijable
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/surv15.png")
+```
+
+---
+
+# Provedi model
+<br>
+<br>
+```{r}
+wbmod <- survreg(Surv(time, cens) ~ horTh + tsize, data = GBSG2)
+coef(wbmod)
+```
+---
+
+# Procedura za vizualizaciju
+
+```{r}
+# Korak 1
+wbmod <- survreg(Surv(time, cens) ~ horTh + tsize, data = GBSG2) # Provedi model
+## Odredi kombinacije kontrolnih varijabli
+newdat <- expand.grid(
+horTh = levels(GBSG2$horTh),
+tsize = quantile(GBSG2$tsize, probs = c(0.25, 0.5, 0.75)) )
+newdat
+```
+
+---
+
+# Procedura za vizualizaciju
+
+```{r}
+# Korak 2
+## Izračunaj survival krivulje
+surv <- seq(.99, .01, by = -.01)
+t <- predict(wbmod, type = "quantile", p = 1 - surv, newdata = newdat)
+dim(t)
+t[, 1:7]
+```
+
+---
+
+# Procedura za vizualizaciju
+<br>
+<br>
+```{r}
+# Korak 3
+## Napravi data.frame sa survival krivuljom
+surv_wbmod_wide <- cbind(newdat, t)
+# Promijeni oblik
+library("reshape2")
+surv_wbmod <- melt(surv_wbmod_wide, id.vars = c("horTh", "tsize"),
+variable.name = "surv_id", value.name = "time")
+surv_wbmod$surv <- surv[as.numeric(surv_wbmod$surv_id)]
+surv_wbmod[, c("upper", "lower", "std.err", "strata")] <- NA
+```
+---
+
+# Procedura za vizualizaciju
+
+```{r}
+# Korak 3
+str(surv_wbmod)
+```
+
+---
+
+# Procedura za vizualizaciju
+
+```{r, fig.height=3}
+# Korak 4
+## Prikaži grafički
+ggsurvplot_df(surv_wbmod, surv.geom = geom_line,
+linetype = "horTh", color = "tsize", legend.title = NULL)
+```
+
+
+---
+
+# Postoje i druge distribucije
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
+knitr::include_graphics("../Foto/surv16.png")
+```
+
+---
+
+# Postoje i druge distribucije
+<br>
+<br>
+```{r, eval=FALSE}
+survreg(Surv(time, cens) ~ horTh,
+data = GBSG2)
+survreg(Surv(time, cens) ~ horTh,
+data = GBSG2,
+dist = "exponential")
+survreg(Surv(time, cens) ~ horTh,
+data = GBSG2,
+dist = "lognormal")
+```
+
+---
+
+class: inverse, center, middle
+name: cox
+
+# Cox MODEL
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Semiprametrijski model sa manje strogim pretpostavkama)
+
+---
+
+# Zašto Cox model
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="600px"}
+knitr::include_graphics("../Foto/surv17.png")
+```
+
+
+---
+
+# Provedi Cox model
+
+```{r}
+# Cox model
+cxmod <- coxph(Surv(time, cens) ~ horTh,
+data = GBSG2)
+coef(cxmod)
+# Weibull model
+wbmod <- survreg(Surv(time, cens) ~ horTh,
+data = GBSG2)
+coef(wbmod)
+```
+
+
+---
+
+# Vizualizacija Cox modela
+
+```{r}
+# Korak 1
+cxmod <- coxph(Surv(time, cens) ~ horTh + tsize, data = GBSG2) # Provedi model
+# Odredi kombinacije regresora
+newdat <- expand.grid(
+horTh = levels(GBSG2$horTh),
+tsize = quantile(GBSG2$tsize, probs = c(0.25, 0.5, 0.75)) )
+rownames(newdat) <- letters[1:6]
+newdat
+```
+
+---
+
+# Vizualizacija Cox modela
+
+```{r}
+# Korak 2
+# Izračunaj survival krivulje
+cxsf <- survfit(cxmod, data = GBSG2, newdata = newdat, conf.type = "none")
+str(cxsf)
+```
+
+---
+
+# Vizualizacija Cox modela
+
+
+```{r}
+# Korak 3 
+surv_cxmod0 <- surv_summary(cxsf)
+head(surv_cxmod0)
+## Napravi data.frame
+surv_cxmod <- cbind(surv_cxmod0,
+newdat[as.character(surv_cxmod0$strata), ])
+```
+
+---
+
+# Vizualizacija Cox modela
+
+```{r, fig.height=4}
+ggsurvplot_df(surv_cxmod, linetype = "horTh", color = "tsize",
+legend.title = NULL, censor = FALSE)
+```
+
+
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Sljedeće predavanje: Network analiza)
+
+
+
+
+
 
 
 
