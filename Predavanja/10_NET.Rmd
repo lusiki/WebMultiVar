@@ -436,7 +436,6 @@ ggraph(routes_igraph, layout = "linear") +
   geom_node_text(aes(label = label)) +
   labs(edge_width = "Letters") +
   theme_graph()
-
 ```
 
 ---
@@ -464,9 +463,8 @@ visNetwork(nodes, edges) %>%
 
 # Interaktivne vizualizacije 
 
-
-
 ```{r}
+library(networkD3)
 nodes_d3 <- mutate(nodes, id = id - 1)
 edges_d3 <- mutate(edges, from = from - 1, to = to - 1)
 forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
@@ -476,6 +474,14 @@ forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to",
 ```
 
 
+---
+
+# Interaktivne vizualizacije
+
+```{r}
+ankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
+              NodeID = "label", Value = "weight", fontSize = 16, unit = "Letter(s)")
+```
 
 
 
