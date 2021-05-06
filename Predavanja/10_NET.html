@@ -821,7 +821,7 @@ sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to"
 class: inverse, center, middle
 name: stat
 
-# STATISTIČKA NETWORK ANALIZa
+# STATISTIČKA NETWORK ANALIZA
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
 
@@ -1008,7 +1008,7 @@ geom_node_point()
 
 ---
 
-# Izračinaj stupanj čvorova
+# Izračunaj stupanj čvorova
 
 .tiny[
 
@@ -1066,7 +1066,7 @@ degree(g)
 
 ---
 
-# Izračunaj stupanj čvorova
+# Izračunaj snagu čvorova
 
 .tiny[
 
@@ -1122,6 +1122,7 @@ strength(g)
 ```
 ]
 
+
 ---
 
 # Međusobnost (betweenness)
@@ -1130,46 +1131,24 @@ strength(g)
 
 ---
 
-# Međusobnost (betweenness)
 
-.tiny[
+# Vizualizacija međusobnosti
+
 
 ```r
-# Izračunaj udaljenost za poveznice
 dist_weight = 1 / E(g)$weight
-# Izračunaj weighted betweenness na poveznicama
 g$betweenness &lt;- edge_betweenness(g, weights = dist_weight)
-```
-]
 
---- 
-
-# Vizualiziraj međusobnost
-
-
-```r
-ggraph(g, layout = "with_kk") +
-geom_edge_link(aes(alpha = g$betweenness)) +
-geom_node_point()
+ ggraph(g, layout = "with_kk") +
+  geom_edge_link(aes(alpha = g$betweenness)) +
+  geom_node_point()
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
-
---- 
-
-# Vizualiziraj snagu i stupanj
-
-
-```r
-ggraph(g, layout = "with_kk") +
-geom_edge_link(aes(alpha = g$weight)) +
-geom_node_point(aes(size = g$degree))
-```
-
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
+  
 # Snaga slabih veza
 
 &lt;img src="../Foto/net2.png" width="500px" style="display: block; margin: auto;" /&gt;
@@ -1177,28 +1156,27 @@ geom_node_point(aes(size = g$degree))
 .footnote[[*] Rad na [poveznici](http://snap.stanford.edu/class/cs224w-readings/granovetter73weakties.pdf).]
 
 ---
-
+  
 # Slabe veze
-
+  
 &lt;img src="../Foto/net3.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
-
+  
 # Snažne veze
-
+  
 &lt;img src="../Foto/net4.png" width="500px" style="display: block; margin: auto;" /&gt;
 
-
 ---
-
+  
 # Pronađi slabe veze
-
+  
 
 ```r
 ties %&gt;%
-group_by(weight) %&gt;%
-summarise(n = n(), p = n / nrow(ties)) %&gt;%
-arrange(-n)
+  group_by(weight) %&gt;%
+  summarise(n = n(), p = n / nrow(ties)) %&gt;%
+  arrange(-n)
 ```
 
 ```
@@ -1210,6 +1188,7 @@ arrange(-n)
 ## 3      3     6 0.0247 
 ## 4      4     2 0.00823
 ```
+---
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -530,7 +530,7 @@ sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to"
 class: inverse, center, middle
 name: stat
 
-# STATISTIČKA NETWORK ANALIZa
+# STATISTIČKA NETWORK ANALIZA
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
@@ -618,7 +618,7 @@ geom_node_point()
 
 ---
 
-# Izračinaj stupanj čvorova
+# Izračunaj stupanj čvorova
 
 .tiny[
 ```{r}
@@ -628,13 +628,14 @@ degree(g)
 
 ---
 
-# Izračunaj stupanj čvorova
+# Izračunaj snagu čvorova
 
 .tiny[
 ```{r}
 strength(g)
 ```
 ]
+
 
 ---
 
@@ -646,40 +647,22 @@ knitr::include_graphics("../Foto/net1.png")
 
 ---
 
-# Međusobnost (betweenness)
 
-.tiny[
-```{r}
-# Izračunaj udaljenost za poveznice
+# Vizualizacija međusobnosti
+
+```{r, fig.height=3}
 dist_weight = 1 / E(g)$weight
-# Izračunaj weighted betweenness na poveznicama
 g$betweenness <- edge_betweenness(g, weights = dist_weight)
-```
-]
 
---- 
+ ggraph(g, layout = "with_kk") +
+  geom_edge_link(aes(alpha = g$betweenness)) +
+  geom_node_point()
 
-# Vizualiziraj međusobnost
-
-```{r, fig.height=3}
-ggraph(g, layout = "with_kk") +
-geom_edge_link(aes(alpha = g$betweenness)) +
-geom_node_point()
-
-```
-
---- 
-
-# Vizualiziraj snagu i stupanj
-
-```{r, fig.height=3}
-ggraph(g, layout = "with_kk") +
-geom_edge_link(aes(alpha = g$weight)) +
-geom_node_point(aes(size = g$degree))
 ```
 
 ---
 
+  
 # Snaga slabih veza
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
@@ -689,32 +672,35 @@ knitr::include_graphics("../Foto/net2.png")
 .footnote[[*] Rad na [poveznici](http://snap.stanford.edu/class/cs224w-readings/granovetter73weakties.pdf).]
 
 ---
-
+  
 # Slabe veze
-
+  
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/net3.png")
 ```
 
 ---
-
+  
 # Snažne veze
-
+  
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/net4.png")
 ```
 
-
 ---
-
+  
 # Pronađi slabe veze
-
+  
 ```{r}
 ties %>%
-group_by(weight) %>%
-summarise(n = n(), p = n / nrow(ties)) %>%
-arrange(-n)
+  group_by(weight) %>%
+  summarise(n = n(), p = n / nrow(ties)) %>%
+  arrange(-n)
 ```
+--- 
+
+
+
 
 
 
