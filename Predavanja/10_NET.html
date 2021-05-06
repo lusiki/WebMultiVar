@@ -757,14 +757,13 @@ ggraph(routes_tidy, layout = "graphopt") +
 
 
 ```r
+options(htmltools.preserve.raw = FALSE) 
 library(visNetwork)
 visNetwork(nodes, edges)
 ```
 
-```{=html}
-&lt;div id="htmlwidget-6c898f473012dadef256" style="width:2100px;height:2100px;" class="visNetwork html-widget"&gt;&lt;/div&gt;
-&lt;script type="application/json" data-for="htmlwidget-6c898f473012dadef256"&gt;{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}&lt;/script&gt;
-```
+<div id="htmlwidget-6c898f473012dadef256" style="width:2100px;height:900px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6c898f473012dadef256">{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -772,16 +771,15 @@ visNetwork(nodes, edges)
 
 
 ```r
+options(htmltools.preserve.raw = FALSE) 
 edges &lt;- mutate(edges, width = weight/5 + 1)
 visNetwork(nodes, edges) %&gt;% 
   visIgraphLayout(layout = "layout_with_fr") %&gt;% 
   visEdges(arrows = "middle")
 ```
 
-```{=html}
-&lt;div id="htmlwidget-067fe06f1a75e0c70422" style="width:2100px;height:2100px;" class="visNetwork html-widget"&gt;&lt;/div&gt;
-&lt;script type="application/json" data-for="htmlwidget-067fe06f1a75e0c70422"&gt;{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"x":[-0.441622948555099,-0.257210402749321,-0.653132655512514,-0.299424923829171,-1,1,0.86940809260105,0.83188558251244,0.535900127353698,-0.671821039024649,-0.140885853813565,-0.650891908978778,0.500993406819139],"y":[-0.345612124857841,0.0633454818914216,0.45835727168961,0.617724688552671,-1,0.428901559283227,0.828452562590152,0.0314810240322929,1,-0.555192677943159,-0.424601639855461,-0.0562317960380766,0.424940057027404]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2],"width":[1.2,14.6,2,1.2,1.4,1.2,1.2,1.4,6.2,1.2,1.2,1.2,1.2,1.2,1.4]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":false,"arrows":"middle"},"physics":{"stabilization":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"}},"evals":[],"jsHooks":[]}&lt;/script&gt;
-```
+<div id="htmlwidget-3fe3ac22d0682fb5bf79" style="width:2100px;height:900px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3fe3ac22d0682fb5bf79">{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"x":[-0.441622948555099,-0.257210402749321,-0.653132655512514,-0.299424923829171,-1,1,0.86940809260105,0.83188558251244,0.535900127353698,-0.671821039024649,-0.140885853813565,-0.650891908978778,0.500993406819139],"y":[-0.345612124857841,0.0633454818914216,0.45835727168961,0.617724688552671,-1,0.428901559283227,0.828452562590152,0.0314810240322929,1,-0.555192677943159,-0.424601639855461,-0.0562317960380766,0.424940057027404]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2],"width":[1.2,14.6,2,1.2,1.4,1.2,1.2,1.4,6.2,1.2,1.2,1.2,1.2,1.2,1.4]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":false,"arrows":"middle"},"physics":{"stabilization":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -789,6 +787,7 @@ visNetwork(nodes, edges) %&gt;%
 
 
 ```r
+options(htmltools.preserve.raw = FALSE) 
 library(networkD3)
 nodes_d3 &lt;- mutate(nodes, id = id - 1)
 edges_d3 &lt;- mutate(edges, from = from - 1, to = to - 1)
@@ -797,10 +796,8 @@ forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to",
              opacity = 1, fontSize = 16, zoom = TRUE)
 ```
 
-```{=html}
-&lt;div id="htmlwidget-ab3b0068360fb3a5612b" style="width:2100px;height:2100px;" class="forceNetwork html-widget"&gt;&lt;/div&gt;
-&lt;script type="application/json" data-for="htmlwidget-ab3b0068360fb3a5612b"&gt;{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":[0,1,2,3,4,5,6,7,8,9,10,11,12]},"options":{"NodeID":"label","Group":"id","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":"serif","clickTextSize":40,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":1,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}&lt;/script&gt;
-```
+<div id="htmlwidget-6c1528dcf4aa5cba1c16" style="width:2100px;height:900px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6c1528dcf4aa5cba1c16">{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":[0,1,2,3,4,5,6,7,8,9,10,11,12]},"options":{"NodeID":"label","Group":"id","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":"serif","clickTextSize":40,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":1,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -809,14 +806,13 @@ forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to",
 
 
 ```r
+options(htmltools.preserve.raw = FALSE) 
 sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
               NodeID = "label", Value = "weight", fontSize = 16, unit = "Letter(s)")
 ```
 
-```{=html}
-&lt;div id="htmlwidget-cb2b386208e6f7f2a401" style="width:2100px;height:2100px;" class="sankeyNetwork html-widget"&gt;&lt;/div&gt;
-&lt;script type="application/json" data-for="htmlwidget-cb2b386208e6f7f2a401"&gt;{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"options":{"NodeID":"label","NodeGroup":"label","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"Letter(s)","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}&lt;/script&gt;
-```
+<div id="htmlwidget-3fe3ac22d0682fb5bf79" style="width:2100px;height:600px;" class="sankeyNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3fe3ac22d0682fb5bf79">{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"options":{"NodeID":"label","NodeGroup":"label","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"Letter(s)","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
