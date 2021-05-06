@@ -93,6 +93,12 @@ library(tidyverse)
 library(dplyr)
 library(rvest)
 library(janitor)
+library(readr)
+library(igraph)
+library(igraph)
+library(dplyr)
+library(ggplot2)
+library(ggraph)
 
 ```
 
@@ -516,6 +522,224 @@ options(htmltools.preserve.raw = FALSE)
 sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to", 
               NodeID = "label", Value = "weight", fontSize = 16, unit = "Letter(s)")
 ```
+
+
+
+---
+
+class: inverse, center, middle
+name: stat
+
+# STATISTIČKA NETWORK ANALIZa
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Naprednija analiza...)
+
+---
+
+# Podatci
+
+```{r}
+# Učitaj podatke
+nodes <- read_csv("../Podatci/nodes.csv") 
+ties <- read_csv("../Podatci/ties.csv")
+# Napravi mrežu
+g <- graph_from_data_frame(d = ties,
+directed = FALSE,
+vertices = nodes)
+
+g # Pregled mreže
+```
+
+---
+
+# Podatci
+
+```{r}
+# Pregledaj čvorove
+V(g)
+vcount(g) # Broj čvorova
+```
+
+---
+
+# Podatci
+
+
+```{r}
+# Pregledaj poveznice
+E(g)
+ecount(g) # Broj poveznica
+```
+
+---
+
+# Podatci
+
+```{r}
+# Doddaj naziv
+g$name <- "Madrid network"
+g$name
+g
+```
+
+---
+
+# Podatci
+
+```{r}
+# dodaj ID kao atribut mreži
+V(g)$id <- 1:vcount(g)
+E(g)$weight # Pogledaj weight atribut
+```
+
+---
+
+# Vizualiziraj mrežu
+
+```{r, fig.height=3}
+ggraph(g, layout = "with_kk") +
+geom_edge_link(aes(alpha = weight)) +
+geom_node_point()
+```
+
+---
+
+# Mjere centraliteta
+
+- Koji su najvažniji čvorovi u mreži?
+
+- npr. najbitnije web stranice o odrđenoj temi
+
+- npr. utjecajni akademski članci ili knjige
+
+- npr. internetski čvorovi i povezanost
+
+---
+
+# Izračinaj stupanj čvorova
+
+.tiny[
+```{r}
+degree(g)
+```
+]
+
+---
+
+# Izračunaj stupanj čvorova
+
+.tiny[
+```{r}
+strength(g)
+```
+]
+
+---
+
+# Međusobnost (betweenness)
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net1.png")
+```
+
+---
+
+# Međusobnost (betweenness)
+
+.tiny[
+```{r}
+# Izračunaj udaljenost za poveznice
+dist_weight = 1 / E(g)$weight
+# Izračunaj weighted betweenness na poveznicama
+g$betweenness <- edge_betweenness(g, weights = dist_weight)
+```
+]
+
+--- 
+
+# Vizualiziraj međusobnost
+
+```{r, fig.height=3}
+ggraph(g, layout = "with_kk") +
+geom_edge_link(aes(alpha = g$betweenness)) +
+geom_node_point()
+
+```
+
+--- 
+
+# Vizualiziraj snagu i stupanj
+
+```{r, fig.height=3}
+ggraph(g, layout = "with_kk") +
+geom_edge_link(aes(alpha = g$weight)) +
+geom_node_point(aes(size = g$degree))
+```
+
+---
+
+# Snaga slabih veza
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net2.png")
+```
+
+.footnote[[*] Rad na [poveznici](http://snap.stanford.edu/class/cs224w-readings/granovetter73weakties.pdf).]
+
+---
+
+# Slabe veze
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net3.png")
+```
+
+---
+
+# Snažne veze
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net4.png")
+```
+
+
+---
+
+# Pronađi slabe veze
+
+```{r}
+ties %>%
+group_by(weight) %>%
+summarise(n = n(), p = n / nrow(ties)) %>%
+arrange(-n)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

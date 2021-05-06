@@ -813,6 +813,403 @@ sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to"
 
 <div id="htmlwidget-3fe3ac22d0682fb5bf79" style="width:2100px;height:600px;" class="sankeyNetwork html-widget"></div>
 <script type="application/json" data-for="htmlwidget-3fe3ac22d0682fb5bf79">{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"options":{"NodeID":"label","NodeGroup":"label","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"Letter(s)","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
+
+
+
+---
+
+class: inverse, center, middle
+name: stat
+
+# STATISTIČKA NETWORK ANALIZa
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Naprednija analiza...)
+
+---
+
+# Podatci
+
+
+```r
+# Učitaj podatke
+nodes &lt;- read_csv("../Podatci/nodes.csv") 
+ties &lt;- read_csv("../Podatci/ties.csv")
+# Napravi mrežu
+g &lt;- graph_from_data_frame(d = ties,
+directed = FALSE,
+vertices = nodes)
+
+g # Pregled mreže
+```
+
+```
+## IGRAPH 91f7406 UNW- 64 243 -- 
+## + attr: name (v/c), weight (e/n)
+## + edges from 91f7406 (vertex names):
+##  [1] Jamal Zougam--Mohamed Bekkali     Jamal Zougam--Mohamed Chaoui     
+##  [3] Jamal Zougam--Vinay Kholy         Jamal Zougam--Suresh Kumar       
+##  [5] Jamal Zougam--Mohamed Chedadi     Jamal Zougam--Imad Eddin Barakat 
+##  [7] Jamal Zougam--Abdelaziz Benyaich  Jamal Zougam--Abu Abderrahame    
+##  [9] Jamal Zougam--Amer Azizi          Jamal Zougam--Abu Musad Alsakaoui
+## [11] Jamal Zougam--Mohamed Atta        Jamal Zougam--Ramzi Binalshibh   
+## [13] Jamal Zougam--Mohamed Belfatmi    Jamal Zougam--Said Bahaji        
+## [15] Jamal Zougam--Galeb Kalaje        Jamal Zougam--Abderrahim Zbakh   
+## + ... omitted several edges
+```
+
+---
+
+# Podatci
+
+
+```r
+# Pregledaj čvorove
+V(g)
+```
+
+```
+## + 64/64 vertices, named, from 91f7406:
+##  [1] Jamal Zougam            Mohamed Bekkali         Mohamed Chaoui         
+##  [4] Vinay Kholy             Suresh Kumar            Mohamed Chedadi        
+##  [7] Imad Eddin Barakat      Abdelaziz Benyaich      Abu Abderrahame        
+## [10] Omar Dhegayes           Amer Azizi              Abu Musad Alsakaoui    
+## [13] Mohamed Atta            Ramzi Binalshibh        Mohamed Belfatmi       
+## [16] Said Bahaji             Galeb Kalaje            Abderrahim Zbakh       
+## [19] Farid Oulad Ali         José Emilio Suárez      Khalid Ouled Akcha     
+## [22] Rafa Zuher              Naima Oulad Akcha       Abdelkarim el Mejjati  
+## [25] Anwar Adnan Ahmad       Basel Ghayoun           S B Abdelmajid Fakhet  
+## [28] Jamal Ahmidan           Said Ahmidan            Hamid Ahmidan          
+## + ... omitted several vertices
+```
+
+```r
+vcount(g) # Broj čvorova
+```
+
+```
+## [1] 64
+```
+
+---
+
+# Podatci
+
+
+
+```r
+# Pregledaj poveznice
+E(g)
+```
+
+```
+## + 243/243 edges from 91f7406 (vertex names):
+##  [1] Jamal Zougam--Mohamed Bekkali       Jamal Zougam--Mohamed Chaoui       
+##  [3] Jamal Zougam--Vinay Kholy           Jamal Zougam--Suresh Kumar         
+##  [5] Jamal Zougam--Mohamed Chedadi       Jamal Zougam--Imad Eddin Barakat   
+##  [7] Jamal Zougam--Abdelaziz Benyaich    Jamal Zougam--Abu Abderrahame      
+##  [9] Jamal Zougam--Amer Azizi            Jamal Zougam--Abu Musad Alsakaoui  
+## [11] Jamal Zougam--Mohamed Atta          Jamal Zougam--Ramzi Binalshibh     
+## [13] Jamal Zougam--Mohamed Belfatmi      Jamal Zougam--Said Bahaji          
+## [15] Jamal Zougam--Galeb Kalaje          Jamal Zougam--Abderrahim Zbakh     
+## [17] Jamal Zougam--Naima Oulad Akcha     Jamal Zougam--Abdelkarim el Mejjati
+## [19] Jamal Zougam--Basel Ghayoun         Jamal Zougam--S B Abdelmajid Fakhet
+## + ... omitted several edges
+```
+
+```r
+ecount(g) # Broj poveznica
+```
+
+```
+## [1] 243
+```
+
+---
+
+# Podatci
+
+
+```r
+# Doddaj naziv
+g$name &lt;- "Madrid network"
+g$name
+```
+
+```
+## [1] "Madrid network"
+```
+
+```r
+g
+```
+
+```
+## IGRAPH 91f7406 UNW- 64 243 -- Madrid network
+## + attr: name (g/c), name (v/c), weight (e/n)
+## + edges from 91f7406 (vertex names):
+##  [1] Jamal Zougam--Mohamed Bekkali     Jamal Zougam--Mohamed Chaoui     
+##  [3] Jamal Zougam--Vinay Kholy         Jamal Zougam--Suresh Kumar       
+##  [5] Jamal Zougam--Mohamed Chedadi     Jamal Zougam--Imad Eddin Barakat 
+##  [7] Jamal Zougam--Abdelaziz Benyaich  Jamal Zougam--Abu Abderrahame    
+##  [9] Jamal Zougam--Amer Azizi          Jamal Zougam--Abu Musad Alsakaoui
+## [11] Jamal Zougam--Mohamed Atta        Jamal Zougam--Ramzi Binalshibh   
+## [13] Jamal Zougam--Mohamed Belfatmi    Jamal Zougam--Said Bahaji        
+## [15] Jamal Zougam--Galeb Kalaje        Jamal Zougam--Abderrahim Zbakh   
+## + ... omitted several edges
+```
+
+---
+
+# Podatci
+
+
+```r
+# dodaj ID kao atribut mreži
+V(g)$id &lt;- 1:vcount(g)
+E(g)$weight # Pogledaj weight atribut
+```
+
+```
+##   [1] 1 3 1 1 1 4 1 1 4 1 1 2 2 2 2 1 1 1 1 1 1 1 2 2 1 1 1 1 1 1 1 1 3 1 1 2 1
+##  [38] 1 1 1 1 2 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [75] 1 1 1 1 3 1 1 1 2 2 3 1 1 1 1 1 1 1 2 2 1 1 1 2 1 1 1 1 1 2 1 2 1 1 1 1 1
+## [112] 1 1 1 2 1 1 1 1 1 1 1 2 2 1 1 3 2 1 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [186] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [223] 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+```
+
+---
+
+# Vizualiziraj mrežu
+
+
+```r
+ggraph(g, layout = "with_kk") +
+geom_edge_link(aes(alpha = weight)) +
+geom_node_point()
+```
+
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Mjere centraliteta
+
+- Koji su najvažniji čvorovi u mreži?
+
+- npr. najbitnije web stranice o odrđenoj temi
+
+- npr. utjecajni akademski članci ili knjige
+
+- npr. internetski čvorovi i povezanost
+
+---
+
+# Izračinaj stupanj čvorova
+
+.tiny[
+
+```r
+degree(g)
+```
+
+```
+##            Jamal Zougam         Mohamed Bekkali          Mohamed Chaoui 
+##                      29                       2                      27 
+##             Vinay Kholy            Suresh Kumar         Mohamed Chedadi 
+##                      10                      10                       7 
+##      Imad Eddin Barakat      Abdelaziz Benyaich         Abu Abderrahame 
+##                      22                       6                       4 
+##           Omar Dhegayes              Amer Azizi     Abu Musad Alsakaoui 
+##                       2                      18                      10 
+##            Mohamed Atta        Ramzi Binalshibh        Mohamed Belfatmi 
+##                      10                      10                      11 
+##             Said Bahaji            Galeb Kalaje        Abderrahim Zbakh 
+##                      11                      16                      15 
+##         Farid Oulad Ali      José Emilio Suárez      Khalid Ouled Akcha 
+##                       6                       8                       5 
+##              Rafa Zuher       Naima Oulad Akcha   Abdelkarim el Mejjati 
+##                       3                      16                       8 
+##       Anwar Adnan Ahmad           Basel Ghayoun   S B Abdelmajid Fakhet 
+##                       4                      11                      12 
+##           Jamal Ahmidan            Said Ahmidan           Hamid Ahmidan 
+##                      14                       3                      12 
+##         Mustafa Ahmidan            Antonio Toro     Mohamed Oulad Akcha 
+##                       5                       5                       5 
+##      Rachid Oulad Akcha       Mamoun Darkazanli Fouad El Morabit Anghar 
+##                       5                       4                       2 
+##       Abdeluahid Berrak             Said Berrak Waanid Altaraki Almasri 
+##                      11                      17                       1 
+##        Abddenabi Koujma          Otman El Gnaut      Abdelilah el Fouad 
+##                       1                      10                       1 
+##    Parlindumgan Siregar                El Hemir       Anuar Asri Rifaat 
+##                       1                       4                       1 
+##             Rachid Adli      Ghasoub Al Albrash            Said Chedadi 
+##                       1                       1                       2 
+##         Mohamed Bahaiah           Taysir Alouny   OM. Othman Abu Qutada 
+##                       4                       6                       8 
+##                  Shakur            Driss Chebli             Abdul Fatal 
+##                      10                       2                       2 
+##      Mohamed El Egipcio       Nasredine Boushoa         Semaan Gaby Eid 
+##                      13                       1                      11 
+##            Emilio Llamo           Ivan Granados     Raul Gonzales Perez 
+##                       6                       6                       6 
+##            El Gitanillo         Moutaz Almallah        Mohamed Almallah 
+##                       6                       2                       2 
+##          Yousef Hichman 
+##                       2
+```
+]
+
+---
+
+# Izračunaj stupanj čvorova
+
+.tiny[
+
+```r
+strength(g)
+```
+
+```
+##            Jamal Zougam         Mohamed Bekkali          Mohamed Chaoui 
+##                      43                       2                      34 
+##             Vinay Kholy            Suresh Kumar         Mohamed Chedadi 
+##                      10                      10                       7 
+##      Imad Eddin Barakat      Abdelaziz Benyaich         Abu Abderrahame 
+##                      35                       7                       4 
+##           Omar Dhegayes              Amer Azizi     Abu Musad Alsakaoui 
+##                       3                      27                      10 
+##            Mohamed Atta        Ramzi Binalshibh        Mohamed Belfatmi 
+##                      12                      14                      19 
+##             Said Bahaji            Galeb Kalaje        Abderrahim Zbakh 
+##                      17                      21                      15 
+##         Farid Oulad Ali      José Emilio Suárez      Khalid Ouled Akcha 
+##                       6                       8                       5 
+##              Rafa Zuher       Naima Oulad Akcha   Abdelkarim el Mejjati 
+##                       3                      16                       8 
+##       Anwar Adnan Ahmad           Basel Ghayoun   S B Abdelmajid Fakhet 
+##                       4                      11                      12 
+##           Jamal Ahmidan            Said Ahmidan           Hamid Ahmidan 
+##                      14                       3                      12 
+##         Mustafa Ahmidan            Antonio Toro     Mohamed Oulad Akcha 
+##                       5                       5                       5 
+##      Rachid Oulad Akcha       Mamoun Darkazanli Fouad El Morabit Anghar 
+##                       5                       4                       2 
+##       Abdeluahid Berrak             Said Berrak Waanid Altaraki Almasri 
+##                      12                      19                       1 
+##        Abddenabi Koujma          Otman El Gnaut      Abdelilah el Fouad 
+##                       1                      10                       1 
+##    Parlindumgan Siregar                El Hemir       Anuar Asri Rifaat 
+##                       1                       4                       1 
+##             Rachid Adli      Ghasoub Al Albrash            Said Chedadi 
+##                       1                       1                       2 
+##         Mohamed Bahaiah           Taysir Alouny   OM. Othman Abu Qutada 
+##                       5                       7                       9 
+##                  Shakur            Driss Chebli             Abdul Fatal 
+##                      11                       2                       2 
+##      Mohamed El Egipcio       Nasredine Boushoa         Semaan Gaby Eid 
+##                      14                       1                      11 
+##            Emilio Llamo           Ivan Granados     Raul Gonzales Perez 
+##                       6                       6                       6 
+##            El Gitanillo         Moutaz Almallah        Mohamed Almallah 
+##                       6                       2                       2 
+##          Yousef Hichman 
+##                       2
+```
+]
+
+---
+
+# Međusobnost (betweenness)
+
+&lt;img src="../Foto/net1.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Međusobnost (betweenness)
+
+.tiny[
+
+```r
+# Izračunaj udaljenost za poveznice
+dist_weight = 1 / E(g)$weight
+# Izračunaj weighted betweenness na poveznicama
+g$betweenness &lt;- edge_betweenness(g, weights = dist_weight)
+```
+]
+
+--- 
+
+# Vizualiziraj međusobnost
+
+
+```r
+ggraph(g, layout = "with_kk") +
+geom_edge_link(aes(alpha = g$betweenness)) +
+geom_node_point()
+```
+
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
+
+--- 
+
+# Vizualiziraj snagu i stupanj
+
+
+```r
+ggraph(g, layout = "with_kk") +
+geom_edge_link(aes(alpha = g$weight)) +
+geom_node_point(aes(size = g$degree))
+```
+
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Snaga slabih veza
+
+&lt;img src="../Foto/net2.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+.footnote[[*] Rad na [poveznici](http://snap.stanford.edu/class/cs224w-readings/granovetter73weakties.pdf).]
+
+---
+
+# Slabe veze
+
+&lt;img src="../Foto/net3.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Snažne veze
+
+&lt;img src="../Foto/net4.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Pronađi slabe veze
+
+
+```r
+ties %&gt;%
+group_by(weight) %&gt;%
+summarise(n = n(), p = n / nrow(ties)) %&gt;%
+arrange(-n)
+```
+
+```
+## # A tibble: 4 x 3
+##   weight     n       p
+##    &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1      1   214 0.881  
+## 2      2    21 0.0864 
+## 3      3     6 0.0247 
+## 4      4     2 0.00823
+```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
