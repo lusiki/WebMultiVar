@@ -117,6 +117,8 @@ name: opc
 &lt;br&gt;
 - centralna metodologija za (digitalne) društvene i humanističke znanosti
 &lt;br&gt;
+- upotreba u analizi komunikacijskih kanala, modeliranju epidemije, razumijevanju društvenih interakcija
+&lt;br&gt;
 - vizualna analiza - *uvodno*
 &lt;br&gt;
 - statistička analiza - *napredno*
@@ -137,31 +139,66 @@ name: opc
 
 ---
 
-# Terminologija i struktura
-&lt;br&gt;
+# Najbitniji elementi mreže
 &lt;br&gt;
 &lt;br&gt;
 - nodes (*čvorovi*) i vertices (*poveznice*) ili edges i links
 &lt;br&gt;
+&lt;br&gt;
+- atributi (*attributes*)
+&lt;br&gt;
+&lt;br&gt;
 - adjecancy matrice vs. data.frame
 &lt;br&gt;
-- od edge-list objekta do tidyverse workflow-a
-&lt;br&gt;
-- edge-list ima minimalno dvije kolone: kolona izvora čvorova (nodes) i kolona smjernica čvorova
 &lt;br&gt;
 - mreže mogu biti usmjerene (directed) i neusmjerene (unidirected)
 &lt;br&gt;
-- edge-list objekt može sadržavati i dodatne atribute (varijable)
-&lt;br&gt;
-- node-list objekt ima jednu varijablu (kolonu) i sadržava ID oznaku za pripadajući edge
 
 ---
 
-# Stvori demo network objekt
+# Čvorovi (*nodes*)
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/net8.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Stvori demo network objekt (*nodes*)
 &lt;br&gt;
 &lt;br&gt;
 
+
 ```r
+# node-list objekt ima jednu varijablu (kolonu) i sadržava ID oznaku za pripadajući edge
+node_list &lt;- tibble(id = 1:5) 
+node_list
+```
+
+```
+## # A tibble: 5 x 1
+##      id
+##   &lt;int&gt;
+## 1     1
+## 2     2
+## 3     3
+## 4     4
+## 5     5
+```
+---
+
+# Poveznice (*edges*)
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/net9.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Stvori demo network objekt (*edges*)
+&lt;br&gt;
+
+```r
+#  edge-list ima minimalno dvije kolone: kolona izvora čvorova (nodes) i kolona smjernica čvorova
+#  edge-list objekt može sadržavati i dodatne atribute (varijable)
 edge_list &lt;- tibble(from = c(1, 2, 2, 3, 4), to = c(2, 3, 4, 2, 1))
 edge_list
 ```
@@ -176,41 +213,86 @@ edge_list
 ## 4     3     2
 ## 5     4     1
 ```
+
+
 ---
 
-# Stvori demo network objekt
+# Karakteristike (*attributes*)
 &lt;br&gt;
+&lt;br&gt;
+&lt;img src="../Foto/net10.png" width="500px" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Stvori demo network objekt (*attributes*)
 &lt;br&gt;
 
 
 ```r
-node_list &lt;- tibble(id = 1:4)
-node_list
+node_list_attr &lt;- node_list %&gt;% 
+  mutate(Spol = c("F","F","M","F","M"))
+node_list_attr
 ```
 
 ```
-## # A tibble: 4 x 1
-##      id
-##   &lt;int&gt;
-## 1     1
-## 2     2
-## 3     3
-## 4     4
+## # A tibble: 5 x 2
+##      id Spol 
+##   &lt;int&gt; &lt;chr&gt;
+## 1     1 F    
+## 2     2 F    
+## 3     3 M    
+## 4     4 F    
+## 5     5 M
 ```
 
 ---
 
-# Adjacency matrica
+# Reprezentacija mreže
 &lt;br&gt;
+###### Standardni način: adjecancy matrica
 &lt;br&gt;
 
 ```r
-#&gt;   1 2 3 4
-#&gt; 1 0 1 0 0
-#&gt; 2 0 0 1 1
-#&gt; 3 0 1 0 0
-#&gt; 4 1 0 0 0
+#&gt;   1 2 3 4 5
+#&gt; 1 0 1 0 0 0
+#&gt; 2 0 0 1 1 0
+#&gt; 3 0 1 0 0 0
+#&gt; 4 1 0 0 0 0
+#&gt; 5 1 0 0 0 0
 ```
+---
+
+# *Adjecency* matrica
+&lt;br&gt;
+&lt;img src="../Foto/net5.png" width="650px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# *Adjecency* matrica
+&lt;br&gt;
+&lt;img src="../Foto/net6.png" width="650px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Reprezentacija mreže
+&lt;br&gt;
+###### "Moderni" način: crna kutija (*black box*)
+&lt;br&gt;
+
+```r
+g = graph_from_data_frame(edge_list, directed = FALSE, vertices = node_list)
+g
+```
+
+```
+## IGRAPH b7f6160 UN-- 5 5 -- 
+## + attr: name (v/c)
+## + edges from b7f6160 (vertex names):
+## [1] 1--2 2--3 2--4 2--3 1--4
+```
+
+.footnote[[*]Postoji mnoštvo različitih načina za "black box" reprezentaciju. Upoznati ćemo nekoliko načina!]
 
 ---
 
@@ -221,7 +303,7 @@ name: netdta
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
 
-(Uradi sam!)
+(Napravi mrežu iz podataka!)
 
 ---
 
@@ -495,7 +577,7 @@ name: netob
 
 ---
 
-# network 
+# Napravi mrežni objekt I
 
 .tiny[
 
@@ -538,29 +620,29 @@ routes_network
 
 ---
 
-# Vizualiziraj mrežu
+# Vizualiziraj mrežu I
 
 
 ```r
 plot(routes_network, vertex.cex = 3)
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Vizualiziraj mrežu
+# Vizualiziraj mrežu II
 
 
 ```r
 plot(routes_network, vertex.cex = 3, mode = "circle")
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# igraph
+# Napravi mrežni objekt II
 
 
 ```r
@@ -577,9 +659,9 @@ routes_igraph # Pogledaj objekt
 ```
 
 ```
-## IGRAPH 0e8fad2 DNW- 13 15 -- 
+## IGRAPH b9439a0 DNW- 13 15 -- 
 ## + attr: name (v/c), id (v/n), weight (e/n), from (e/n), to (e/n)
-## + edges from 0e8fad2 (vertex names):
+## + edges from b9439a0 (vertex names):
 ##  [1] Amsterdam-&gt;Bremen     Antwerp  -&gt;Delft      Antwerp  -&gt;Haarlem   
 ##  [4] Antwerp  -&gt;Middelburg Antwerp  -&gt;The Hague  Dordrecht-&gt;Haarlem   
 ##  [7] Emden    -&gt;Bremen     Haarlem  -&gt;Bremen     Haarlem  -&gt;Delft     
@@ -589,30 +671,30 @@ routes_igraph # Pogledaj objekt
 
 ---
 
-# Vizualiziraj mrežu
+# Vizualiziraj mrežu I
 
 
 ```r
 plot(routes_igraph, edge.arrow.size = 0.2)
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Vizualiziraj mrežu
+# Vizualiziraj mrežu II
 
 
 ```r
 plot(routes_igraph, layout = layout_with_graphopt, edge.arrow.size = 0.2)
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
-# tidygraph + ggraph
+# Napravi mrežni objekt III
 
 
 ```r
@@ -649,6 +731,8 @@ class(routes_igraph)
 ---
 
 # Pregledaj objekt
+&lt;br&gt;
+&lt;br&gt;
 .tiny[
 
 ```r
@@ -682,8 +766,9 @@ routes_tidy
 ]
 ---
 
-# Manipulacija sa objektom
-
+# Manipulacija sa objektom (tidyverse)
+&lt;br&gt;
+&lt;br&gt;
 .tiny[
 
 ```r
@@ -719,7 +804,7 @@ routes_tidy %&gt;%
 ]
 ---
 
-# Vizualiziraj objekt
+# Vizualiziraj objekt I
 
 
 ```r
@@ -727,11 +812,11 @@ routes_tidy %&gt;%
 ggraph(routes_tidy) + geom_edge_link() + geom_node_point() + theme_graph()
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Vizualiziraj objekt
+# Vizualiziraj objekt II
 
 
 ```r
@@ -745,15 +830,21 @@ ggraph(routes_tidy, layout = "graphopt") +
   theme_graph()
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
-
-
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
 ---
 
-# Interaktivne vizualizacije 
+class: inverse, center, middle
+
+# INTERAKTIVNE VIZUALIZACIJE
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+---
+
+# Interaktivne vizualizacije I
 
 
 ```r
@@ -762,12 +853,12 @@ library(visNetwork)
 visNetwork(nodes, edges)
 ```
 
-<div id="htmlwidget-6c898f473012dadef256" style="width:2100px;height:900px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6c898f473012dadef256">{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8ec0ed7f4d58e53f85df" style="width:2100px;height:900px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8ec0ed7f4d58e53f85df">{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-# Interaktivne vizualizacije 
+# Interaktivne vizualizacije II
 
 
 ```r
@@ -778,12 +869,12 @@ visNetwork(nodes, edges) %&gt;%
   visEdges(arrows = "middle")
 ```
 
-<div id="htmlwidget-3fe3ac22d0682fb5bf79" style="width:2100px;height:900px;" class="visNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3fe3ac22d0682fb5bf79">{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"x":[-0.441622948555099,-0.257210402749321,-0.653132655512514,-0.299424923829171,-1,1,0.86940809260105,0.83188558251244,0.535900127353698,-0.671821039024649,-0.140885853813565,-0.650891908978778,0.500993406819139],"y":[-0.345612124857841,0.0633454818914216,0.45835727168961,0.617724688552671,-1,0.428901559283227,0.828452562590152,0.0314810240322929,1,-0.555192677943159,-0.424601639855461,-0.0562317960380766,0.424940057027404]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2],"width":[1.2,14.6,2,1.2,1.4,1.2,1.2,1.4,6.2,1.2,1.2,1.2,1.2,1.2,1.4]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":false,"arrows":"middle"},"physics":{"stabilization":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6999554aaf2469e7374d" style="width:2100px;height:900px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6999554aaf2469e7374d">{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8,9,10,11,12,13],"label":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"x":[-0.260697908934548,0.0882815682387856,0.548603455327459,0.38100881769269,-1,0.915541894056168,1,0.584525095268188,0.223272632971605,-0.533018752586351,-0.0548993325331134,-0.301946842460941,0.510905825603435],"y":[-0.637799107815882,-0.427468457459256,-0.531788196516244,-0.934617696638542,-1,0.801102778738664,0.382023295702693,1,0.858663434698067,-0.754392977947232,-0.915588752013053,-0.263531960247024,0.419982502903282]},"edges":{"source":["Amsterdam","Antwerp","Antwerp","Antwerp","Antwerp","Dordrecht","Emden","Haarlem","Haarlem","Haarlem","Haarlem","Hamburg","Het Vlie","Lisse","Venice"],"destination":["Bremen","Delft","Haarlem","Middelburg","The Hague","Haarlem","Bremen","Bremen","Delft","Middelburg","The Hague","Bremen","Bremen","Delft","Haarlem"],"weight":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"from":[9,1,1,1,1,3,8,2,2,2,2,7,6,5,4],"to":[13,10,2,12,11,2,13,13,10,12,11,13,13,10,2],"width":[1.2,14.6,2,1.2,1.4,1.2,1.2,1.4,6.2,1.2,1.2,1.2,1.2,1.2,1.4]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":false,"arrows":"middle"},"physics":{"stabilization":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-# Interaktivne vizualizacije 
+# Interaktivne vizualizacije III
 
 
 ```r
@@ -796,13 +887,13 @@ forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to",
              opacity = 1, fontSize = 16, zoom = TRUE)
 ```
 
-<div id="htmlwidget-6c1528dcf4aa5cba1c16" style="width:2100px;height:900px;" class="forceNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6c1528dcf4aa5cba1c16">{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":[0,1,2,3,4,5,6,7,8,9,10,11,12]},"options":{"NodeID":"label","Group":"id","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":"serif","clickTextSize":40,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":1,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c9577743cc76987a57cc" style="width:2100px;height:900px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c9577743cc76987a57cc">{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":[0,1,2,3,4,5,6,7,8,9,10,11,12]},"options":{"NodeID":"label","Group":"id","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":"serif","clickTextSize":40,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":1,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
 
 
 ---
 
-# Interaktivne vizualizacije
+# Interaktivne vizualizacije IV
 
 
 ```r
@@ -811,8 +902,8 @@ sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to"
               NodeID = "label", Value = "weight", fontSize = 16, unit = "Letter(s)")
 ```
 
-<div id="htmlwidget-3fe3ac22d0682fb5bf79" style="width:2100px;height:600px;" class="sankeyNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3fe3ac22d0682fb5bf79">{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"options":{"NodeID":"label","NodeGroup":"label","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"Letter(s)","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b01e6b568b7befa5dc05" style="width:2100px;height:600px;" class="sankeyNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b01e6b568b7befa5dc05">{"x":{"links":{"source":[8,0,0,0,0,2,7,1,1,1,1,6,5,4,3],"target":[12,9,1,11,10,1,12,12,9,11,10,12,12,9,1],"value":[1,68,5,1,2,1,1,2,26,1,1,1,1,1,2]},"nodes":{"name":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"],"group":["Antwerp","Haarlem","Dordrecht","Venice","Lisse","Het Vlie","Hamburg","Emden","Amsterdam","Delft","The Hague","Middelburg","Bremen"]},"options":{"NodeID":"label","NodeGroup":"label","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":16,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"Letter(s)","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":true}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -828,7 +919,7 @@ name: stat
 ---
 
 # Teroristički napad u Madridu 2004
-
+&lt;br&gt;
 &lt;img src="../Foto/madrid.jpg" width="500px" style="display: block; margin: auto;" /&gt;
 
 .footnote[ [*] Vidi rad od Jose A. Rodriguez na [poveznici](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.4408&amp;rep=rep1&amp;type=pdf)! ]
@@ -893,9 +984,9 @@ g # Pregled mreže
 ```
 
 ```
-## IGRAPH 533ca8f UNW- 70 243 -- 
+## IGRAPH bb0b8e3 UNW- 70 243 -- 
 ## + attr: name (v/c), weight (e/n)
-## + edges from 533ca8f (vertex names):
+## + edges from bb0b8e3 (vertex names):
 ##   [1] 1--2  1--3  1--4  1--5  1--6  1--7  1--8  1--9  1--11 1--12 1--13 1--14
 ##  [13] 1--15 1--16 1--18 1--19 1--24 1--25 1--28 1--30 1--31 1--33 1--40 1--41
 ##  [25] 1--44 1--50 1--57 1--58 1--61 2--3  3--4  3--5  3--7  3--8  3--9  3--11
@@ -918,7 +1009,7 @@ V(g)
 ```
 
 ```
-## + 70/70 vertices, named, from 533ca8f:
+## + 70/70 vertices, named, from bb0b8e3:
 ##  [1] 1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
 ## [26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
 ## [51] 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70
@@ -942,7 +1033,7 @@ E(g)
 ```
 
 ```
-## + 243/243 edges from 533ca8f (vertex names):
+## + 243/243 edges from bb0b8e3 (vertex names):
 ##   [1] 1 --2  1 --3  1 --4  1 --5  1 --6  1 --7  1 --8  1 --9  1 --11 1 --12
 ##  [11] 1 --13 1 --14 1 --15 1 --16 1 --18 1 --19 1 --24 1 --25 1 --28 1 --30
 ##  [21] 1 --31 1 --33 1 --40 1 --41 1 --44 1 --50 1 --57 1 --58 1 --61 2 --3 
@@ -984,9 +1075,9 @@ g
 ```
 
 ```
-## IGRAPH 533ca8f UNW- 70 243 -- Madrid network
+## IGRAPH bb0b8e3 UNW- 70 243 -- Madrid network
 ## + attr: name (g/c), name (v/c), weight (e/n)
-## + edges from 533ca8f (vertex names):
+## + edges from bb0b8e3 (vertex names):
 ##   [1] 1--2  1--3  1--4  1--5  1--6  1--7  1--8  1--9  1--11 1--12 1--13 1--14
 ##  [13] 1--15 1--16 1--18 1--19 1--24 1--25 1--28 1--30 1--31 1--33 1--40 1--41
 ##  [25] 1--44 1--50 1--57 1--58 1--61 2--3  3--4  3--5  3--7  3--8  3--9  3--11
@@ -1029,7 +1120,7 @@ geom_edge_link(aes(alpha = weight)) +
 geom_node_point()
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-45-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1103,7 +1194,7 @@ g$betweenness &lt;- edge_betweenness(g, weights = dist_weight)
   geom_node_point()
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1194,7 +1285,7 @@ ggplot(ties, aes(x = from, y = to, color = as.factor(weight))) +
   labs(color = "weigth")
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-46-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-53-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1211,7 +1302,7 @@ ggplot(ties2, aes(x = from, y = to, color = as.factor(weight))) +
   labs(color = "weigth")
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-47-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-54-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1317,7 +1408,7 @@ ggraph(h2) +
   theme_graph()
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-52-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-59-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1332,7 +1423,7 @@ ggraph(h2) +
   theme_graph()
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-53-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-60-1.png" style="display: block; margin: auto;" /&gt;
 ---
 
 
@@ -1348,7 +1439,7 @@ ggraph(h2) +
   theme_graph()
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-54-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-61-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1366,7 +1457,7 @@ ggraph(h2) +
   theme_graph()
 ```
 
-&lt;img src="10_NET_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="10_NET_files/figure-html/unnamed-chunk-62-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -1411,40 +1502,6 @@ ties %&gt;%
 ## 2      2    21 0.0864 
 ## 3      3     6 0.0247 
 ## 4      4     2 0.00823
-```
----
-
-class: inverse, center, middle
-name: stat
-
-# OBRASCI POVEZANOSTI U MREŽI
-
-&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
-
----
-  
-# *Adjecency* matrica
-  
-&lt;img src="../Foto/net5.png" width="650px" style="display: block; margin: auto;" /&gt;
-
----
-  
-# *Adjecency* matrica
-
-&lt;img src="../Foto/net6.png" width="650px" style="display: block; margin: auto;" /&gt;
-
----
-
-
-# Napravi *adjecancy* matricu
-
-
-```r
-# get the adjacency matrix of network g
-A = as_adjacency_matrix(g)
-# get the weighted adjacency matrix of weighted network g
-
-A = as_adjacency_matrix(g, attr = "weight")
 ```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

@@ -137,6 +137,8 @@ name: opc
 <br>
 - centralna metodologija za (digitalne) društvene i humanističke znanosti
 <br>
+- upotreba u analizi komunikacijskih kanala, modeliranju epidemije, razumijevanju društvenih interakcija
+<br>
 - vizualna analiza - *uvodno*
 <br>
 - statistička analiza - *napredno*
@@ -157,56 +159,125 @@ name: opc
 
 ---
 
-# Terminologija i struktura
-<br>
+# Najbitniji elementi mreže
 <br>
 <br>
 - nodes (*čvorovi*) i vertices (*poveznice*) ili edges i links
 <br>
+<br>
+- atributi (*attributes*)
+<br>
+<br>
 - adjecancy matrice vs. data.frame
 <br>
-- od edge-list objekta do tidyverse workflow-a
-<br>
-- edge-list ima minimalno dvije kolone: kolona izvora čvorova (nodes) i kolona smjernica čvorova
 <br>
 - mreže mogu biti usmjerene (directed) i neusmjerene (unidirected)
 <br>
-- edge-list objekt može sadržavati i dodatne atribute (varijable)
-<br>
-- node-list objekt ima jednu varijablu (kolonu) i sadržava ID oznaku za pripadajući edge
 
 ---
 
-# Stvori demo network objekt
+# Čvorovi (*nodes*)
 <br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net8.png")
+```
+
+---
+
+# Stvori demo network objekt (*nodes*)
+<br>
+<br>
+
+```{r}
+# node-list objekt ima jednu varijablu (kolonu) i sadržava ID oznaku za pripadajući edge
+node_list <- tibble(id = 1:5) 
+node_list
+```
+---
+
+# Poveznice (*edges*)
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net9.png")
+```
+
+---
+
+# Stvori demo network objekt (*edges*)
 <br>
 ```{r}
+#  edge-list ima minimalno dvije kolone: kolona izvora čvorova (nodes) i kolona smjernica čvorova
+#  edge-list objekt može sadržavati i dodatne atribute (varijable)
 edge_list <- tibble(from = c(1, 2, 2, 3, 4), to = c(2, 3, 4, 2, 1))
 edge_list
 ```
+
+
 ---
 
-# Stvori demo network objekt
+# Karakteristike (*attributes*)
 <br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net10.png")
+```
+
+
+---
+
+# Stvori demo network objekt (*attributes*)
 <br>
 
 ```{r}
-node_list <- tibble(id = 1:4)
-node_list
+node_list_attr <- node_list %>% 
+  mutate(Spol = c("F","F","M","F","M"))
+node_list_attr
 ```
 
 ---
 
-# Adjacency matrica
+# Reprezentacija mreže
 <br>
+###### Standardni način: adjecancy matrica
 <br>
 ```{r}
-#>   1 2 3 4
-#> 1 0 1 0 0
-#> 2 0 0 1 1
-#> 3 0 1 0 0
-#> 4 1 0 0 0
+#>   1 2 3 4 5
+#> 1 0 1 0 0 0
+#> 2 0 0 1 1 0
+#> 3 0 1 0 0 0
+#> 4 1 0 0 0 0
+#> 5 1 0 0 0 0
 ```
+---
+
+# *Adjecency* matrica
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
+knitr::include_graphics("../Foto/net5.png")
+```
+
+---
+
+# *Adjecency* matrica
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
+knitr::include_graphics("../Foto/net6.png")
+```
+
+---
+
+# Reprezentacija mreže
+<br>
+###### "Moderni" način: crna kutija (*black box*)
+<br>
+```{r}
+g = graph_from_data_frame(edge_list, directed = FALSE, vertices = node_list)
+g
+```
+
+.footnote[[*]Postoji mnoštvo različitih načina za "black box" reprezentaciju. Upoznati ćemo nekoliko načina!]
 
 ---
 
@@ -217,7 +288,7 @@ name: netdta
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-(Uradi sam!)
+(Napravi mrežu iz podataka!)
 
 ---
 
@@ -337,7 +408,7 @@ name: netob
 
 ---
 
-# network 
+# Napravi mrežni objekt I
 
 .tiny[
 ```{r}
@@ -353,7 +424,7 @@ routes_network
 
 ---
 
-# Vizualiziraj mrežu
+# Vizualiziraj mrežu I
 
 ```{r, fig.height=4}
 plot(routes_network, vertex.cex = 3)
@@ -361,7 +432,7 @@ plot(routes_network, vertex.cex = 3)
 
 ---
 
-# Vizualiziraj mrežu
+# Vizualiziraj mrežu II
 
 ```{r, fig.height=4}
 plot(routes_network, vertex.cex = 3, mode = "circle")
@@ -369,7 +440,7 @@ plot(routes_network, vertex.cex = 3, mode = "circle")
 
 ---
 
-# igraph
+# Napravi mrežni objekt II
 
 ```{r}
 detach(package:network) # ukloni paket
@@ -386,7 +457,7 @@ routes_igraph # Pogledaj objekt
 
 ---
 
-# Vizualiziraj mrežu
+# Vizualiziraj mrežu I
 
 ```{r, fig.height=4}
 plot(routes_igraph, edge.arrow.size = 0.2)
@@ -394,7 +465,7 @@ plot(routes_igraph, edge.arrow.size = 0.2)
 
 ---
 
-# Vizualiziraj mrežu
+# Vizualiziraj mrežu II
 
 ```{r, fig.height=4}
 plot(routes_igraph, layout = layout_with_graphopt, edge.arrow.size = 0.2)
@@ -403,7 +474,7 @@ plot(routes_igraph, layout = layout_with_graphopt, edge.arrow.size = 0.2)
 
 ---
 
-# tidygraph + ggraph
+# Napravi mrežni objekt III
 
 ```{r}
 library(tidygraph)
@@ -421,6 +492,8 @@ class(routes_igraph)
 ---
 
 # Pregledaj objekt
+<br>
+<br>
 .tiny[
 ```{r}
 routes_tidy
@@ -428,8 +501,9 @@ routes_tidy
 ]
 ---
 
-# Manipulacija sa objektom
-
+# Manipulacija sa objektom (tidyverse)
+<br>
+<br>
 .tiny[
 ```{r}
 routes_tidy %>% 
@@ -439,7 +513,7 @@ routes_tidy %>%
 ]
 ---
 
-# Vizualiziraj objekt
+# Vizualiziraj objekt I
 
 ```{r, fig.height=4}
 # Osnovna vizualizacija
@@ -448,7 +522,7 @@ ggraph(routes_tidy) + geom_edge_link() + geom_node_point() + theme_graph()
 
 ---
 
-# Vizualiziraj objekt
+# Vizualiziraj objekt II
 
 ```{r, fig.height=3}
 # Poboljšana vizualizacija
@@ -462,8 +536,6 @@ ggraph(routes_tidy, layout = "graphopt") +
 
 ```
 
-
-
 ```{r, eval=F, echo=FALSE}
 # Cirkularna vizualizacija
 ggraph(routes_igraph, layout = "linear") + 
@@ -476,7 +548,15 @@ ggraph(routes_igraph, layout = "linear") +
 
 ---
 
-# Interaktivne vizualizacije 
+class: inverse, center, middle
+
+# INTERAKTIVNE VIZUALIZACIJE
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+---
+
+# Interaktivne vizualizacije I
 
 ```{r, fig.height= 3}
 options(htmltools.preserve.raw = FALSE) 
@@ -486,7 +566,7 @@ visNetwork(nodes, edges)
 
 ---
 
-# Interaktivne vizualizacije 
+# Interaktivne vizualizacije II
 
 ```{r, fig.height= 3}
 options(htmltools.preserve.raw = FALSE) 
@@ -499,7 +579,7 @@ visNetwork(nodes, edges) %>%
 
 ---
 
-# Interaktivne vizualizacije 
+# Interaktivne vizualizacije III
 
 ```{r, fig.height= 3}
 options(htmltools.preserve.raw = FALSE) 
@@ -515,7 +595,7 @@ forceNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to",
 
 ---
 
-# Interaktivne vizualizacije
+# Interaktivne vizualizacije IV
 
 ```{r, fig.height= 2}
 options(htmltools.preserve.raw = FALSE) 
@@ -537,7 +617,7 @@ name: stat
 ---
 
 # Teroristički napad u Madridu 2004
-
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/madrid.jpg")
 ```
@@ -897,43 +977,8 @@ ties %>%
   summarise(n = n(), p = n / nrow(ties)) %>%
   arrange(-n)
 ```
----
-
-class: inverse, center, middle
-name: stat
-
-# OBRASCI POVEZANOSTI U MREŽI
-
-<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
-
----
-  
-# *Adjecency* matrica
-  
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
-knitr::include_graphics("../Foto/net5.png")
-```
-
----
-  
-# *Adjecency* matrica
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
-knitr::include_graphics("../Foto/net6.png")
-```
-
----
 
 
-# Napravi *adjecancy* matricu
-
-```{r}
-# get the adjacency matrix of network g
-A = as_adjacency_matrix(g)
-# get the weighted adjacency matrix of weighted network g
-
-A = as_adjacency_matrix(g, attr = "weight")
-```
 
 
 
