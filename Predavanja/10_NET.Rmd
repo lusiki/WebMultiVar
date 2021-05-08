@@ -114,7 +114,7 @@ library(ggraph)
 
 3. [Network objekt](#netob)
 
-4. [Statistička network analiza](#stat)
+4. [Network analiza](#stat)
 
 ---
 
@@ -523,18 +523,16 @@ sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to"
               NodeID = "label", Value = "weight", fontSize = 16, unit = "Letter(s)")
 ```
 
-
-
 ---
 
 class: inverse, center, middle
 name: stat
 
-# STATISTIČKA NETWORK ANALIZA
+# NETWORK ANALIZA
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-(Naprednija analiza...)
+()
 
 ---
 
@@ -542,13 +540,21 @@ name: stat
 
 ```{r}
 # Učitaj podatke
-nodes <- read_csv("../Podatci/nodes.csv") 
-ties <- read_csv("../Podatci/ties.csv")
-# Napravi mrežu
-g <- graph_from_data_frame(d = ties,
-directed = FALSE,
-vertices = nodes)
+terrorists <- read_csv("../Podatci/names.csv") 
+ties <- read_csv("../Podatci/edges.csv")
+head(terrorists,5)
+head(ties,5)
+```
 
+---
+
+# Podatci
+
+```{r}
+# Prilagodi podatke
+terrorists = mutate(terrorists, id = 1:nrow(terrorists)) %>% select(id, everything())
+# Napravi mrežu
+g = graph_from_data_frame(ties, directed = FALSE, vertices = tibble(1:nrow(terrorists)))
 g # Pregled mreže
 ```
 
@@ -561,11 +567,9 @@ g # Pregled mreže
 V(g)
 vcount(g) # Broj čvorova
 ```
-
 ---
 
 # Podatci
-
 
 ```{r}
 # Pregledaj poveznice
@@ -589,8 +593,6 @@ g
 # Podatci
 
 ```{r}
-# dodaj ID kao atribut mreži
-V(g)$id <- 1:vcount(g)
 E(g)$weight # Pogledaj weight atribut
 ```
 
@@ -647,7 +649,6 @@ knitr::include_graphics("../Foto/net1.png")
 
 ---
 
-
 # Vizualizacija međusobnosti
 
 ```{r, fig.height=3}
@@ -661,6 +662,185 @@ g$betweenness <- edge_betweenness(g, weights = dist_weight)
 ```
 
 ---
+
+# Najopasniji teroristi
+
+```{r}
+# Najpovezaniji teroristi
+terrorists  <- terrorists %>%
+  mutate(degree = degree(g),
+           strength = strength(g))
+
+arrange(terrorists, desc(degree))
+```
+
+---
+
+# Najopasniji teroristi
+
+```{r}
+# Najpovezaniji teroristi
+arrange(terrorists, desc(strength))
+```
+
+---
+
+# Najopasniji teroristi
+
+```{r}
+# Izolirani teroristi
+filter(terrorists,degree == 0)
+```
+
+---
+
+# Slični parovi terorista
+
+```{r, fig.height=3}
+ties <- ties %>% rename(from = x, to = y) # prilagodi nazive
+ggplot(ties, aes(x = from, y = to, color = as.factor(weight))) +
+  geom_point() +
+  labs(color = "weigth")
+```
+
+---
+
+
+# Slični parovi terorista
+
+```{r, fig.height=3}
+# Dodaj recipročne veze
+ties2 = mutate(ties, temp = to, to = from, from = temp) %>% select(-temp)
+ties2 = rbind(ties, ties2)
+ggplot(ties2, aes(x = from, y = to, color = as.factor(weight))) +
+  geom_point() +
+  labs(color = "weigth")
+
+```
+
+---
+
+
+# Slični parovi
+
+```{r}
+##Pripremi podatke##
+# Ukloni izolirane teroriste
+isolated = filter(terrorists, degree == 0)$id
+g = delete_vertices(g, isolated)
+# Napravi adjecany matricu
+A = as_adjacency_matrix(g, attr = "weight", sparse = FALSE)
+# Sličnost kao Pearsonova korelacija
+S = cor(A)
+# Ukloni sličnost sa samim sobom
+S = S + diag(-1, nrow(A))
+# Deskriptiva
+summary(c(S))
+```
+
+---
+
+# Slični parovi
+
+
+```{r}
+# Napravi adjecancy matricu
+h = graph_from_adjacency_matrix(S, mode = "undirected", weighted = TRUE)
+# Pretvori u data.frame(tibble)
+sim = as.tibble(as_data_frame(h, what = "edges")) %>% 
+   mutate(from = as.integer(from), to = as.integer(to)) %>%
+   arrange(desc(weight))
+# join sa podatkovnim skupom terrorists
+sim_joint = sim %>% 
+ left_join(terrorists, c("from" = "id")) %>% 
+  left_join(terrorists, c("to" = "id")) %>%
+  filter(degree.x >= 10, degree.y >= 10) %>%
+  select(-strength.x, -strength.y)
+
+# Najsličniji parovi
+head(sim_joint)
+```
+
+---
+
+# Slični parovi
+
+```{r}
+# Najmanje slični parovi
+tail(sim_joint)
+```
+
+---
+
+# Vizualiziraj sličnost
+
+```{r, fig.height=3, warning=FALSE,message=FALSE}
+h2 = graph_from_data_frame(filter(sim_joint, weight >= 0.60), directed = FALSE, vertices = terrorists)
+h2 = delete_vertices(h2, which(degree(h2) == 0))
+
+
+ggraph(h2) + 
+  geom_edge_link(aes(alpha = weight)) + 
+  geom_node_point() + 
+  theme_graph()
+```
+
+---
+
+# Vizualiziraj sličnost
+
+```{r, fig.height=3, warning=FALSE,message=FALSE}
+# Dodaj snagu čvorova
+ggraph(h2) + 
+  geom_edge_link(aes(alpha = weight)) + 
+  geom_node_point(aes(size = strength)) +
+  theme_graph()
+```
+---
+
+
+# Vizualiziraj sličnost
+
+```{r, fig.height=3, warning=FALSE,message=FALSE}
+# Dodaj nazive čvorova
+ggraph(h2) + 
+  geom_edge_link(aes(alpha = weight)) + 
+  geom_node_point() +
+  geom_node_text(aes(label = name), repel=T) +
+  theme_graph()
+```
+
+
+---
+
+# Vizualiziraj sličnost
+
+
+```{r, fig.height=3, warning=FALSE,message=FALSE}
+V(h2)$betw = betweenness(h2) # dodaj međusobnost u mrežu
+
+ggraph(h2) + 
+  geom_edge_link(aes(alpha = weight)) + 
+  geom_node_point(aes(size = betw)) +
+  theme_graph()
+```
+
+
+```{r, fig.height=3, warning=FALSE,message=FALSE,eval=FALSE, include=FALSE, echo=FALSE}
+
+# Provedi klastering
+
+# Napravi matricu udaljenosti
+D = 1-S
+# Pretvori u objekt
+d = as.dist(D)
+# Provedi klastering (average-linkage)
+cc = hclust(d, method = "average")
+# Prikaži dendogramom
+plot(cc)
+clusters.list = rect.hclust(cc, k = 4, border="blue") # Prilagodi grafikon
+```
+
 
   
 # Snaga slabih veza
@@ -697,13 +877,43 @@ ties %>%
   summarise(n = n(), p = n / nrow(ties)) %>%
   arrange(-n)
 ```
---- 
+---
+
+class: inverse, center, middle
+name: stat
+
+# OBRASCI POVEZANOSTI U MREŽI
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+---
+  
+# *Adjecency* matrica
+  
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
+knitr::include_graphics("../Foto/net5.png")
+```
+
+---
+  
+# *Adjecency* matrica
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="650px"}
+knitr::include_graphics("../Foto/net6.png")
+```
+
+---
 
 
+# Napravi *adjecancy* matricu
 
+```{r}
+# get the adjacency matrix of network g
+A = as_adjacency_matrix(g)
+# get the weighted adjacency matrix of weighted network g
 
-
-
+A = as_adjacency_matrix(g, attr = "weight")
+```
 
 
 
