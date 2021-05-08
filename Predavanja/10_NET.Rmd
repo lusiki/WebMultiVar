@@ -661,7 +661,8 @@ g # Pregled mreže
 ---
 
 # Podatci
-
+<br>
+<br>
 ```{r}
 # Pregledaj čvorove
 V(g)
@@ -944,6 +945,8 @@ clusters.list = rect.hclust(cc, k = 4, border="blue") # Prilagodi grafikon
 ---
   
 # Snaga slabih veza
+<br>
+<br>
 
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/net2.png")
@@ -954,7 +957,8 @@ knitr::include_graphics("../Foto/net2.png")
 ---
   
 # Slabe veze
-  
+<br>
+<br>
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/net3.png")
 ```
@@ -962,21 +966,21 @@ knitr::include_graphics("../Foto/net3.png")
 ---
   
 # Snažne veze
-  
+<br>
+<br>  
 ```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
 knitr::include_graphics("../Foto/net4.png")
 ```
 
 ---
-  
-# Pronađi slabe veze
-  
-```{r}
-ties %>%
-  group_by(weight) %>%
-  summarise(n = n(), p = n / nrow(ties)) %>%
-  arrange(-n)
-```
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Zadnje predavanje!)
 
 
 

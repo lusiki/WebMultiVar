@@ -1001,7 +1001,8 @@ g # Pregled mreže
 ---
 
 # Podatci
-
+&lt;br&gt;
+&lt;br&gt;
 
 ```r
 # Pregledaj čvorove
@@ -1465,6 +1466,8 @@ ggraph(h2) +
 ---
   
 # Snaga slabih veza
+&lt;br&gt;
+&lt;br&gt;
 
 &lt;img src="../Foto/net2.png" width="500px" style="display: block; margin: auto;" /&gt;
 
@@ -1473,36 +1476,26 @@ ggraph(h2) +
 ---
   
 # Slabe veze
-  
+&lt;br&gt;
+&lt;br&gt;
 &lt;img src="../Foto/net3.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
   
 # Snažne veze
-  
+&lt;br&gt;
+&lt;br&gt;  
 &lt;img src="../Foto/net4.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
-  
-# Pronađi slabe veze
-  
 
-```r
-ties %&gt;%
-  group_by(weight) %&gt;%
-  summarise(n = n(), p = n / nrow(ties)) %&gt;%
-  arrange(-n)
-```
+class: inverse, center, middle
 
-```
-## # A tibble: 4 x 3
-##   weight     n       p
-##    &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
-## 1      1   214 0.881  
-## 2      2    21 0.0864 
-## 3      3     6 0.0247 
-## 4      4     2 0.00823
-```
+# Hvala na pažnji
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Zadnje predavanje!)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
