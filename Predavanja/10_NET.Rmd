@@ -114,7 +114,7 @@ library(ggraph)
 
 3. [Network objekt](#netob)
 
-4. [Network analiza](#stat)
+4. [Praktični primjer (network analiza)](#stat)
 
 ---
 
@@ -608,7 +608,7 @@ sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to"
 class: inverse, center, middle
 name: stat
 
-# NETWORK ANALIZA
+# PRAKTIČNI PRIMJER (NETWORK ANALIZA)
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 

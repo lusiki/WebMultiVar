@@ -183,17 +183,17 @@ title: " "
 
 ### Predavanje 10: Network analiza
 
-- Karakteristike network analize
+- Općenito o network analizi
 
 - Network podatci
 
-- Netwok objekt
+- Network objekt
 
-- Statistička network analiza
+- Praktični primjer (network analiza)
 
 **Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/10_NET.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/10_NET.Rmd) 
 <br>
-**Čitanje:** [Prošlogodišnje predavanje](https://rpubs.com/shichich/619367) + []() + []()
+**Čitanje:** [Prošlogodišnje predavanje](https://rpubs.com/shichich/619367) + [Lista resursa o network analizi](https://github.com/briatte/awesome-network-analysis) + []()
 <br>
 <br>
 
