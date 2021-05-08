@@ -135,7 +135,7 @@ name: opc
 <br>
 - modeliranje kompleksnosti i međupovezanosti
 <br>
-- centralna metodologija za (digitalne) društvene i humanističke znaosti
+- centralna metodologija za (digitalne) društvene i humanističke znanosti
 <br>
 - vizualna analiza - *uvodno*
 <br>
@@ -161,7 +161,7 @@ name: opc
 <br>
 <br>
 <br>
-- nodes i vertices vs. edges i links
+- nodes (*čvorovi*) i vertices (*poveznice*) ili edges i links
 <br>
 - adjecancy matrice vs. data.frame
 <br>
@@ -169,7 +169,7 @@ name: opc
 <br>
 - edge-list ima minimalno dvije kolone: kolona izvora čvorova (nodes) i kolona smjernica čvorova
 <br>
-- mreže mogu biti usmjerene(directed) i neusmjerene (unidirected)
+- mreže mogu biti usmjerene (directed) i neusmjerene (unidirected)
 <br>
 - edge-list objekt može sadržavati i dodatne atribute (varijable)
 <br>
@@ -532,17 +532,37 @@ name: stat
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
-()
+(Primjer terorističke mreže)
+
+---
+
+# Teroristički napad u Madridu 2004
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/madrid.jpg")
+```
+
+.footnote[ [*] Vidi rad od Jose A. Rodriguez na [poveznici](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.4408&rep=rep1&type=pdf)! ]
 
 ---
 
 # Podatci
-
+<br>
 ```{r}
 # Učitaj podatke
 terrorists <- read_csv("../Podatci/names.csv") 
-ties <- read_csv("../Podatci/edges.csv")
+# Pogledaj podatke
 head(terrorists,5)
+```
+
+---
+
+# Podatci
+<br>
+```{r}
+# Učitaj podatke
+ties <- read_csv("../Podatci/edges.csv")
+# Pogledaj podatke
 head(ties,5)
 ```
 
@@ -591,9 +611,10 @@ g
 ---
 
 # Podatci
-
+<br>
+<br>
 ```{r}
-E(g)$weight # Pogledaj weight atribut
+E(g)$weight # Pogledaj težinu čvorova
 ```
 
 ---
@@ -609,7 +630,8 @@ geom_node_point()
 ---
 
 # Mjere centraliteta
-
+<br>
+<br>
 - Koji su najvažniji čvorovi u mreži?
 
 - npr. najbitnije web stranice o odrđenoj temi
@@ -621,23 +643,21 @@ geom_node_point()
 ---
 
 # Izračunaj stupanj čvorova
-
-.tiny[
+<br>
+<br>
 ```{r}
 degree(g)
 ```
-]
+
 
 ---
 
 # Izračunaj snagu čvorova
-
-.tiny[
+<br>
+<br>
 ```{r}
 strength(g)
 ```
-]
-
 
 ---
 
@@ -663,10 +683,9 @@ g$betweenness <- edge_betweenness(g, weights = dist_weight)
 
 ---
 
-# Najopasniji teroristi
+# Najpovezaniji teroristi I
 
 ```{r}
-# Najpovezaniji teroristi
 terrorists  <- terrorists %>%
   mutate(degree = degree(g),
            strength = strength(g))
@@ -676,19 +695,17 @@ arrange(terrorists, desc(degree))
 
 ---
 
-# Najopasniji teroristi
+# Najpovezaniji teroristi II
 
 ```{r}
-# Najpovezaniji teroristi
 arrange(terrorists, desc(strength))
 ```
 
 ---
 
-# Najopasniji teroristi
+# Izolirani teroristi
 
 ```{r}
-# Izolirani teroristi
 filter(terrorists,degree == 0)
 ```
 
@@ -721,7 +738,7 @@ ggplot(ties2, aes(x = from, y = to, color = as.factor(weight))) +
 ---
 
 
-# Slični parovi
+# Slični parovi terorista
 
 ```{r}
 ##Pripremi podatke##
@@ -740,33 +757,37 @@ summary(c(S))
 
 ---
 
-# Slični parovi
+# Slični parovi terorista
 
 
 ```{r}
 # Napravi adjecancy matricu
-h = graph_from_adjacency_matrix(S, mode = "undirected", weighted = TRUE)
+h <- graph_from_adjacency_matrix(S, mode = "undirected", weighted = TRUE)
 # Pretvori u data.frame(tibble)
 sim = as.tibble(as_data_frame(h, what = "edges")) %>% 
    mutate(from = as.integer(from), to = as.integer(to)) %>%
    arrange(desc(weight))
 # join sa podatkovnim skupom terrorists
-sim_joint = sim %>% 
+sim_joint <- sim %>% 
  left_join(terrorists, c("from" = "id")) %>% 
   left_join(terrorists, c("to" = "id")) %>%
   filter(degree.x >= 10, degree.y >= 10) %>%
   select(-strength.x, -strength.y)
+```
+
+---
 
 # Najsličniji parovi
+<br>
+```{r}
 head(sim_joint)
 ```
 
 ---
 
-# Slični parovi
-
-```{r}
 # Najmanje slični parovi
+<br>
+```{r}
 tail(sim_joint)
 ```
 
@@ -775,9 +796,8 @@ tail(sim_joint)
 # Vizualiziraj sličnost
 
 ```{r, fig.height=3, warning=FALSE,message=FALSE}
-h2 = graph_from_data_frame(filter(sim_joint, weight >= 0.60), directed = FALSE, vertices = terrorists)
-h2 = delete_vertices(h2, which(degree(h2) == 0))
-
+h2 <- graph_from_data_frame(filter(sim_joint, weight >= 0.60), directed = FALSE, vertices = terrorists)
+h2 <- delete_vertices(h2, which(degree(h2) == 0))
 
 ggraph(h2) + 
   geom_edge_link(aes(alpha = weight)) + 
@@ -841,7 +861,7 @@ plot(cc)
 clusters.list = rect.hclust(cc, k = 4, border="blue") # Prilagodi grafikon
 ```
 
-
+---
   
 # Snaga slabih veza
 
@@ -849,7 +869,7 @@ clusters.list = rect.hclust(cc, k = 4, border="blue") # Prilagodi grafikon
 knitr::include_graphics("../Foto/net2.png")
 ```
 
-.footnote[[*] Rad na [poveznici](http://snap.stanford.edu/class/cs224w-readings/granovetter73weakties.pdf).]
+.footnote[[*] Rad M.S. Granovetter-a na [poveznici](http://snap.stanford.edu/class/cs224w-readings/granovetter73weakties.pdf).]
 
 ---
   
