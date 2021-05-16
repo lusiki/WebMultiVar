@@ -114,7 +114,7 @@ library(ggraph)
 
 3. [Network objekt](#netob)
 
-4. [Network analiza](#stat)
+4. [Praktični primjer (network analiza)](#stat)
 
 ---
 
@@ -608,11 +608,42 @@ sankeyNetwork(Links = edges_d3, Nodes = nodes_d3, Source = "from", Target = "to"
 class: inverse, center, middle
 name: stat
 
-# NETWORK ANALIZA
+# PRAKTIČNI PRIMJER (NETWORK ANALIZA)
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
 (Primjer terorističke mreže)
+
+---
+  
+# Snaga slabih veza
+<br>
+<br>
+
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net2.png")
+```
+
+.footnote[[*] Rad M.S. Granovetter-a na [poveznici](http://snap.stanford.edu/class/cs224w-readings/granovetter73weakties.pdf).]
+
+---
+  
+# Slabe veze
+<br>
+<br>
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net3.png")
+```
+
+---
+  
+# Snažne veze
+<br>
+<br>  
+```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
+knitr::include_graphics("../Foto/net4.png")
+```
+
 
 ---
 
@@ -714,12 +745,10 @@ geom_node_point()
 <br>
 <br>
 - Koji su najvažniji čvorovi u mreži?
-
-- npr. najbitnije web stranice o odrđenoj temi
-
-- npr. utjecajni akademski članci ili knjige
-
-- npr. internetski čvorovi i povezanost
+<br>
+- npr. najbitnije web stranice o odrđenoj temi,utjecajni akademski članci ili knjige, tajna društva (masoni)
+<br>
+- stupanj, težina, međusobnost
 
 ---
 
@@ -942,35 +971,6 @@ plot(cc)
 clusters.list = rect.hclust(cc, k = 4, border="blue") # Prilagodi grafikon
 ```
 
----
-  
-# Snaga slabih veza
-<br>
-<br>
-
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
-knitr::include_graphics("../Foto/net2.png")
-```
-
-.footnote[[*] Rad M.S. Granovetter-a na [poveznici](http://snap.stanford.edu/class/cs224w-readings/granovetter73weakties.pdf).]
-
----
-  
-# Slabe veze
-<br>
-<br>
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
-knitr::include_graphics("../Foto/net3.png")
-```
-
----
-  
-# Snažne veze
-<br>
-<br>  
-```{r, include=TRUE, fig.align="center", echo=FALSE, out.width="500px"}
-knitr::include_graphics("../Foto/net4.png")
-```
 
 ---
 
