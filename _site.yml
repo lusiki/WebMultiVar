@@ -33,9 +33,9 @@ navbar:
           href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/09_SURV.html"
         - text: "Network analiza"
           href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/10_NET.html"
-        - text: "Analiza vremenskih serija"
-          href: ""
-        - text: "Strojno učenje"
+        - text: "Empirijski projekt"
+          href: "https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/EMPIRICAL.html"
+        - text: ""
           href: ""
         
 

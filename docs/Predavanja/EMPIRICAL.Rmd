@@ -1,0 +1,467 @@
+---
+title: "MULTIVARIJATNE STATISTIČKE METODE"
+author: "dr.sc. Luka Šikić"
+date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
+subtitle: "Upute za izradu empirijskog projekta"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=T, echo=T, warning=F, message=F
+  )
+knitr::opts_hooks$set(fig.callout = function(options) {
+  if (options$fig.callout) {
+    options$echo <- FALSE
+    options$out.height <- "99%"
+    options$fig.width <- 16
+    options$fig.height <- 8
+  }
+  options
+})
+```
+
+```{css, echo = F, eval = T}
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+
+/* custom.css */
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+```
+
+```{r paketi, warning=F, echo=F, message=F, eval=TRUE}
+
+library(tidyverse)  # data manipulation and visualization
+library(gridExtra)  # plot arrangement
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+library(rvest)
+library(janitor)
+library(readr)
+library(igraph)
+library(igraph)
+library(dplyr)
+library(ggplot2)
+library(ggraph)
+
+```
+
+# Pregled predavanja
+
+<br>
+<br>
+<br>
+
+1. [Formuliranje pitanja](#q)
+
+2. [Pregled literature](#rew)
+
+3. [Prikupljanje podataka](#dta)
+
+4. [Empirijska analiza](#stat)
+
+5. [Pisanje empirijskog eseja](#es)
+
+6. [Objava analize (OpenSource)](#os)
+
+---
+
+class: inverse, center, middle
+name: q
+
+# Formuliranje pitanja
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Kreativno polazište)
+
+---
+
+
+# Motivacija
+<br>
+<br>
+
+- Testiranje teorije o društvu
+<br>
+- Evaluacija programa ili politike
+<br>
+- Predviđanje ishoda
+<br>
+- Procjena za poslovnu ili akademsku analizu
+<br>
+- za *zabavu*
+
+---
+
+# Dobro istraživačko pitanje
+<br>
+<br>
+
+- Specifično
+<br>
+- Mora se moći odgovoriti na osnovi podataka
+<br>
+- Zanimljivo
+<br>
+- Korisno 
+
+---
+
+# Za manje kreativne
+<br>
+<br>
+
+- Proširi postojeći model sa novom varijablom
+<br>
+- "Osvježi" postojeću analizu sa novim podatcima
+<br>
+- Dodaj nove podatke (npr. zemlje) u uzorak
+<br>
+- Repliciraj postojeću studiju
+
+
+---
+
+class: inverse, center, middle
+name: rew
+
+# Pregled literature
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Postojeće spoznaje)
+
+---
+
+# Razlozi
+<br>
+<br>
+- Pregled postojećeg znanja o temi
+<br>
+- Jasna slika o doprinosu analize
+<br>
+- Specifičnosti na koje treba obratiti pozornost u analizi
+<br>
+- Kako specificirati varijable
+<br>
+- Opravdanje za izbor modela
+<br>
+- Okvir za određivanje opsega teme (~20 radova na temu)
+
+---
+
+class: inverse, center, middle
+name: dta
+
+# Prikupljanje podataka
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Ključni dio analize)
+
+---
+
+# Kriteriji za odabir
+<br>
+<br>
+- Koji bi bili *idealni* podatci za izabranu analizu?
+<br>
+- Postoje li dobri alternativni podatci?
+<br>
+- Postoji li repozitorij (baza) podataka ili je potrebno prikupiti podatke?
+<br>
+- Koje podatke su koristili drugi?
+<br>
+- Longitudinalni i/ili prostorni podatci
+<br>
+- Razina agregacije podataka (pojedinci/tvrtke, subkulture/zanimanja/sektori, zemlje/regije/kontinenti)
+
+---
+
+# Priprema podataka
+
+<br>
+<br>
+- Pohrana podataka (lokalno, eksterna baza, internet)
+<br>
+- Uređivanje, čišćenje i prilagodba podataka (vrlo zahtijevan dio analize)
+<br>
+- Izrada i upoznavanje sa varijablama
+
+---
+
+class: inverse, center, middle
+name: stat
+
+# Empirijska analiza
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Kreativno polazište)
+
+---
+
+# Izbor modela 
+<br>
+<br>
+- Neki od modela koje smo obradili u okviru kolegija
+<br>
+- Novi/sličan model 
+<br>
+- Može li se primijeniti OLS?
+<br>
+- Što su koristili drugi?
+
+---
+
+# Primjena modela
+<br>
+<br>
+- Da li su podatci prilagođeni za model?
+<br>
+- Deskriptivna statistika (numerička + vizualna)
+<br>
+- Robusnost modela (post-specifikacijski testovi)
+<br>
+- Interpretacija rezulatata
+
+
+---
+
+class: inverse, center, middle
+name: es
+
+# Pisanje empirijskog eseja
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Poveži analizu i tekst)
+
+---
+
+# Elementi
+<br>
+<br>
+- Uvod
+<br>
+- Pregled literature
+<br>
+- Konceptualni okvir
+<br>
+- Podatci i metode
+<br>
+- Rezultati
+<br>
+- Zaključak
+
+---
+
+# Uvod
+<br>
+<br>
+- Zašto je tema relevantna?
+<br>
+- Postoje li politike vezane uz temu?
+<br>
+- Što se istražuje?
+<br>
+- Uvod ne bi trebao biti duži od 1 stranice.
+
+---
+
+# Pregled literature
+<br>
+<br>
+- Kontekst analize
+<br>
+- Što znamo o temi?
+<br>
+- Što ne znamo i koji je doprinos analize?
+
+---
+
+# Konceptualni okvir
+<br>
+<br>
+- Koje su teoretske implikacije izabrane teme?
+<br>
+- Objasni ključne pojmove koji će se koristiti u analizi
+
+---
+
+# Podatci i metode
+<br>
+<br>
+- Navedi izvore i objasni proces prikupljanja podataka
+<br>
+- Objasni proces uređivanja i prilagodbe podataka
+<br>
+- Opiši model i glavne karakteristike
+<br>
+- Objasni proces procjene modela
+<br>
+- Koje su pretpostavke modela
+
+---
+
+# Rezultati 
+<br>
+<br>
+- Prikaži rezultate u tablicama i grafički
+<br>
+- Komentiraj rezultate i njihove implikacije
+<br>
+- Kakva je signifikantnost rezultata?
+<br>
+- Da li koeficijenti imaju očekivani predznak?
+<br>
+- Da li su rezultati robusni?
+<br>
+- Postoje li ograničenja u analizi?
+
+---
+
+# Zaključak
+<br>
+<br>
+- Koji su glavni nalazi istraživanja?
+<br>
+- Što je bitno zapamtiti?
+<br>
+- Što bi trebalo istražiti u budućnosti?
+
+---
+
+class: inverse, center, middle
+name: os
+
+# Objava analize (OpenSource) 
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Komunikacija rezultata)
+
+---
+
+# Reproducibilna analiza
+<br>
+<br>
+- Uvjerjivost
+<br
+- Kontrola grešaka
+<br>
+- Mogućnost nadogradnje
+<br>
+- Suradnja
+<br>
+- Tehnološki standard
+
+---
+
+# R Markdown
+<br>
+<br>
+- Sugerira se korištenje R Markdown ili srodne platforme
+<br>
+- Integracija sa Version Control sutavom (GitHub)
+<br>
+- Prilagodba formata analize u odgovarajući format
+
+---
+
+# Korist
+<br>
+<br>
+- Upoznavanje sa teorijom
+<br>
+- Upoznavanje sa empirijskom analizom
+<br>
+- Znanstveni pristup društvenim znaostima
+<br>
+- Poboljšanje analitičkih vještina
+<br>
+- Korištenje software-a i tehničke vještine
+<br>
+- Komunikacija rezultata korištenjem riječi i brojeva
+<br>
+- Rad na tehnološkoj granici (budi u trendu!)
+<br>
+- Općenite vještine rješavanja problema
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+
+
+
+
+
+
+
+
+
+
+
+

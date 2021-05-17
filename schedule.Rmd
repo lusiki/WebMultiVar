@@ -198,9 +198,25 @@ title: " "
 <br>
 
 
-### Predavanje 11: Strojno učenje
+### Predavanje 11: Izrada empirijskog istraživanja
 
+- Formuliranje pitanja
 
+- Pregled literature
+
+- Prikupljanje podataka
+
+- Empirijska analiza)
+
+- Pisanje empirijskog eseja
+
+- Objava analize (OpenSource)
+
+**Format predavanja:** [.html](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/EMPIRICAL.html) | [.Rmd](https://github.com/lusiki/WebMultiVar/blob/main/Predavanja/EMPIRICAL.Rmd) 
+<br>
+**Čitanje:** []() + []() + []()
+<br>
+<br>
 
 
 
