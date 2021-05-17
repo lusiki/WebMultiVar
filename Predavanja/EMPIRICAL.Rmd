@@ -118,7 +118,7 @@ library(ggraph)
 
 5. [Pisanje empirijskog eseja](#es)
 
-6. [Open Source objava rada](#os)
+6. [Objava analize (OpenSource)](#os)
 
 ---
 
@@ -362,7 +362,75 @@ name: es
 ---
 
 # Rezultati 
+<br>
+<br>
+- Prikaži rezultate u tablicama i grafički
+<br>
+- Komentiraj rezultate i njihove implikacije
+<br>
+- Kakva je signifikantnost rezultata?
+<br>
+- Da li koeficijenti imaju očekivani predznak?
+<br>
+- Da li su rezultati robusni?
+<br>
+- Postoje li ograničenja u analizi?
 
+---
+
+# Zaključak
+<br>
+<br>
+- Koji su glavni nalazi istraživanja?
+<br>
+- Što je bitno zapamtiti?
+<br>
+- Što bi trebalo istražiti u budućnosti?
+
+---
+
+class: inverse, center, middle
+name: os
+
+# Objava analize (OpenSource) 
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+(Komunikacija rezultata)
+
+---
+
+# Reproducibilna analiza
+<br>
+<br>
+- Uvjerjivost
+<br
+- Kontrola grešaka
+<br>
+- Mogućnost nadogradnje
+<br>
+- Suradnja
+<br>
+- Tehnološki standard
+
+---
+
+# R Markdown
+<br>
+<br>
+- Sugerira se korištenje R Markdown ili srodne platforme
+<br>
+- Integracija sa Version Control sutavom (GitHub)
+<br>
+- Prilagodba formata analize u odgovarajući format
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
 
 
