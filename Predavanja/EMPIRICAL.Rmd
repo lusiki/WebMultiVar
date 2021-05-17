@@ -426,6 +426,27 @@ name: os
 
 ---
 
+# Korist
+<br>
+<br>
+- Upoznavanje sa teorijom
+<br>
+- Upoznavanje sa empirijskom analizom
+<br>
+- Znanstveni pristup društvenim znaostima
+<br>
+- Poboljšanje analitičkih vještina
+<br>
+- Korištenje software-a i tehničke vještine
+<br>
+- Komunikacija rezultata korištenjem riječi i brojeva
+<br>
+- Rad na tehnološkoj granici (budi u trendu!)
+<br>
+- Općenite vještine rješavanja problema
+
+---
+
 class: inverse, center, middle
 
 # Hvala na pažnji
