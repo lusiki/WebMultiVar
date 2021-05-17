@@ -269,18 +269,99 @@ name: stat
 <br>
 - Što su koristili drugi?
 
+---
+
+# Primjena modela
+<br>
+<br>
+- Da li su podatci prilagođeni za model?
+<br>
+- Deskriptivna statistika (numerička + vizualna)
+<br>
+- Robusnost modela (post-specifikacijski testovi)
+<br>
+- Interpretacija rezulatata
 
 
+---
 
+class: inverse, center, middle
+name: es
 
+# Pisanje empirijskog eseja
 
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
+(Poveži analizu i tekst)
 
+---
 
+# Elementi
+<br>
+<br>
+- Uvod
+<br>
+- Pregled literature
+<br>
+- Konceptualni okvir
+<br>
+- Podatci i metode
+<br>
+- Rezultati
+<br>
+- Zaključak
 
+---
 
+# Uvod
+<br>
+<br>
+- Zašto je tema relevantna?
+<br>
+- Postoje li politike vezane uz temu?
+<br>
+- Što se istražuje?
+<br>
+- Uvod ne bi trebao biti duži od 1 stranice.
 
+---
 
+# Pregled literature
+<br>
+<br>
+- Kontekst analize
+<br>
+- Što znamo o temi?
+<br>
+- Što ne znamo i koji je doprinos analize?
+
+---
+
+# Konceptualni okvir
+<br>
+<br>
+- Koje su teoretske implikacije izabrane teme?
+<br>
+- Objasni ključne pojmove koji će se koristiti u analizi
+
+---
+
+# Podatci i metode
+<br>
+<br>
+- Navedi izvore i objasni proces prikupljanja podataka
+<br>
+- Objasni proces uređivanja i prilagodbe podataka
+<br>
+- Opiši model i glavne karakteristike
+<br>
+- Objasni proces procjene modela
+<br>
+- Koje su pretpostavke modela
+
+---
+
+# Rezultati 
 
 
 
