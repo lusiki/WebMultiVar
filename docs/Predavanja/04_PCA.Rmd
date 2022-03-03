@@ -115,6 +115,7 @@ vizualizaciju, odnosno pojednostavljenje velikog skupa podataka
 - Nove varijable (GK) se također mogu koristiti kao imputi za daljnju analizu (primjerice regresijski model) 
 
 
+
 ---
 
 # Proceura provedbe PCA
