@@ -75,7 +75,8 @@ name: instalacija
 4. Napravite račun na [GitHub](https://github.com/) 
 <br>
 <br>
-^[U slučaju problema sa instalacijom Git-a pogledajte http://happygitwithr.com.
+<br>
+*[U slučaju problema sa instalacijom Git-a pogledajte http://happygitwithr.com.]
 
 ---
 
@@ -226,7 +227,7 @@ pop_df %>%
 
 3. Stvari se rade preko funkcija.
 
-4. Funkcije dolaze u paketima (i.e. "libraries"), a moguće je i napraviti vlastite funkcije.
+4. Funkcije dolaze u paketima (i.e.*libraries*), a moguće je i napraviti vlastite funkcije.
 
 --
 
@@ -256,7 +257,7 @@ abline(fit, col = "red")
 
 ---
 
-# ggplot2 (micro primjer)
+# ggplot2 
 
 ```{r mtcars_ggplot, dev="svg",fig.height=4, message=F, warning=F}
 ggplot(data = mtcars, aes(x = wt, y = mpg)) + 
