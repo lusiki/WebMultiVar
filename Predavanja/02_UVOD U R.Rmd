@@ -28,6 +28,8 @@ opts_chunk$set(
 
 # Pregled predavanja
 
+<br>
+<br>
 
 1. [Instalacija](#instalacija)
 
@@ -63,18 +65,22 @@ name: instalacija
 <br>
 1. Preuzmite [R](https://www.r-project.org/).
 <br>
+<br>
 2. Preuzmite [RStudio](https://www.rstudio.com/products/rstudio/download/preview/).
+<br>
 <br>
 3. Preuzmite [Git](https://git-scm.com/downloads).
 <br>
-4. Napravite račun na [GitHub](https://github.com/) 
-
 <br>
-- U slučaju problema sa instalacijom Git-a pogledajte http://happygitwithr.com.
+4. Napravite račun na [GitHub](https://github.com/) 
+<br>
+<br>
+^[U slučaju problema sa instalacijom Git-a pogledajte http://happygitwithr.com.
 
 ---
 
 # Detalji
+<br>
 <br>
 <br>
 Za bolje snalaženje:
@@ -91,6 +97,8 @@ Za bolje snalaženje:
 ---
 
 # Checklist
+<br>
+<br>
 
 ☑ Da li imate najnoviju verziju R?
 
@@ -115,7 +123,8 @@ Za bolje snalaženje:
 ---
 
 # Checklist (dalje)
-
+<br>
+<br>
 Otvorite [shell](http://happygitwithr.com/shell.html#shell). Ako ste već instalirali [Git for Windows](https://gitforwindows.org), sve je u redu!
 
 ☑ Koju verziju Git-a ste instalirali?
@@ -200,7 +209,6 @@ pop_df %>%
 
 - Programski jezik s kojim imam najviše iskustva.
 
---
 
 - (Učenje više jezika je preporučljivo, nužno štoviše!)
 
@@ -210,7 +218,7 @@ pop_df %>%
 
 <br>
 <br>
-
+<br>
 
 1. Sve je objekt.
 
@@ -283,7 +291,8 @@ R je moćan kalkulator i prepoznaje sve standardne aritmetičke operatore:
 ---
 
 # Osnovna aritmetika (dalje)
-
+<br>
+<br>
 Modulo operator se koristi za dijeljenje (i ostatak). 
 - Koristan za rad sa (npr.) vremenom.
 
@@ -341,7 +350,7 @@ R vrednuje dvije odvojene "logičke" tvrdnje:
 # Logički operatori (dalje)
 
 ### Negacija: `!`
-
+<br>
  `!` se koristi za negaciju. Ovo je posebno korisno kod filtriranja podataka, primjerice za non-NA opservacije.
 
 ```{r}
@@ -377,7 +386,7 @@ Ne postoji ekvivalentna "not in" naredba, ali možemo ju stvoriti sami!
 # Logički operatori (dalje)
 
 ### Evaluacija
-
+<br>
 Dva znaka jednakosti se koriste za logičku evaluaciju.
 
 ```{r, error=T}
@@ -469,7 +478,8 @@ b
 ---
 
 # Pomoć
-
+<br>
+<br>
 Ukoliko imate dvojbe oko funkcije ili objekta R, unesite "help" u konzolu, e.g.
 
 ```R
@@ -493,7 +503,8 @@ Još jednostavnije, koristite "?":
 ---
 
 # Pomoć (dalje)
-
+<br>
+<br>
 Za većinu paketa možete koristiti `vignette()` funkciju, koja će prikazati uvodne detalje i funkcionalnosti paketa
 - Izvršite `vignette("dplyr")` naredbu u konzoli.
 
@@ -522,6 +533,8 @@ name: oop
 ---
 
 # Motivacija
+<br>
+<br>
 
 R pristup koristi [objektno orjentirano programiranje](https://en.wikipedia.org/wiki/Object-oriented_programming) (OOP), koje se može sažeti kao:
 
@@ -539,8 +552,8 @@ Izbjegavanje konfuzije je relativno jednostavno ako razumijemo pozadinu.
 ---
 
 # Disclaimer
-
-
+<br>
+<br>
 Očito, postoji _više_ OOP sustava u R.
 - **S3**, **S4**, **R6**...
 - Hadley Wickham-ov "Advanced R" sadržava [vrlo detaljan pregled](https://adv-r.hadley.nz/oo.html) glavnih OOP sustava u R.
@@ -601,7 +614,7 @@ m
 ---
 
 # Klasa objekta, tipovi i struktura
-
+<br>
 Korsite `class`, `typeof`, i `str` nardbe za informacije o objektu.
 
 ```{r}
@@ -618,7 +631,8 @@ PS — Zbunjujuće je što `typeof(df)` vaća "list"? Vidi za [objašnjenje](htt
 ---
 
 #  Klasa objekta, tipovi i struktura (dalje)
-
+<br>
+<br>
 Naravno, moguće je dati naredbu inspect/print direktno u konzoli.
 - E.g. Unesite `df` i stisnite Enter.
 
@@ -677,7 +691,8 @@ Drgačije rečeno: Pošto varijable "x" i "y" postoje kao odvojene varijable u g
 ---
 
 # Globalni environment (dalje)
-
+<br>
+<br>
 Nekoliko je načina za to. Najednostavniji je specifikacija argumenta `data`:
 
 ```{r}

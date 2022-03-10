@@ -4,6 +4,7 @@
     <title>MULTIVARIJATNE STATISTIČKE METODE</title>
     <meta charset="utf-8" />
     <meta name="author" content="Luka Sikic, PhD" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
@@ -25,6 +26,8 @@ name: toc
 
 # Pregled predavanja
 
+&lt;br&gt;
+&lt;br&gt;
 
 1. [Instalacija](#instalacija)
 
@@ -60,18 +63,22 @@ name: instalacija
 &lt;br&gt;
 1. Preuzmite [R](https://www.r-project.org/).
 &lt;br&gt;
+&lt;br&gt;
 2. Preuzmite [RStudio](https://www.rstudio.com/products/rstudio/download/preview/).
+&lt;br&gt;
 &lt;br&gt;
 3. Preuzmite [Git](https://git-scm.com/downloads).
 &lt;br&gt;
-4. Napravite račun na [GitHub](https://github.com/) 
-
 &lt;br&gt;
-- U slučaju problema sa instalacijom Git-a pogledajte http://happygitwithr.com.
+4. Napravite račun na [GitHub](https://github.com/) 
+&lt;br&gt;
+&lt;br&gt;
+^[U slučaju problema sa instalacijom Git-a pogledajte http://happygitwithr.com.
 
 ---
 
 # Detalji
+&lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 Za bolje snalaženje:
@@ -88,6 +95,8 @@ Za bolje snalaženje:
 ---
 
 # Checklist
+&lt;br&gt;
+&lt;br&gt;
 
 ☑ Da li imate najnoviju verziju R?
 
@@ -97,7 +106,7 @@ Za bolje snalaženje:
 ```
 
 ```
-## [1] "R version 4.0.3 (2020-10-10)"
+## [1] "R version 4.1.1 (2021-08-10)"
 ```
 
 
@@ -119,7 +128,8 @@ Za bolje snalaženje:
 ---
 
 # Checklist (dalje)
-
+&lt;br&gt;
+&lt;br&gt;
 Otvorite [shell](http://happygitwithr.com/shell.html#shell). Ako ste već instalirali [Git for Windows](https://gitforwindows.org), sve je u redu!
 
 ☑ Koju verziju Git-a ste instalirali?
@@ -173,7 +183,6 @@ name: zakaj
 
 - Programski jezik s kojim imam najviše iskustva.
 
---
 
 - (Učenje više jezika je preporučljivo, nužno štoviše!)
 
@@ -183,7 +192,7 @@ name: zakaj
 
 &lt;br&gt;
 &lt;br&gt;
-
+&lt;br&gt;
 
 1. Sve je objekt.
 
@@ -317,7 +326,8 @@ R je moćan kalkulator i prepoznaje sve standardne aritmetičke operatore:
 ---
 
 # Osnovna aritmetika (dalje)
-
+&lt;br&gt;
+&lt;br&gt;
 Modulo operator se koristi za dijeljenje (i ostatak). 
 - Koristan za rad sa (npr.) vremenom.
 
@@ -423,7 +433,7 @@ R vrednuje dvije odvojene "logičke" tvrdnje:
 # Logički operatori (dalje)
 
 ### Negacija: `!`
-
+&lt;br&gt;
  `!` se koristi za negaciju. Ovo je posebno korisno kod filtriranja podataka, primjerice za non-NA opservacije.
 
 
@@ -491,7 +501,7 @@ Ne postoji ekvivalentna "not in" naredba, ali možemo ju stvoriti sami!
 # Logički operatori (dalje)
 
 ### Evaluacija
-
+&lt;br&gt;
 Dva znaka jednakosti se koriste za logičku evaluaciju.
 
 
@@ -623,7 +633,8 @@ b
 ---
 
 # Pomoć
-
+&lt;br&gt;
+&lt;br&gt;
 Ukoliko imate dvojbe oko funkcije ili objekta R, unesite "help" u konzolu, e.g.
 
 ```R
@@ -647,7 +658,8 @@ Još jednostavnije, koristite "?":
 ---
 
 # Pomoć (dalje)
-
+&lt;br&gt;
+&lt;br&gt;
 Za većinu paketa možete koristiti `vignette()` funkciju, koja će prikazati uvodne detalje i funkcionalnosti paketa
 - Izvršite `vignette("dplyr")` naredbu u konzoli.
 
@@ -676,6 +688,8 @@ name: oop
 ---
 
 # Motivacija
+&lt;br&gt;
+&lt;br&gt;
 
 R pristup koristi [objektno orjentirano programiranje](https://en.wikipedia.org/wiki/Object-oriented_programming) (OOP), koje se može sažeti kao:
 
@@ -693,8 +707,8 @@ Izbjegavanje konfuzije je relativno jednostavno ako razumijemo pozadinu.
 ---
 
 # Disclaimer
-
-
+&lt;br&gt;
+&lt;br&gt;
 Očito, postoji _više_ OOP sustava u R.
 - **S3**, **S4**, **R6**...
 - Hadley Wickham-ov "Advanced R" sadržava [vrlo detaljan pregled](https://adv-r.hadley.nz/oo.html) glavnih OOP sustava u R.
@@ -769,7 +783,7 @@ m
 ---
 
 # Klasa objekta, tipovi i struktura
-
+&lt;br&gt;
 Korsite `class`, `typeof`, i `str` nardbe za informacije o objektu.
 
 
@@ -807,7 +821,8 @@ PS — Zbunjujuće je što `typeof(df)` vaća "list"? Vidi za [objašnjenje](htt
 ---
 
 #  Klasa objekta, tipovi i struktura (dalje)
-
+&lt;br&gt;
+&lt;br&gt;
 Naravno, moguće je dati naredbu inspect/print direktno u konzoli.
 - E.g. Unesite `df` i stisnite Enter.
 
@@ -878,7 +893,8 @@ Drgačije rečeno: Pošto varijable "x" i "y" postoje kao odvojene varijable u g
 ---
 
 # Globalni environment (dalje)
-
+&lt;br&gt;
+&lt;br&gt;
 Nekoliko je načina za to. Najednostavniji je specifikacija argumenta `data`:
 
 
