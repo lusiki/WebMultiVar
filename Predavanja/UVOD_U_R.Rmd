@@ -1,29 +1,22 @@
 ---
 title: "MULTIVARIJATNE STATISTIČKE METODE"
-# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
 subtitle: "Predavanje 2: Osnove programskog jezika R"
 author: "Luka Sikic, PhD"
-date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)" #"`r format(Sys.time(), '%d %B %Y')`"
+institute: "Fakultet hrvatskih studija"
+date: "(Osvježeno: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts] 
     lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
-name: toc
+
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-library(knitr)
-opts_chunk$set(
-  fig.align="center", #fig.width=6, fig.height=4.5, 
-  # out.width="748px", #out.length="520.75px",
-  dpi=300, #fig.path='Figs/',
-  cache=F#, echo=F, warning=F, message=F
-  )
 ```
 
 # Pregled predavanja

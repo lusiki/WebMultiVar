@@ -2,6 +2,7 @@
 title: "MULTIVARIJATNE STATISTIČKE METODE"
 author: "Luka Šikić, PhD"
 date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
+# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
 subtitle: "Predavanje 2 (dodatak): Osnove ggplot2 vizualizacijskog sustava"
 output:
   xaringan::moon_reader:
@@ -354,7 +355,7 @@ Korisni resursi vezani uz današnje predavanje:
 
 ---
 class: inverse, center, middle
+
+
 # HVALA NA PAŽNJI!
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
-
-
