@@ -13,7 +13,7 @@
 
 <title>about.knit</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -61,6 +61,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -81,6 +82,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -138,11 +142,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -171,8 +179,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -180,16 +188,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -233,7 +234,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -252,7 +253,7 @@ $(document).ready(function () {
   <a href="schedule.html">Raspored</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Predavanja
      
     <span class="caret"></span>
@@ -262,7 +263,7 @@ $(document).ready(function () {
       <a href="https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/01_UVOD.html#1">Uvod u kolegij</a>
     </li>
     <li>
-      <a href="https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/02_UVOD-U-R.html#1">Osnove programskog jezika R</a>
+      <a href="https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/02UVODUR.html#1">Osnove programskog jezika R</a>
     </li>
     <li>
       <a href="https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/03_PONAVLJANJE-DESKRIPTIVNA.html#1">Deskriptivna statistika</a>
@@ -330,33 +331,78 @@ $(document).ready(function () {
 
 
 <p><br> <br> <br> <br></p>
-<p>Kolegij <em>Multivarijatne metode</em> je namijenjen sociolozima na diplomskoj razini koji su upoznati sa teoretskim osnovama statistike i praktičnom primjenom univarijatnih metoda deskriptivne i inferencijalne statistike, a koristan može biti i studentima iz drugih društvenih i humanističkih zananosti. Fokus kolegija je na razumijevanju osnovnih multivarijatnih metoda i njihovoj praktičnoj primjeni na modernim podatcima (web, društvene mreže, mobilne aplikacije, senzorni uređaji).</p>
-<p>Kolegij polazi od <strong>Data Science</strong> pristupa društvenim znanostima i integrira standardne alate eksplorativne i konfirmatorne statističke analize u sintaksu programskog jezika R. Predznanje programskog jezika R nije nužno ali se preporuča. Pored razumijevanja i provođenja multivarijatne (naprdene) statističke analize, u kolegiju će se obrađivati i niz popratnih informatičkih tehnologija poput: markdown jezika (<em>RMarkdown</em>), platformi za suradnju razmjenu koda (<em>Git</em>, <em>GitHub</em>), vizualizacije podataka (<em>Tableau</em>, <em>ggplot2</em>), podrške za manipulaciju podatcima (<em>tidyverse</em>, <em>data.table</em>), preuzimanja podataka (<em>web scraping</em>, <em>API</em>) i rada sa bazama podataka (<em>SQL</em>,<em>Google Big Querry</em>).</p>
-<p>Kolegij nije zamišljen kao sveobuhvatna referenca za rad s <em>Big Data</em> tehnologijama u društvenim znanostima jer materijali ne pokrivaju: rad sa terminalom (<em>Bash Shell</em>), rad sa platformama za suradnju i razmjenu koda (<em>Git</em>, <em>GitHub</em>), rad sa <em>Docker</em>-om, programiranje i iteraciju, paralelno programiranje, rad u oblaku (<em>Cloud</em>), ostale programske jezike (<em>Python</em>, <em>Java</em>, <em>HTML</em>, <em>Scala</em>).</p>
+<p>Kolegij <em>Multivarijatne metode</em> je namijenjen sociolozima na
+diplomskoj razini koji su upoznati sa teoretskim osnovama statistike i
+praktičnom primjenom univarijatnih metoda deskriptivne i inferencijalne
+statistike, a koristan može biti i studentima iz drugih društvenih i
+humanističkih zananosti. Fokus kolegija je na razumijevanju osnovnih
+multivarijatnih metoda i njihovoj praktičnoj primjeni na modernim
+podatcima (web, društvene mreže, mobilne aplikacije, senzorni
+uređaji).</p>
+<p>Kolegij polazi od <strong>Data Science</strong> pristupa društvenim
+znanostima i integrira standardne alate eksplorativne i konfirmatorne
+statističke analize u sintaksu programskog jezika R. Predznanje
+programskog jezika R nije nužno ali se preporuča. Pored razumijevanja i
+provođenja multivarijatne (naprdene) statističke analize, u kolegiju će
+se obrađivati i niz popratnih informatičkih tehnologija poput: markdown
+jezika (<em>RMarkdown</em>), platformi za suradnju razmjenu koda
+(<em>Git</em>, <em>GitHub</em>), vizualizacije podataka
+(<em>Tableau</em>, <em>ggplot2</em>), podrške za manipulaciju podatcima
+(<em>tidyverse</em>, <em>data.table</em>), preuzimanja podataka (<em>web
+scraping</em>, <em>API</em>) i rada sa bazama podataka
+(<em>SQL</em>,<em>Google Big Querry</em>).</p>
+<p>Kolegij nije zamišljen kao sveobuhvatna referenca za rad s <em>Big
+Data</em> tehnologijama u društvenim znanostima jer materijali ne
+pokrivaju: rad sa terminalom (<em>Bash Shell</em>), rad sa platformama
+za suradnju i razmjenu koda (<em>Git</em>, <em>GitHub</em>), rad sa
+<em>Docker</em>-om, programiranje i iteraciju, paralelno programiranje,
+rad u oblaku (<em>Cloud</em>), ostale programske jezike
+(<em>Python</em>, <em>Java</em>, <em>HTML</em>, <em>Scala</em>).</p>
 <p>Cilj kolegija je upoznavanje sa:</p>
 <ol style="list-style-type: decimal">
-<li>Standardnim eksplorativnim i konfirmatornim multivarijatnim metodama</li>
+<li>Standardnim eksplorativnim i konfirmatornim multivarijatnim
+metodama</li>
 <li>Alatima za obradu i manipulaciju podataka</li>
 <li>Modernom metodologijom za analizu podataka</li>
 <li>Alatima za prezentaciju i dijeljenje rezulata</li>
 <li>Programskim jezikom R</li>
 </ol>
 <p><br></p>
-<p>Kolegij će osposobiti studente za razumijevanje i provedbu napredne statističke analize, te omogućiti uključivanje u modernu analitičku paradigmu (<em>computational social science</em>) i tehnološke (<em>frontier</em>) tokove u obradi podataka (<em>data science</em>). Osim naglaska na akademsku primjenu stečenog znanja, kroz kolegij će se studentima olakšati uključivanje u poslovni IT sektor na strani analitike.</p>
+<p>Kolegij će osposobiti studente za razumijevanje i provedbu napredne
+statističke analize, te omogućiti uključivanje u modernu analitičku
+paradigmu (<em>computational social science</em>) i tehnološke
+(<em>frontier</em>) tokove u obradi podataka (<em>data science</em>).
+Osim naglaska na akademsku primjenu stečenog znanja, kroz kolegij će se
+studentima olakšati uključivanje u poslovni IT sektor na strani
+analitike.</p>
 <p><br></p>
 <div id="literatura" class="section level3">
 <h3>Literatura</h3>
-<p>Koristiti ćemo mnoštvo različitih knjiga i resursa koje će biti dostupne na linkovima kod svakog predavanja.</p>
+<p>Koristiti ćemo mnoštvo različitih knjiga i resursa koje će biti
+dostupne na linkovima kod svakog predavanja.</p>
 <p>Sljedeće knjige ulaze u literaturu za kolegij:</p>
 <ul>
-<li><p><a href="http://www.alinea.hr/105.html">Udžbenik</a> iz multivarijatnih statističkih metoda na hrvatskom jeziku.</p></li>
-<li><p><a href="https://link.springer.com/book/10.1007/978-1-4419-9650-3">Uvodni udžbenik</a> za multivarijatne metode u R.</p></li>
-<li><p><a href="https://github.com/gabi493/ADEI/blob/master/Husson%20F.%20et%20al.%20-%20Exploratory%20Multivariate%20Analysis%20by%20Example%20-%20Using%20R%20-%202011.pdf">Udžbenik</a> iz eksplorativne multivarijatne analize u R.</p></li>
-<li><p><a href="https://www.springer.com/gp/book/9783642360046">Detaljni udžbenik</a> za multivarijatnu statistiku.</p></li>
-<li><p><a href="https://us.sagepub.com/en-us/nam/using-r-with-multivariate-statistics/book243861#contents">Sveobuhvatni udžbenik</a> za multivarijatnu statistiku u R.</p></li>
-<li><p><a href="https://web.uniroma1.it/memotef/sites/default/files/file%20lezioni/102b_textbook.pdf">Tehnički udžbenik</a> za multivarijatne metode u R.</p></li>
-<li><p>Za pregled modernog pristupa društvenim znanostima na osnovi podataka: <a href="https://www.bitbybitbook.com/en/1st-ed/preface/">Bit by Bit: Social Research in the Digital Age</a>.</p></li>
-<li><p>Ovo je klasična literatura za <a href="https://r4ds.had.co.nz/">R</a>.</p></li>
+<li><p><a href="http://www.alinea.hr/105.html">Udžbenik</a> iz
+multivarijatnih statističkih metoda na hrvatskom jeziku.</p></li>
+<li><p><a
+href="https://link.springer.com/book/10.1007/978-1-4419-9650-3">Uvodni
+udžbenik</a> za multivarijatne metode u R.</p></li>
+<li><p><a
+href="https://github.com/gabi493/ADEI/blob/master/Husson%20F.%20et%20al.%20-%20Exploratory%20Multivariate%20Analysis%20by%20Example%20-%20Using%20R%20-%202011.pdf">Udžbenik</a>
+iz eksplorativne multivarijatne analize u R.</p></li>
+<li><p><a href="https://www.springer.com/gp/book/9783642360046">Detaljni
+udžbenik</a> za multivarijatnu statistiku.</p></li>
+<li><p><a
+href="https://us.sagepub.com/en-us/nam/using-r-with-multivariate-statistics/book243861#contents">Sveobuhvatni
+udžbenik</a> za multivarijatnu statistiku u R.</p></li>
+<li><p><a
+href="https://web.uniroma1.it/memotef/sites/default/files/file%20lezioni/102b_textbook.pdf">Tehnički
+udžbenik</a> za multivarijatne metode u R.</p></li>
+<li><p>Za pregled modernog pristupa društvenim znanostima na osnovi
+podataka: <a href="https://www.bitbybitbook.com/en/1st-ed/preface/">Bit
+by Bit: Social Research in the Digital Age</a>.</p></li>
+<li><p>Ovo je klasična literatura za <a
+href="https://r4ds.had.co.nz/">R</a>.</p></li>
 </ul>
 <p><br></p>
 </div>

@@ -6,13 +6,14 @@ author: "Luka Sikic"
 date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)" #"`r format(Sys.time(), '%d %B %Y')`"
 output:
   xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts] 
+    css: ["default", "metropolis", "metropolis-fonts"] 
     lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+
 
 
 class: inverse, middle
@@ -176,9 +177,9 @@ layout: true
 <br><br>
 - Pohađanje nastave (predavanja i seminara) je obavezno i evidentira se
 <br><br>
-- Predavanja se održavaju ponedjeljkom (u dvorani Split) od 16:00 do 17:30 
+- Predavanja se održavaju srijedom (u dvorani Velebit) od 8:45 do 12:45
 <br><br>
-- Vježbe se održavaju četvrtkom (u dvorani Rijeka) od 16:00 do 17:30
+- Vježbe se održavaju srijedom (u dvorani Velebit) ou isto vrijeme
 <br><br>
 - Službeni repozitorij kolegija se nalazi na GitHubu i dostupan je na [linku](https://lusiki.github.io/WebMultiVar/)
 <br>

@@ -13,7 +13,7 @@
 
 <title>resources.knit</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -61,6 +61,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -81,6 +82,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -138,11 +142,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -171,8 +179,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -180,16 +188,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -233,7 +234,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -252,7 +253,7 @@ $(document).ready(function () {
   <a href="schedule.html">Raspored</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Predavanja
      
     <span class="caret"></span>
@@ -262,7 +263,7 @@ $(document).ready(function () {
       <a href="https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/01_UVOD.html#1">Uvod u kolegij</a>
     </li>
     <li>
-      <a href="https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/02_UVOD-U-R.html#1">Osnove programskog jezika R</a>
+      <a href="https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/02UVODUR.html#1">Osnove programskog jezika R</a>
     </li>
     <li>
       <a href="https://raw.githack.com/lusiki/WebMultiVar/main/Predavanja/03_PONAVLJANJE-DESKRIPTIVNA.html#1">Deskriptivna statistika</a>
@@ -334,10 +335,12 @@ $(document).ready(function () {
 <h2>R</h2>
 <ul>
 <li>
-<a href="https://education.rstudio.com/learn/">RStudio: Finding Your Way To R</a>
+<a href="https://education.rstudio.com/learn/">RStudio: Finding Your Way
+To R</a>
 </li>
 <li>
-<a href="https://www.datacamp.com/courses/free-introduction-to-r">DataCamp’s Introduction to R</a>
+<a href="https://www.datacamp.com/courses/free-introduction-to-r">DataCamp’s
+Introduction to R</a>
 </li>
 <li>
 <a href="http://adv-r.had.co.nz/">Advanced R</a>
@@ -346,10 +349,12 @@ $(document).ready(function () {
 <a href="https://www.r-bloggers.com/">R bloggers</a>
 </li>
 <li>
-<a href="https://cran.r-project.org/web/views/Multivariate.html">CRAN Task View: Multivariate Statistics</a>
+<a href="https://cran.r-project.org/web/views/Multivariate.html">CRAN
+Task View: Multivariate Statistics</a>
 </li>
 <li>
-<a href="https://cran.r-project.org/web/views/SocialSciences.html">CRAN Task View: Statistics for the Social Science</a>
+<a href="https://cran.r-project.org/web/views/SocialSciences.html">CRAN
+Task View: Statistics for the Social Science</a>
 </li
 </ul>
 <li>
@@ -357,22 +362,27 @@ $(document).ready(function () {
 </li
 </ul>
 </div>
-<div id="open-source-repozitoriji-iz-multivarijatne-statistike" class="section level2">
+<div id="open-source-repozitoriji-iz-multivarijatne-statistike"
+class="section level2">
 <h2>Open Source repozitoriji iz multivarijatne statistike</h2>
 <ul>
 <li>
-<a href="https://github.com/nthun/courses-multivariate-statistics-in-R-2018-fall">Github repozitorij (kolegij) iz multivarijatne statistike</a>
+<a href="https://github.com/nthun/courses-multivariate-statistics-in-R-2018-fall">Github
+repozitorij (kolegij) iz multivarijatne statistike</a>
 </li>
 <li>
-<a href="https://people.stat.sc.edu/Hitchcock/stat530.html">Applied Multivariate Statistics and Data Mining</a>
+<a href="https://people.stat.sc.edu/Hitchcock/stat530.html">Applied
+Multivariate Statistics and Data Mining</a>
 </li>
 </ul>
 </div>
-<div id="online-predavanja-iz-multivarijatnih-metoda" class="section level2">
+<div id="online-predavanja-iz-multivarijatnih-metoda"
+class="section level2">
 <h2>Online predavanja iz multivarijatnih metoda</h2>
 <ul>
 <li>
-<a href="https://www.udemy.com/course/applied-multivariate-analysis-with-r/?utm_source=adwords&utm_medium=udemyads&utm_campaign=LongTail_la.EN_cc.ROW&utm_content=deal4584&utm_term=_._ag_77879424214_._ad_437497333845_._kw__._de_c_._dm__._pl__._ti_dsa-1007766171552_._li_20229_._pd__._&matchtype=b&gclid=Cj0KCQiAvbiBBhD-ARIsAGM48bwurNZTDDJ71ffigbknOBbdua2-BA57vUG0O7qSHJlK5QBm-RkIxmsaAsqjEALw_wcB">Izvrstan Udemy tečaj iz Multivarijatne statistike</a>
+<a href="https://www.udemy.com/course/applied-multivariate-analysis-with-r/?utm_source=adwords&utm_medium=udemyads&utm_campaign=LongTail_la.EN_cc.ROW&utm_content=deal4584&utm_term=_._ag_77879424214_._ad_437497333845_._kw__._de_c_._dm__._pl__._ti_dsa-1007766171552_._li_20229_._pd__._&matchtype=b&gclid=Cj0KCQiAvbiBBhD-ARIsAGM48bwurNZTDDJ71ffigbknOBbdua2-BA57vUG0O7qSHJlK5QBm-RkIxmsaAsqjEALw_wcB">Izvrstan
+Udemy tečaj iz Multivarijatne statistike</a>
 </li>
 </ul>
 </div>
@@ -380,7 +390,8 @@ $(document).ready(function () {
 <h2>Online knjige</h2>
 <ul>
 <li>
-<a href="https://bookdown.org/brian_nguyen0305/Multivariate_Statistical_Analysis_with_R">Bookdown: Multivariate Statistical Analysis with R </a>
+<a href="https://bookdown.org/brian_nguyen0305/Multivariate_Statistical_Analysis_with_R">Bookdown:
+Multivariate Statistical Analysis with R </a>
 </li>
 </ul>
 </div>
@@ -388,17 +399,20 @@ $(document).ready(function () {
 <h2>Statistička beletristika</h2>
 <ul>
 <li>
-<a href="https://www.pdfdrive.com/penguin-books-how-to-lie-with-statistics-darrell-huff-e119748826.html">How to lie with statistics</a>
+<a href="https://www.pdfdrive.com/penguin-books-how-to-lie-with-statistics-darrell-huff-e119748826.html">How
+to lie with statistics</a>
 </li>
 <li>
-<a href="https://www.bookdepository.com/Art-Statistics-David-Spiegelhalter/9780241258767?pdg=dsa-19959388920:cmp-8862937091:adg-86528077382:crv-411135277650:pos-:dev-c&gclid=CjwKCAjwiOv7BRBREiwAXHbv3LXBoXSa-a8cNTrV3aewUF0MkjMZRiknrYma4gIeWYxwf4eiV9obQBoC2EAQAvD_BwEl">The Art of Statistics: Learning from Data</a>
+<a href="https://www.bookdepository.com/Art-Statistics-David-Spiegelhalter/9780241258767?pdg=dsa-19959388920:cmp-8862937091:adg-86528077382:crv-411135277650:pos-:dev-c&gclid=CjwKCAjwiOv7BRBREiwAXHbv3LXBoXSa-a8cNTrV3aewUF0MkjMZRiknrYma4gIeWYxwf4eiV9obQBoC2EAQAvD_BwEl">The
+Art of Statistics: Learning from Data</a>
 </li>
 <li>
 <a href="https://www.amazon.com/How-Make-World-Add-Up/dp/1408712245">How-Make-World-Add-Up</a>
 </li>
 <ul>
 <li>
-<a href="https://www.tellingstorieswithdata.com/">Online stories with R</a>
+<a href="https://www.tellingstorieswithdata.com/">Online stories with
+R</a>
 </li>
 <ul>
 </div>
@@ -409,7 +423,8 @@ $(document).ready(function () {
 <a href="http://modelingsocialdata.org/">Modeling Social Data</a>
 </li>
 <li>
-<a href="http://www.princeton.edu/~mjs3/soc504_s2015/#">Advanced data analysis for the social sciences</a>
+<a href="http://www.princeton.edu/~mjs3/soc504_s2015/#">Advanced data
+analysis for the social sciences</a>
 </li>
 <ul>
 </div>
@@ -417,22 +432,27 @@ $(document).ready(function () {
 <h2>Computational social science</h2>
 <ul>
 <li>
-<a href="https://msalganik.wordpress.com/">Blog od Matthew Salganik-a</a>
+<a href="https://msalganik.wordpress.com/">Blog od Matthew
+Salganik-a</a>
 </li>
 <li>
-<a href="http://www.princeton.edu/~mjs3/">Osobni web od Matthew Salganik-a</a>
+<a href="http://www.princeton.edu/~mjs3/">Osobni web od Matthew
+Salganik-a</a>
 </li>
 <li>
 <a href="https://sicss.io/">Ljetni CSS instituti</a>
 </li>
 <li>
-<a href="http://pablobarbera.com/POIR613/index.html">Izvrstan CSS kolegij</a>
+<a href="http://pablobarbera.com/POIR613/index.html">Izvrstan CSS
+kolegij</a>
 </li>
 <li>
-<a href="https://www.routledge.com/R-for-Political-Data-Science-A-Practical-Guide/Urdinez-Cruz/p/book/9780367818890">R za političke znanosti</a>
+<a href="https://www.routledge.com/R-for-Political-Data-Science-A-Practical-Guide/Urdinez-Cruz/p/book/9780367818890">R
+za političke znanosti</a>
 </li>
 <li>
-<a href="https://m-clark.github.io/docs/RSocialScience.pdf">R u društvenim znanostima</a>
+<a href="https://m-clark.github.io/docs/RSocialScience.pdf">R u
+društvenim znanostima</a>
 </li>
 <li>
 <a href="https://tilburgsciencehub.com/">Tilburg SciLab</a>
@@ -443,22 +463,28 @@ $(document).ready(function () {
 <h2>Ostalo</h2>
 <ul>
 <li>
-<a href="https://towardsdatascience.com/best-data-science-blogs-to-follow-in-2020-d03044169eb4">Data science blogovi</a>
+<a href="https://towardsdatascience.com/best-data-science-blogs-to-follow-in-2020-d03044169eb4">Data
+science blogovi</a>
 </li>
 <li>
-<a href="https://towardsdatascience.com/data-science-books-you-should-read-in-2020-358f70e1d9b2">Data science knjige</a>
+<a href="https://towardsdatascience.com/data-science-books-you-should-read-in-2020-358f70e1d9b2">Data
+science knjige</a>
 </li>
 <li>
-<a href="https://srdas.github.io/Papers/DSA_Book.pdf">Izvrsna knjiga iz Podatkovnih znaosti</a>
+<a href="https://srdas.github.io/Papers/DSA_Book.pdf">Izvrsna knjiga iz
+Podatkovnih znaosti</a>
 </li>
 <li>
-<a href="https://nealcaren.github.io/python-tutorials/">Izvrstan online tečaj iz Pythona za društvene znanosti</a>
+<a href="https://nealcaren.github.io/python-tutorials/">Izvrstan online
+tečaj iz Pythona za društvene znanosti</a>
 </li>
 <li>
-<a href="https://lusiki.github.io/WebStatistika/">Kolegij iz Primjenjene statistike</a>
+<a href="https://lusiki.github.io/WebStatistika/">Kolegij iz Primjenjene
+statistike</a>
 </li>
 <li>
-<a href="https://lusiki.github.io/WebObradaPodataka/">Kolegij iz Obrade podataka</a>
+<a href="https://lusiki.github.io/WebObradaPodataka/">Kolegij iz Obrade
+podataka</a>
 </li>
 <li>
 <a href="https://rpubs.com/shichich">Prošlogodišnja predavanja</a>
