@@ -1,17 +1,22 @@
 ---
 title: "MULTIVARIJATNE STATISTIČKE METODE"
-author: "Luka Šikić, PhD"
-date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)"
 subtitle: "Predavanje 2 (dodatak): Osnove ggplot2 vizualizacijskog sustava"
+author: "Luka Sikic, PhD"
+institute: "Fakultet hrvatskih studija"
+date: "(Osvježeno: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts] 
     lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
+
+
+
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)

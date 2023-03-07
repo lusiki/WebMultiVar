@@ -13,6 +13,9 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
+
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
+
 name: toc
 
 ```{r setup, include=FALSE}
@@ -809,19 +812,3 @@ class: inverse, center, middle
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
 (Nastavak: Inferencijalna statistika)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
