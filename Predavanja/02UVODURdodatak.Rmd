@@ -271,8 +271,9 @@ p2 =
 
 # 3. Napravi grafikon u slojevima (dalje)
 
-```{r layers2, dependson=p2, echo=FALSE, dev='svg'}
+```{r}
 p2
+
 ```
 
 ---
@@ -286,7 +287,7 @@ Prethodni primjeri su samo uvod u punu funkcionalnost ggplot2...nismo ni spomenu
 
 Za sljedeće grafikone je potrebno instalirati neke dodatne pakete. To možete napraviti na ovaj način:
 
-```{r pacinstall}
+```{r }
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(hrbrthemes, gganimate)
 ```
@@ -296,7 +297,7 @@ pacman::p_load(hrbrthemes, gganimate)
 # Kako dalje? (cont.)
 
 Jednostavno poboljšanje: eksterna tema!
-```{r modern_rc_theme, dependson=p2, dev='svg'}
+```{r modern_rc_theme}
 # library(hrbrthemes)
 p2 + theme_modern_rc() + geom_point(aes(size = pop, col = continent), alpha = 0.2)
 ```
