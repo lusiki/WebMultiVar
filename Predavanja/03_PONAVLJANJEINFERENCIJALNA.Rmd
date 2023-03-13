@@ -1,12 +1,11 @@
 ---
 title: "MULTIVARIJATNE STATISTIČKE METODE"
-# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
 subtitle: "Predavanje 3: Inferencijalna statistika"
 author: "Luka Sikic, PhD"
-date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)" #"`r format(Sys.time(), '%d %B %Y')`"
+institute: "Fakultet hrvatskih studija"
+date: "(Osvježeno: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts] 
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -882,7 +881,7 @@ summary(procjena_anova3_dta)
 
 # Višestruka ANOVA
 .tiny[
-```{r}
+```{r eval = F}
 # Međusobna usporedba prosjeka (varijabli)
 TukeyHSD(procjena_anova3_dta, which = "dose") # 1. način
 summary(glht(procjena_anova3_dta, lincft = mcp(dose = "Tukey"))) # 2. način
@@ -1165,7 +1164,7 @@ colour <- TRUE
 	width <- 6
 	height <- 6
 	
-  load(file.path("../Podatci/parenthood.Rdata"))
+  load(file.path("./Podatci/parenthood.Rdata"))
 	
   
   drawBasicScatterplot <- function(dotcol,title) {
@@ -1308,7 +1307,7 @@ $$Y_i = b_2 X_{i2} + b_1 X_{i1} + b_0 + \epsilon_i$$
 # Grafički prikaz
 
 ```{r, fig.height=6}
-knitr::include_graphics(file.path("../Foto/scatter3d.png"))
+knitr::include_graphics(file.path("./Foto/scatter3d.png"))
 ```
 
 ---
@@ -1529,7 +1528,7 @@ summary(regression.2)
 - Outlieri
 
 ```{r, echo=FALSE, eval = T, fig.height=4}
-knitr::include_graphics(file.path("../Foto/outlier.png"))
+knitr::include_graphics(file.path("./Foto/outlier.png"))
 ```
 ---
 
@@ -1540,7 +1539,7 @@ knitr::include_graphics(file.path("../Foto/outlier.png"))
 - Poluga (Leverage)
 
 ```{r, echo=FALSE, eval = T, fig.height=4}
-knitr::include_graphics(file.path("../Foto/outlier.png"))
+knitr::include_graphics(file.path("./Foto/outlier.png"))
 ```
 
 ---
@@ -1552,7 +1551,7 @@ knitr::include_graphics(file.path("../Foto/outlier.png"))
 - Poluga (Leverage)
 
 ```{r, echo=FALSE, eval = T, fig.height=4}
-knitr::include_graphics(file.path("../Foto/outlier.png"))
+knitr::include_graphics(file.path("./Foto/outlier.png"))
 ```
 
 ---
