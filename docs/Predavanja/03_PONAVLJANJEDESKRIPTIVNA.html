@@ -4,18 +4,29 @@
     <title>MULTIVARIJATNE STATISTIČKE METODE</title>
     <meta charset="utf-8" />
     <meta name="author" content="Luka Sikic, PhD" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
-    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # MULTIVARIJATNE STATISTIČKE METODE
+]
+.subtitle[
 ## Predavanje 3: Deskriptivna statistika
+]
+.author[
 ### Luka Sikic, PhD
-### Fakultet hrvatskih studija | <a href="https://lusiki.github.io/WebMultiVar/">Github MV</a>
+]
+.institute[
+### Fakultet hrvatskih studija
+]
+.date[
+### (Osvježeno: 2023-03-13)
+]
 
 ---
 
@@ -86,7 +97,7 @@ name: podatci
 # Učitaj paket
 library(lsr)
 # Učitaj podatke u radni prostor
-load("../Podatci/aflsmall.Rdata") 
+load("./Podatci/aflsmall.Rdata") 
 
 who() # Pregledaj učitane podatke
 ```
@@ -120,7 +131,7 @@ print(afl.finalists[1:5])
 # Grafički pregled podataka
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="03_PONAVLJANJE-DESKRIPTIVNA_files/figure-html/histogram1-1.png" alt="Histogram pobjedničkih bodova iz AFL 2010 lige američkog nogometa."  /&gt;
+&lt;img src="03_PONAVLJANJEDESKRIPTIVNA_files/figure-html/histogram1-1.png" alt="Histogram pobjedničkih bodova iz AFL 2010 lige američkog nogometa."  /&gt;
 &lt;p class="caption"&gt;Histogram pobjedničkih bodova iz AFL 2010 lige američkog nogometa.&lt;/p&gt;
 &lt;/div&gt;
 
@@ -401,6 +412,9 @@ IQR(x = afl.margins)
 ## [1] 37.75
 ```
 
+
+
+
 ---
 
 # Varijanca
@@ -582,7 +596,7 @@ summary( object = txt ) # Deskriptivna stat
 
 ```r
 rm(list = ls()) # Očisti radni prostor
-load("../PODATCI/clinicaltrial.Rdata") # Učitaj podatke
+load("./PODATCI/clinicaltrial.Rdata") # Učitaj podatke
 who(TRUE) # Pregled podataka 
 ```
 
@@ -720,7 +734,7 @@ by(data = clin.trial, # Izvor podataka
 
 ```r
 # Pregledaj grupirano prema razlici u raspoloženju
-aggregate(formula = mood.gain ~ drug + therapy, # Prikaz
+aggregate(mood.gain ~ drug + therapy, # Prikaz
           data = clin.trial, # Podatci
           FUN = mean) # AS
 ```
@@ -780,6 +794,9 @@ name: sv
 &lt;br&gt;
 
 `$$z_i = \frac{X_i - \bar{X}}{\hat\sigma}$$`
+
+
+
 &lt;br&gt;
 
 `$$z = \frac{35 - 17}{5} = 3.6$$`
@@ -814,7 +831,7 @@ name: kor
 ```r
 rm(list = ls()) # Očisti radni prostor
  # Učitaj podatke
-load("../PODATCI/parenthood.Rdata")
+load("./PODATCI/parenthood.Rdata")
 who(TRUE) # Pregled podataka 
 ```
 
@@ -898,7 +915,7 @@ Hmisc::describe(parenthood)
 # Podatci
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="03_PONAVLJANJE-DESKRIPTIVNA_files/figure-html/parenthood-1.png" alt="Grafički prikaz varijabli u podatkovnom skupu."  /&gt;
+&lt;img src="03_PONAVLJANJEDESKRIPTIVNA_files/figure-html/parenthood-1.png" alt="Grafički prikaz varijabli u podatkovnom skupu."  /&gt;
 &lt;p class="caption"&gt;Grafički prikaz varijabli u podatkovnom skupu.&lt;/p&gt;
 &lt;/div&gt;
 
@@ -910,7 +927,7 @@ Hmisc::describe(parenthood)
 
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="03_PONAVLJANJE-DESKRIPTIVNA_files/figure-html/scatterparent1a-1.png" alt="Dijagram rasipanja za varijable `Sati spavanja/roditelj` i `Raspoloženje`."  /&gt;
+&lt;img src="03_PONAVLJANJEDESKRIPTIVNA_files/figure-html/scatterparent1a-1.png" alt="Dijagram rasipanja za varijable `Sati spavanja/roditelj` i `Raspoloženje`."  /&gt;
 &lt;p class="caption"&gt;Dijagram rasipanja za varijable `Sati spavanja/roditelj` i `Raspoloženje`.&lt;/p&gt;
 &lt;/div&gt;
 
@@ -919,7 +936,7 @@ Hmisc::describe(parenthood)
 # Korelacija
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="03_PONAVLJANJE-DESKRIPTIVNA_files/figure-html/scatterparent1b-1.png" alt="Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Raspoloženje`."  /&gt;
+&lt;img src="03_PONAVLJANJEDESKRIPTIVNA_files/figure-html/scatterparent1b-1.png" alt="Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Raspoloženje`."  /&gt;
 &lt;p class="caption"&gt;Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Raspoloženje`.&lt;/p&gt;
 &lt;/div&gt;
 
@@ -928,7 +945,7 @@ Hmisc::describe(parenthood)
 # Korelacija
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="03_PONAVLJANJE-DESKRIPTIVNA_files/figure-html/scatterparent2-1.png" alt="Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Sati spavanja/roditelj`."  /&gt;
+&lt;img src="03_PONAVLJANJEDESKRIPTIVNA_files/figure-html/scatterparent2-1.png" alt="Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Sati spavanja/roditelj`."  /&gt;
 &lt;p class="caption"&gt;Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Sati spavanja/roditelj`.&lt;/p&gt;
 &lt;/div&gt;
 
@@ -954,7 +971,7 @@ Hmisc::describe(parenthood)
 
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="03_PONAVLJANJE-DESKRIPTIVNA_files/figure-html/corr-1.png" alt="Različiti smjer i intenzitet korelacije."  /&gt;
+&lt;img src="03_PONAVLJANJEDESKRIPTIVNA_files/figure-html/corr-1.png" alt="Različiti smjer i intenzitet korelacije."  /&gt;
 &lt;p class="caption"&gt;Različiti smjer i intenzitet korelacije.&lt;/p&gt;
 &lt;/div&gt;
 
@@ -994,6 +1011,9 @@ cor(x = parenthood)
 
 
 
+
+
+
 Table: Okvirne smjernice za interpretaciju korelacije.
 
 |Korelacija   |Snaga         |Smjer     |
@@ -1017,7 +1037,7 @@ Table: Okvirne smjernice za interpretaciju korelacije.
 
 ```r
 rm(list=ls()) # Očisti radni prostor
-load("../PODATCI/effort.Rdata") # Učitaj podatke
+load("./PODATCI/effort.Rdata") # Učitaj podatke
 lsr::who(TRUE) # Pregledaj podatke
 ```
 
@@ -1095,7 +1115,7 @@ Hmisc::describe(effort)
 # Podatci
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="03_PONAVLJANJE-DESKRIPTIVNA_files/figure-html/rankcorrpic-1.png" alt="Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta)."  /&gt;
+&lt;img src="03_PONAVLJANJEDESKRIPTIVNA_files/figure-html/rankcorrpic-1.png" alt="Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta)."  /&gt;
 &lt;p class="caption"&gt;Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta).&lt;/p&gt;
 &lt;/div&gt;
 
@@ -1202,6 +1222,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

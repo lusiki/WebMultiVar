@@ -1,12 +1,11 @@
 ---
 title: "MULTIVARIJATNE STATISTIČKE METODE"
-# subtitle: "<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>"
 subtitle: "Predavanje 3: Deskriptivna statistika"
 author: "Luka Sikic, PhD"
-date: "Fakultet hrvatskih studija | [Github MV](https://lusiki.github.io/WebMultiVar/)" #"`r format(Sys.time(), '%d %B %Y')`"
+institute: "Fakultet hrvatskih studija"
+date: "(Osvježeno: `r Sys.Date()`)"
 output:
-  xaringan:::moon_reader:
-    css: [default, metropolis, metropolis-fonts] 
+  xaringan::moon_reader:
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -291,6 +290,9 @@ IQR(x = afl.margins)
 
 ```
 
+
+
+
 ---
 
 # Varijanca
@@ -499,6 +501,9 @@ $$\mbox{standardna vrijednost} = \frac{\mbox{vrijednost opservacije} - \mbox{pro
 <br>
 
 $$z_i = \frac{X_i - \bar{X}}{\hat\sigma}$$
+
+
+
 <br>
 
 $$z = \frac{35 - 17}{5} = 3.6$$
@@ -701,6 +706,9 @@ cor(x = parenthood)
 # Interpretacija korelacije
 
 
+
+
+
 ```{r interpretingcorrelations, echo=FALSE}
 knitr::kable(
 rbind(
@@ -809,19 +817,3 @@ class: inverse, center, middle
 <html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
 
 (Nastavak: Inferencijalna statistika)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
