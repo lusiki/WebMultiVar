@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MULTIVARIJATNE STATISTIČKE METODE</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Luka Sikic, PhD" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# MULTIVARIJATNE STATISTIČKE METODE
+]
+.subtitle[
+## Predavanje 3: Deskriptivna statistika
+]
+.author[
+### Luka Sikic, PhD
+]
+.institute[
+### Fakultet hrvatskih studija
+]
+.date[
+### (Osvježeno: 2023-03-13)
+]
+
+---
+
+name: toc
+
+
+
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+remark-slide-content {
+  font-size: 22px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 16px;
+}
+.mid. remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 40% !important;
+}
+&lt;/style&gt;
+
+# Pregled predavanja
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+
+1. [Podatci](#podatci)
+
+2. [Mjere centralne tendencije](#mct)
+
+3. [Mjere varijabilnosti](#mv)
+
+4. [Varijable i podatkovni okviri](#vpo)
+
+5. [Standardizirane vrijednosti](#sv)
+
+6. [Korelacija](#kor)
+
+
+---
+class: inverse, center, middle
+name: podatci
+
+# PODATCI
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Sve kreće od podataka)
+
+---
+
+# Učitaj i pregledaj podatke
+
+
+```r
+# Učitaj paket
+library(lsr)
+# Učitaj podatke u radni prostor
+load("./Podatci/aflsmall.Rdata") 
+
+who() # Pregledaj učitane podatke
+```
+
+```
+##    -- Name --      -- Class --   -- Size --
+##    afl.finalists   factor        400       
+##    afl.margins     numeric       176
+```
+
+```r
+# Pregledaj podatke
+print(afl.margins[1:11])
+```
+
+```
+##  [1] 56 31 56  8 32 14 36 56 19  1  3
+```
+
+```r
+print(afl.finalists[1:5])
+```
+
+```
+## [1] Hawthorn  Melbourne Carlton   Melbourne Hawthorn 
+## 17 Levels: Adelaide Brisbane Carlton Collingwood Essendon Fitzroy ... Western Bulldogs
+```
+
+---
+
+# Grafički pregled podataka
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="brisi_files/figure-html/histogram1-1.png" alt="Histogram pobjedničkih bodova iz AFL 2010 lige američkog nogometa."  /&gt;
+&lt;p class="caption"&gt;Histogram pobjedničkih bodova iz AFL 2010 lige američkog nogometa.&lt;/p&gt;
+&lt;/div&gt;
+
+
+
+---
+class: inverse, center, middle
+name: mct
+
+# MJERE CENTRALNE TENDENCIJE
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Zlatna sredina)
+
+---
+
+
+# Najčešće korištene mjere
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+- Aritmetička sredina
+&lt;br&gt;
+&lt;br&gt;
+- Medijan
+&lt;br&gt;
+&lt;br&gt;
+- Mod
+
+---
+
+# Aritmetička sredina
+
+&lt;br&gt;
+&lt;br&gt;
+
+#### Matematička definicija
+
+
+`$$\bar{X} = \frac{X_1 + X_2 + ... + X_{N-1} + X_N}{N}$$`
+#### Operator za sumiranje
+$$
+\sum_{i=1}^5 X_i
+$$
+
+#### Skraćeni zapis
+$$
+\bar{X} = \frac{1}{N} \sum_{i=1}^N X_i 
+$$
+---
+
+# Aritmetička sredina
+
+&lt;br&gt;
+&lt;br&gt;
+
+#### Izračun rukom
+$$
+\frac{56 + 31 + 56 + 8 + 32}{5} = \frac{183}{5} = 36.60
+$$
+
+#### Kalkulator
+
+```r
+(56 + 31 + 56 + 8 + 32) / 5
+```
+
+```
+## [1] 36.6
+```
+
+
+#### Funkcija
+
+```r
+sum( afl.margins[1:5]) / 5
+```
+
+```
+## [1] 36.6
+```
+
+
+
+---
+
+# Medijan
+&lt;br&gt;
+&lt;br&gt;
+
+#### Neparni niz
+$$
+8, 31, \mathbf{32}, 56, 56
+$$
+
+#### Parni niz
+$$
+8, 14, \mathbf{31}, \mathbf{32}, 56, 56
+$$
+
+
+```r
+#  Izračunaj medijan putem funkcije
+median( x = afl.margins ) # Cijeli podatkovni skup
+```
+
+```
+## [1] 30.5
+```
+
+---
+
+# Mod
+
+
+```r
+# Pogledaj frekvenciju podataka
+table(afl.finalists)
+```
+
+```
+## afl.finalists
+##         Adelaide         Brisbane          Carlton      Collingwood 
+##               26               25               26               28 
+##         Essendon          Fitzroy        Fremantle          Geelong 
+##               32                0                6               39 
+##         Hawthorn        Melbourne  North Melbourne    Port Adelaide 
+##               27               28               28               17 
+##         Richmond         St Kilda           Sydney       West Coast 
+##                6               24               26               38 
+## Western Bulldogs 
+##               24
+```
+
+```r
+# Izračunaj modalnu vrijednost
+modeOf( x = afl.finalists )
+```
+
+```
+## [1] "Geelong"
+```
+
+---
+
+# Mod
+
+&lt;br&gt;
+&lt;br&gt;
+
+
+```r
+# Izračunaj modalnu frekvenciju
+maxFreq(x = afl.finalists)
+```
+
+```
+## [1] 39
+```
+
+```r
+# Izaračun za afl.margins podatke
+modeOf(afl.margins)  # Mod
+```
+
+```
+## [1] 3
+```
+
+```r
+maxFreq(afl.margins) # Modalna frekvencija
+```
+
+```
+## [1] 8
+```
+
+
+
+---
+class: inverse, center, middle
+name: mv
+
+# MJERE VARIJABILNOSTI
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Raspršenost podataka)
+
+---
+
+# Najčešće korištene mjere
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+- Raspon/Min-Max
+&lt;br&gt;
+&lt;br&gt;
+- Kvartili
+&lt;br&gt;
+&lt;br&gt;
+- Varijanca
+&lt;br&gt;
+&lt;br&gt;
+- Standardna devijacija 
+
+---
+
+# Raspon (Min-Max)
+
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+# Maksimalna vrijednost
+max(afl.margins)
+```
+
+```
+## [1] 116
+```
+
+```r
+# Minimalna vrijednost
+min(afl.margins)
+```
+
+```
+## [1] 0
+```
+
+```r
+# Raspon podataka
+range(afl.margins)
+```
+
+```
+## [1]   0 116
+```
+
+
+---
+
+# Kvartili
+
+
+```r
+# Izračunaj pedeseti (50i) kvartil/percentil
+quantile(x = afl.margins, probs = .5)
+```
+
+```
+##  50% 
+## 30.5
+```
+
+```r
+# Izračunaj 25i i 75i kvartil/percentil
+quantile(afl.margins, probs = c(.25,.75))
+```
+
+```
+##   25%   75% 
+## 12.75 50.50
+```
+
+```r
+# Izračunaj interkvartilni raspon
+IQR(x = afl.margins)
+```
+
+```
+## [1] 37.75
+```
+
+
+
+
+---
+
+# Varijanca
+&lt;br&gt;
+&lt;br&gt;
+
+#### Matematička definicija
+&lt;br&gt;
+&lt;br&gt;
+`$$\mbox{Var}(X) = \frac{1}{N} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2$$`
+&lt;br&gt;
+&lt;br&gt;
+#### Alternativni zapis
+`$$\mbox{Var}(X) = \frac{\sum_{i=1}^N \left( X_i - \bar{X} \right)^2}{N}$$`
+
+---
+
+# Varijanca
+&lt;br&gt;
+&lt;br&gt;
+
+
+Table: Ručni izračun varijance.
+
+| `\(i\)`| `\(X_i\)`| `\(X_i - \bar{X}\)`| `\((X_i - \bar{X})^2\)`|
+|---:|-----:|---------------:|-------------------:|
+|   1|    56|            19.4|              376.36|
+|   2|    31|            -5.6|               31.36|
+|   3|    56|            19.4|              376.36|
+|   4|     8|           -28.6|              817.96|
+|   5|    32|            -4.6|               21.16|
+
+---
+
+# Varijanca
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+# Kalkulator
+(376.36 + 31.36 + 376.36 + 817.96 + 21.16 ) / 5
+```
+
+```
+## [1] 324.64
+```
+
+
+```r
+# Izračunaj varijancu pomoću funkcija
+mean( (afl.margins - mean(afl.margins) )^2)
+```
+
+```
+## [1] 675.9718
+```
+
+```r
+var( afl.margins ) # Skrati postupak
+```
+
+```
+## [1] 679.8345
+```
+
+---
+
+
+# Standardna devijacija 
+&lt;br&gt;
+&lt;br&gt;
+#### Matematička definicija
+&lt;br&gt;
+
+
+`$$s = \sqrt{ \frac{1}{N} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2 }$$`
+
+&lt;br&gt;
+
+#### **Procjena** standardne devijacije
+
+`$$\hat\sigma = \sqrt{ \frac{1}{N-1} \sum_{i=1}^N \left( X_i - \bar{X} \right)^2 }$$`
+
+
+```r
+# Izračunaj pomoću funkcije
+sd( afl.margins ) 
+```
+
+```
+## [1] 26.07364
+```
+
+
+---
+class: inverse, center, middle
+name: vpo
+
+# VARIJABLE I PODTAKOVNI OKVIRI
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Deskriptivna statistika u praksi)
+
+---
+
+# Deskriptivna statistika na varijabli
+
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+# Pregled numeričke varijable
+summary( object = afl.margins ) # Deskriptivna stat 
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    0.00   12.75   30.50   35.30   50.50  116.00
+```
+
+
+```r
+# Pregled logičke varijable
+ekstremi &lt;-  afl.margins &gt; 50 # Stvori log varijablu
+head(ekstremi,5) # Pogledaj podatke
+```
+
+```
+## [1]  TRUE FALSE  TRUE FALSE FALSE
+```
+
+```r
+summary(ekstremi) # Deskriptivna stat
+```
+
+```
+##    Mode   FALSE    TRUE 
+## logical     132      44
+```
+---
+
+# Deskriptivna statistika na varijabli
+
+
+```r
+# Pregled faktorske varijable
+summary(object = afl.finalists) # Deskriptivna stat
+```
+
+```
+##         Adelaide         Brisbane          Carlton      Collingwood 
+##               26               25               26               28 
+##         Essendon          Fitzroy        Fremantle          Geelong 
+##               32                0                6               39 
+##         Hawthorn        Melbourne  North Melbourne    Port Adelaide 
+##               27               28               28               17 
+##         Richmond         St Kilda           Sydney       West Coast 
+##                6               24               26               38 
+## Western Bulldogs 
+##               24
+```
+
+```r
+# Pregled tekstualne varijable
+txt &lt;- as.character( afl.finalists ) # Stvori txt var
+summary( object = txt ) # Deskriptivna stat
+```
+
+```
+##    Length     Class      Mode 
+##       400 character character
+```
+
+---
+
+# Drugi podatci
+
+
+```r
+rm(list = ls()) # Očisti radni prostor
+load("./PODATCI/clinicaltrial.Rdata") # Učitaj podatke
+who(TRUE) # Pregled podataka 
+```
+
+```
+##    -- Name --    -- Class --   -- Size --
+##    clin.trial    data.frame    18 x 3    
+##     $drug        factor        18        
+##     $therapy     factor        18        
+##     $mood.gain   numeric       18
+```
+
+```r
+head(clin.trial, 5) #Pregled podataka
+```
+
+```
+##       drug    therapy mood.gain
+## 1  placebo no.therapy       0.5
+## 2  placebo no.therapy       0.3
+## 3  placebo no.therapy       0.1
+## 4 anxifree no.therapy       0.6
+## 5 anxifree no.therapy       0.4
+```
+
+
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+
+
+```r
+# Deksriptivna statistika na podatkovnom okviru
+summary(clin.trial) # Desktiptivna stat
+```
+
+```
+##        drug         therapy    mood.gain     
+##  placebo :6   no.therapy:9   Min.   :0.1000  
+##  anxifree:6   CBT       :9   1st Qu.:0.4250  
+##  joyzepam:6                  Median :0.8500  
+##                              Mean   :0.8833  
+##                              3rd Qu.:1.3000  
+##                              Max.   :1.8000
+```
+
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+.tiny[
+
+```r
+# Deksriptivna statistika na podatkovnom okviru
+Hmisc::describe(clin.trial) # Desktiptivna stat/ druga funkcija
+```
+
+```
+## clin.trial 
+## 
+##  3  Variables      18  Observations
+## --------------------------------------------------------------------------------
+## drug 
+##        n  missing distinct 
+##       18        0        3 
+##                                      
+## Value       placebo anxifree joyzepam
+## Frequency         6        6        6
+## Proportion    0.333    0.333    0.333
+## --------------------------------------------------------------------------------
+## therapy 
+##        n  missing distinct 
+##       18        0        2 
+##                                 
+## Value      no.therapy        CBT
+## Frequency           9          9
+## Proportion        0.5        0.5
+## --------------------------------------------------------------------------------
+## mood.gain 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##       18        0       17    0.996   0.8833   0.6281    0.185    0.270 
+##      .25      .50      .75      .90      .95 
+##    0.425    0.850    1.300    1.490    1.715 
+## 
+## lowest : 0.1 0.2 0.3 0.3 0.4, highest: 1.3 1.4 1.4 1.7 1.8
+##                                                                             
+## Value        0.1   0.2   0.3   0.4   0.5   0.6   0.8   0.9   1.1   1.2   1.3
+## Frequency      1     1     2     1     1     2     1     1     1     1     2
+## Proportion 0.056 0.056 0.111 0.056 0.056 0.111 0.056 0.056 0.056 0.056 0.111
+##                             
+## Value        1.4   1.7   1.8
+## Frequency      2     1     1
+## Proportion 0.111 0.056 0.056
+## --------------------------------------------------------------------------------
+```
+]
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+.tiny[
+
+```r
+# Pregledaj grupirano prema terapiji
+by(data = clin.trial, # Izvor podataka
+   INDICES = clin.trial$therapy, # Odredi grupiranje
+   FUN = summary) # Odredi funkciju
+```
+
+```
+## clin.trial$therapy: no.therapy
+##        drug         therapy    mood.gain     
+##  placebo :3   no.therapy:9   Min.   :0.1000  
+##  anxifree:3   CBT       :0   1st Qu.:0.3000  
+##  joyzepam:3                  Median :0.5000  
+##                              Mean   :0.7222  
+##                              3rd Qu.:1.3000  
+##                              Max.   :1.7000  
+## ------------------------------------------------------------ 
+## clin.trial$therapy: CBT
+##        drug         therapy    mood.gain    
+##  placebo :3   no.therapy:0   Min.   :0.300  
+##  anxifree:3   CBT       :9   1st Qu.:0.800  
+##  joyzepam:3                  Median :1.100  
+##                              Mean   :1.044  
+##                              3rd Qu.:1.300  
+##                              Max.   :1.800
+```
+]
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+
+
+```r
+# Pregledaj grupirano prema razlici u raspoloženju
+aggregate(mood.gain ~ drug + therapy, # Prikaz
+          data = clin.trial, # Podatci
+          FUN = mean) # AS
+```
+
+```
+##       drug    therapy mood.gain
+## 1  placebo no.therapy  0.300000
+## 2 anxifree no.therapy  0.400000
+## 3 joyzepam no.therapy  1.466667
+## 4  placebo        CBT  0.600000
+## 5 anxifree        CBT  1.033333
+## 6 joyzepam        CBT  1.500000
+```
+
+
+---
+
+# Deskriptivna statistika na podatkovnom okviru
+
+
+
+```r
+# Pregledaj grupirano prema razlici u raspoloženju
+aggregate(mood.gain ~ drug + therapy,  # Prikaz
+          clin.trial, # Podatci
+          sd) # Standardna devijacija
+```
+
+```
+##       drug    therapy mood.gain
+## 1  placebo no.therapy 0.2000000
+## 2 anxifree no.therapy 0.2000000
+## 3 joyzepam no.therapy 0.2081666
+## 4  placebo        CBT 0.3000000
+## 5 anxifree        CBT 0.2081666
+## 6 joyzepam        CBT 0.2645751
+```
+
+
+---
+class: inverse, center, middle
+name: sv
+
+# STANDARDIZIRANE VRIJEDNOSTI
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Usporedba kruški i jabuka)
+
+---
+
+# Standardizirane vrijednosti
+
+#### Matematička definicija
+&lt;br&gt;
+`$$\mbox{standardna vrijednost} = \frac{\mbox{vrijednost opservacije} - \mbox{prosjek}}{\mbox{standardna devijacija}}$$` 
+&lt;br&gt;
+
+`$$z_i = \frac{X_i - \bar{X}}{\hat\sigma}$$`
+
+
+
+&lt;br&gt;
+
+`$$z = \frac{35 - 17}{5} = 3.6$$`
+
+
+```r
+# Vidi dio u distribuciji
+pnorm( 3.6 ) 
+```
+
+```
+## [1] 0.9998409
+```
+
+
+---
+class: inverse, center, middle
+name: kor
+
+# KORELACIJA
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Međusobni odnos dvije ili više varjabli)
+
+---
+
+
+# Podatci
+
+
+```r
+rm(list = ls()) # Očisti radni prostor
+ # Učitaj podatke
+load("./PODATCI/parenthood.Rdata")
+who(TRUE) # Pregled podataka 
+```
+
+```
+##    -- Name --     -- Class --   -- Size --
+##    parenthood     data.frame    100 x 4   
+##     $dan.sleep    numeric       100       
+##     $baby.sleep   numeric       100       
+##     $dan.grump    numeric       100       
+##     $day          integer       100
+```
+
+```r
+# Pregledaj podatke
+head(parenthood, 7) # Prvih 7 redova
+```
+
+```
+##   dan.sleep baby.sleep dan.grump day
+## 1      7.59      10.18        56   1
+## 2      7.91      11.66        60   2
+## 3      5.14       7.92        82   3
+## 4      7.71       9.61        55   4
+## 5      6.68       9.75        67   5
+## 6      5.99       5.04        72   6
+## 7      8.19      10.45        53   7
+```
+
+---
+
+# Podatci
+
+.tiny[
+
+```r
+# Pogledaj deskriptivnu statistiku
+Hmisc::describe(parenthood)
+```
+
+```
+## parenthood 
+## 
+##  4  Variables      100  Observations
+## --------------------------------------------------------------------------------
+## dan.sleep 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##      100        0       90        1    6.965    1.164    5.138    5.434 
+##      .25      .50      .75      .90      .95 
+##    6.292    7.030    7.740    8.172    8.473 
+## 
+## lowest : 4.84 4.86 4.91 4.98 5.09, highest: 8.47 8.52 8.66 8.72 9.00
+## --------------------------------------------------------------------------------
+## baby.sleep 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##      100        0       88        1    8.049    2.381    4.698    5.591 
+##      .25      .50      .75      .90      .95 
+##    6.425    7.950    9.635   11.083   11.612 
+## 
+## lowest :  3.25  3.46  4.17  4.18  4.66, highest: 11.66 11.68 11.75 11.78 12.07
+## --------------------------------------------------------------------------------
+## dan.grump 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##      100        0       37    0.998    63.71    11.33     50.0     52.9 
+##      .25      .50      .75      .90      .95 
+##     57.0     62.0     71.0     78.1     82.0 
+## 
+## lowest : 41 44 46 48 50, highest: 80 82 86 89 91
+## --------------------------------------------------------------------------------
+## day 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##      100        0      100        1     50.5    33.67     5.95    10.90 
+##      .25      .50      .75      .90      .95 
+##    25.75    50.50    75.25    90.10    95.05 
+## 
+## lowest :   1   2   3   4   5, highest:  96  97  98  99 100
+## --------------------------------------------------------------------------------
+```
+]
+---
+
+# Podatci
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="brisi_files/figure-html/parenthood-1.png" alt="Grafički prikaz varijabli u podatkovnom skupu."  /&gt;
+&lt;p class="caption"&gt;Grafički prikaz varijabli u podatkovnom skupu.&lt;/p&gt;
+&lt;/div&gt;
+
+
+
+---
+
+# Korelacija
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="brisi_files/figure-html/scatterparent1a-1.png" alt="Dijagram rasipanja za varijable `Sati spavanja/roditelj` i `Raspoloženje`."  /&gt;
+&lt;p class="caption"&gt;Dijagram rasipanja za varijable `Sati spavanja/roditelj` i `Raspoloženje`.&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+# Korelacija
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="brisi_files/figure-html/scatterparent1b-1.png" alt="Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Raspoloženje`."  /&gt;
+&lt;p class="caption"&gt;Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Raspoloženje`.&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+# Korelacija
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="brisi_files/figure-html/scatterparent2-1.png" alt="Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Sati spavanja/roditelj`."  /&gt;
+&lt;p class="caption"&gt;Dijagram rasipanja za varijable `Sati spavanja/dijete` i `Sati spavanja/roditelj`.&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+# Kovarijanca
+&lt;br&gt;
+&lt;br&gt;
+#### Matematička definicija
+
+`$$\mbox{Cov}(X,Y) = \frac{1}{N-1} \sum_{i=1}^N \left( X_i - \bar{X} \right) \left( Y_i - \bar{Y} \right)$$`
+&lt;br&gt;
+&lt;br&gt;
+
+#### Pearsonov korelacijski koeficijent (standardizacija kovarijance)
+
+`$$r_{XY}  = \frac{\mbox{Cov}(X,Y)}{ \hat{\sigma}_X \ \hat{\sigma}_Y}$$`
+
+
+---
+
+# Smjer i intenzitet korelacije
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="brisi_files/figure-html/corr-1.png" alt="Različiti smjer i intenzitet korelacije."  /&gt;
+&lt;p class="caption"&gt;Različiti smjer i intenzitet korelacije.&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+# Izračun korelacije u R
+
+&lt;br&gt;
+&lt;br&gt;
+
+```r
+# Izračunaj korelaciju između spavanja i raspoloženja
+cor(x = parenthood$dan.sleep, y = parenthood$dan.grump)
+```
+
+```
+## [1] -0.903384
+```
+
+```r
+# Izračunaj korelacijsku tablicu
+cor(x = parenthood)
+```
+
+```
+##              dan.sleep  baby.sleep   dan.grump         day
+## dan.sleep   1.00000000  0.62794934 -0.90338404 -0.09840768
+## baby.sleep  0.62794934  1.00000000 -0.56596373 -0.01043394
+## dan.grump  -0.90338404 -0.56596373  1.00000000  0.07647926
+## day        -0.09840768 -0.01043394  0.07647926  1.00000000
+```
+
+
+---
+
+# Interpretacija korelacije
+
+
+
+
+
+
+Table: Okvirne smjernice za interpretaciju korelacije.
+
+|Korelacija   |Snaga         |Smjer     |
+|:------------|:-------------|:---------|
+|-1.0 to -0.9 |Izrazito jaka |Negativna |
+|-0.9 to -0.7 |Jaka          |Negativna |
+|-0.7 to -0.4 |Umjerena      |Negativna |
+|-0.4 to -0.2 |Slaba         |Negativna |
+|-0.2 to 0    |Zanemariva    |Negativna |
+|0 to 0.2     |Zanemariva    |Pozitivna |
+|0.2 to 0.4   |Slaba         |Pozitivna |
+|0.4 to 0.7   |Umjerena      |Pozitivna |
+|0.7 to 0.9   |Jaka          |Pozitivna |
+|0.9 to 1.0   |Izrazito jaka |Pozitivna |
+
+
+---
+
+# Podatci
+
+
+```r
+rm(list=ls()) # Očisti radni prostor
+load("./PODATCI/effort.Rdata") # Učitaj podatke
+lsr::who(TRUE) # Pregledaj podatke
+```
+
+```
+##    -- Name --   -- Class --   -- Size --
+##    effort       data.frame    10 x 2    
+##     $hours      numeric       10        
+##     $grade      numeric       10
+```
+
+```r
+head(effort, 5) #Pregledaj podatke
+```
+
+```
+##   hours grade
+## 1     2    13
+## 2    76    91
+## 3    40    79
+## 4     6    14
+## 5    16    21
+```
+
+```r
+cor(effort$hours, effort$grade) # Izračunaj korelaciju
+```
+
+```
+## [1] 0.909402
+```
+
+---
+
+# Podatci
+
+.tiny[
+
+```r
+Hmisc::describe(effort)
+```
+
+```
+## effort 
+## 
+##  2  Variables      10  Observations
+## --------------------------------------------------------------------------------
+## hours 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##       10        0       10        1     36.8    30.76     3.80     5.60 
+##      .25      .50      .75      .90      .95 
+##    18.75    34.00    55.75    68.80    72.40 
+## 
+## lowest :  2  6 16 27 28, highest: 40 46 59 68 76
+##                                                   
+## Value        2   6  16  27  28  40  46  59  68  76
+## Frequency    1   1   1   1   1   1   1   1   1   1
+## Proportion 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+## --------------------------------------------------------------------------------
+## grade 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##       10        0       10        1     59.6     36.8    13.45    13.90 
+##      .25      .50      .75      .90      .95 
+##    27.50    76.50    84.75    88.30    89.65 
+## 
+## lowest : 13 14 21 47 74, highest: 79 84 85 88 91
+##                                                   
+## Value       13  14  21  47  74  79  84  85  88  91
+## Frequency    1   1   1   1   1   1   1   1   1   1
+## Proportion 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+## --------------------------------------------------------------------------------
+```
+]
+---
+
+# Podatci
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="brisi_files/figure-html/rankcorrpic-1.png" alt="Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta)."  /&gt;
+&lt;p class="caption"&gt;Odnos između sati studiranja i ocjene (svaka točka predstavlja jednog studenta).&lt;/p&gt;
+&lt;/div&gt;
+
+
+---
+
+# Spearmanova korelacija
+
+
+
+```r
+sati_studiranja &lt;- rank( effort$hours ) # Rang sati
+ocjena &lt;- rank( effort$grade ) # Rang ocjena
+```
+
+| | Rang sati rada | Rang visine ocjene |
+|-|---------------------|-----------------------|
+|student | 1 |   1 |   1 |
+|student | 2  | 10   |10 |
+|student | 3 |   6  |  6 |
+|student | 4 |   2 |   2 |
+|student | 5 |   3 |   3 |
+|student | 6  |  5  |  5 |
+|student | 7  |  4  |  4 |
+|student | 8  |  8  |  8 |
+|student | 9   | 7  |  7 |
+|student | 10 | 9| 9
+
+---
+
+# Spearmanova korelacija
+
+
+```r
+cor(sati_studiranja,ocjena) # Izračunaj korelaciju
+```
+
+```
+## [1] 1
+```
+
+```r
+# Dodaj argument "spearman"
+cor(effort$hours, effort$grade, method = "spearman")
+```
+
+```
+## [1] 1
+```
+
+---
+
+class: inverse, center, middle
+
+# Hvala na pažnji
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
+
+(Nastavak: Inferencijalna statistika)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
