@@ -1,0 +1,284 @@
+---
+title: "Konfirmatorna faktorska analiza"
+format: html
+editor: visual
+output:
+  html_document:
+    df_print: paged
+---
+
+**Faktorska analiza: konfirmatorni postupci**
+
+```{r echo=FALSE, warning=FALSE,message=FALSE}
+
+library(haven) 
+library(psych)
+library(dplyr)      
+library(tidyr)      
+library(data.table) 
+library(broom)
+library(dgof)
+pacman::p_load(tidyverse, ggplot2, ggthemes, haven, lavaan, lavaanPlot, knitr, psych,
+               semPlot, semTools, wesanderson)
+```
+
+```{r echo = FALSE}
+
+data <- read_sav('C:/Users/Lukas/OneDrive/Desktop/CFA.sav')
+
+ls <- data %>%
+  drop_na
+
+```
+
+**Prvi korak** u analizi se odnosi pregled podataka (deskriptivna statistika, vizualizacija i provjera distribucije) . Pri ucitavanju su uklonjene opservacije za koje postoje NA vrijednosti sto je smanjilo broj redova sa 341 na 340.
+
+```{r echo = FALSE}
+
+kable(describe(ls))
+```
+
+Nakon provjere asimetrije i kurtoze, u cilju uklanjanja ekstremnih vrijednosti koje bi mogle povecati standardne pogreske koeficijenata i utjecati na same koeficijente, izvrseno je dodatno ciscenje podataka. Pri tome su uklonjeni svi subjekti/promatranja s vrijednostima izvan +/- 3 SD iz srednje vrijednosti. Uklanjanjem univarijatnih outliera takoder zelimo biti sigurni da utjecajne podatkovne tocke ne igraju nikakvu ulogu za rijesenje faktora.
+
+```{r echo=FALSE}
+
+options(scipen=999)
+
+kable(mardiaSkew(ls, use = "everything"),caption = "Skewness")
+kable(mardiaKurtosis(ls, use = "everything"),caption = "Kurtosis")
+```
+
+Nakon uklanjanja univarijatnih outliera broj opservacija se smanjio sa 340 na 333. Mardia koeficijenti su i dalje znacajni ali nesto nizi.
+
+```{r echo = FALSE}
+keep <- function(x) {
+  (x >= mean(x) - 3*sd(x)) &
+    (x <= mean(x) + 3*sd(x))
+}
+
+ls_clean <- ls %>%
+  filter(keep(AN) &
+           keep(FO) &
+           keep(SE) &
+           keep(DE) &
+           keep(KK) &
+           keep(IK) &
+           keep(GK) &
+           keep(HH) &
+           keep(OP) &
+           keep(IM) &
+           keep(AG) &
+           keep(PA))
+
+
+kable(mardiaSkew(ls_clean, use = "everything"),caption = "Skewness")
+kable(mardiaKurtosis(ls_clean, use = "everything"),caption = "Kurtosis")
+```
+
+Deskriptivni pregled varijabli za unos u model :
+
+```{r echo = FALSE}
+
+
+kable(describe(ls_clean), caption = "Ocisceni podatkovni skup za analizu")
+```
+
+Vizualni pregled varijabli (prikazuje korelacije i linearnost odnosa medu varijablama):
+
+```{r echo = FALSE, fig.height= 12, fig.width=12}
+pairs.panels(ls_clean, 
+             method = "pearson", 
+             hist.col = "#00AFBB",
+             density = FALSE,  
+             ellipses = F
+             )
+```
+
+Testiranje normalnosti Shapiro-Wilk testom:
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ls_clean %>% 
+  gather(key = "Var", value = "Val") %>% 
+  group_by(Var) %>%
+  summarise_all(.funs = funs(statistic = shapiro.test(.)$statistic, 
+                             p.value = shapiro.test(.)$p.value)) %>%
+  kable(caption = "Shapiro-Wilk test normalnosti")
+```
+
+Pregled outlier-a:
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+zscores <- ls_clean %>% 
+  gather(key = "Var", value = "Val") %>% 
+  group_by(Var) %>%
+  summarise(Z_vrijednosti = mean(Val)/sd(Val)) %>%
+  kable(caption = "z-vrijednosti")
+
+
+zscores
+```
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+kstest <- ls_clean %>% 
+  gather(key = "Var", value = "Val") %>% 
+  group_by(Var) %>%
+  summarise(kstest = ks.test(Val,"pnorm")$statistic,
+            pval = ks.test(Val,"pnorm")$p.value) %>%
+  kable(caption = "ks-vrijednosti")
+
+
+kstest
+```
+
+Mahalanobisova distanca (p vrijednost nigdje nije znacajna):
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ls_clean$mahal <- mahalanobis(ls_clean, colMeans(ls_clean), cov(ls_clean))
+
+ls_clean$p <- pchisq(ls_clean$mahal,df = 3)
+
+ls_clean[,c("mahal","p")]
+
+```
+
+**Drugi korak** je defniranje modela. Pri tome se vodimo teorijskim okvirom CIndeksa i sukladno ce se definirati dvije modelske specifikacije. Prva se odnosi na tri latentna faktora, a druga na jedan zajednicki faktor iza tri latentna. Osnovni model sa tri faktora je definiran:
+
+```{r}
+
+modelCI3 <- 
+"
+anxio =~ AN + FO + SE + DE + OP
+konverz =~ KK + IK + GK + HH
+agas =~ IM + AG + PA
+"
+```
+
+Prosireni model sa generalnim faktorom u pozadini je definiran:
+
+```{r}
+modelCI3_2order <-  
+"
+anxio =~ AN + FO + SE + DE + OP
+konverz =~ KK + IK + GK + HH
+agas =~ IM + AG + PA
+# ZajedniÄŤki faktor drugog reda
+general =~ anxio + konverz + agas
+"
+```
+
+**Treci korak** je procjena modela. Procjena osnovnog modela je proizvela sljedeci rezultat:
+
+```{r echo=FALSE}
+
+fit_modelCI3 <- cfa(modelCI3, data = ls_clean)
+summary(fit_modelCI3, fit.measures = TRUE, standardized = TRUE)
+
+
+```
+
+Vizualizacija procijenjenog modela:
+
+```{r}
+semPaths(fit_modelCI3, "par", weighted = FALSE, nCharNodes = 7, shapeMan = "rectangle", sizeMan = 8, sizeMan2 = 5)
+```
+
+```{r}
+summary(fit_modelCI3, rsq = TRUE)
+
+inspect(fit_modelCI3, 'r2')
+
+```
+
+**Cetvrti korak** je procjena kvalitete modela. To je moguce napraviti na razini lokalne i globalne dijagnostike. Na lokalnoj razini cemo usporediti empirijsku i modelom impliciranu varijancno-kovarijancanu matricu. Sto su razlike Izmedu ove dvije matrice manje, to bolje model odgovara podacima. Rezidualna matrica rezultat je oduzimanja matrice varijance-kovarijance koju implicira model od promatrane (empirijske) matrice varijance-kovarijance:
+
+```{r echo=FALSE, fig.width= 12}
+residual_matrix <-
+  lavInspect(fit_modelCI3, what = "sampstat")$cov -
+  lavInspect(fit_modelCI3, what = "implied")$cov
+
+residual_matrix
+```
+
+U okviru lokalne dijagnostike valja provjeriti varijancno-kovarijancanu matricu standardiziranih reziduala. Dio standardiziranih reziduala pokazao se znacajnim (apsolutna vrijednost â‰Ą2,58=pâ‰¤0,01):
+
+```{r echo=FALSE}
+
+resid(fit_modelCI3, type = "standardized")
+```
+
+Na razini globalne dijagnostike, procjena modela je rezultirala sljedecim parametrima:
+
+CFI = 0.942 i TLI =0.925 vrijednosti su oko preporuÄŤenih, RMSEA =0.095 je iznad granicne vrijednosti od 0,05, ali nije znacajno veca (90 % CI = $0,082; 0,109$\$), SRMR = 0.045 bodova dobro odgovara modelu (SRMR \< 0,08).
+
+**Peti korak** se odnosi na procjenu alternativnog (prosirenog) modela i usporedbu sa osnovnim modelom.
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+# razlog za 1.008 : https://stats.stackexchange.com/questions/569315/why-standardized-factor-loading-1-cfa-in-lavaan
+
+fit_modelCI3_2order <- cfa(modelCI3_2order, ls_clean)
+summary(fit_modelCI3_2order, fit.measures = TRUE, standardized = TRUE)
+
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+semPaths(fit_modelCI3_2order,"std", weighted = FALSE, nCharNodes = 7, 
+         shapeMan = "rectangle", sizeMan = 8, sizeMan2 = 5)
+```
+
+```{r}
+inspect(fit_modelCI3_2order, 'r2')
+```
+
+```{r}
+lavInspect(fit_modelCI3_2order, "cov.lv")
+```
+
+```{r}
+lavInspect(fit_modelCI3_2order, "cor.lv")
+```
+
+```{r}
+lavInspect(fit_modelCI3_2order, "cor.lv")
+```
+
+```{r}
+lavInspect(fit_modelCI3, "cov.lv")
+```
+
+```{r}
+lavInspect(fit_modelCI3, "cor.lv")
+```
+
+```{r}
+lavInspect(fit_modelCI3, what = "implied")
+```
+
+```{r}
+lavInspect(fit_modelCI3_2order, what = "implied")
+```
+
+```{r}
+cov2cor(inspect(fit_modelCI3, what = "est")$psi)
+```
+
+```{r}
+parameterEstimates(fit_modelCI3_2order,rsquare = TRUE)
+```
+
+Procjene parametara pokazuju da je najvece opterecenje cimbenika prvog reda faktora anksioznosti (anxio) prijatelja. Opcenito, obrazac opterecenja prilicno je homogen.
+
+CFI = 0,942 i NNFI/TLI = 0,925 su isti kao kod 3-faktorskog modela. RMSEA = 0,095 takoder je jednak kao kod 3-faktorskog modela i nije znacajno veci od 0,05 (90 %-CI $$0,082; 0,109$$)
+
+Sada usporedujemo dva modela (uzlaznim redoslijedom s obzirom na broj procijenjenih parametara: 3-faktorski model i 3-faktorski model s faktorom drugog reda. Preduvjet za valjanost ovih testova je ugnjezdivanje ogranicenih modela (s manje parametara) u modele s manje ogranicenja (s vise parametara).
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+anova(fit_modelCI3, fit_modelCI3_2order)
+
+# https://methodenlehre.github.io/SGSCLM-R-course/cfa-and-sem-with-lavaan.html
+
+
+# https://stats.oarc.ucla.edu/r/seminars/rcfa/
+```
+
+Anova test pokazuje znacajnu usporedbu modela 3-faktorskog modela s 3-faktorskim modelom s faktorom drugog reda (Î"Ď‡2= 204.19, p=0). Prema informacijskim kriterijima oba modela su jednako dobra (AIC = 15021, BIC = 15124).
