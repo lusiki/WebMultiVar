@@ -24,7 +24,7 @@ pacman::p_load(tidyverse, ggplot2, ggthemes, haven, lavaan, lavaanPlot, knitr, p
 
 ```{r echo = FALSE}
 
-data <- read_sav('C:/Users/Lukas/OneDrive/Desktop/CFA.sav')
+data <- read_sav('./Empirical/cfa/CFA.sav')
 
 ls <- data %>%
   drop_na
